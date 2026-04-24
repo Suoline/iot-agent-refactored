@@ -1,0 +1,8 @@
+domain: persistent_notification
+service: dismiss_all
+name: Dismiss all
+description: Deletes all notifications from the notifications panel.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

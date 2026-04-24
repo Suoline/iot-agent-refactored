@@ -1,0 +1,19 @@
+domain: media_player
+service: shuffle_set
+name: Set shuffle
+description: Enables or disables the shuffle mode.
+fields:
+  shuffle:
+    required: true
+    name: Shuffle mode
+    description: Whether the media should be played in randomized order or not.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 32768
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,13 @@
+domain: vacuum
+service: pause
+name: Pause
+description: Pauses the cleaning task.
+fields: {}
+target:
+  entity:
+  - domain:
+    - vacuum
+    supported_features:
+    - 4
+handler: builtin:service.not_implemented
+supports_response: false

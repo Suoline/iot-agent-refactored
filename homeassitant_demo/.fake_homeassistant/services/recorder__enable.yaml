@@ -1,0 +1,8 @@
+domain: recorder
+service: enable
+name: Enable
+description: Starts the recording of events and state changes.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

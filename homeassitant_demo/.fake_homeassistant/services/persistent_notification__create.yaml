@@ -1,0 +1,33 @@
+domain: persistent_notification
+service: create
+name: Create
+description: Shows a notification on the notifications panel.
+fields:
+  message:
+    required: true
+    name: Message
+    description: Message body of the notification.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  title:
+    required: false
+    name: Title
+    description: Optional title of the notification.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  notification_id:
+    required: false
+    name: Notification ID
+    description: ID of the notification. This new notification will overwrite an existing
+      notification with the same ID.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

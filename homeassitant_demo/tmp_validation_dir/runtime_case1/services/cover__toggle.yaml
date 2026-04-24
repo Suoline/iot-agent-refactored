@@ -1,0 +1,13 @@
+domain: cover
+service: toggle
+name: Toggle
+description: Toggles a cover open/closed.
+fields: {}
+target:
+  entity:
+  - domain:
+    - cover
+    supported_features:
+    - 3
+handler: builtin:service.not_implemented
+supports_response: false

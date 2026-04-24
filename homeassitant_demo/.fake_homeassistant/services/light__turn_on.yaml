@@ -1,0 +1,75 @@
+domain: light
+service: turn_on
+name: Turn on
+description: Turns on one or more lights and adjusts their properties, even when they
+  are turned on already.
+fields:
+  transition:
+    required: false
+    name: Transition
+    description: Duration it takes to get to next state.
+    selector:
+      number:
+        min: 0
+        max: 300
+        unit_of_measurement: seconds
+        step: 1
+        mode: slider
+  rgb_color:
+    required: false
+    name: Color
+    description: The color in RGB format. A list of three integers between 0 and 255
+      representing the values of red, green, and blue.
+    selector:
+      color_rgb: {}
+  color_temp_kelvin:
+    required: false
+    name: Color temperature
+    description: Color temperature in Kelvin.
+    selector:
+      color_temp:
+        unit: kelvin
+        min: 2000
+        max: 6500
+  brightness_pct:
+    required: false
+    name: Brightness
+    description: Number indicating the percentage of full brightness, where 0 turns
+      the light off, 1 is the minimum brightness, and 100 is the maximum brightness.
+    selector:
+      number:
+        min: 0
+        max: 100
+        unit_of_measurement: '%'
+        step: 1
+        mode: slider
+  brightness_step_pct:
+    required: false
+    name: Brightness step
+    description: Change brightness by a percentage.
+    selector:
+      number:
+        min: -100
+        max: 100
+        unit_of_measurement: '%'
+        step: 1
+        mode: slider
+  effect:
+    required: false
+    name: Effect
+    description: Light effect.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  advanced_fields:
+    required: false
+    name: null
+    description: null
+    selector: null
+target:
+  entity:
+  - domain:
+    - light
+handler: builtin:light.turn_on
+supports_response: false

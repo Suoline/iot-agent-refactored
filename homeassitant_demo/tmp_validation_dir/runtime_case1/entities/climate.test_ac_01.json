@@ -1,0 +1,34 @@
+{
+  "entity_id": "climate.test_ac_01",
+  "domain": "climate",
+  "object_id": "test_ac_01",
+  "unique_id": null,
+  "device_id": "device.test_ac_01",
+  "area_id": "room.living_room",
+  "platform": "mock",
+  "name": "Test AC",
+  "original_name": null,
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": null,
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": "cool",
+  "attributes": {
+    "friendly_name": "Test AC",
+    "hvac_mode": "cool",
+    "hvac_modes": [
+      "off",
+      "cool",
+      "heat"
+    ],
+    "temperature": 24.0,
+    "current_temperature": 28.0,
+    "unit_of_measurement": "°C"
+  },
+  "metadata": {}
+}

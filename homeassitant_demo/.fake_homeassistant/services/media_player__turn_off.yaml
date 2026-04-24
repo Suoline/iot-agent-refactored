@@ -1,0 +1,13 @@
+domain: media_player
+service: turn_off
+name: Turn off
+description: Turns off the power of the media player.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 256
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,17 @@
+domain: select
+service: select_next
+name: Next
+description: Selects the next option.
+fields:
+  cycle:
+    required: false
+    name: Cycle
+    description: If the option should cycle from the last to the first.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - select
+handler: builtin:select.select_next
+supports_response: false

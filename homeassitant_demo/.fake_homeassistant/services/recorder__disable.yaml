@@ -1,0 +1,8 @@
+domain: recorder
+service: disable
+name: Disable
+description: Stops the recording of events and state changes.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

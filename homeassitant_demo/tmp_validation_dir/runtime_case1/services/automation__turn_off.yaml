@@ -1,0 +1,17 @@
+domain: automation
+service: turn_off
+name: Turn off
+description: Disables an automation.
+fields:
+  stop_actions:
+    required: false
+    name: Stop actions
+    description: Stops currently running actions.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - automation
+handler: builtin:service.not_implemented
+supports_response: false

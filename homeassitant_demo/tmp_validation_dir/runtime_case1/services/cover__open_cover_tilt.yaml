@@ -1,0 +1,13 @@
+domain: cover
+service: open_cover_tilt
+name: Open tilt
+description: Tilts a cover open.
+fields: {}
+target:
+  entity:
+  - domain:
+    - cover
+    supported_features:
+    - 16
+handler: builtin:service.not_implemented
+supports_response: false

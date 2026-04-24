@@ -1,0 +1,27 @@
+domain: media_player
+service: repeat_set
+name: Set repeat
+description: Sets the repeat mode.
+fields:
+  repeat:
+    required: true
+    name: Repeat mode
+    description: Whether the media (one or all) should be played in a loop or not.
+    selector:
+      select:
+        options:
+        - 'off'
+        - all
+        - one
+        translation_key: repeat
+        custom_value: false
+        sort: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 262144
+handler: builtin:service.not_implemented
+supports_response: false

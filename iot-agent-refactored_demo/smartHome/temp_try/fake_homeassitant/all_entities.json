@@ -1,0 +1,1343 @@
+[
+	{
+		"entity_id": "button.philips_cn_1061200910_lite_toggle_a_2_1",
+		"state": "2025-10-27T11:25:38.188629+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite  灯 开关状态切换"
+		},
+		"last_changed": "2025-10-27T11:25:38.188629Z",
+		"last_reported": "2025-10-27T11:25:38.188629Z",
+		"last_updated": "2025-10-27T11:25:38.188629Z",
+		"context": {
+			"id": "01K8JPNA0CPQG2WH114E2JW6X2",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.philips_cn_1061200910_lite_brightness_down_a_3_1",
+		"state": "2025-10-27T11:25:38.188721+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite * 个性化功能 亮度-"
+		},
+		"last_changed": "2025-10-27T11:25:38.188721Z",
+		"last_reported": "2025-10-27T11:25:38.188721Z",
+		"last_updated": "2025-10-27T11:25:38.188721Z",
+		"context": {
+			"id": "01K8JPNA0C73EYZT4EMMSQSF14",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.philips_cn_1061200910_lite_brightness_up_a_3_2",
+		"state": "2025-10-27T11:25:38.188751+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite * 个性化功能 亮度+"
+		},
+		"last_changed": "2025-10-27T11:25:38.188751Z",
+		"last_reported": "2025-10-27T11:25:38.188751Z",
+		"last_updated": "2025-10-27T11:25:38.188751Z",
+		"context": {
+			"id": "01K8JPNA0CVEE01125PZEQHRJ5",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.philips_cn_1061200910_lite_notify_you_e_3_1",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"推送休息事件"
+			],
+			"friendly_name": "米家智能台灯Lite * 个性化功能 推送休息事件"
+		},
+		"last_changed": "2025-10-27T11:25:38.188782Z",
+		"last_reported": "2025-10-27T11:25:38.188782Z",
+		"last_updated": "2025-10-27T11:25:38.188782Z",
+		"context": {
+			"id": "01K8JPNA0CY5PZK1XC64E5GA27",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "light.philips_cn_1061200910_lite_s_2",
+		"state": "on",
+		"attributes": {
+			"effect_list": [
+				"mode 0",
+				"mode 1",
+				"mode 2"
+			],
+			"supported_color_modes": [
+				"brightness"
+			],
+			"effect": "mode 1",
+			"color_mode": "brightness",
+			"brightness": 3,
+			"friendly_name": "米家智能台灯Lite  灯",
+			"supported_features": 4
+		},
+		"last_changed": "2026-04-13T19:25:33.643854+08:00",
+		"last_reported": "2026-04-13T19:25:33.643854+08:00",
+		"last_updated": "2026-04-13T19:25:33.643854+08:00",
+		"context": {
+			"id": "e418f8f08fea41fc95bf1b7027942203",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "number.philips_cn_1061200910_lite_dvalue_p_3_1",
+		"state": "0",
+		"attributes": {
+			"min": 0,
+			"max": 21600,
+			"step": 1,
+			"mode": "auto",
+			"unit_of_measurement": "s",
+			"icon": "mdi:clock",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 延时关灯的时间"
+		},
+		"last_changed": "2025-10-27T11:25:38.188901Z",
+		"last_reported": "2025-10-27T11:25:38.188901Z",
+		"last_updated": "2025-10-27T11:25:38.188901Z",
+		"context": {
+			"id": "01K8JPNA0C1X496W8AJ9331KXP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "number.philips_cn_1061200910_lite_notify_time_p_3_3",
+		"state": "40",
+		"attributes": {
+			"min": 1,
+			"max": 120,
+			"step": 1,
+			"mode": "auto",
+			"unit_of_measurement": "min",
+			"icon": "mdi:clock",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 视疲劳提醒的时间间隔设"
+		},
+		"last_changed": "2025-10-27T11:25:38.188931Z",
+		"last_reported": "2025-10-27T11:25:38.188931Z",
+		"last_updated": "2025-10-27T11:25:38.188931Z",
+		"context": {
+			"id": "01K8JPNA0CV5NA9F6JEETCS7A5",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.philips_cn_1061200910_lite_notify_switch_p_3_2",
+		"state": "off",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 开启/关闭视疲劳提醒功能 "
+		},
+		"last_changed": "2025-10-27T11:25:38.188955Z",
+		"last_reported": "2025-10-27T11:25:38.188955Z",
+		"last_updated": "2025-10-27T11:25:38.188955Z",
+		"context": {
+			"id": "01K8JPNA0C5QZNE92ME7NQTCC3",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.philips_cn_1061200910_lite_night_light_en_p_3_4",
+		"state": "on",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 开启/关闭夜间模式"
+		},
+		"last_changed": "2025-10-27T11:25:38.188976Z",
+		"last_reported": "2025-10-27T11:25:38.188976Z",
+		"last_updated": "2025-10-27T11:25:38.188976Z",
+		"context": {
+			"id": "01K8JPNA0C8HWEJ6PSWBSY9RF4",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.philips_cn_1061201010_lite_toggle_a_2_1",
+		"state": "2025-10-27T11:25:38.188629+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite  灯 开关状态切换"
+		},
+		"last_changed": "2025-10-27T11:25:38.188629Z",
+		"last_reported": "2025-10-27T11:25:38.188629Z",
+		"last_updated": "2025-10-27T11:25:38.188629Z",
+		"context": {
+			"id": "01K8JPNA0CPQG2WH114E2JW6X2",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.philips_cn_1061201010_lite_brightness_down_a_3_1",
+		"state": "2025-10-27T11:25:38.188721+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite * 个性化功能 亮度-"
+		},
+		"last_changed": "2025-10-27T11:25:38.188721Z",
+		"last_reported": "2025-10-27T11:25:38.188721Z",
+		"last_updated": "2025-10-27T11:25:38.188721Z",
+		"context": {
+			"id": "01K8JPNA0C73EYZT4EMMSQSF14",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.philips_cn_1061201010_lite_brightness_up_a_3_2",
+		"state": "2025-10-27T11:25:38.188751+00:00",
+		"attributes": {
+			"friendly_name": "米家智能台灯Lite * 个性化功能 亮度+"
+		},
+		"last_changed": "2025-10-27T11:25:38.188751Z",
+		"last_reported": "2025-10-27T11:25:38.188751Z",
+		"last_updated": "2025-10-27T11:25:38.188751Z",
+		"context": {
+			"id": "01K8JPNA0CVEE01125PZEQHRJ5",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.philips_cn_1061201010_lite_notify_you_e_3_1",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"推送休息事件"
+			],
+			"friendly_name": "米家智能台灯Lite * 个性化功能 推送休息事件"
+		},
+		"last_changed": "2025-10-27T11:25:38.188782Z",
+		"last_reported": "2025-10-27T11:25:38.188782Z",
+		"last_updated": "2025-10-27T11:25:38.188782Z",
+		"context": {
+			"id": "01K8JPNA0CY5PZK1XC64E5GA27",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "light.philips_cn_1061201010_lite_s_2",
+		"state": "on",
+		"attributes": {
+			"effect_list": [
+				"mode 0",
+				"mode 1",
+				"mode 2"
+			],
+			"supported_color_modes": [
+				"brightness"
+			],
+			"effect": "mode 1",
+			"color_mode": "brightness",
+			"brightness": 3,
+			"friendly_name": "米家智能台灯Lite  灯",
+			"supported_features": 4
+		},
+		"last_changed": "2025-10-27T11:25:38.188829Z",
+		"last_reported": "2025-10-27T11:25:38.188829Z",
+		"last_updated": "2025-10-27T11:25:38.188829Z",
+		"context": {
+			"id": "01KEP0S242MJCCG8Y0KKZGWPAD",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "number.philips_cn_1061201010_lite_dvalue_p_3_1",
+		"state": "0",
+		"attributes": {
+			"min": 0,
+			"max": 21600,
+			"step": 1,
+			"mode": "auto",
+			"unit_of_measurement": "s",
+			"icon": "mdi:clock",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 延时关灯的时间"
+		},
+		"last_changed": "2025-10-27T11:25:38.188901Z",
+		"last_reported": "2025-10-27T11:25:38.188901Z",
+		"last_updated": "2025-10-27T11:25:38.188901Z",
+		"context": {
+			"id": "01K8JPNA0C1X496W8AJ9331KXP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "number.philips_cn_1061201010_lite_notify_time_p_3_3",
+		"state": "40",
+		"attributes": {
+			"min": 1,
+			"max": 120,
+			"step": 1,
+			"mode": "auto",
+			"unit_of_measurement": "min",
+			"icon": "mdi:clock",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 视疲劳提醒的时间间隔设"
+		},
+		"last_changed": "2025-10-27T11:25:38.188931Z",
+		"last_reported": "2025-10-27T11:25:38.188931Z",
+		"last_updated": "2025-10-27T11:25:38.188931Z",
+		"context": {
+			"id": "01K8JPNA0CV5NA9F6JEETCS7A5",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.philips_cn_1061201010_lite_notify_switch_p_3_2",
+		"state": "off",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 开启/关闭视疲劳提醒功能 "
+		},
+		"last_changed": "2025-10-27T11:25:38.188955Z",
+		"last_reported": "2025-10-27T11:25:38.188955Z",
+		"last_updated": "2025-10-27T11:25:38.188955Z",
+		"context": {
+			"id": "01K8JPNA0C5QZNE92ME7NQTCC3",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.philips_cn_1061201010_lite_night_light_en_p_3_4",
+		"state": "on",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "米家智能台灯Lite * 个性化功能 开启/关闭夜间模式"
+		},
+		"last_changed": "2025-10-27T11:25:38.188976Z",
+		"last_reported": "2025-10-27T11:25:38.188976Z",
+		"last_updated": "2025-10-27T11:25:38.188976Z",
+		"context": {
+			"id": "01K8JPNA0C8HWEJ6PSWBSY9RF4",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"设备被重置"
+			],
+			"event_type": null,
+			"friendly_name": "小米人体传感器2S  移动检测传感器 设备被重置"
+		},
+		"last_changed": "2025-10-27T09:45:48.471727Z",
+		"last_reported": "2025-10-27T09:45:48.471727Z",
+		"last_updated": "2025-10-27T09:45:48.471727Z",
+		"context": {
+			"id": "01K8JGYGNQTXYV636XW7P2XXJP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008",
+		"state": "2025-11-04T06:55:40.098+00:00",
+		"attributes": {
+			"event_types": [
+				"检测到移动"
+			],
+			"event_type": "检测到移动",
+			"光照度": 0,
+			"device_class": "motion",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 检测到移动"
+		},
+		"last_changed": "2025-11-04T06:55:40.098297Z",
+		"last_reported": "2025-11-04T06:55:40.098297Z",
+		"last_updated": "2025-11-04T06:55:40.098297Z",
+		"context": {
+			"id": "01K96TCQJ2BYMKCJXNFYSX9TEC",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024",
+		"state": "300",
+		"attributes": {
+			"unit_of_measurement": "s",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 无移动状态持续时间"
+		},
+		"last_changed": "2025-11-04T07:00:39.853264Z",
+		"last_reported": "2025-11-04T07:00:39.853264Z",
+		"last_updated": "2025-11-04T07:00:39.853264Z",
+		"context": {
+			"id": "01K96TNW9DMF74DK4TQJ08J405",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005",
+		"state": "15.0",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "lx",
+			"device_class": "illuminance",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 光照度"
+		},
+		"last_changed": "2025-11-04T06:56:10.188026Z",
+		"last_reported": "2025-11-04T06:56:10.188026Z",
+		"last_updated": "2025-11-04T06:56:10.188026Z",
+		"context": {
+			"id": "01K96TDMYC53SCFGSF9BYVJ6ZE",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_custom_no_motion_time_p_2_1053",
+		"state": "0",
+		"attributes": {
+			"unit_of_measurement": "min",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 自定义超时无人移动时间"
+		},
+		"last_changed": "2025-11-04T06:55:41.654912Z",
+		"last_reported": "2025-11-04T06:55:41.654912Z",
+		"last_updated": "2025-11-04T06:55:41.654912Z",
+		"context": {
+			"id": "01K96TCS2PMDCP39BEXWZAM5PP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_battery_level_p_3_1003",
+		"state": "100",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "%",
+			"device_class": "battery",
+			"friendly_name": "小米人体传感器2S  电池 电池电量"
+		},
+		"last_changed": "2025-10-27T09:45:49.473567Z",
+		"last_reported": "2025-10-27T09:45:49.473567Z",
+		"last_updated": "2025-10-27T09:45:49.473567Z",
+		"context": {
+			"id": "01K8JGYHN18HQ8YR9E1YB7369G",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_2gunh8471d911_pir1_device_be_reset_e_2_1028",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"设备被重置"
+			],
+			"event_type": null,
+			"friendly_name": "小米人体传感器2S  移动检测传感器 设备被重置"
+		},
+		"last_changed": "2025-10-27T09:45:48.471727Z",
+		"last_reported": "2025-10-27T09:45:48.471727Z",
+		"last_updated": "2025-10-27T09:45:48.471727Z",
+		"context": {
+			"id": "01K8JGYGNQTXYV636XW7P2XXJP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008",
+		"state": "2025-11-05T06:55:40.098+00:00",
+		"attributes": {
+			"event_types": [
+				"检测到移动"
+			],
+			"event_type": "检测到移动",
+			"光照度": 0,
+			"device_class": "motion",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 检测到移动"
+		},
+		"last_changed": "2025-11-05T06:55:40.098297Z",
+		"last_reported": "2025-11-05T06:55:40.098297Z",
+		"last_updated": "2025-11-05T06:55:40.098297Z",
+		"context": {
+			"id": "01K96TCQJ2BYMKCJXNFYSX9TEC",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024",
+		"state": "300",
+		"attributes": {
+			"unit_of_measurement": "s",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 无移动状态持续时间"
+		},
+		"last_changed": "2025-11-04T07:00:39.853264Z",
+		"last_reported": "2025-11-04T07:00:39.853264Z",
+		"last_updated": "2025-11-04T07:00:39.853264Z",
+		"context": {
+			"id": "01K96TNW9DMF74DK4TQJ08J405",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005",
+		"state": "0.0",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "lx",
+			"device_class": "illuminance",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 光照度"
+		},
+		"last_changed": "2025-11-04T06:56:10.188026Z",
+		"last_reported": "2025-11-04T06:56:10.188026Z",
+		"last_updated": "2025-11-04T06:56:10.188026Z",
+		"context": {
+			"id": "01K96TDMYC53SCFGSF9BYVJ6ZE",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_custom_no_motion_time_p_2_1053",
+		"state": "0",
+		"attributes": {
+			"unit_of_measurement": "min",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 自定义超时无人移动时间"
+		},
+		"last_changed": "2025-11-04T06:55:41.654912Z",
+		"last_reported": "2025-11-04T06:55:41.654912Z",
+		"last_updated": "2025-11-04T06:55:41.654912Z",
+		"context": {
+			"id": "01K96TCS2PMDCP39BEXWZAM5PP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_battery_level_p_3_1003",
+		"state": "100",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "%",
+			"device_class": "battery",
+			"friendly_name": "小米人体传感器2S  电池 电池电量"
+		},
+		"last_changed": "2025-10-27T09:45:49.473567Z",
+		"last_reported": "2025-10-27T09:45:49.473567Z",
+		"last_updated": "2025-10-27T09:45:49.473567Z",
+		"context": {
+			"id": "01K8JGYHN18HQ8YR9E1YB7369G",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_device_be_reset_e_2_1028",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"设备被重置"
+			],
+			"event_type": null,
+			"friendly_name": "小米人体传感器2S  移动检测传感器 设备被重置"
+		},
+		"last_changed": "2025-10-27T09:45:48.471727Z",
+		"last_reported": "2025-10-27T09:45:48.471727Z",
+		"last_updated": "2025-10-27T09:45:48.471727Z",
+		"context": {
+			"id": "01K8JGYGNQTXYV636XW7P2XXJP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008",
+		"state": "2025-11-04T06:55:40.098+00:00",
+		"attributes": {
+			"event_types": [
+				"检测到移动"
+			],
+			"event_type": "检测到移动",
+			"光照度": 0,
+			"device_class": "motion",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 检测到移动"
+		},
+		"last_changed": "2025-11-04T06:55:40.098297Z",
+		"last_reported": "2025-11-04T06:55:40.098297Z",
+		"last_updated": "2025-11-04T06:55:40.098297Z",
+		"context": {
+			"id": "01K96TCQJ2BYMKCJXNFYSX9TEC",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024",
+		"state": "300",
+		"attributes": {
+			"unit_of_measurement": "s",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 无移动状态持续时间"
+		},
+		"last_changed": "2025-11-04T07:00:39.853264Z",
+		"last_reported": "2025-11-04T07:00:39.853264Z",
+		"last_updated": "2025-11-04T07:00:39.853264Z",
+		"context": {
+			"id": "01K96TNW9DMF74DK4TQJ08J405",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_illumination_p_2_1005",
+		"state": "0.0",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "lx",
+			"device_class": "illuminance",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 光照度"
+		},
+		"last_changed": "2025-11-04T06:56:10.188026Z",
+		"last_reported": "2025-11-04T06:56:10.188026Z",
+		"last_updated": "2025-11-04T06:56:10.188026Z",
+		"context": {
+			"id": "01K96TDMYC53SCFGSF9BYVJ6ZE",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_custom_no_motion_time_p_2_1053",
+		"state": "0",
+		"attributes": {
+			"unit_of_measurement": "min",
+			"icon": "mdi:clock",
+			"friendly_name": "小米人体传感器2S  移动检测传感器 自定义超时无人移动时间"
+		},
+		"last_changed": "2025-11-04T06:55:41.654912Z",
+		"last_reported": "2025-11-04T06:55:41.654912Z",
+		"last_updated": "2025-11-04T06:55:41.654912Z",
+		"context": {
+			"id": "01K96TCS2PMDCP39BEXWZAM5PP",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_battery_level_p_3_1003",
+		"state": "100",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "%",
+			"device_class": "battery",
+			"friendly_name": "小米人体传感器2S  电池 电池电量"
+		},
+		"last_changed": "2025-10-27T09:45:49.473567Z",
+		"last_reported": "2025-10-27T09:45:49.473567Z",
+		"last_updated": "2025-10-27T09:45:49.473567Z",
+		"context": {
+			"id": "01K8JGYHN18HQ8YR9E1YB7369G",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "light.yeelink_cn_1162511951_mbulb3_s_2",
+		"state": "on",
+		"attributes": {
+			"min_color_temp_kelvin": 2700,
+			"max_color_temp_kelvin": 6500,
+			"min_mireds": 153,
+			"max_mireds": 370,
+			"supported_color_modes": [
+				"color_temp"
+			],
+			"color_mode": "color_temp",
+			"brightness": 76,
+			"color_temp_kelvin": 4000,
+			"color_temp": 250,
+			"hs_color": [
+				26.812,
+				34.87
+			],
+			"rgb_color": [
+				255,
+				206,
+				166
+			],
+			"xy_color": [
+				0.42,
+				0.365
+			],
+			"friendly_name": "灯泡  灯",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T07:03:05.063308Z",
+		"last_reported": "2025-11-04T07:03:05.063308Z",
+		"last_updated": "2025-11-04T07:03:05.063308Z",
+		"context": {
+			"id": "01K96TTA37VPMQAXHMTREHZYZK",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "light.yeelink_cn_1162512052_mbulb3_s_2",
+		"state": "on",
+		"attributes": {
+			"min_color_temp_kelvin": 2700,
+			"max_color_temp_kelvin": 6500,
+			"min_mireds": 153,
+			"max_mireds": 370,
+			"supported_color_modes": [
+				"color_temp"
+			],
+			"color_mode": "color_temp",
+			"brightness": 76,
+			"color_temp_kelvin": 4000,
+			"color_temp": 250,
+			"hs_color": [
+				26.812,
+				34.87
+			],
+			"rgb_color": [
+				255,
+				206,
+				166
+			],
+			"xy_color": [
+				0.42,
+				0.365
+			],
+			"friendly_name": "灯泡  灯",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T07:03:05.063308Z",
+		"last_reported": "2025-11-04T07:03:05.063308Z",
+		"last_updated": "2025-11-04T07:03:05.063308Z",
+		"context": {
+			"id": "01K96TTA37VPMQAXHMTREHZYZK",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "light.yeelink_cn_1162512153_mbulb3_s_2",
+		"state": "on",
+		"attributes": {
+			"min_color_temp_kelvin": 2700,
+			"max_color_temp_kelvin": 6500,
+			"min_mireds": 153,
+			"max_mireds": 370,
+			"supported_color_modes": [
+				"color_temp"
+			],
+			"color_mode": "color_temp",
+			"brightness": 76,
+			"color_temp_kelvin": 4000,
+			"color_temp": 250,
+			"hs_color": [
+				26.812,
+				34.87
+			],
+			"rgb_color": [
+				255,
+				206,
+				166
+			],
+			"xy_color": [
+				0.42,
+				0.365
+			],
+			"friendly_name": "灯泡  灯",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T07:03:05.063308Z",
+		"last_reported": "2025-11-04T07:03:05.063308Z",
+		"last_updated": "2025-11-04T07:03:05.063308Z",
+		"context": {
+			"id": "01K96TTA37VPMQAXHMTREHZYZK",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2",
+		"state": "off",
+		"attributes": {
+			"device_class": "door",
+			"friendly_name": "门窗传感器  门窗传感器 接触状态"
+		},
+		"last_changed": "2025-11-04T06:56:41.803054Z",
+		"last_reported": "2025-11-04T06:56:41.803054Z",
+		"last_updated": "2025-11-04T06:56:41.803054Z",
+		"context": {
+			"id": "01K96TEKTBV98M8VHQ3H5770KJ",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_illumination_p_2_1",
+		"state": "弱",
+		"attributes": {
+			"options": [
+				"弱",
+				"强"
+			],
+			"device_class": "enum",
+			"icon": "mdi:format-text",
+			"friendly_name": "门窗传感器  门窗传感器 光照度"
+		},
+		"last_changed": "2025-10-27T09:45:49.473651Z",
+		"last_reported": "2025-10-29T09:52:09.392386Z",
+		"last_updated": "2025-10-29T09:52:09.392386Z",
+		"context": {
+			"id": "01K8QP3JNGV6SF142NPB9552HJ",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_battery_level_p_3_1",
+		"state": "100",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "%",
+			"device_class": "battery",
+			"friendly_name": "门窗传感器  电量 电池电量"
+		},
+		"last_changed": "2025-10-27T09:45:49.473688Z",
+		"last_reported": "2025-10-29T09:52:09.392473Z",
+		"last_updated": "2025-10-29T09:52:09.392473Z",
+		"context": {
+			"id": "01K8QP3JNG6MT3VZYXXBH15Y5Y",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2",
+		"state": "off",
+		"attributes": {
+			"device_class": "door",
+			"friendly_name": "门窗传感器  门窗传感器 接触状态"
+		},
+		"last_changed": "2025-11-04T06:56:41.803054Z",
+		"last_reported": "2025-11-04T06:56:41.803054Z",
+		"last_updated": "2025-11-04T06:56:41.803054Z",
+		"context": {
+			"id": "01K96TEKTBV98M8VHQ3H5770KJ",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_illumination_p_2_1",
+		"state": "弱",
+		"attributes": {
+			"options": [
+				"弱",
+				"强"
+			],
+			"device_class": "enum",
+			"icon": "mdi:format-text",
+			"friendly_name": "门窗传感器  门窗传感器 光照度"
+		},
+		"last_changed": "2025-10-27T09:45:49.473651Z",
+		"last_reported": "2025-10-29T09:52:09.392386Z",
+		"last_updated": "2025-10-29T09:52:09.392386Z",
+		"context": {
+			"id": "01K8QP3JNGV6SF142NPB9552HJ",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_battery_level_p_3_1",
+		"state": "100",
+		"attributes": {
+			"state_class": "measurement",
+			"unit_of_measurement": "%",
+			"device_class": "battery",
+			"friendly_name": "门窗传感器  电量 电池电量"
+		},
+		"last_changed": "2025-10-27T09:45:49.473688Z",
+		"last_reported": "2025-10-29T09:52:09.392473Z",
+		"last_updated": "2025-10-29T09:52:09.392473Z",
+		"context": {
+			"id": "01K8QP3JNG6MT3VZYXXBH15Y5Y",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.lumi_cn_551385025_mcn001_identify_a_20_1",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米智能多模网关2  设备确认 设备响应"
+		},
+		"last_changed": "2025-11-04T06:50:12.488960Z",
+		"last_reported": "2025-11-04T06:50:12.488960Z",
+		"last_updated": "2025-11-04T06:50:12.488960Z",
+		"context": {
+			"id": "01K96T2QM8RXWFAX2699FDDWGX",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.lumi_cn_551385025_mcn001_network_changed_e_2_1",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"网络发生变化"
+			],
+			"event_type": null,
+			"friendly_name": "小米智能多模网关2  网关 网络发生变化"
+		},
+		"last_changed": "2025-11-04T06:50:12.489060Z",
+		"last_reported": "2025-11-04T06:50:12.489060Z",
+		"last_updated": "2025-11-04T06:50:12.489060Z",
+		"context": {
+			"id": "01K96T2QM9FR0TGTNZ8DSR1YPJ",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.lumi_cn_551385025_mcn001_click_e_4_1",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"单击"
+			],
+			"event_type": null,
+			"device_class": "button",
+			"friendly_name": "小米智能多模网关2  网关按键 单击"
+		},
+		"last_changed": "2025-11-04T06:50:12.489095Z",
+		"last_reported": "2025-11-04T06:50:12.489095Z",
+		"last_updated": "2025-11-04T06:50:12.489095Z",
+		"context": {
+			"id": "01K96T2QM93728A92C5GBSC4A6",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.lumi_cn_551385025_mcn001_double_click_e_4_2",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"双击"
+			],
+			"event_type": null,
+			"device_class": "button",
+			"friendly_name": "小米智能多模网关2  网关按键 双击"
+		},
+		"last_changed": "2025-11-04T06:50:12.489118Z",
+		"last_reported": "2025-11-04T06:50:12.489118Z",
+		"last_updated": "2025-11-04T06:50:12.489118Z",
+		"context": {
+			"id": "01K96T2QM9VMZEVERBMJYH1JA4",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.lumi_cn_551385025_mcn001_long_press_e_4_3",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"长按"
+			],
+			"event_type": null,
+			"device_class": "button",
+			"friendly_name": "小米智能多模网关2  网关按键 长按"
+		},
+		"last_changed": "2025-11-04T06:50:12.489138Z",
+		"last_reported": "2025-11-04T06:50:12.489138Z",
+		"last_updated": "2025-11-04T06:50:12.489138Z",
+		"context": {
+			"id": "01K96T2QM93C32KV2EF8Y7G337",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "event.lumi_cn_551385025_mcn001_event_unbind_e_7_1",
+		"state": "unknown",
+		"attributes": {
+			"event_types": [
+				"网关防误删功能开启后，尝试长按10s重置键上报该事件"
+			],
+			"event_type": null,
+			"friendly_name": "小米智能多模网关2 * 网关防误删功能 网关防误删功能开启后，尝试长按10s重置键上报该事件"
+		},
+		"last_changed": "2025-11-04T06:50:12.489158Z",
+		"last_reported": "2025-11-04T06:50:12.489158Z",
+		"last_updated": "2025-11-04T06:50:12.489158Z",
+		"context": {
+			"id": "01K96T2QM9B64KKNDX1E7B10TR",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "number.lumi_cn_551385025_mcn001_indicator_brightness_p_6_3",
+		"state": "100",
+		"attributes": {
+			"min": 1,
+			"max": 100,
+			"step": 1,
+			"mode": "auto",
+			"unit_of_measurement": "%",
+			"icon": "mdi:percent",
+			"friendly_name": "小米智能多模网关2 * 指示灯与勿扰模式配置 指示灯亮度"
+		},
+		"last_changed": "2025-11-04T06:50:13.489703Z",
+		"last_reported": "2025-11-04T06:50:13.489703Z",
+		"last_updated": "2025-11-04T06:50:13.489703Z",
+		"context": {
+			"id": "01K96T2RKHGM7P2Q1M9VHSGC5J",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "select.lumi_cn_551385025_mcn001_status_p_6_1",
+		"state": "Open",
+		"attributes": {
+			"options": [
+				"Close",
+				"Open"
+			],
+			"friendly_name": "小米智能多模网关2 * 指示灯与勿扰模式配置 勿扰模式状态(开/关)"
+		},
+		"last_changed": "2025-11-04T06:50:13.489828Z",
+		"last_reported": "2025-11-04T06:50:13.489828Z",
+		"last_updated": "2025-11-04T06:50:13.489828Z",
+		"context": {
+			"id": "01K96T2RKHKQAXHJMWMXE1RVTE",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "select.lumi_cn_551385025_mcn001_status_p_7_1",
+		"state": "Close",
+		"attributes": {
+			"options": [
+				"Close",
+				"Open"
+			],
+			"friendly_name": "小米智能多模网关2 * 网关防误删功能 网关防误删状态"
+		},
+		"last_changed": "2025-11-04T06:50:13.489861Z",
+		"last_reported": "2025-11-04T06:50:13.489861Z",
+		"last_updated": "2025-11-04T06:50:13.489861Z",
+		"context": {
+			"id": "01K96T2RKHHC5TQ0EBGM87FH6P",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.lumi_cn_551385025_mcn001_access_mode_p_2_1",
+		"state": "2.4G 无线",
+		"attributes": {
+			"options": [
+				"有线",
+				"2.4G 无线",
+				"5G 无线"
+			],
+			"device_class": "enum",
+			"icon": "mdi:format-text",
+			"friendly_name": "小米智能多模网关2  网关 接入方式"
+		},
+		"last_changed": "2025-11-04T06:50:13.489913Z",
+		"last_reported": "2025-11-04T06:50:15.586956Z",
+		"last_updated": "2025-11-04T06:50:13.489913Z",
+		"context": {
+			"id": "01K96T2RKHB4DCW0E5PAMK8SEY",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.lumi_cn_551385025_mcn001_ip_address_p_2_2",
+		"state": "192.168.43.141",
+		"attributes": {
+			"icon": "mdi:ip",
+			"friendly_name": "小米智能多模网关2  网关 IP地址"
+		},
+		"last_changed": "2025-11-04T06:50:13.489943Z",
+		"last_reported": "2025-11-04T06:50:15.568115Z",
+		"last_updated": "2025-11-04T06:50:13.489943Z",
+		"context": {
+			"id": "01K96T2RKH7KPTX9RS21Z9973A",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.lumi_cn_551385025_mcn001_wifi_ssid_p_2_3",
+		"state": "shuashua",
+		"attributes": {
+			"friendly_name": "小米智能多模网关2  网关 WiFi网络名称(写权限无效)"
+		},
+		"last_changed": "2025-11-04T06:50:13.489966Z",
+		"last_reported": "2025-11-04T06:50:13.489966Z",
+		"last_updated": "2025-11-04T06:50:13.489966Z",
+		"context": {
+			"id": "01K96T2RKHMNWPKNM7WTG4RYQ9",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "sensor.lumi_cn_551385025_mcn001_access_mode_p_2_5",
+		"state": "",
+		"attributes": {
+			"friendly_name": "小米智能多模网关2  网关 网络变化状态string_fmt:{access-mode:{last:0,now:1],ip:{last:xx,now:xx},wifi-ssid:{last:xx,now:xx},time:12345678}}}"
+		},
+		"last_changed": "2025-11-04T06:50:13.489989Z",
+		"last_reported": "2025-11-04T06:50:15.583010Z",
+		"last_updated": "2025-11-04T06:50:13.489989Z",
+		"context": {
+			"id": "01K96T2RKHFJCT2G4R5PM0BY0E",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "text.lumi_cn_551385025_mcn001_effective_time_p_6_2",
+		"state": "21:00-09:00",
+		"attributes": {
+			"mode": "text",
+			"min": 0,
+			"max": 255,
+			"pattern": null,
+			"friendly_name": "小米智能多模网关2 * 指示灯与勿扰模式配置 生效时间段(格式:21:00-09:00)"
+		},
+		"last_changed": "2025-11-04T06:50:13.490022Z",
+		"last_reported": "2025-11-04T06:50:13.490022Z",
+		"last_updated": "2025-11-04T06:50:13.490022Z",
+		"context": {
+			"id": "01K96T2RKJNDHEFJGMTJJGRS57",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.xiaomi_cn_701074704_l15a_stop_alarm_a_6_1",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米AI音箱（第二代）  闹钟 停止闹钟"
+		},
+		"last_changed": "2025-11-04T06:50:28.328366Z",
+		"last_reported": "2025-11-04T06:50:28.328366Z",
+		"last_updated": "2025-11-04T06:50:28.328366Z",
+		"context": {
+			"id": "01K96T3738QSNB9KJ19631M7PR",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.xiaomi_cn_701074704_l15a_wake_up_a_7_1",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米AI音箱（第二代）  智能音箱 唤醒"
+		},
+		"last_changed": "2025-11-04T06:50:28.328451Z",
+		"last_reported": "2025-11-04T06:50:28.328451Z",
+		"last_updated": "2025-11-04T06:50:28.328451Z",
+		"context": {
+			"id": "01K96T3738HXS2J19SA4F01A4D",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.xiaomi_cn_701074704_l15a_play_radio_a_7_2",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米AI音箱（第二代）  智能音箱 播放电台"
+		},
+		"last_changed": "2025-11-04T06:50:28.328484Z",
+		"last_reported": "2025-11-04T06:50:28.328484Z",
+		"last_updated": "2025-11-04T06:50:28.328484Z",
+		"context": {
+			"id": "01K96T3738J69HRPFEEABCX1NY",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.xiaomi_cn_701074704_l15a_play_music_a_7_5",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米AI音箱（第二代）  智能音箱 播放音乐"
+		},
+		"last_changed": "2025-11-04T06:50:28.328508Z",
+		"last_reported": "2025-11-04T06:50:28.328508Z",
+		"last_updated": "2025-11-04T06:50:28.328508Z",
+		"context": {
+			"id": "01K96T37384XEXNYVMW957PMDG",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "button.xiaomi_cn_701074704_l15a_tv_switchon_a_8_1",
+		"state": "unknown",
+		"attributes": {
+			"friendly_name": "小米AI音箱（第二代） * 电视开关 打开电视"
+		},
+		"last_changed": "2025-11-04T06:50:28.328531Z",
+		"last_reported": "2025-11-04T06:50:28.328531Z",
+		"last_updated": "2025-11-04T06:50:28.328531Z",
+		"context": {
+			"id": "01K96T37382YK88RVPJSSH8ZPG",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "media_player.xiaomi_cn_701074704_l15a",
+		"state": "idle",
+		"attributes": {
+			"volume_level": 0.1,
+			"is_volume_muted": true,
+			"media_content_type": "music",
+			"device_class": "speaker",
+			"friendly_name": "小米AI音箱（第二代）  音箱",
+			"supported_features": 21565
+		},
+		"last_changed": "2025-11-04T06:52:46.891045Z",
+		"last_reported": "2025-11-04T06:53:46.985629Z",
+		"last_updated": "2025-11-04T06:53:46.985629Z",
+		"context": {
+			"id": "01K96T9939471HASGJX3ZS1HGR",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "notify.xiaomi_cn_701074704_l15a_seek_a_3_1",
+		"state": "unknown",
+		"attributes": {
+			"action params": "[播放控制时间(int)]",
+			"friendly_name": "小米AI音箱（第二代）  播放控制 播放控制",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T06:50:28.328604Z",
+		"last_reported": "2025-11-04T06:50:28.328604Z",
+		"last_updated": "2025-11-04T06:50:28.328604Z",
+		"context": {
+			"id": "01K96T3738YA0KMZCVCP7CHFAG",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "notify.xiaomi_cn_701074704_l15a_play_text_a_7_3",
+		"state": "unknown",
+		"attributes": {
+			"action params": "[文本内容(str)]",
+			"friendly_name": "小米AI音箱（第二代）  智能音箱 播放文本",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T06:50:28.328632Z",
+		"last_reported": "2025-11-04T06:50:28.328632Z",
+		"last_updated": "2025-11-04T06:50:28.328632Z",
+		"context": {
+			"id": "01K96T3738SA8634B173YNRZFB",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "notify.xiaomi_cn_701074704_l15a_execute_text_directive_a_7_4",
+		"state": "unknown",
+		"attributes": {
+			"action params": "[文本内容(str), 指令静默执行(bool)]",
+			"friendly_name": "小米AI音箱（第二代）  智能音箱 执行文本指令",
+			"supported_features": 0
+		},
+		"last_changed": "2025-11-04T06:50:28.328652Z",
+		"last_reported": "2025-11-04T06:50:28.328652Z",
+		"last_updated": "2025-11-04T06:50:28.328652Z",
+		"context": {
+			"id": "01K96T3738NFMFPJQGT83M61E2",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.xiaomi_cn_701074704_l15a_mute_p_4_1",
+		"state": "off",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "小米AI音箱（第二代）  麦克风 静音"
+		},
+		"last_changed": "2025-11-04T06:50:46.704991Z",
+		"last_reported": "2025-11-04T06:53:46.985323Z",
+		"last_updated": "2025-11-04T06:50:46.704991Z",
+		"context": {
+			"id": "01K96T3S1G9R6X8QFFBF0PMRJR",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.cuco_cn_269067598_cp1_on_p_2_1",
+		"state": "on",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "插座  开关 开关"
+		},
+		"last_changed": "2025-11-04T06:51:43.918528Z",
+		"last_reported": "2025-11-04T06:51:43.918528Z",
+		"last_updated": "2025-11-04T06:51:43.918528Z",
+		"context": {
+			"id": "01K96T5GXEHW3A1J3MAC04DKFY",
+			"parent_id": null,
+			"user_id": null
+		}
+	},
+	{
+		"entity_id": "switch.cuco_cn_269067699_cp1_on_p_2_1",
+		"state": "on",
+		"attributes": {
+			"device_class": "switch",
+			"friendly_name": "插座  开关 开关"
+		},
+		"last_changed": "2025-11-04T06:51:43.918528Z",
+		"last_reported": "2025-11-04T06:51:43.918528Z",
+		"last_updated": "2025-11-04T06:51:43.918528Z",
+		"context": {
+			"id": "01K96T5GXEHW3A1J3MAC04DKFY",
+			"parent_id": null,
+			"user_id": null
+		}
+	}
+]

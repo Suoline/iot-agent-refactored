@@ -1,0 +1,11 @@
+domain: button
+service: press
+name: Press
+description: Presses a button entity.
+fields: {}
+target:
+  entity:
+  - domain:
+    - button
+handler: builtin:button.press
+supports_response: false

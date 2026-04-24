@@ -1,0 +1,27 @@
+domain: light
+service: turn_off
+name: Turn off
+description: Turns off one or more lights.
+fields:
+  transition:
+    required: false
+    name: Transition
+    description: Duration it takes to get to next state.
+    selector:
+      number:
+        min: 0
+        max: 300
+        unit_of_measurement: seconds
+        step: 1
+        mode: slider
+  advanced_fields:
+    required: false
+    name: null
+    description: null
+    selector: null
+target:
+  entity:
+  - domain:
+    - light
+handler: builtin:light.turn_off
+supports_response: false

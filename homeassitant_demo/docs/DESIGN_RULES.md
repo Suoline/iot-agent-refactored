@@ -1,0 +1,148 @@
+# Fake Home Assistant v2 设计约定
+
+本文档固定项目的扩展边界和设计取舍，避免后续维护时不断重复做同样的判断。
+
+## 1. 总原则
+
+- 优先声明式，减少硬编码
+- 副作用优先 actions，而不是直接写 Python
+- 只有复杂逻辑才进入 handler
+- 对外 API 和内部实现文档分离
+- 文档优先于 skill，skill 只做可重复流程封装
+
+## 2. 设备、实体、service 的职责边界
+
+### 设备定义
+
+负责：
+
+- 设备元数据
+- 设备与实体的归属关系
+
+不负责：
+
+- service 行为
+- 运行时状态计算
+
+### 实体定义
+
+负责：
+
+- `entity_id`
+- `domain`
+- 初始状态
+- attributes
+- `service_profile`
+- `links`
+- `actions`
+
+不负责：
+
+- 复杂服务逻辑
+- 跨多实体的复杂状态机
+
+### service 定义
+
+负责：
+
+- service 名称和描述
+- 入参 schema
+- target 规则
+- handler 绑定
+- 是否支持 `return_response`
+
+不负责：
+
+- 存储设备实例化数据
+- 保存实体当前状态
+
+## 3. 选择扩展方式的规则
+
+### 只写声明式定义
+
+适用于：
+
+- 现有 domain 和 service 已足够
+- 只是新增一个设备或实体
+- 不需要复杂副作用
+
+### 写 actions
+
+适用于：
+
+- 一个实体操作后要触发另一个 service
+- 一个实体操作后要改另一个状态
+- 一个实体操作后要发事件
+
+不适用于：
+
+- 多层条件分支很多
+- 大量参数校验
+- 复杂运算或状态推导
+
+### 写 Python handler
+
+适用于：
+
+- 有复杂校验
+- 有复杂联动
+- 需要较强的可测试性
+- actions 已经明显不清晰
+
+禁止把“其实只是简单联动”的逻辑下沉到 handler。
+
+## 4. 禁止事项
+
+- 不要再按 `friendly_name` 分支决定业务逻辑
+- 不要把设备差异写成硬编码的实体 ID 判断，除非是在导入兼容逻辑中做一次性映射
+- 不要把架构细节继续塞进 `README.md`
+- 不要让 skill 复制一份完整架构说明
+- 不要为了一个简单联动新增大型 handler
+
+## 5. 文档与 Skill 的关系
+
+文档是事实来源：
+
+- 架构说明
+- 扩展规则
+- 对外 API
+
+skill 只是执行流程：
+
+- 先读哪份文档
+- 扩展时改哪些位置
+- 需要补哪些测试
+- 哪些改动不允许跳过
+
+如果规则变更：
+
+1. 先更新文档
+2. 再同步 skill
+
+不能反过来。
+
+## 6. 测试约定
+
+只要出现下面任一情况，就必须补测试：
+
+- 新增 service
+- 新增 handler
+- 新增 action 类型
+- 改变持久化行为
+- 改变 API 返回格式
+
+纯文档更新、纯运行说明更新，不需要补测试。
+
+## 7. 后续什么时候再做 Skill
+
+等满足下面至少两个条件时，再值得单独做 skill：
+
+- 你会反复让 Codex 为这个项目新增设备或实体
+- 扩展流程已经稳定，不再频繁变
+- 团队里会有多次重复性的扩展任务
+- 你希望 Codex 不依赖长提示词也能按统一流程工作
+
+在此之前，优先维护：
+
+- [ARCHITECTURE.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\ARCHITECTURE.md)
+- [EXTENDING.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md)

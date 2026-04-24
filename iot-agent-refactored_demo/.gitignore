@@ -1,0 +1,3 @@
+# 忽略Langchain API配置文件（包含敏感密钥）
+smartHome/m_agent/common/llm_config.ini
+tempTry/memory/llm_config.ini

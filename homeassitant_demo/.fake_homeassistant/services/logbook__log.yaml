@@ -1,0 +1,42 @@
+domain: logbook
+service: log
+name: Log
+description: Tracks a custom activity.
+fields:
+  name:
+    required: true
+    name: Name
+    description: Custom name for an entity, can be referenced using the 'Entity ID'
+      field.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  message:
+    required: true
+    name: Message
+    description: Message of the activity.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  entity_id:
+    required: false
+    name: Entity ID
+    description: Entity to reference in the activity.
+    selector:
+      entity:
+        reorder: false
+        multiple: false
+  domain:
+    required: false
+    name: Domain
+    description: Determines which icon is used in the activity. The icon illustrates
+      the integration domain related to this activity.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 17,
+        "正确率": "34.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "Network status report\n\nOverall health\n- Local router/gateway is present on the network.\n  - Gateway IP: 192.168.43.141\n  - WiFi network: shuashua\n  - Network mode: 2.4G wireless\n- Internet/cloud accessibility status cannot be determined from the available data (no explicit cloud/Internet checks exposed by your sensors).\n\nOffline/unknown devices (likely offline or unresponsive)\n- event.philips_cn_1061200910_lite_notify_you_e_3_1\n- event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028\n- event.xiaomi_cn_blt_3_2gunh8471d911_pir1_device_be_reset_e_2_1028\n- event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_device_be_reset_e_2_1028\n- event.lumi_cn_551385025_mcn001_network_changed_e_2_1\n- button.lumi_cn_551385025_mcn001_identify_a_20_1\n- event.lumi_cn_551385025_mcn001_click_e_4_1\n- event.lumi_cn_551385025_mcn001_double_click_e_4_2\n- event.lumi_cn_551385025_mcn001_long_press_e_4_3\n- event.lumi_cn_551385025_mcn001_event_unbind_e_7_1\n- button.xiaomi_cn_701074704_l15a_stop_alarm_a_6_1\n- button.xiaomi_cn_701074704_l15a_wake_up_a_7_1\n- button.xiaomi_cn_701074704_l15a_play_radio_a_7_2\n- button.xiaomi_cn_701074704_l15a_play_music_a_7_5\n- button.xiaomi_cn_701074704_l15a_tv_switchon_a_8_1\n- notify.xiaomi_cn_701074704_l15a_seek_a_3_1\n- notify.xiaomi_cn_701074704_l15a_play_text_a_7_3\n- notify.xiaomi_cn_701074704_l15a_execute_text_directive_a_7_4\n- sensor.lumi_cn_551385025_mcn001_access_mode_p_2_5 (state is empty)\n\nNotes\n- Many other devices are online and reporting normal values (examples include various lights, motion sensors, and switches).\n- Some gateway-related events appear in the data but report unknown status, suggesting intermittent reporting or gateway-level visibility issues.\n- Cloud accessibility cannot be confirmed from the current sensors.\n\nIf you want deeper checks, I can re-check specific offline devices or run gateway diagnostics in a follow-up step.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "Yes. All lights are on. Lights checked:\n- light.philips_cn_1061200910_lite_s_2: on\n- light.philips_cn_1061201010_lite_s_2: on\n- light.yeelink_cn_1162511951_mbulb3_s_2: on\n- light.yeelink_cn_1162512052_mbulb3_s_2: on\n- light.yeelink_cn_1162512153_mbulb3_s_2: on\n\nNo lights are off.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "All lights have been turned off.\n\nDevices now off:\n- light.philips_cn_1061200910_lite_s_2\n- light.philips_cn_1061201010_lite_s_2\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nNote: There was a temporary 400 Bad Request with light.yeelink_cn_1162512153_mbulb3_s_2, which was retried and succeeded. If you’d like, I can monitor for any further irregularities or handle similar retries automatically in the future.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "No. Replacement is not needed right now.\n\nCurrent battery levels for the human body sensor(s) are both at 100%:\n- sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_battery_level_p_3_1003\n- sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_battery_level_p_3_1003\n\nIf you want, I can keep monitoring and alert you when any battery drops below 20%.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "Done. I found the Xiaomi AI Speaker (Second Gen) as the music source and issued a stop command. The device is now stopped, and no music is playing.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "Done. I dimmed the entire house by setting all four lights to about 10% brightness.\n\nCurrent readings:\n- light.philips_cn_1061200910_lite_s_2: brightness 25\n- light.yeelink_cn_1162511951_mbulb3_s_2: brightness 25\n- light.yeelink_cn_1162512052_mbulb3_s_2: brightness 25\n- light.yeelink_cn_1162512153_mbulb3_s_2: brightness 25\n\nNotes: brightness 25 corresponds to roughly 10% on these devices’ scales, so the result is effectively dimmed to about 10%. If you want a more exact 10% across all bulbs, I can try an alternate adjustment approach.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "I issued the next-track command to the Xiaomi AI Speaker (第二代) with entity_id media_player.xiaomi_cn_701074704_l15a to switch to the next song. The device is now showing idle state with volume_level 0.1 and is_muted true. If you want, I can fetch the current track info or start playback to confirm the next song is playing.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "Device: media_player.xiaomi_cn_701074704_l15a (小米AI音箱（第二代） 音箱)\nAction taken: Lowered volume by 2% from 0.10 to 0.08\nCurrent state: volume_level = 0.08, is_volume_muted = true\nAudible output: Muted, so no sound will be heard until unmuted\nNote: An attempt to unmute previously returned an error (400 Bad Request). I have not unmuted it this time. If you want audible playback, I can retry unmuting.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "Here's what happened with turning on the radio:\n\n- Attempted to turn on the radio directly via the media_player service for media_player.xiaomi_cn_701074704_l15a, but the request returned 400 Bad Request.\n- Pressed the radio-play button on the Xiaomi speaker (button.xiaomi_cn_701074704_l15a_play_radio_a_7_2). The button reported action: 播放电台 (play radio).\n- Current state of the media_player (media_player.xiaomi_cn_701074704_l15a): idle. It may take a moment to start streaming or may need a specific radio stream payload to begin playback.\n\nDevices involved:\n- media_player.xiaomi_cn_701074704_l15a\n- button.xiaomi_cn_701074704_l15a_play_radio_a_7_2\n\nIf you want, I can retry starting playback using the media_player service with a specific radio stream URL, or attempt another method to ensure playback starts.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "Action performed: Paused playback on media_player.xiaomi_cn_701074704_l15a (小米AI音箱（第二代）  音箱).\n\n- Previous state: playing\n- Current state: paused\n- Last change: 2026-03-21T15:32:08.419187+00:00\n- Device ID: media_player.xiaomi_cn_701074704_l15a\n\nWould you like me to resume playback later or adjust the volume?",
+            "是否正确": true
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "Playback is now active again on your Xiaomi AI Speaker (Second Gen).\n\n- Device: media_player.xiaomi_cn_701074704_l15a\n- Status: playing\n- Volume: 0.1\n- Content: music\n\nIf you’d like any adjustments ( volume changes, switching to another device, or replaying again ), I’ve got it.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "Playback status update for Living Room speaker (media_player.xiaomi_cn_701074704_l15a):\n\n- Current state: Playing\n- Volume: 50% (unmuted)\n- Track source: Previously attempted to start spotify:track:7qiZfU4dY5qGF43xLQXbOt; initial play_media call returned 400 Bad Request. A standard play command was issued and playback is now active.\n- Note: I cannot confirm the exact track playing from the last command, only that the speaker is actively playing music. The requested English track URI is ready to be used if you want me to force-start that specific track again.\n\nWhat I can do next (without asking you questions):\n- Re-issue play_media with the exact Spotify URI spotify:track:7qiZfU4dY5qGF43xLQXbOt to try to lock in that track.\n- Or start a different English track/playlist by providing another URI.\n- If you want shuffle enabled, I can attempt enabling shuffle again and start playing in shuffle mode.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "Status:\n- Bedroom light: light.yeelink_cn_1162511951_mbulb3_s_2 is now off.\n- Sunny Day playback: attempted several times via the Xiaomi speaker (media_player.xiaomi_cn_701074704_l15a) but all play attempts returned 400 Bad Request. The device remains idle and momentarily muted; volume adjustments have not succeeded due to that same error.\n\nWhat happened:\n- The light turned off successfully.\n- Play commands for Sunny Day could not be executed due to 400 errors on play_media and related text/notify routes. The Xiaomi speaker didn’t accept the payloads used in this environment.\n\nNext steps you can command me to try (provide one of these payloads or URLs and I’ll execute it immediately):\n- Provide a direct audio URL (HTTP/HTTPS) for Sunny Day (for example, a direct MP3/stream URL). I’ll try play_media with:\n  - entity_id: media_player.xiaomi_cn_701074704_l15a\n  - media_content_type: \"music\"\n  - media_content_id: \"<your direct URL>\"\n- If you have a supported music service linked to this device (e.g., Spotify, YouTube Music) and a track/URI, tell me the service name and the track URI, and I’ll attempt playback via that service using play_media.\n- If you can share a different payload format that your Xiaomi integration accepts for text-to-speech or playback (field names and structure), I’ll retry with that exact format.\n- If you want me to confirm playback with a very simple, known-good test (e.g., a short built-in tone or a public sample URL you approve), provide the URL or the test asset and I’ll run it.\n\nDevice IDs involved in this task:\n- Media player: media_player.xiaomi_cn_701074704_l15a\n- Bedroom light: light.yeelink_cn_1162511951_mbulb3_s_2\n\nI’m ready to retry as soon as you provide the next playback source (URL or service/URI).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "All set. I’ve completed both requests.\n\n- Speaker:\n  - Device: 小米AI音箱（第2代）\n  - Entity: media_player.xiaomi_cn_701074704_l15a\n  - Status: playing\n  - New volume: 50% (volume_level 0.5)\n  - Not muted\n\n- Living room lights:\n  - light.yeelink_cn_1162511951_mbulb3_s_2 → brightness 25%\n  - light.yeelink_cn_1162512052_mbulb3_s_2 → brightness 25%\n  - light.yeelink_cn_1162512153_mbulb3_s_2 → brightness 25%\n\nIf you want a different brightness or volume level, tell me and I’ll adjust it.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "All set. I completed the requested actions.\n\n- Study lights turned off:\n  - light.philips_cn_1061200910_lite_s_2\n  - light.philips_cn_1061201010_lite_s_2\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n\n- Bedroom lights turned on:\n  - light.philips_cn_1061200910_lite_s_2\n  - light.philips_cn_1061201010_lite_s_2\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n\nIf you want any brightness adjustments or scene settings, I can apply those next.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "Not very dark. The living room is currently about 100 lux, which is well above the typical “very dark” threshold of around 20 lux. No action needed based on this.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "Yes. The living room window is closed.\n\nSensor: binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2 (门窗传感器)\nState: off (interpreted as closed)\nLast updated: 2025-11-04T06:56:41+00:00",
+            "是否正确": true
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "Done. I set the three Living Room bulbs to 50% brightness:\n\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nAll are on at roughly 50% brightness (brightness value ~127) with color temperature around 4000K. If you’d like a different setting (e.g., warmer or cooler, or dimmer in steps), tell me.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "Done. All living room lights are on at a warm 2700K and 50% brightness (about brightness 127).\n\nAffected devices:\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nCurrent state for each light: on, brightness 127 (50%), color_temp_kelvin 2700.\n\nIf you’d like them a bit brighter or warmer, I can adjust to a higher brightness or a different color temperature.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "Current humidity readings are not below 40% (no dry-air condition detected). No humidity-control actions were taken.\n\nChecked condition function: check_indoor_humidity_below_40()\nLast invocation: check_indoor_humidity_below_40() -> result: False",
+            "是否正确": false
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "Here’s the latest on cooling things down in the Living Room.\n\nWhat I found\n- There is no climate.living_room_thermostat or any climate.* entity clearly related to the Living Room at the moment.\n- A climate domain is exposed in your system (thermostat integration is available), so once a living-room climate entity appears, I can control it directly (turn on, set HVAC mode to cooling, set temperature).\n- The Living Room ceiling fan is powered on via switch.cuco_cn_269067598_cp1_on_p_2_1 (currently ON). I attempted to set a medium speed through a supported speed control, but that device doesn’t expose a usable speed-control action via the API right now. The alternate switch (switch.cuco_cn_269067699_cp1_on_p_2_1) is OFF and not linked to a visible speed control.\n\nWhat I’m doing next\n- I’ve set up a persistent condition check: I’ll monitor for the Living Room climate entity to appear. When it does, I will immediately set HVAC mode to cooling and target 22°C (72°F) for the Living Room thermostat.\n- You’ll be automatically notified when that condition occurs, and I’ll perform the cooling steps as soon as the living-room climate entity is available.\n\nIn the meantime\n- The fan is already powered on, which should help with air movement. If you want me to try other approaches once the climate entity shows up (e.g., try a different thermostat entity or adjust fan behavior in a different way), I can handle that as soon as the Living Room climate is detectable.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "Done. The bedside light (light.philips_cn_1061200910_lite_s_2) has been dimmed to brightness 1, which is one third of its previous brightness (3).",
+            "是否正确": true
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "I can’t definitively confirm that the front door is closed with the data I have right now.\n\nWhat I know:\n- The primary front door sensor (binary_sensor.front_door_contact) is not available in the current data.\n- There are two door-contact sensors with door_device_class:\n  - binary_sensor.isa_cn_blt_3_2ne1riu1l11_dw2hl_contact_state_p_2_2: on (likely open)\n  - binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2: off (likely closed)\n- Because I can’t map which sensor corresponds to the actual front door, I can’t confirm “front door closed.”\n\nWhat this implies:\n- It’s possible the front door is closed if the front-door-specific sensor is the one reporting off, but there’s an open-signal from another door-contact sensor that could belong to a different door.\n\nIf you want a definitive answer in the future, I’d need to identify which sensor is the front door (e.g., via friendlier naming or location), or I can keep trying to locate a front-door-specific sensor and report once I have a reliable mapping.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "Done. All study lights are on at a dim level (25% brightness).\n\nActive lights:\n- light.philips_cn_1061200910_lite_s_2\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nIf you want a different dim level or a scene setup, I can adjust.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "All set.\n\n- Living room lights: turned off (5 lights detected: light.philips_cn_1061201010_lite_s_2, light.philips_cn_1061200910_lite_s_2, light.yeelink_cn_1162511951_mbulb3_s_2, light.yeelink_cn_1162512052_mbulb3_s_2, light.yeelink_cn_1162512153_mbulb3_s_2).\n- Gateway light: on. Brightness set to 100% and DND (Do Not Disturb) off, so the gateway indicator is illuminated.\n\nIf you want me to double-check any other lights or adjust brightness, I can do that.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "Persistence setup complete.\n\nWhat I configured\n- Trigger: motion detected by the Xiaomi sensor event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n- Action: turn on living room light light.yeelink_cn_1162511951_mbulb3_s_2\n- Automation mechanism: a persistence/condition-based rule that automatically turns on the living room light whenever motion is detected, with a notification when the condition occurs\n\nHow it works\n- The system monitors the Xiaomi motion sensor for movement.\n- When motion is detected, the living room light (light.yeelink_cn_1162511951_mbulb3_s_2) will turn on automatically.\n- You’ll be notified when motion is detected and the action is taken (via the NotifyOnConditionTool). The condition checker function involved is named check_motion_in_living_room_motion_sensor_event.\n\nCurrent status (context)\n- The sensor reports motion events (检测到移动) when movement occurs. The setup is ready to act as soon as such a event is detected.\n\nIf you want the persistence to affect more lights in the living room (e.g., other bulbs turning on as well), I can extend the action targets to include additional lights.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "Persistence is set up.\n\nWhat I configured:\n- Condition: If there is someone in the bedroom and it is dark.\n- Action when condition is met: Turn on the bedroom light(s).\n- Condition checker: check_bedroom_condition.\n- Notify behavior: The system will trigger turning on the lights automatically when the condition becomes true.\n\nIn short: If the bedroom detects presence and the ambient light is low, the lights will switch on automatically. You’ll be notified when the condition triggers.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "Persistence is set up.\n\nWhat I configured:\n- Condition to monitor: It is dark outside and the window is open.\n- Trigger mechanism: When the condition evaluates to true, I will send you a reminder notification.\n- Notification content (example): \"It's dark outside and the window is open. Please check and consider closing the window if appropriate.\"\n- Function used for the check: check_condition (evaluates darkness and window state)\n\nWhat you should expect:\n- If at any point it becomes dark outside and the window is open, you’ll receive a reminder notification on your default channel.\n\nIf you want to adjust the condition (e.g., only remind after sunset, or only for specific windows), I can update the setup.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "Persistence setup is complete.\n\nWhat I did:\n- Configured a persistent condition check named check_living_room_window_open_more_than_30_minutes.\n- Set up a notification that will trigger when the condition is true (notify_when: true).\n- Notification description: “The living room window has been open for more than 30 minutes. Please consider closing the window or checking for ventilation issues.”\n\nWhat you’ll receive:\n- A notification as soon as the living room window has been open for more than 30 minutes.\n\nCurrent status note (for context):\n- Based on the latest data, the living room window sensors are currently closed (not open). The persistence will only trigger if the window remains open for 30+ minutes and the condition becomes true.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "Action summary:\n\n- Condition check for persistence\n  - Condition function: check_bedside_light_on\n  - Result: Bedside light is ON (confirmed). I set up a persistence rule: when check_bedside_light_on is true, turn off all other lights.\n  - Description used for persistence: Turn off all other lights (non-bedside lights) when the bedside light is ON.\n\n- Immediate enforcement executed\n  - Turned off non-bedside lights that were on\n  - A batch call initially returned a 400 error for one item; I retried and completed the task\n  - Final result: All identified non-bedside lights that were on are now OFF\n\nLights affected (turned off):\n- light.philips_cn_1061200910_lite_s_2\n- light.philips_cn_1061201010_lite_s_2\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nCurrent status:\n- All targeted non-bedside lights are now off.\n- Bedside lights’ status was not explicitly re-checked in this final step, but the persistence rule is in place to enforce turning off all non-bedside lights whenever the bedside light is ON.\n\nNotes:\n- If you want, I can re-verify the bedside lights’ statuses or adjust which lights are considered “bedside” (e.g., by adjusting the naming rules) to ensure only truly non-bedside lights get turned off.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "Persistence active: no human movement detected for 5 minutes.\n\n- Condition status: True (no motion for at least 5 minutes)\n- Action taken: All lights have been turned off to preserve energy\n- Evidence: No-motion duration sensors show 300 seconds (5 minutes) or more (e.g., sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024 = 300s)\n- Ongoing: The system will continue monitoring; if motion is detected again, the persistence rule can react accordingly (lights may stay off until movement resumes).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "Persistence rule configured.\n\n- Condition function: check_study_desk_lamp_on\n- Condition: Desk lamp in the study is turned on\n- Action: Turn off the music\n- Status: Rule is active and will trigger when check_study_desk_lamp_on evaluates to true\n\nIf the study desk lamp(s) are on in the future, the system will automatically turn off the music as requested.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "Current bedside condition:\n- Bedside light brightness: 3 (on a 0-255 scale) ≈ 1.18% of full brightness\n- Condition checked: below 10% → True\n\nPersistence setup completed:\n- Condition function (monitored): check_bedside_light_brightness_below_10_percent\n- Condition description: Bedside light brightness is below 10%\n- Action to perform when condition is met: Dim the bedroom light to 25% brightness and set color temperature to 2700K (warm white)\n- Notify when condition occurs: You will be notified when the condition occurs\n\nNotes:\n- I did not modify any lights yet; I set up a persistence rule so that, whenever the bedside brightness is below 10%, the bedroom light will be dimmed and warmed as described.\n- If your system evaluates the condition immediately at setup, the action may trigger right away.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "- Current status: The living room speaker (media_player.xiaomi_cn_701074704_l15a) is muted (is_volume_muted: true).\n- Persistence status: I cannot complete the requested persistence to turn off the living room fan because there is no identified living room fan entity_id in your current device list. Without a target fan, I cannot issue a turn-off command or attach a persistence rule to a device.\n- What I can do next (based on available data):\n  - If you provide the entity_id of the living room fan (for example, a fan entity under domain fan, or a switch/outlet that actually controls the fan), I will immediately set up the persistence: when the speaker is muted, turn off that fan.\n  - If the fan is controlled via a switch or outlet, you can share which switch corresponds to the fan (its friendly_name or entity_id), and I’ll use that as the control target for the persistence rule.\n  - If you don’t have a fan entity yet, and you want me to proceed with a tentative target, I would need confirmation of which device should be treated as “the living room fan” (entity_id), so I can attach the persistence logic to that device.\n\nNote: I currently lack a valid target for turning off the fan. Once a fan entity_id is provided (or identified), I’ll configure the persistence rule to turn it off automatically whenever the speaker becomes muted.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "Here’s the current status and what I did:\n\n- Speaker in use: Xiaomi AI Speaker (Second Gen) — media_player.xiaomi_cn_701074704_l15a\n- Living Room speaker: not available in the current setup\n- Playback: music is playing\n- Volume: set to 60% (not muted)\n- Shuffle: not supported on this device\n- Library-based playback: could not be started due to compatibility/format issues with this device\n- Attempted upbeat playlist: tried to start a built-in upbeat playlist, but the request returned 400 Bad Request\n\nWhat I can do next (within current capabilities):\n- Keep playing the current music at 60% volume on the Xiaomi Speaker\n- If you have a specific playlist name you want me to try next (e.g., a named built-in playlist or a playlist ID), I can attempt to start it\n- If another playlist surface or you want me to try again later, I can retry with available options when possible\n\nPlayback is active on the Xiaomi AI Speaker, Second Gen, at a comfortable volume.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "Action completed: The Little Book Light has been turned off.\n- Device ID: light.philips_cn_1061200910_lite_s_2\n- Friendly name: 米家智能台灯Lite 灯\n- Result: Off (last updated 2026-03-21T17:18:31.830538Z)",
+            "是否正确": false
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "Sleep/Night mode execution summary\n\nWhat I did\n- Common-area lights: turned off\n  - light.philips_cn_1061200910_lite_s_2\n  - light.philips_cn_1061201010_lite_s_2\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n- Common-area TVs/Media: turned off\n  - media_player.xiaomi_cn_701074704_l15a\n- Bedroom/bedside lights: set to about 15% warm light where supported\n  - light.philips_cn_1061200910_lite_s_2: on, brightness ~15% (32-38 range observed), color_temp not supported\n  - light.philips_cn_1061201010_lite_s_2: on, brightness ~15%, color_temp not supported\n  - light.yeelink_cn_1162511951_mbulb3_s_2: on, brightness ~15%, color_temp 2700K\n  - light.yeelink_cn_1162512052_mbulb3_s_2: on, brightness ~15%, color_temp 2700K\n  - light.yeelink_cn_1162512153_mbulb3_s_2: on, brightness ~15%, color_temp 2700K\n- Bedside lamps (lower brightness, warm): about 5% light\n  - light.philips_cn_1061200910_lite_s_2: brightness ~5% (reported ~12/255)\n  - light.philips_cn_1061201010_lite_s_2: brightness ~5% (reported ~12/255)\n  - light.yeelink_cn_1162511951_mbulb3_s_2: brightness ~5% (reported ~12/255)\n  - light.yeelink_cn_1162512052_mbulb3_s_2: brightness ~5% (reported ~12/255)\n  - light.yeelink_cn_1162512153_mbulb3_s_2: brightness ~5% (reported ~12/255)\n- Locks: could not engage\n  - No lock.* entities found in this snapshot, so doors could not be locked\n- Security system: not available in this snapshot\n  - No alarm_control_panel.* entity found; Stay/Night mode could not be armed\n- Climate/thermostat: not available\n  - No climate.* entity found; temperature could not be set\n- Notifications/do-not-disturb: attempt made to notify about sleep mode\n  - A sleep-notification log was sent, but there is no universal Do Not Disturb switch exposed here\n\nCurrent status notes\n- Common areas: lights off; media off\n- Bedroom/bedside: five bulbs on at about 15% brightness (some support color temperature, others only brightness)\n- Bedside lamps (low light): on at about 5% brightness\n- Locks/alarm/climate: not operable from this snapshot due to missing entities\n- Notifications: sleep log sent; no global DND toggle detected\n\nWhat you might want next (without asking questions)\n- If you want precise door locking and Stay/Night arm, provide the correct lock and alarm entity IDs or allow me to rescan for them.\n- If you want climate control, provide the correct climate/thermostat entity IDs or confirm a thermostat exists in a different domain.\n- If you want color temperature consistently applied to all bedroom lights, I can retry with only bulbs that report color_temp support (and skip those that don’t).\n- If you’d like stricter notification suppression during sleep, I can attempt gateway-level DND configurations if you share the exact DND-related entity IDs.\n\nDone. If you’d like me to adjust any brightness levels or try specific color temps for the bulbs that support it, tell me which ones and target values.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "Done. The living room speaker is now set to 40% (volume_level 0.4) and is currently playing. Device: media_player.xiaomi_cn_701074704_l15a.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "All set. I turned off the identified non-essential lights and confirmed their states.\n\nDevices now off:\n- light.philips_cn_1061200910_lite_s_2\n- light.philips_cn_1061201010_lite_s_2\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nCurrent status: All five lights are off.\n\nIf you want me to extend this to other devices (outlets, speakers, appliances) to further reduce energy usage, I can proceed with those as well.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "I’ve prepared a comfortable reading light.\n\nWhat I did:\n- Turned on light.yeelink_cn_1162511951_mbulb3_s_2 with a reading-friendly setting.\n\nCurrent state:\n- Light: light.yeelink_cn_1162511951_mbulb3_s_2\n- State: On\n- Brightness: 60% (60% of 100)\n- Color temperature: 3000K (warm white)\n- Color mode: color_temp\n- Brightness target reached: Yes\n\nOther suitable options for reading (warm white, color temperature controllable):\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nIf you want, I can apply the same reading mode to one of the other lights as well.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "Done. I’ve set all living room lights to 3000K (warm white), which matches your preferred color temperature.\n\nAffected devices:\n- light.yeelink_cn_1162511951_mbulb3_s_2 (now on, 3000K, brightness 76)\n- light.yeelink_cn_1162512052_mbulb3_s_2 (now on, 3000K, brightness 76)\n- light.yeelink_cn_1162512153_mbulb3_s_2 (now on, 3000K, brightness 76)\n\nIf you want, I can keep this as your default living room preset for quicker access next time.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "You're home. Here’s what I’ve done and the current status of your setup:\n\n- Entry lights (porch and foyer group): Turned on to 70% brightness. Bulbs updated:\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n  All are on at about 70% brightness with warm white tone around 3000K.\n\n- Living room lights: Set to warm white 3000K at 50% brightness. Devices updated:\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n\n- Thermostat: I attempted to set to 72°F (22°C), but I didn’t find any climate/thermostat entity available to target. There’s no thermostat currently exposed as a climate device in your system, so I couldn’t apply the change. If you want, I can try refreshing the climate integration or help identify the thermostat device ID you expect to control.\n\n- Welcome home playlist on living room speaker: I attempted to play a welcome_home playlist on the living room speaker (media_player.xiaomi_cn_701074704_l15a), but the request returned 400 Bad Request. The speaker is currently idle with a low volume (not muted) and supports play_media, but I don’t have a valid playlist ID or local file format that this device accepts in this setup. Next options I can take if you’d like:\n  - Try a different playlist/stream (please provide a Spotify/YT Music/other compatible URI or link the device can access).\n  - Play a spoken welcome message instead (text-to-speech) on the speaker as a fallback.\n\nIf you’d like me to retry the playlist with a specific link/ID or switch to a spoken greeting on the living room speaker, I can do that right away.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "The gateway is connected to your network. It has a private IP address 192.168.43.141, so I did not perform any light-switching actions. No changes were made.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "Here’s the current Halloween mood setup and what I’ve done just now.\n\nWhat’s active and how it looks\n- Lighting (colorful, warm glow across zones)\n  - Living Room / Entry / Hallway (color-capable Yeelight bulbs)\n    - light.yeelink_cn_1162511951_mbulb3_s_2: On, warm orange around 2700K, brightness ~70%\n    - light.yeelink_cn_1162512052_mbulb3_s_2: On, warm orange around 2700–4000K, brightness ~70%\n    - light.yeelink_cn_1162512153_mbulb3_s_2: On, warm orange around 4000K (still looks orange), brightness ~70%\n  - Accent lighting (Philips Lite bulbs)\n    - light.philips_cn_1061200910_lite_s_2: On, 25% brightness\n    - light.philips_cn_1061201010_lite_s_2: On, 25% brightness\n- Fog machine\n  - Not activated yet (both fog plugs are available but not turned on in this pass)\n- Ambient audio\n  - media_player.xiaomi_cn_701074704_l15a: Volume set to 40%. Attempted to start a Halloween ambience playlist, but playback did not start due to a 400 Bad Request from the device (the playlist name wasn’t accepted by this integration).\n\nWhat I recommend next to complete the atmosphere\n- Fog bursts (for atmosphere)\n  - If you want a creeping fog effect, I can start a short burst (20–60 seconds) now and then repeat at intervals. For example: turn on a fog plug for 30 seconds, then off, and repeat every 3–5 minutes.\n- Audio ambience\n  - The playlist didn’t start. I can retry with:\n    - A direct media URL or a specific equal playlist/stream that your Xiaomi integration supports\n    - A different ambient sound track that you know is configured in your system\n    - A built-in ambient sound if you’d prefer something easiest to get working\n- Lighting flicker for a spooky effect\n  - I can create a quick flicker sequence (short on/off cycles) using the Yeelight bulbs to simulate candlelight. Pots of 1–2 seconds on, 1–2 seconds off across the three color bulbs will look very convincing.\n- Optional enhancements\n  - Tie lighting and fog to motion or entry sensors for a spooky entrance\n  - Add a cool ambiance later if you add a smart thermostat/climate device (a slight cooling effect helps with the Halloween vibe)\n  - If you add more speakers later, I can group them for synchronized ambient audio\n\nReady-to-run automation options (if you want me to generate them)\n- Lighting baseline: set all Yeelight bulbs to orange around 2700K and 60–75% brightness\n- Flicker routine: a loop that alternates brightness up/down on the three Yeelight bulbs every 1–2 seconds for a 10–20 minute mood\n- Fog cadence: bursts of 20–60 seconds every 3–5 minutes\n- Audio: play a Halloween ambience track/playlist from the most reliable source configured in your system (I can provide exact commands once you specify a working content ID or URL)\n\nIf you’d like, I can implement any of the above as a ready-to-run automation plan for your platform (Home Assistant, SmartThings, etc.)—just tell me which parts you want into an automation script.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "Done. I turned off all devices in the Atmosphere group.\n\nAffected devices:\n- light.philips_cn_1061200910_lite_s_2\n- light.philips_cn_1061201010_lite_s_2\n- light.yeelink_cn_1162511951_mbulb3_s_2\n- light.yeelink_cn_1162512052_mbulb3_s_2\n- light.yeelink_cn_1162512153_mbulb3_s_2\n\nStatus: all five lights are now off.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "The condition is False. Not all bulbs match the requested settings.\n\nCurrent states for the living room bulbs:\n- light.yeelink_cn_1162511951_mbulb3_s_2\n  - color_temp_kelvin: 4000\n  - brightness: 38 (corresponds to ~15% on this device)\n- light.yeelink_cn_1162512052_mbulb3_s_2\n  - color_temp_kelvin: 4000\n  - brightness: 38 (~15%)\n- light.yeelink_cn_1162512153_mbulb3_s_2\n  - color_temp_kelvin: 4000\n  - brightness: 38 (~15%)\n\nWhat this means:\n- The bulbs are on and set to about 15% brightness, but the color temperature is 4000K, not the requested 2700K.\n- The 2700K target has not been applied to any of the bulbs.\n\nIf you want me to adjust, I can retry applying 2700K (in parallel to all three bulbs) and report back with the updated states.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "Here’s your reading-friendly setup for bed based on what I could do:\n\n- Lights: Both bedside lights are on at 20% brightness. They don’t report color temperature control (they only support brightness in this setup), so I couldn’t set 2700K. There isn’t a dedicated Reading scene available for these lamps, so the mood is achieved with the modest brightness.\n\n- Blinds/Curtains: I couldn’t close any bedroom blinds because there’s no blinds/cover entity in your system.\n\n- Thermostat: I didn’t find a bedroom thermostat (climate) entity, so I can’t set the temperature to 20°C. If you add or identify a climate entity, I can adjust it.\n\n- Bedroom speaker: White noise is playing at 30% volume. I attempted to set a 60-minute stop, but there’s no built-in timer/scheduler for this media player in your setup, so I can’t automatically stop it after 60 minutes without an automation or external scheduler.\n\nNotes for smoother reading later:\n- If you want a warmer reading vibe, we’d need lights that support true color temperature or a dedicated Reading scene. I can try alternative brightness/scene options if you’d like (assuming the devices support them).\n- If you add a blind/cover device or a climate thermostat, I can use them to close blinds or set the bedroom temperature.\n- For automatic stop of white noise after a set time, we can create an automation or script once you’re using a compatible automation system; I can draft it for you when you’re ready.\n\nIf you want any of these elements adjusted now (brightness tweaks, different lighting, or a workaround for the blinds/thermostat once available), tell me and I’ll execute the next appropriate action.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "Done. The star-decorated lights have been turned off.\n\n- light.philips_cn_1061200910_lite_s_2 (米家智能台灯Lite 灯) — now off\n- light.philips_cn_1061201010_lite_s_2 (米家智能台灯Lite 灯) — now off\n\nIf you’d like me to verify their state again or turn any of them back on with a specific brightness or color, I can do that.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "执行异常: Error code: 402 - {'error': {'code': 'insufficient_token_quota', 'message': '令牌余额不足，本次请求最少需要 $0.003324。请调整令牌额度。 (request id: 20260321180244506033974i8dXZk9q)', 'type': 'system_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "执行异常: Error code: 402 - {'error': {'code': 'insufficient_token_quota', 'message': '令牌余额不足，本次请求最少需要 $0.003324。请调整令牌额度。 (request id: 20260321180244836132206HxNe4cgp)', 'type': 'system_error'}}",
+            "是否正确": false
+        }
+    ]
+}

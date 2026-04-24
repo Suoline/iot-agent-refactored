@@ -1,0 +1,13 @@
+domain: cover
+service: stop_cover
+name: Stop
+description: Stops the cover movement.
+fields: {}
+target:
+  entity:
+  - domain:
+    - cover
+    supported_features:
+    - 8
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,13 @@
+domain: cover
+service: toggle_cover_tilt
+name: Toggle tilt
+description: Toggles a cover tilt open/closed.
+fields: {}
+target:
+  entity:
+  - domain:
+    - cover
+    supported_features:
+    - 48
+handler: builtin:service.not_implemented
+supports_response: false

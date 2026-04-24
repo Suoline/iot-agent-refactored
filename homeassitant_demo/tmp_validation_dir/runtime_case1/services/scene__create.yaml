@@ -1,0 +1,35 @@
+domain: scene
+service: create
+name: Create
+description: Creates a new scene.
+fields:
+  scene_id:
+    required: true
+    name: Scene entity ID
+    description: The entity ID of the new scene.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  entities:
+    required: false
+    name: Entity states
+    description: List of entities and their target state. If your entities are already
+      in the target state right now, use 'Entities snapshot' instead.
+    selector:
+      object:
+        multiple: false
+  snapshot_entities:
+    required: false
+    name: Entities snapshot
+    description: List of entities to be included in the snapshot. By taking a snapshot,
+      you record the current state of those entities. If you do not want to use the
+      current state of all your entities for this scene, you can combine 'Entities
+      snapshot' with 'Entity states'.
+    selector:
+      entity:
+        multiple: true
+        reorder: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

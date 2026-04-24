@@ -1,0 +1,21 @@
+domain: input_select
+service: select_option
+name: Select
+description: Selects an option.
+fields:
+  option:
+    required: true
+    name: Option
+    description: Option to be selected.
+    selector:
+      state:
+        hide_states:
+        - unavailable
+        - unknown
+        multiple: false
+target:
+  entity:
+  - domain:
+    - input_select
+handler: builtin:service.not_implemented
+supports_response: false

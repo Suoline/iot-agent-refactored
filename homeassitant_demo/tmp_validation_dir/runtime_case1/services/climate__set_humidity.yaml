@@ -1,0 +1,24 @@
+domain: climate
+service: set_humidity
+name: Set target humidity
+description: Sets target humidity.
+fields:
+  humidity:
+    required: true
+    name: Humidity
+    description: Target humidity.
+    selector:
+      number:
+        min: 30
+        max: 99
+        unit_of_measurement: '%'
+        step: 1
+        mode: slider
+target:
+  entity:
+  - domain:
+    - climate
+    supported_features:
+    - 4
+handler: builtin:service.not_implemented
+supports_response: false

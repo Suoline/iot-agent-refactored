@@ -1,0 +1,8 @@
+domain: script
+service: reload
+name: Reload
+description: Reloads all the available scripts.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

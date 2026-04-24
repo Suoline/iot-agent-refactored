@@ -1,0 +1,20 @@
+{
+  "device_id": "device.test_ac_01",
+  "name": "Test AC",
+  "name_by_user": null,
+  "area_id": "room.living_room",
+  "manufacturer": "Demo",
+  "model": "AC-1",
+  "model_id": null,
+  "sw_version": null,
+  "hw_version": null,
+  "serial_number": null,
+  "identifiers": [],
+  "connections": [],
+  "configuration_url": null,
+  "via_device_id": null,
+  "entities": [
+    "climate.test_ac_01"
+  ],
+  "metadata": {}
+}

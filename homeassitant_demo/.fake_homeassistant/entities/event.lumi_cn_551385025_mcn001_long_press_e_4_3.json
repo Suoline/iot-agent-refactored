@@ -1,0 +1,55 @@
+{
+  "entity_id": "event.lumi_cn_551385025_mcn001_long_press_e_4_3",
+  "domain": "event",
+  "object_id": "lumi_cn_551385025_mcn001_long_press_e_4_3",
+  "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_long_press_e_4_3",
+  "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": " 网关按键 长按",
+  "device_class": "button",
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": {
+    "event_types": [
+      "长按"
+    ]
+  },
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": "unknown",
+  "attributes": {
+    "event_types": [
+      "长按"
+    ],
+    "event_type": null,
+    "device_class": "button",
+    "friendly_name": "小米智能多模网关2  网关按键 长按"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.858816+00:00",
+    "icon": null,
+    "id": "e7178103527669a79f717d7a05b99bd1",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.858966+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": null,
+    "suggested_object_id": "lumi_cn_551385025_mcn001_long_press_e_4_3",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": null
+  }
+}

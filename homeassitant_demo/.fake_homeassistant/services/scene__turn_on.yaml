@@ -1,0 +1,23 @@
+domain: scene
+service: turn_on
+name: Activate
+description: Activates a scene.
+fields:
+  transition:
+    required: false
+    name: Transition
+    description: Time it takes the devices to transition into the states defined in
+      the scene.
+    selector:
+      number:
+        min: 0
+        max: 300
+        unit_of_measurement: seconds
+        step: 1
+        mode: slider
+target:
+  entity:
+  - domain:
+    - scene
+handler: builtin:service.not_implemented
+supports_response: false

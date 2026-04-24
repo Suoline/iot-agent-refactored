@@ -1,0 +1,28 @@
+domain: frontend
+service: set_theme
+name: Set the default theme
+description: Sets the default theme Home Assistant uses. Can be overridden by a user.
+fields:
+  name:
+    required: true
+    name: Theme
+    description: Name of a theme.
+    selector:
+      theme:
+        include_default: true
+  mode:
+    required: false
+    name: Mode
+    description: Theme mode.
+    selector:
+      select:
+        options:
+        - dark
+        - light
+        translation_key: mode
+        custom_value: false
+        sort: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,54 @@
+{
+  "entity_id": "event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+  "domain": "event",
+  "object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+  "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+  "device_id": "53bea65f446cb0a8150250354cb28a40",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": " 移动检测传感器 设备被重置",
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": {
+    "event_types": [
+      "设备被重置"
+    ]
+  },
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": "unknown",
+  "attributes": {
+    "event_types": [
+      "设备被重置"
+    ],
+    "event_type": null,
+    "friendly_name": "小米人体传感器2S  移动检测传感器 设备被重置"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.859805+00:00",
+    "icon": null,
+    "id": "0c2316bb5cf3fb63f5bc713d48b6676e",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.859990+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": null,
+    "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": null
+  }
+}

@@ -1,0 +1,22 @@
+domain: conversation
+service: reload
+name: Reload
+description: Reloads the intent configuration.
+fields:
+  language:
+    required: false
+    name: Language
+    description: Language to clear cached intents for. Defaults to server language.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  agent_id:
+    required: false
+    name: Agent
+    description: Conversation agent to reload.
+    selector:
+      conversation_agent: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

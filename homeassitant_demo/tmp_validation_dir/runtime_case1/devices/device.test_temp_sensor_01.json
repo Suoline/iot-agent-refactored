@@ -1,0 +1,22 @@
+{
+  "device_id": "device.test_temp_sensor_01",
+  "name": "Test Temp Sensors",
+  "name_by_user": null,
+  "area_id": "room.living_room",
+  "manufacturer": "Demo",
+  "model": "SENSOR-3",
+  "model_id": null,
+  "sw_version": null,
+  "hw_version": null,
+  "serial_number": null,
+  "identifiers": [],
+  "connections": [],
+  "configuration_url": null,
+  "via_device_id": null,
+  "entities": [
+    "sensor.test_room_temperature_living_1",
+    "sensor.test_room_temperature_living_2",
+    "sensor.test_room_temperature_bedroom_1"
+  ],
+  "metadata": {}
+}

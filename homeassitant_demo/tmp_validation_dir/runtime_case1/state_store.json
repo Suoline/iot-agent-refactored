@@ -1,0 +1,74 @@
+{
+  "climate.test_ac_01": {
+    "entity_id": "climate.test_ac_01",
+    "state": "cool",
+    "attributes": {
+      "friendly_name": "Test AC",
+      "hvac_mode": "cool",
+      "hvac_modes": [
+        "off",
+        "cool",
+        "heat"
+      ],
+      "temperature": 24.0,
+      "current_temperature": 28.0,
+      "unit_of_measurement": "°C"
+    },
+    "last_changed": "2026-04-19T18:21:44.774968+08:00",
+    "last_reported": "2026-04-19T18:21:44.787177+08:00",
+    "last_updated": "2026-04-19T18:21:44.787177+08:00",
+    "context": {
+      "id": "83f9111a2c80423383d3d5fa4f620f6c",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  "sensor.test_room_temperature_living_1": {
+    "entity_id": "sensor.test_room_temperature_living_1",
+    "state": 28.0,
+    "attributes": {
+      "friendly_name": "Living Temp 1",
+      "unit_of_measurement": "°C"
+    },
+    "last_changed": "2026-04-19T18:21:44.782127+08:00",
+    "last_reported": "2026-04-19T18:21:44.787177+08:00",
+    "last_updated": "2026-04-19T18:21:44.787177+08:00",
+    "context": {
+      "id": "0d229dc0aaf04b91ac966d53f0c3e2f1",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  "sensor.test_room_temperature_living_2": {
+    "entity_id": "sensor.test_room_temperature_living_2",
+    "state": 28.0,
+    "attributes": {
+      "friendly_name": "Living Temp 2",
+      "unit_of_measurement": "°C"
+    },
+    "last_changed": "2026-04-19T18:21:44.784122+08:00",
+    "last_reported": "2026-04-19T18:21:44.787177+08:00",
+    "last_updated": "2026-04-19T18:21:44.787177+08:00",
+    "context": {
+      "id": "c67dde25c60b410686a4451e63f10317",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  "sensor.test_room_temperature_bedroom_1": {
+    "entity_id": "sensor.test_room_temperature_bedroom_1",
+    "state": 26.0,
+    "attributes": {
+      "friendly_name": "Bedroom Temp 1",
+      "unit_of_measurement": "°C"
+    },
+    "last_changed": "2026-04-19T18:21:44.787177+08:00",
+    "last_reported": "2026-04-19T18:21:44.787177+08:00",
+    "last_updated": "2026-04-19T18:21:44.787177+08:00",
+    "context": {
+      "id": "17ee39766b444dc39d3cf4ac9d92e3b5",
+      "parent_id": null,
+      "user_id": null
+    }
+  }
+}

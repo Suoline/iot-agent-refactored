@@ -1,0 +1,2923 @@
+{
+  "version": 1,
+  "minor_version": 19,
+  "key": "core.entity_registry",
+  "data": {
+    "entities": [
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850046+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061200910_lite_toggle_a_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "27f82fbf118d5393e57972d5a1e4b706",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850235+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯 开关状态切换",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_toggle_a_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_toggle_a_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850408+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061200910_lite_brightness_down_a_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a787bb134dfb4c27d5fd4b01dcb26717",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850547+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 亮度-",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_brightness_down_a_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_brightness_down_a_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850702+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061200910_lite_brightness_up_a_3_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a2da54d1a6e78850114308d12d0cd6c9",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850841+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 亮度+",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_brightness_up_a_3_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_brightness_up_a_3_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "推送休息事件"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.857505+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.philips_cn_1061200910_lite_notify_you_e_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "07beeaa7aeca5facc389b00c204c9c2d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.857715+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 推送休息事件",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_notify_you_e_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_notify_you_e_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "effect_list": [
+            "mode 0",
+            "mode 1",
+            "mode 2"
+          ],
+          "supported_color_modes": [
+            "brightness"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.865739+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "light.philips_cn_1061200910_lite_s_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "710af1f73b3600814b4bb7a594d5f5ca",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.865972+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_s_2_",
+        "supported_features": 4,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_s_2_",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min": 0,
+          "max": 21600,
+          "step": 1,
+          "mode": "auto"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.872883+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "number.philips_cn_1061200910_lite_dvalue_p_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "072c9e534a05e69b4a827664c4b61261",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.873085+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": "* 个性化功能 延时关灯的时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_dvalue_p_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_dvalue_p_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": "s"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min": 1,
+          "max": 120,
+          "step": 1,
+          "mode": "auto"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.873278+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "number.philips_cn_1061200910_lite_notify_time_p_3_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "9b9249ae6822cb7e5f565e9d4e2912d6",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.873441+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": "* 个性化功能 视疲劳提醒的时间间隔设",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_notify_time_p_3_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_notify_time_p_3_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": "min"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883097+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.philips_cn_1061200910_lite_notify_switch_p_3_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "dd14fe28491bf907479e552069413a43",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.883277+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": "* 个性化功能 开启/关闭视疲劳提醒功能 ",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_notify_switch_p_3_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_notify_switch_p_3_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883452+00:00",
+        "device_class": null,
+        "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.philips_cn_1061200910_lite_night_light_en_p_3_4",
+        "hidden_by": null,
+        "icon": null,
+        "id": "03c4856b85208ba6e7fe7c04666180d3",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.883650+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": "* 个性化功能 开启/关闭夜间模式",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061200910_lite_night_light_en_p_3_4",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061200910_lite_night_light_en_p_3_4",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850046+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061201010_lite_toggle_a_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "27f82fbf118d5393e57972d5a1e4b706",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850235+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯 开关状态切换",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_toggle_a_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_toggle_a_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850408+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061201010_lite_brightness_down_a_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a787bb134dfb4c27d5fd4b01dcb26717",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850547+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 亮度-",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_brightness_down_a_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_brightness_down_a_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.850702+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.philips_cn_1061201010_lite_brightness_up_a_3_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a2da54d1a6e78850114308d12d0cd6c9",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.850841+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 亮度+",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_brightness_up_a_3_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_brightness_up_a_3_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "推送休息事件"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.857505+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.philips_cn_1061201010_lite_notify_you_e_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "07beeaa7aeca5facc389b00c204c9c2d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.857715+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 个性化功能 推送休息事件",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_notify_you_e_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_notify_you_e_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "effect_list": [
+            "mode 0",
+            "mode 1",
+            "mode 2"
+          ],
+          "supported_color_modes": [
+            "brightness"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.865739+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "light.philips_cn_1061201010_lite_s_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "710af1f73b3600814b4bb7a594d5f5ca",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.865972+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_s_2_",
+        "supported_features": 4,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_s_2_",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min": 0,
+          "max": 21600,
+          "step": 1,
+          "mode": "auto"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.872883+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "number.philips_cn_1061201010_lite_dvalue_p_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "072c9e534a05e69b4a827664c4b61261",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.873085+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": "* 个性化功能 延时关灯的时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_dvalue_p_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_dvalue_p_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": "s"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min": 1,
+          "max": 120,
+          "step": 1,
+          "mode": "auto"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.873278+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "number.philips_cn_1061201010_lite_notify_time_p_3_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "9b9249ae6822cb7e5f565e9d4e2912d6",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.873441+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": "* 个性化功能 视疲劳提醒的时间间隔设",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_notify_time_p_3_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_notify_time_p_3_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": "min"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883097+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.philips_cn_1061201010_lite_notify_switch_p_3_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "dd14fe28491bf907479e552069413a43",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.883277+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": "* 个性化功能 开启/关闭视疲劳提醒功能 ",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_notify_switch_p_3_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_notify_switch_p_3_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883452+00:00",
+        "device_class": null,
+        "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.philips_cn_1061201010_lite_night_light_en_p_3_4",
+        "hidden_by": null,
+        "icon": null,
+        "id": "03c4856b85208ba6e7fe7c04666180d3",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.883650+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": "* 个性化功能 开启/关闭夜间模式",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "philips_cn_1061201010_lite_night_light_en_p_3_4",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.philips_cn_1061201010_lite_night_light_en_p_3_4",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.851150+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.lumi_cn_551385025_mcn001_identify_a_20_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "73decf18f75531fd215df1edb59cd472",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.851322+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 设备确认 设备响应",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_identify_a_20_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_identify_a_20_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "网络发生变化"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.857895+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.lumi_cn_551385025_mcn001_network_changed_e_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "6069b55109807dd348cd63bb635faade",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.858053+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 网关 网络发生变化",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_network_changed_e_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_network_changed_e_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "单击"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.858217+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.lumi_cn_551385025_mcn001_click_e_4_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "70a1b373682ad07fd9b6e2975d997c89",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.858364+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "button",
+        "original_icon": null,
+        "original_name": " 网关按键 单击",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_click_e_4_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_click_e_4_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "双击"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.858521+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.lumi_cn_551385025_mcn001_double_click_e_4_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "9199d7d9faa5e024f2d4354cc5b7625d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.858667+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "button",
+        "original_icon": null,
+        "original_name": " 网关按键 双击",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_double_click_e_4_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_double_click_e_4_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "长按"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.858816+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.lumi_cn_551385025_mcn001_long_press_e_4_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "e7178103527669a79f717d7a05b99bd1",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.858966+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "button",
+        "original_icon": null,
+        "original_name": " 网关按键 长按",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_long_press_e_4_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_long_press_e_4_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "网关防误删功能开启后，尝试长按10s重置键上报该事件"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.859116+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.lumi_cn_551385025_mcn001_event_unbind_e_7_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "fe8f1acfcba6c98a1c47ca31c8b26e8d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.859497+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 网关防误删功能 网关防误删功能开启后，尝试长按10s重置键上报该事件",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_event_unbind_e_7_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_event_unbind_e_7_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "mode": "auto"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.873608+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "number.lumi_cn_551385025_mcn001_indicator_brightness_p_6_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "b57fa2e6edbd5689c476ecd22301b0a8",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.873764+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:percent",
+        "original_name": "* 指示灯与勿扰模式配置 指示灯亮度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_indicator_brightness_p_6_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_indicator_brightness_p_6_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "options": [
+            "Close",
+            "Open"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.876161+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "select.lumi_cn_551385025_mcn001_status_p_6_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "e04f4df7805d6b324b100c70969cf1f2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.876587+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 指示灯与勿扰模式配置 勿扰模式状态(开/关)",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_status_p_6_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_status_p_6_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "options": [
+            "Close",
+            "Open"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.876779+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "select.lumi_cn_551385025_mcn001_status_p_7_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "e0c33feb9354d2b519ceae5c12bcc625",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.876973+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 网关防误删功能 网关防误删状态",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_status_p_7_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_status_p_7_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "options": [
+            "有线",
+            "2.4G 无线",
+            "5G 无线"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.877647+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.lumi_cn_551385025_mcn001_access_mode_p_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "3e2b1fd4bcfcb36fe605adc467c92df2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.877859+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "enum",
+        "original_icon": "mdi:format-text",
+        "original_name": " 网关 接入方式",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_access_mode_p_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_access_mode_p_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.878044+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.lumi_cn_551385025_mcn001_ip_address_p_2_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a560dbf417953b329274dfff96e991ad",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.878223+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:ip",
+        "original_name": " 网关 IP地址",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_ip_address_p_2_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_ip_address_p_2_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.878389+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.lumi_cn_551385025_mcn001_wifi_ssid_p_2_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d0890c33b3a1a82d6c27510adc5c5fc4",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.878552+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 网关 WiFi网络名称(写权限无效)",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_wifi_ssid_p_2_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_wifi_ssid_p_2_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.878714+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.lumi_cn_551385025_mcn001_access_mode_p_2_5",
+        "hidden_by": null,
+        "icon": null,
+        "id": "7568aa1662d007d9cda494b05c16b372",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.878867+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 网关 网络变化状态string_fmt:{access-mode:{last:0,now:1],ip:{last:xx,now:xx},wifi-ssid:{last:xx,now:xx},time:12345678}}}",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_access_mode_p_2_5",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_access_mode_p_2_5",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "mode": "text",
+          "min": 0,
+          "max": 255,
+          "pattern": null
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.885207+00:00",
+        "device_class": null,
+        "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "text.lumi_cn_551385025_mcn001_effective_time_p_6_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "bfda66d44e6695302a806462553c3d0d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.885398+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 指示灯与勿扰模式配置 生效时间段(格式:21:00-09:00)",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "lumi_cn_551385025_mcn001_effective_time_p_6_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_effective_time_p_6_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.851627+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.xiaomi_cn_701074704_l15a_stop_alarm_a_6_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d6baa2e61f0d50bd53c1945e9de7206e",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.851786+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 闹钟 停止闹钟",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_stop_alarm_a_6_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_stop_alarm_a_6_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.851946+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.xiaomi_cn_701074704_l15a_wake_up_a_7_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "21fa842c839abd1c2729fd4cb737610f",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.852082+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 唤醒",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_wake_up_a_7_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_wake_up_a_7_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.852230+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.xiaomi_cn_701074704_l15a_play_radio_a_7_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "1684231d5a4689c4587c66089d700375",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.852362+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 播放电台",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_play_radio_a_7_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_play_radio_a_7_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.852510+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.xiaomi_cn_701074704_l15a_play_music_a_7_5",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d1acaa9675d1afbacfb5c5eaba26604d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.852643+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 播放音乐",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_play_music_a_7_5",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_play_music_a_7_5",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.852790+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "button.xiaomi_cn_701074704_l15a_tv_switchon_a_8_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "31a1e00fd9b04ca78f02cdd7e01e9c1f",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.852922+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": "* 电视开关 打开电视",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_tv_switchon_a_8_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_tv_switchon_a_8_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {},
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.870362+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "media_player.xiaomi_cn_701074704_l15a",
+        "hidden_by": null,
+        "icon": null,
+        "id": "912da00f58f27110596351335e3dbba2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.870595+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "speaker",
+        "original_icon": null,
+        "original_name": " 音箱",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a",
+        "supported_features": 21565,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.871060+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "notify.xiaomi_cn_701074704_l15a_seek_a_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "64e1154330c7911055c0e31d2b9c9d89",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.871264+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 播放控制 播放控制",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_seek_a_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_seek_a_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.871449+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "notify.xiaomi_cn_701074704_l15a_play_text_a_7_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "8acf176cc341390c19fec8c0689de252",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.871657+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 播放文本",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_play_text_a_7_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_play_text_a_7_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.871823+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "notify.xiaomi_cn_701074704_l15a_execute_text_directive_a_7_4",
+        "hidden_by": null,
+        "icon": null,
+        "id": "a438a1d522f3c130aa6a24e84d8d7043",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.871976+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 执行文本指令",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_execute_text_directive_a_7_4",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_execute_text_directive_a_7_4",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.884250+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.xiaomi_cn_701074704_l15a_mute_p_4_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "b5b060231a3cc2daa0cad6971f6c015e",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.884398+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": " 麦克风 静音",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_mute_p_4_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_mute_p_4_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-11-04T07:26:46.176479+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_701074704_l15a_audio_id_p_7_4",
+        "hidden_by": null,
+        "icon": null,
+        "id": "44ac6af12ae17bf01b2784d4016281fa",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-11-04T07:26:46.176760+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 智能音箱 音频ID",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_audio_id_p_7_4",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_audio_id_p_7_4",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-11-04T07:26:46.178945+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.xiaomi_cn_701074704_l15a_sleep_mode_p_7_3",
+        "hidden_by": null,
+        "icon": null,
+        "id": "297b0a57c067dd298290422d248033f1",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-11-04T07:26:46.179136+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": " 智能音箱 睡眠模式",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_sleep_mode_p_7_3",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_sleep_mode_p_7_3",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-11-04T07:26:46.179314+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.xiaomi_cn_701074704_l15a_no_disturb_p_9_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "8c2f8636ad4fa6eb41441c15cc45e3b8",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-11-04T07:26:46.179473+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": " 勿扰 勿扰",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_no_disturb_p_9_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_no_disturb_p_9_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "mode": "text",
+          "min": 0,
+          "max": 255,
+          "pattern": null
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-11-04T07:26:46.180136+00:00",
+        "device_class": null,
+        "device_id": "21ab4b42c3e6a3fb27f93385082d4075",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "text.xiaomi_cn_701074704_l15a_enable_time_period_p_9_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "5a2d1644baa400b4e5f53dccca963a1d",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-11-04T07:26:46.180348+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 勿扰 启用时间段(格式为：'00:00:00-00:00:00')",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_701074704_l15a_enable_time_period_p_9_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_701074704_l15a_enable_time_period_p_9_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "设备被重置"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.859805+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+        "hidden_by": null,
+        "icon": null,
+        "id": "0c2316bb5cf3fb63f5bc713d48b6676e",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.859990+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 移动检测传感器 设备被重置",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_device_be_reset_e_2_1028",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "检测到移动"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.860155+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008",
+        "hidden_by": null,
+        "icon": null,
+        "id": "6ecbfa68e214ef3b26ffb8bcb742f5ae",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.860318+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "motion",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 检测到移动",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879042+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024",
+        "hidden_by": null,
+        "icon": null,
+        "id": "c0cc2ea8c93d9ab2d93194a548c3c5e2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879337+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 无移动状态持续时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024",
+        "previous_unique_id": null,
+        "unit_of_measurement": "s"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879572+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005",
+        "hidden_by": null,
+        "icon": null,
+        "id": "275efa14d6200ff55c2263cf8a86e335",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 1
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "illuminance",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 光照度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005",
+        "previous_unique_id": null,
+        "unit_of_measurement": "lx"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880054+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_custom_no_motion_time_p_2_1053",
+        "hidden_by": null,
+        "icon": null,
+        "id": "167a8a812973b94f41327156f477a42a",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880361+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 自定义超时无人移动时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_custom_no_motion_time_p_2_1053",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_custom_no_motion_time_p_2_1053",
+        "previous_unique_id": null,
+        "unit_of_measurement": "min"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880544+00:00",
+        "device_class": null,
+        "device_id": "53bea65f446cb0a8150250354cb28a40",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_battery_level_p_3_1003",
+        "hidden_by": null,
+        "icon": null,
+        "id": "37475c67d83c72b1bc5c8d6933cc7831",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "battery",
+        "original_icon": null,
+        "original_name": " 电池 电池电量",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_1ftnm7360c800_pir1_battery_level_p_3_1003",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_1ftnm7360c800_pir1_battery_level_p_3_1003",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "设备被重置"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.859805+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_2gunh8471d911_pir1_device_be_reset_e_2_1028",
+        "hidden_by": null,
+        "icon": null,
+        "id": "0c2316bb5cf3fb63f5bc713d48b6676e",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.859990+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 移动检测传感器 设备被重置",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_device_be_reset_e_2_1028",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_device_be_reset_e_2_1028",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "检测到移动"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.860155+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008",
+        "hidden_by": null,
+        "icon": null,
+        "id": "6ecbfa68e214ef3b26ffb8bcb742f5ae",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.860318+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "motion",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 检测到移动",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879042+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024",
+        "hidden_by": null,
+        "icon": null,
+        "id": "c0cc2ea8c93d9ab2d93194a548c3c5e2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879337+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 无移动状态持续时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024",
+        "previous_unique_id": null,
+        "unit_of_measurement": "s"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879572+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005",
+        "hidden_by": null,
+        "icon": null,
+        "id": "275efa14d6200ff55c2263cf8a86e335",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 1
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "illuminance",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 光照度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005",
+        "previous_unique_id": null,
+        "unit_of_measurement": "lx"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880054+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_custom_no_motion_time_p_2_1053",
+        "hidden_by": null,
+        "icon": null,
+        "id": "167a8a812973b94f41327156f477a42a",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880361+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 自定义超时无人移动时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_custom_no_motion_time_p_2_1053",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_custom_no_motion_time_p_2_1053",
+        "previous_unique_id": null,
+        "unit_of_measurement": "min"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880544+00:00",
+        "device_class": null,
+        "device_id": "f4cfb76e557dc1b961361465dc39b51d",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_battery_level_p_3_1003",
+        "hidden_by": null,
+        "icon": null,
+        "id": "37475c67d83c72b1bc5c8d6933cc7831",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "battery",
+        "original_icon": null,
+        "original_name": " 电池 电池电量",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_2gunh8471d911_pir1_battery_level_p_3_1003",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_2gunh8471d911_pir1_battery_level_p_3_1003",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "设备被重置"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.859805+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_device_be_reset_e_2_1028",
+        "hidden_by": null,
+        "icon": null,
+        "id": "0c2316bb5cf3fb63f5bc713d48b6676e",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.859990+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 移动检测传感器 设备被重置",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_device_be_reset_e_2_1028",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_device_be_reset_e_2_1028",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "event_types": [
+            "检测到移动"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.860155+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008",
+        "hidden_by": null,
+        "icon": null,
+        "id": "6ecbfa68e214ef3b26ffb8bcb742f5ae",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.860318+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "motion",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 检测到移动",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879042+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024",
+        "hidden_by": null,
+        "icon": null,
+        "id": "c0cc2ea8c93d9ab2d93194a548c3c5e2",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879337+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 无移动状态持续时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024",
+        "previous_unique_id": null,
+        "unit_of_measurement": "s"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.879572+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_illumination_p_2_1005",
+        "hidden_by": null,
+        "icon": null,
+        "id": "275efa14d6200ff55c2263cf8a86e335",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.879873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 1
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "illuminance",
+        "original_icon": null,
+        "original_name": " 移动检测传感器 光照度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_illumination_p_2_1005",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_illumination_p_2_1005",
+        "previous_unique_id": null,
+        "unit_of_measurement": "lx"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880054+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_custom_no_motion_time_p_2_1053",
+        "hidden_by": null,
+        "icon": null,
+        "id": "167a8a812973b94f41327156f477a42a",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880361+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": null,
+        "original_icon": "mdi:clock",
+        "original_name": " 移动检测传感器 自定义超时无人移动时间",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_custom_no_motion_time_p_2_1053",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_custom_no_motion_time_p_2_1053",
+        "previous_unique_id": null,
+        "unit_of_measurement": "min"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.880544+00:00",
+        "device_class": null,
+        "device_id": "a5dfc87f668ed2c072472576ed40c62e",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_battery_level_p_3_1003",
+        "hidden_by": null,
+        "icon": null,
+        "id": "37475c67d83c72b1bc5c8d6933cc7831",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.880873+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "battery",
+        "original_icon": null,
+        "original_name": " 电池 电池电量",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "xiaomi_cn_blt_3_3hvoj9582ea22_pir1_battery_level_p_3_1003",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_battery_level_p_3_1003",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min_color_temp_kelvin": 2700,
+          "max_color_temp_kelvin": 6500,
+          "min_mireds": 153,
+          "max_mireds": 370,
+          "supported_color_modes": [
+            "color_temp"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.866291+00:00",
+        "device_class": null,
+        "device_id": "164c1a92b8ce9cda0e2a8c13440b4722",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "light.yeelink_cn_1162511951_mbulb3_s_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d7a5d39f483c25196f701fd4c06323f4",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.866483+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "yeelink_cn_1162511951_mbulb3_s_2_",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.yeelink_cn_1162511951_mbulb3_s_2_",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min_color_temp_kelvin": 2700,
+          "max_color_temp_kelvin": 6500,
+          "min_mireds": 153,
+          "max_mireds": 370,
+          "supported_color_modes": [
+            "color_temp"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.866291+00:00",
+        "device_class": null,
+        "device_id": "b75d2b03c9dfaebf1f3b9d24551c5833",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "light.yeelink_cn_1162512052_mbulb3_s_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d7a5d39f483c25196f701fd4c06323f4",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.866483+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "yeelink_cn_1162512052_mbulb3_s_2_",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.yeelink_cn_1162512052_mbulb3_s_2_",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "min_color_temp_kelvin": 2700,
+          "max_color_temp_kelvin": 6500,
+          "min_mireds": 153,
+          "max_mireds": 370,
+          "supported_color_modes": [
+            "color_temp"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.866291+00:00",
+        "device_class": null,
+        "device_id": "c86e3c14d0egbfc02g4cae35662d6944",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "light.yeelink_cn_1162512153_mbulb3_s_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "d7a5d39f483c25196f701fd4c06323f4",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.866483+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": null,
+        "original_icon": null,
+        "original_name": " 灯",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "yeelink_cn_1162512153_mbulb3_s_2_",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.yeelink_cn_1162512153_mbulb3_s_2_",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "options": [
+            "弱",
+            "强"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.881835+00:00",
+        "device_class": null,
+        "device_id": "cf03cb835279ea4876ab6ee202aa9832",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_illumination_p_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "969e519803c75e4319789808ab9ebebc",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.882128+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "enum",
+        "original_icon": "mdi:format-text",
+        "original_name": " 门窗传感器 光照度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_1md0u6qht0k00_dw2hl_illumination_p_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_1md0u6qht0k00_dw2hl_illumination_p_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.882352+00:00",
+        "device_class": null,
+        "device_id": "cf03cb835279ea4876ab6ee202aa9832",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_battery_level_p_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "26d1d9b818f6a21c94c7c726ba24cb35",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.882634+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "battery",
+        "original_icon": null,
+        "original_name": " 电量 电池电量",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_1md0u6qht0k00_dw2hl_battery_level_p_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_1md0u6qht0k00_dw2hl_battery_level_p_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.848604+00:00",
+        "device_class": null,
+        "device_id": "cf03cb835279ea4876ab6ee202aa9832",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "83a169f84639014a48c29fffbab1d251",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.848937+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "door",
+        "original_icon": null,
+        "original_name": " 门窗传感器 接触状态",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "options": [
+            "弱",
+            "强"
+          ]
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.881835+00:00",
+        "device_class": null,
+        "device_id": "d914ad946380fb5987bc7ff313bb0a45",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_illumination_p_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "969e519803c75e4319789808ab9ebebc",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.882128+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "enum",
+        "original_icon": "mdi:format-text",
+        "original_name": " 门窗传感器 光照度",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_2ne1v7riu1l11_dw2hl_illumination_p_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_illumination_p_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": {
+          "state_class": "measurement"
+        },
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.882352+00:00",
+        "device_class": null,
+        "device_id": "d914ad946380fb5987bc7ff313bb0a45",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_battery_level_p_3_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "26d1d9b818f6a21c94c7c726ba24cb35",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.882634+00:00",
+        "name": null,
+        "options": {
+          "sensor": {
+            "suggested_display_precision": 0
+          },
+          "conversation": {
+            "should_expose": false
+          }
+        },
+        "original_device_class": "battery",
+        "original_icon": null,
+        "original_name": " 电量 电池电量",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_2ne1v7riu1l11_dw2hl_battery_level_p_3_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_battery_level_p_3_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": "%"
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.848604+00:00",
+        "device_class": null,
+        "device_id": "d914ad946380fb5987bc7ff313bb0a45",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2",
+        "hidden_by": null,
+        "icon": null,
+        "id": "83a169f84639014a48c29fffbab1d251",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.848937+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "door",
+        "original_icon": null,
+        "original_name": " 门窗传感器 接触状态",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883936+00:00",
+        "device_class": null,
+        "device_id": "df406d66e297203b9cbccd7f7b2b0376",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.cuco_cn_269067598_cp1_on_p_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "2e9e4d620daeab90ee8ddedfe7993a80",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.884089+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": " 开关 开关",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "cuco_cn_269067598_cp1_on_p_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.cuco_cn_269067598_cp1_on_p_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      },
+      {
+        "aliases": [],
+        "area_id": null,
+        "categories": {},
+        "capabilities": null,
+        "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+        "config_subentry_id": null,
+        "created_at": "2025-10-19T08:38:07.883936+00:00",
+        "device_class": null,
+        "device_id": "e0517e77f3a8314caeddef8a8c3c1487",
+        "disabled_by": null,
+        "entity_category": null,
+        "entity_id": "switch.cuco_cn_269067699_cp1_on_p_2_1",
+        "hidden_by": null,
+        "icon": null,
+        "id": "2e9e4d620daeab90ee8ddedfe7993a80",
+        "has_entity_name": true,
+        "labels": [],
+        "modified_at": "2025-10-19T08:38:07.884089+00:00",
+        "name": null,
+        "options": {
+          "conversation": {
+            "should_expose": true
+          }
+        },
+        "original_device_class": "switch",
+        "original_icon": null,
+        "original_name": " 开关 开关",
+        "platform": "xiaomi_home",
+        "suggested_object_id": "cuco_cn_269067699_cp1_on_p_2_1",
+        "supported_features": 0,
+        "translation_key": null,
+        "unique_id": "xiaomi_home.cuco_cn_269067699_cp1_on_p_2_1",
+        "previous_unique_id": null,
+        "unit_of_measurement": null
+      }
+    ],
+    "deleted_entities": []
+  }
+}

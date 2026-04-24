@@ -1,0 +1,13 @@
+domain: vacuum
+service: return_to_base
+name: Return to dock
+description: Tells the vacuum cleaner to return to its dock.
+fields: {}
+target:
+  entity:
+  - domain:
+    - vacuum
+    supported_features:
+    - 16
+handler: builtin:service.not_implemented
+supports_response: false

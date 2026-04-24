@@ -1,0 +1,18 @@
+domain: input_select
+service: select_previous
+name: Previous
+description: Selects the previous option.
+fields:
+  cycle:
+    required: false
+    name: Cycle
+    description: If the option should cycle from the first to the last option on the
+      list.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - input_select
+handler: builtin:service.not_implemented
+supports_response: false

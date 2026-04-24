@@ -1,0 +1,19 @@
+domain: number
+service: set_value
+name: Set
+description: Sets the value of a number.
+fields:
+  value:
+    required: true
+    name: Value
+    description: The target value to set.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - number
+handler: builtin:number.set_value
+supports_response: false

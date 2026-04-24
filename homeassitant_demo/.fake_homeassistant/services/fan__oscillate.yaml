@@ -1,0 +1,19 @@
+domain: fan
+service: oscillate
+name: Oscillate
+description: Controls the oscillation of a fan.
+fields:
+  oscillating:
+    required: true
+    name: Oscillating
+    description: Turns oscillation on/off.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - fan
+    supported_features:
+    - 2
+handler: builtin:service.not_implemented
+supports_response: false

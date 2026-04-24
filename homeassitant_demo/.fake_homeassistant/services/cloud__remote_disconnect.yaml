@@ -1,0 +1,9 @@
+domain: cloud
+service: remote_disconnect
+name: Disable remote access
+description: Disconnects the instance UI from Home Assistant Cloud. This disables
+  access to it from outside your local network.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,61 @@
+{
+  "entity_id": "number.philips_cn_1061200910_lite_dvalue_p_3_1",
+  "domain": "number",
+  "object_id": "philips_cn_1061200910_lite_dvalue_p_3_1",
+  "unique_id": "xiaomi_home.philips_cn_1061200910_lite_dvalue_p_3_1",
+  "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": "* 个性化功能 延时关灯的时间",
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": {
+    "min": 0,
+    "max": 21600,
+    "step": 1,
+    "mode": "auto"
+  },
+  "service_profile": {
+    "min": 0,
+    "max": 21600,
+    "step": 1
+  },
+  "links": {},
+  "actions": {},
+  "state": "0",
+  "attributes": {
+    "min": 0,
+    "max": 21600,
+    "step": 1,
+    "mode": "auto",
+    "unit_of_measurement": "s",
+    "icon": "mdi:clock",
+    "friendly_name": "米家智能台灯Lite * 个性化功能 延时关灯的时间"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.872883+00:00",
+    "icon": null,
+    "id": "072c9e534a05e69b4a827664c4b61261",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.873085+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": "mdi:clock",
+    "suggested_object_id": "philips_cn_1061200910_lite_dvalue_p_3_1",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": "s"
+  }
+}

@@ -1,0 +1,19 @@
+domain: media_player
+service: volume_mute
+name: Mute/unmute volume
+description: Mutes or unmutes the media player.
+fields:
+  is_volume_muted:
+    required: true
+    name: Muted
+    description: Defines whether or not it is muted.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 8
+handler: builtin:media_player.volume_mute
+supports_response: false

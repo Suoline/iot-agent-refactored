@@ -1,0 +1,8 @@
+domain: homeassistant
+service: stop
+name: Stop
+description: Stops Home Assistant.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

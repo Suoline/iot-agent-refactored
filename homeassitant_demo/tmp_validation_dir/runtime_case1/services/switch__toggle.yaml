@@ -1,0 +1,11 @@
+domain: switch
+service: toggle
+name: Toggle
+description: Toggles a switch on/off.
+fields: {}
+target:
+  entity:
+  - domain:
+    - switch
+handler: builtin:switch.toggle
+supports_response: false

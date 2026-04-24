@@ -1,0 +1,28 @@
+domain: file
+service: read_file
+name: Read file
+description: Reads a file and returns the contents.
+fields:
+  file_name:
+    required: false
+    name: File name
+    description: Name of the file to read.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  file_encoding:
+    required: false
+    name: File encoding
+    description: Encoding of the file (JSON, YAML.)
+    selector:
+      select:
+        options:
+        - JSON
+        - YAML
+        custom_value: false
+        sort: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

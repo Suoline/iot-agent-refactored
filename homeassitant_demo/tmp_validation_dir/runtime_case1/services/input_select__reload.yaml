@@ -1,0 +1,8 @@
+domain: input_select
+service: reload
+name: Reload
+description: Reloads helpers from the YAML-configuration.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

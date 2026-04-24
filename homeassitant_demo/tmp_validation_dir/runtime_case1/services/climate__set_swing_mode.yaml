@@ -1,0 +1,21 @@
+domain: climate
+service: set_swing_mode
+name: Set swing mode
+description: Sets swing operation mode.
+fields:
+  swing_mode:
+    required: true
+    name: Swing mode
+    description: Swing operation mode.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - climate
+    supported_features:
+    - 32
+handler: builtin:service.not_implemented
+supports_response: false

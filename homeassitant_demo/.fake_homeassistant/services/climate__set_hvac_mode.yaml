@@ -1,0 +1,21 @@
+domain: climate
+service: set_hvac_mode
+name: Set HVAC mode
+description: Sets HVAC operation mode.
+fields:
+  hvac_mode:
+    required: false
+    name: HVAC mode
+    description: HVAC operation mode.
+    selector:
+      state:
+        hide_states:
+        - unavailable
+        - unknown
+        multiple: false
+target:
+  entity:
+  - domain:
+    - climate
+handler: builtin:climate.set_hvac_mode
+supports_response: false

@@ -1,0 +1,11 @@
+domain: counter
+service: reset
+name: Reset
+description: Resets a counter to its initial value.
+fields: {}
+target:
+  entity:
+  - domain:
+    - counter
+handler: builtin:service.not_implemented
+supports_response: false

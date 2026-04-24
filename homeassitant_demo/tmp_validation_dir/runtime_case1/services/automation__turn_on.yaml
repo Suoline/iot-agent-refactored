@@ -1,0 +1,11 @@
+domain: automation
+service: turn_on
+name: Turn on
+description: Enables an automation.
+fields: {}
+target:
+  entity:
+  - domain:
+    - automation
+handler: builtin:service.not_implemented
+supports_response: false

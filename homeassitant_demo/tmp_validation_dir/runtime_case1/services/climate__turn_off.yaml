@@ -1,0 +1,13 @@
+domain: climate
+service: turn_off
+name: Turn off
+description: Turns climate device off.
+fields: {}
+target:
+  entity:
+  - domain:
+    - climate
+    supported_features:
+    - 128
+handler: builtin:service.not_implemented
+supports_response: false

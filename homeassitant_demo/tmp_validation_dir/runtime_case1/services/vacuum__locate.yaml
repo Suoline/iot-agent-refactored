@@ -1,0 +1,13 @@
+domain: vacuum
+service: locate
+name: Locate
+description: Locates the vacuum cleaner robot.
+fields: {}
+target:
+  entity:
+  - domain:
+    - vacuum
+    supported_features:
+    - 512
+handler: builtin:service.not_implemented
+supports_response: false

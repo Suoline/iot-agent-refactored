@@ -1,0 +1,12 @@
+domain: scene
+service: delete
+name: Delete
+description: Deletes a dynamically created scene.
+fields: {}
+target:
+  entity:
+  - integration: homeassistant
+    domain:
+    - scene
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,54 @@
+{
+  "entity_id": "event.lumi_cn_551385025_mcn001_network_changed_e_2_1",
+  "domain": "event",
+  "object_id": "lumi_cn_551385025_mcn001_network_changed_e_2_1",
+  "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_network_changed_e_2_1",
+  "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": " 网关 网络发生变化",
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": {
+    "event_types": [
+      "网络发生变化"
+    ]
+  },
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": "unknown",
+  "attributes": {
+    "event_types": [
+      "网络发生变化"
+    ],
+    "event_type": null,
+    "friendly_name": "小米智能多模网关2  网关 网络发生变化"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.857895+00:00",
+    "icon": null,
+    "id": "6069b55109807dd348cd63bb635faade",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.858053+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": null,
+    "suggested_object_id": "lumi_cn_551385025_mcn001_network_changed_e_2_1",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": null
+  }
+}

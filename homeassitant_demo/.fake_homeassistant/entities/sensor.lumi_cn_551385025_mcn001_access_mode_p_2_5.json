@@ -1,0 +1,46 @@
+{
+  "entity_id": "sensor.lumi_cn_551385025_mcn001_access_mode_p_2_5",
+  "domain": "sensor",
+  "object_id": "lumi_cn_551385025_mcn001_access_mode_p_2_5",
+  "unique_id": "xiaomi_home.lumi_cn_551385025_mcn001_access_mode_p_2_5",
+  "device_id": "ac5c6e84654cf19a5f91d3d36d0ff05b",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": " 网关 网络变化状态string_fmt:{access-mode:{last:0,now:1],ip:{last:xx,now:xx},wifi-ssid:{last:xx,now:xx},time:12345678}}}",
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": null,
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": "",
+  "attributes": {
+    "friendly_name": "小米智能多模网关2  网关 网络变化状态string_fmt:{access-mode:{last:0,now:1],ip:{last:xx,now:xx},wifi-ssid:{last:xx,now:xx},time:12345678}}}"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.878714+00:00",
+    "icon": null,
+    "id": "7568aa1662d007d9cda494b05c16b372",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.878867+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": null,
+    "suggested_object_id": "lumi_cn_551385025_mcn001_access_mode_p_2_5",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": null
+  }
+}

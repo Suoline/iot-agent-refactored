@@ -1,0 +1,21 @@
+domain: climate
+service: set_swing_horizontal_mode
+name: Set horizontal swing mode
+description: Sets horizontal swing operation mode.
+fields:
+  swing_horizontal_mode:
+    required: true
+    name: Horizontal swing mode
+    description: Horizontal swing operation mode.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - climate
+    supported_features:
+    - 512
+handler: builtin:service.not_implemented
+supports_response: false

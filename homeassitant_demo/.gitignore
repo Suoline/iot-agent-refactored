@@ -1,0 +1,13 @@
+# pytest
+.pytest_cache/
+.pytest_tmp/
+pytest-cache-files-*/
+.pytest_tmp_run_*
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/

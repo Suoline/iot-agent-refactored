@@ -1,0 +1,11 @@
+domain: camera
+service: turn_off
+name: Turn off
+description: Turns off the camera.
+fields: {}
+target:
+  entity:
+  - domain:
+    - camera
+handler: builtin:service.not_implemented
+supports_response: false

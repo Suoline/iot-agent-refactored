@@ -1,0 +1,21 @@
+domain: input_number
+service: set_value
+name: Set
+description: Sets the value.
+fields:
+  value:
+    required: true
+    name: Value
+    description: The target value.
+    selector:
+      number:
+        min: 0
+        max: 9223372036854776000
+        step: 0.001
+        mode: box
+target:
+  entity:
+  - domain:
+    - input_number
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,39 @@
+domain: conversation
+service: process
+name: Process
+description: Launches a conversation from a transcribed text.
+fields:
+  text:
+    required: true
+    name: Text
+    description: Transcribed text input.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  language:
+    required: false
+    name: Language
+    description: Language of text. Defaults to server language.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  agent_id:
+    required: false
+    name: Agent
+    description: Conversation agent to process your request. The conversation agent
+      is the brains of your assistant. It processes the incoming text commands.
+    selector:
+      conversation_agent: {}
+  conversation_id:
+    required: false
+    name: Conversation ID
+    description: ID of the conversation, to be able to continue a previous conversation
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

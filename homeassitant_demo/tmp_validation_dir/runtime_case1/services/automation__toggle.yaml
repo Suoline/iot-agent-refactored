@@ -1,0 +1,11 @@
+domain: automation
+service: toggle
+name: Toggle
+description: Toggles (enable / disable) an automation.
+fields: {}
+target:
+  entity:
+  - domain:
+    - automation
+handler: builtin:service.not_implemented
+supports_response: false

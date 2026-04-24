@@ -1,0 +1,40 @@
+{
+  "device_id": "164c1a92b8ce9cda0e2a8c13440b4722",
+  "name": "灯泡",
+  "name_by_user": "灯泡",
+  "area_id": "3108946409de_jia_ke_ting",
+  "manufacturer": "Yeelight",
+  "model": "yeelink.light.mbulb3",
+  "model_id": null,
+  "sw_version": "1.4.4_0031",
+  "hw_version": null,
+  "serial_number": null,
+  "identifiers": [
+    [
+      "xiaomi_home",
+      "cn_1162511951"
+    ]
+  ],
+  "connections": [],
+  "configuration_url": "https://home.mi.com/webapp/content/baike/product/index.html?model=yeelink.light.mbulb3",
+  "via_device_id": null,
+  "entities": [
+    "light.yeelink_cn_1162511951_mbulb3_s_2"
+  ],
+  "metadata": {
+    "config_entries": [
+      "01K7XSWSYQ9DG0S1026TAH12TV"
+    ],
+    "config_entries_subentries": {
+      "01K7XSWSYQ9DG0S1026TAH12TV": [
+        null
+      ]
+    },
+    "created_at": "2025-10-19T08:38:07.866166+00:00",
+    "disabled_by": null,
+    "entry_type": null,
+    "labels": [],
+    "modified_at": "2025-11-04T08:17:31.420656+00:00",
+    "primary_config_entry": "01K7XSWSYQ9DG0S1026TAH12TV"
+  }
+}

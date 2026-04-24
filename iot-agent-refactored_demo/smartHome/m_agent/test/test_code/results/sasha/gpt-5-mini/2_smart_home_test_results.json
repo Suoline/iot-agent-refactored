@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 12,
+        "正确率": "24.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "当前网络状态：\n- 接入方式：2.4G 无线（sensor.lumi_cn_551385025_mcn001_access_mode_p_2_1）\n- Wi‑Fi 名称：shuashua（sensor.lumi_cn_551385025_mcn001_wifi_ssid_p_2_3）\n- IP 地址：192.168.43.141（sensor.lumi_cn_551385025_mcn001_ip_address_p_2_2）\n- 事件：检测到网络变更事件（event.lumi_cn_551385025_mcn001_network_changed_e_2_1）有记录\n- 额外状态字段 sensor.lumi_cn_551385025_mcn001_access_mode_p_2_5 当前为空（属性中包含可能的格式化信息）。\n如需重连、更改网络或查看最近变更详情，请告诉我要执行的操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "Yes — all five lights are on (5/5).",
+            "是否正确": true
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "已为你关闭全部 5 个灯。已关闭的设备：\n- light.philips_cn_1061200910_lite_s_2（米家智能台灯 Lite） — 已关闭\n- light.philips_cn_1061201010_lite_s_2（米家智能台灯 Lite） — 已关闭\n- light.yeelink_cn_1162511951_mbulb3_s_2（灯泡） — 已关闭\n- light.yeelink_cn_1162512052_mbulb3_s_2（灯泡） — 已关闭\n- light.yeelink_cn_1162512153_mbulb3_s_2（灯泡） — 已关闭\n\n如需我再检查状态或执行其他操作，请告诉我。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "No — the human body (motion) sensors report battery level at 100% (their battery_level sensors show 100%), so they do not need battery replacement and should operate normally.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "已为你关闭音乐。设备 小姐AI音箱（第二代） 音箱（media_player.xiaomi_cn_701074704_l15a）已停止播放。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "已将全屋灯光调暗至 30%（过渡 2 秒）。已调整的设备：light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2。如需更暗/更亮或恢复至之前亮度，请告诉我具体值或百分比。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "已向“小米AI音箱（第二代） 音箱”发送“下一首”命令。设备当前状态为 idle（空闲），且处于静音（is_volume_muted: true），因此未实际开始播放。如果要我继续，我可以：\n1) 取消静音并开始播放；\n2) 仅开始播放当前曲目；\n3) 按下播放按钮（button.xiaomi_cn_701074704_l15a_play_music_a_7_5）。\n请告诉我希望执行哪一项。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "已将 media_player.xiaomi_cn_701074704_l15a（小米AI音箱（第二代） 音箱）的音量从 10% 降低到 8%（下降 2 个百分点）。设备当前为静音（is_volume_muted = true），因此暂时不会有声音。是否需要我帮您取消静音？",
+            "是否正确": true
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "已在小米AI音箱（第二代）上启动电台。我已按下“播放电台”按钮。注意：该设备当前处于静音，音量为10%。需要我取消静音或调大音量吗？",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "Playback paused on media_player.xiaomi_cn_701074704_l15a (小米AI音箱（第二代） 音箱).",
+            "是否正确": true
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "已为你重放刚才的那首歌。我按下了“小米AI音箱（第二代）”的播放音乐按钮，设备现在应已开始播放。需要我调大音量、暂停或换歌吗？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "Done — I set the speaker volume to 30%, unmuted it, and started playback on 小米AI音箱（第二代） (media_player.xiaomi_cn_701074704_l15a). Note: trying to play a direct URL returned an error, so I used the player’s play command and it is now playing. \n\nWould you like a specific English song or artist? You can tell me a title/artist, provide a streaming link, or ask me to: pause, stop, next track, or change volume.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "我无法完全执行该指令。原因：1) 系统中有一台媒体播放器（media_player.xiaomi_cn_701074704_l15a），但它的 supported_features 不包含 play_media (需要 feature 512)，因此不能直接下发要播放指定曲目“Sunny Day”的 play_media 命令（它只支持 media_play/播放/暂停等，无法指定具体曲目）。2) 系统中有多盏灯且 light.turn_off 服务可用，但没有找到明确标注为“卧室灯/bedroom”的灯实体（只有通用名称如“灯泡”“米家智能台灯Lite”等），无法确定要关闭的目标。 建议：请告诉我要播放的设备（确切的媒体播放器实体或是否允许我在现有小米音箱上“开始播放”当前源），并告诉或确认哪一个实体是“卧室灯”的名称，我就能分别执行播放和关灯操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "设备方面：我可以增加音箱音量（发现 media_player.xiaomi_cn_701074704_l15a，支持调大/设置音量，当前音量 0.1），也有多盏支持亮度调节的灯（如 light.philips_cn_1061200910_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2 等，均支持 brightness）。问题在于目标模糊——系统中没有明确标注为“客厅灯/ living room light”的实体名或区域，因此我无法确定要对哪一盏灯执行“调暗”。请指定要调暗的灯的名称/实体或把哪几盏灯归到“客厅”后重试（例如“把 media_player 音量调大到 30% ，把 light.yeelink_cn_1162511951_mbulb3_s_2 调暗到 30%”）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "我无法确认能否执行该指令。当前设备列表中有多盏灯（如“米家智能台灯Lite 灯”、“灯泡 灯”等），但没有实体的 friendly_name 或属性标明它们属于“study（书房）”或“bedroom（卧室）”区域，因此无法自动识别“all study lights”和“all bedroom lights”。\n要能成功执行，需要其中一种信息：\n- 设备已被分配到“书房/卧室”area 或已有名为 group.study_lights / group.bedroom_lights 的群组；或\n- 你提供要关闭/打开的具体实体ID列表。\n如果你提供这些映射，我可以直接对相应实体调用 light.turn_off（书房灯）和 light.turn_on（卧室灯）来完成操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "I cannot reliably answer “Is the living room very dark?” with the current device data because there is no illuminance sensor explicitly labeled as the living room. The system does have illuminance sensors (some report 100 lx, one reports 0 lx) and several lights are on, but I can’t tell which sensor belongs to the living room. Please tell me which sensor/device is in the living room (or allow me to check the room assignment), or I can check specific sensors if you name them.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "我无法确定当前能否回答“客厅窗户是否关闭”。系统里有两个“门窗传感器（接触状态）”实体，状态均为“off”（通常在 Home Assistant 中 device_class 为 door 的接触传感器，off 表示接触/关闭），但这些实体没有标注为“客厅窗户”，因此无法可靠地判定哪个传感器对应客厅窗户。要得到确定答案，请提供对应的实体 ID 或将传感器重命名为“客厅窗户”，或者让我检查你指定的那个传感器（例如 binary_sensor.xxx）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "我在设备列表中没有找到名为“living room light”或“客厅灯”这样的实体（当前灯实体有例如 “米家智能台灯Lite  灯” (light.philips_cn_1061200910_lite_s_2, brightness=3) 和若干 “灯泡  灯” (light.yeelink_…, brightness=76)）。不过系统的 light.turn_on 服务支持 brightness_pct 参数，且这些灯支持调节亮度，所以如果你告诉我确切的设备名称或实体ID（例如 light.philips_cn_1061200910_lite_s_2），我就能把该灯的亮度设置为 50%。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "已将客厅三盏灯的色温由 4000K 微暖调为 3500K，让灯光稍微暖和一些。如果你还想更暖（例如 3000K）或调整亮度，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "我在当前设备列表中未发现加湿器或湿度传感器类设备（没有 humidifier.* 或 humidity 传感器）。虽然有两个智能插座（switch.cuco_*），但无法确认是否接了加湿器。因此目前无法自动检测并调节“空气干燥”这个问题。建议：1) 告知我加湿器是否接在某个插座上，我可尝试打开对应插座；或 2) 添加/连接一台加湿器或湿度传感器后我即可自动控制并调节湿度。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "我无法直接把房间变凉。当前设备列表中只有智能灯（已开）、两个智能插座（一个on一个off）、音箱和人体/光照传感器等，但没有可控的空调、风扇或温度传感器，也没有明确标注哪个插座接了风扇。因此不能直接执行“让房间凉快”的指令。可选方案：如果你把风扇接在某个智能插座并告知我哪个插座是风扇，我可以帮你打开它；或者配对可控的空调/风扇或温控传感器后我就能执行该请求。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "已将床头较亮的灯调暗：米家智能台灯Lite (light.philips_cn_1061201010_lite_s_2) 从亮度 80 调整到 27（约为原亮度的三分之一）。另一盏灯 light.philips_cn_1061200910_lite_s_2 保持在亮度 3。如需调整到百分比亮度或调低/调亮另一盏，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "我无法确定。系统里有门窗接触传感器（例如 binary_sensor.isa_cn_blt_3_1md0u6qht0k00... 状态为 on，另一个为 off），但只有当前接触状态，没有与“我到家”的到达事件关联的人员到家/在家记录或传感器状态变化历史。因此不能断定你到家之后是否将门关上。你可以让我：1) 检查该门传感器在你到家时间段的历史记录（请告知大概到家时间或允许我查看历史）；2) 或者打开/配置到家存在检测（手机/蓝牙/门锁）以便今后自动判断。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "我找不到标记为“study”或“书房”的灯组或实体（实体列表中没有带有区域为 study / 名称为“书房”的灯）。设备本身支持亮度调节（light.turn_on 可设置 brightness 或 brightness_pct），且几盏灯（如 light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2 等）都支持调光，但我无法确定哪些属于“书房”。\n建议：请确认或指定书房中要控制的灯（给出实体 id 或告诉我哪些友好名称是书房的），我就能把这些灯全部打开并把亮度设为较暗（例如 brightness_pct: 10%）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "网关指示灯可以保持开启（lumi_cn_551385025 的 select.lumi_cn_551385025_mcn001_status_p_6_1 为 Open，number.lumi_cn_551385025_mcn001_indicator_brightness_p_6_3 为 100），但系统中没有明确名为“living room”或“客厅”的灯实体。现有的灯实体有米家台灯(light.philips_cn_1061201010/1061200910_lite_s_2)和若干 yeelink 灯泡(light.yeelink_cn_1162511951/2052/2153)，它们的 friendly_name 都是通用的“灯/灯泡”，无法确定哪一个是“客厅灯”。因此无法确定能否仅关闭“客厅灯”而保持网关灯开启。请指定要关闭的具体设备（实体ID或更明确的名称/位置）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "概述\n- 目标：当客厅有人活动时，保持（持续）点亮客厅灯；若在一段时间内无活动则熄灯。\n- 可用传感器（运动触发源）：\n  - event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n  - event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008\n  - event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008\n- 可控灯具（将被点亮/熄灭）：\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n  - light.philips_cn_1061200910_lite_s_2\n\n触发条件（推荐）\n- 触发器：任一上述 motion 传感器检测到“有运动”时触发。\n  说明：有的设备在系统中以二值实体（binary_sensor）存在，状态变为 on/off；有的则以短事件（event）形式出现。下面给出两种常见实现方式（任选其一，取决于你的系统中这些设备的实际实体类型）。\n\n动作与持久化策略（recommended）\n- 动作：将客厅灯全部打开到指定亮度/色温。建议亮度 60–80%（brightness_pct: 60–80）或 brightness: 180（0–255），色温可设为中性偏暖（例如 3000–4000 K），也可只开白光。\n- 持久化（保持点亮）：把自动化模式设为 restart（或在脚本里每次运动触发都重置 “熄灯倒计时”）。当再次检测到运动时，重置计时器，继续保持点亮；仅在连续 N 分钟（例如 5 分钟）无运动时才执行熄灯动作。\n- 建议无活动延迟：5 分钟（如需更节能可设为 2–3 分钟；若希望更稳妥可设为 8–10 分钟）。\n\n示例实现（Home Assistant YAML）\n说明：以下示例包含两种常见实现方法：A）传感器为 state/binary_sensor 的情况；B）传感器仅作为事件触发（短时 event）的情况。选择与你系统匹配的一种。\n\nA) 传感器为状态实体（binary_sensor），使用两个自动化：点亮 + 无运动 5 分钟后熄灯\n\n1) 点亮（发生运动时立即开灯，并重启自动化以重置延迟）\nalias: \"客厅 有人 → 开灯\"\ndescription: \"有人活动时打开客厅灯并重置熄灯倒计时\"\nmode: restart\ntrigger:\n  - platform: state\n    entity_id:\n      - event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n      - event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008\n      - event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008\n    to: 'on'\naction:\n  - service: light.turn_on\n    target:\n      entity_id:\n        - light.yeelink_cn_1162511951_mbulb3_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\n        - light.philips_cn_1061200910_lite_s_2\n    data:\n      brightness_pct: 70\n      kelvin: 3500\n\n2) 熄灯（当所有传感器在 5 分钟内都为 off）\nalias: \"客厅 无人 5min → 关灯\"\ndescription: \"当传感器在指定时间内均无动作则关灯\"\ntrigger:\n  - platform: state\n    entity_id:\n      - event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n      - event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008\n      - event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008\n    to: 'off'\n    for: '00:05:00'\ncondition:\n  - condition: or\n    conditions:\n      - condition: state\n        entity_id: light.yeelink_cn_1162511951_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512052_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512153_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.philips_cn_1061200910_lite_s_2\n        state: 'on'\naction:\n  - service: light.turn_off\n    target:\n      entity_id:\n        - light.yeelink_cn_1162511951_mbulb3_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\n        - light.philips_cn_1061200910_lite_s_2\n\nB) 传感器仅以事件形式出现（短时 event）：用 event 触发并在开灯后等待“无运动触发”来熄灯（可重置）\n\nalias: \"客厅 有人 → 开灯（事件方式）\"\ndescription: \"使用事件触发开灯，并在无更多事件时延时关灯（每次新事件都会重启自动化）\"\nmode: restart\ntrigger:\n  - platform: event\n    event_type: event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n  - platform: event\n    event_type: event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008\n  - platform: event\n    event_type: event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008\naction:\n  - service: light.turn_on\n    target:\n      entity_id:\n        - light.yeelink_cn_1162511951_mbulb3_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\n        - light.philips_cn_1061200910_lite_s_2\n    data:\n      brightness_pct: 70\n      kelvin: 3500\n  - wait_for_trigger:\n      - platform: event\n        event_type: event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n      - platform: event\n        event_type: event.xiaomi_cn_blt_3_2gunh8471d911_pir1_motion_detected_e_2_1008\n      - platform: event\n        event_type: event.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_motion_detected_e_2_1008\n    continue_on_timeout: false\n    # 如果等待到新事件则自动重启（mode: restart）\n  - delay: '00:05:00'  # 如果在 5 分钟内没有新的事件，继续下一步\n  - service: light.turn_off\n    target:\n      entity_id:\n        - light.yeelink_cn_1162511951_mbulb3_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\n        - light.philips_cn_1061200910_lite_s_2\n\n（注：上例逻辑为：检测到事件→开灯→等候 5 分钟无新事件→关灯。mode: restart 将保证每次新事件都会中断当前流程并重启，从而实现“持续”点亮）\n\n其他建议与增强\n- 仅在夜间或照度低时才自动开灯：在触发后增加条件（例如 sun: below_horizon 或 使用 light sensor 的当前照度值 < 某阈值）。\n- 若希望更平滑体验：开灯时先设置较低亮度（20–40%），若有人持续活动再升到 60–80%。\n- 若希望避免误触发：可在触发后判断当前光照或时间，或使用多个传感器同时触发（但会增加复杂度）。\n\n总结（简短）\n- 触发：任一列出的 motion 传感器检测到运动时触发。\n- 动作：打开列出的客厅灯（设置亮度/色温），并启用“无动作 N 分钟”后熄灯的逻辑。\n- 推荐配置：mode: restart + 无人延迟 5 分钟 → 可确保“有人活动时持续点亮，没人时自动熄灭”。\n\n如需，我可以：\n- 根据你 Home Assistant 中这些设备的具体实体类型（state/binary_sensor 还是 event）生成可直接粘贴的完整 YAML；\n- 或将自动化调整为仅在夜间触发、改变亮度/色温策略、或把某个灯设为主灯而把其它灯作为辅助。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "建议的传感器触发条件与设备动作（中文说明）：\n\n目标：有人在卧室且环境较暗时打开飞利浦灯；在无人或变亮时关闭（保持持续性）。\n\n使用到的实体：\n- 动作触发：event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008（PIR 触发）\n- 光照传感器：sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005（照度，单位 lux）\n- 灯：light.philips_cn_1061200910_lite_s_2\n\n触发与条件（建议）：\n- 触发器：当 PIR 检测到有人（motion detected）时触发。\n- 条件（必须同时满足）：照度 < 50 lux（夜间/暗环境阈值，建议范围 10–80 lux，可根据你房间和个人喜好微调，推荐 30–50 lux）。\n\n动作（进入“有人且暗”情况时）：\n- 打开 light.philips_cn_1061200910_lite_s_2\n- 建议设置亮度：brightness_pct: 40–60（夜间睡前使用推荐 30–50%，若需要更亮可提高）\n- 建议色温：偏暖（如果支持，可设置 color_temp 或 kelvin，如 2700K）\n- 可设置 transition（渐变时间）为 0.5–1s，让开灯更平滑。\n\n保持/持续策略（避免灯反复闪烁）：\n- 关灯条件（建议两种条件任一触发就关）：\n  1) 一段时间内没有检测到运动（例如连续 5 分钟无动作）→ 关灯。\n  2) 照度升高至 >= 70 lux（外界变亮，例如日出或开了其它灯）→ 关灯。\n- 当有人持续活动时（PIR 不断触发），不要执行关灯动作——因此要用“无动作持续 X 分钟”作为关灯触发。\n\n示例（Home Assistant 风格的伪 YAML 自动化示例）：\n\n- alias: \"卧室有人且暗时打开灯\"\n  trigger:\n    - platform: state\n      entity_id: event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n      to: 'on'\n  condition:\n    - condition: numeric_state\n      entity_id: sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005\n      below: 50\n  action:\n    - service: light.turn_on\n      target:\n        entity_id: light.philips_cn_1061200910_lite_s_2\n      data:\n        brightness_pct: 50\n        transition: 1\n        # 如果支持色温或 kelvin，可加：\n        # kelvin: 2700\n  mode: single\n\n- alias: \"卧室无人或变亮时关灯\"\n  trigger:\n    - platform: state\n      entity_id: event.xiaomi_cn_blt_3_1ftnm7360c800_pir1_motion_detected_e_2_1008\n      to: 'off'\n      for: '00:05:00'   # 5 分钟无人后关灯\n    - platform: numeric_state\n      entity_id: sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005\n      above: 70          # 变亮时也关灯\n  action:\n    - service: light.turn_off\n      target:\n        entity_id: light.philips_cn_1061200910_lite_s_2\n  mode: single\n\n可调项与推荐：\n- 照度阈值：夜间更暗可降低阈值（如 20–30 lux），若希望在傍晚就开灯可提高阈值（如 80 lux）。\n- 关灯延时：卧室建议 3–10 分钟（避免频繁开关），若为走廊可用较短时间。\n- 亮度和色温：夜间建议偏暖、适中亮度以免影响睡眠。\n\n注意事项：\n- 上面示例用到的 motion 实体为 event 开头（部分设备以事件形式上报），在你的 Home Assistant 实例中该实体可能是 binary_sensor 或 event 类型，请在实际配置时以系统展示的实体 ID 与状态（on/off）为准。若 motion 是事件类型（非状态），请改用 event 触发器或对应的 binary_sensor 实体。\n\n需要我把上述伪代码转换为你当前 Home Assistant 可直接导入的 YAML（我可以先读取这些实体的当前状态以确认 motion 的实际状态类型并生成精确的 automation），我可以继续帮你生成并安装。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "Automation summary\n- Goal: When it gets dark, detect if any window is open and remind you. If the window remains open, remind repeatedly (persistent reminders) until it is closed (or after a configurable number of retries).\n\nAvailable entities (from your list)\n- Window contact sensors:\n  - binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2  (window A)\n  - binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2  (window B)\n- Illumination (lux) sensors:\n  - sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005  (light sensor A)\n  - sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005  (light sensor B)\n- Output (TTS / notify):\n  - media_player.xiaomi_cn_701074704_l15a\n  - notify.xiaomi_cn_701074704_l15a_play_text_a_7_3\n\nSuggested trigger condition\n- Trigger when either illumination sensor goes below a chosen lux threshold (example: 50 lux) for a short duration (to avoid false triggers). Example trigger: numeric_state below: 50, for: 00:02:00.\n\nPrimary condition\n- When the darkness trigger fires, check if any window contact sensor is open (state == \"on\"). If none open, do nothing.\n\nPersistent reminder behavior (actions)\n- If at least one window is open when it gets dark, do the following:\n  1. Optionally set media player volume (so reminder is audible).\n  2. Send a TTS / play-text notification to the Xiaomi speaker: \"It's getting dark and a window is open. Please close it.\" (customizable).\n  3. Wait a configurable interval (example: 10 minutes).\n  4. Repeat the reminder while any window remains open, until windows are closed. Optionally limit to a maximum number of reminders or until sunrise.\n\nExample Home Assistant automation (YAML)\nNote: adjust lux threshold, delay and max_retries to your preference. The YAML below uses illumination threshold 50 lux and 10-minute reminder interval.\n\nalias: Remind if window is open when it gets dark (persistent)\ntrigger:\n  - platform: numeric_state\n    entity_id:\n      - sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005\n      - sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_illumination_p_2_1005\n    below: 50\n    for: '00:02:00'\ncondition:\n  - condition: or\n    conditions:\n      - condition: state\n        entity_id: binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2\n        state: 'on'      # open\n      - condition: state\n        entity_id: binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2\n        state: 'on'      # open\naction:\n  - service: media_player.volume_set\n    data:\n      entity_id: media_player.xiaomi_cn_701074704_l15a\n      volume_level: 0.6\n  - repeat:\n      while:\n        - condition: or\n          conditions:\n            - condition: state\n              entity_id: binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2\n              state: 'on'\n            - condition: state\n              entity_id: binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2\n              state: 'on'\n      sequence:\n        - service: notify.xiaomi_cn_701074704_l15a_play_text_a_7_3\n          data:\n            message: \"It's getting dark and a window is open. Please close it.\"\n        - delay: '00:10:00'\n\nNotes and recommendations\n- Lux threshold: 50 lux is a reasonable starting point for \"gets dark\" but you can change to 30–100 depending on your comfort.\n- Debounce with for: '00:02:00' avoids spurious short drops in lux.\n- Reminder interval: default above is 10 minutes. Modify delay to your preference.\n- Max retries / safety: the example loops until windows closed. If you prefer an upper limit (e.g., remind only 6 times), add a counter (input_number or helper) or use repeat with a count and inside skip sending if windows are closed.\n- Alternative trigger: use sun.sun (sunset) as trigger if you prefer fixed sunset instead of lux sensors.\n- Message customization: include which window is open by using a template to check states and include sensor-friendly names.\n\nExample template message (optional)\nYou can replace the notify message with a template to list open windows, e.g.:\n\"{{ 'Window A is open' if is_state('binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2','on') else '' }} {{ 'Window B is open' if is_state('binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2','on') else '' }}. It's getting dark — please close it.\"\n\nIf you want, I can:\n- Produce a ready-to-import automation YAML tailored for sunrise/sunset instead of lux, or\n- Add a max-reminder counter helper and provide the exact YAML that implements a hard retry limit.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "Summary of automation (persistence requirement):\n\nSelected sensor (living room window):\n- binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2\n\nTrigger condition:\n- The above binary_sensor state becomes 'on' (open) and remains 'on' continuously for 00:30:00.\n- If sensor returns to 'off' (closed) before 30 minutes, no notification is sent.\n\nAction when condition met:\n- Call notify.xiaomi_cn_701074704_l15a_play_text_a_7_3 to send/play the message: \"Living room window has been open for over 30 minutes.\"\n- Also use media_player.xiaomi_cn_701074704_l15a to speak the same message (optional if the notify service already plays sound on the device).\n\nImplementation notes / example automation (Home Assistant-style):\n- Trigger: platform: state, entity_id: binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2, to: 'on', for: '00:30:00'\n- Condition: (none required) — automatic cancel if sensor goes 'off' within 30 minutes\n- Actions:\n  1) service: notify.xiaomi_cn_701074704_l15a_play_text_a_7_3\n     data: { message: \"Living room window has been open for over 30 minutes.\" }\n  2) service: media_player.volume_set (optional) + media_player.play_media or TTS service on media_player.xiaomi_cn_701074704_l15a to speak the same message\n\nOptional enhancements:\n- Repeat reminder every N minutes while still open (e.g., notify again every 30 minutes) by adding a loop or additional automations.\n- Add time-of-day condition to suppress notifications at night.\n\nStatus: I have registered a persistent condition watcher for \"binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2 open > 30 minutes\" and will notify using the provided notify/media_player devices when it occurs.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "分析与方案：\n\n- 确定的床头灯（触发器）：light.yeelink_cn_1162511951_mbulb3_s_2（床头灯）。\n- 需要被关闭的其他灯：\n  - light.philips_cn_1061200910_lite_s_2\n  - light.philips_cn_1061201010_lite_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n\n触发条件（传感器触发）:\n- 当实体 light.yeelink_cn_1162511951_mbulb3_s_2 的状态变为 \"on\"（开启）且列表中任意一盏其他灯当前为 \"on\" 时，触发动作。\n\n动作（在触发时应如何调整设备）:\n- 调用服务 light.turn_off，关闭以上列出的所有其他灯，保证床头灯为唯一点亮的灯。\n- 该操作应立即执行（无延迟），模式可设置为单次执行以避免并发冲突。\n\n建议的 Home Assistant 自动化示例（YAML）：\n\nalias: 床头灯开启时关闭其他灯\ndescription: 当床头灯开启时，关闭房间内的其他灯，保持床头灯独占亮灯\ntrigger:\n  - platform: state\n    entity_id: light.yeelink_cn_1162511951_mbulb3_s_2\n    to: 'on'\ncondition:\n  - condition: or\n    conditions:\n      - condition: state\n        entity_id: light.philips_cn_1061200910_lite_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.philips_cn_1061201010_lite_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512052_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512153_mbulb3_s_2\n        state: 'on'\naction:\n  - service: light.turn_off\n    target:\n      entity_id:\n        - light.philips_cn_1061200910_lite_s_2\n        - light.philips_cn_1061201010_lite_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\nmode: single\n\n备注与可选增强：\n- 若希望仅在夜间生效，可在 condition 中加入时间或日出/日落判断。\n- 若希望保留某些灯（例如夜灯）不被关闭，可从关闭列表中排除该实体或添加额外条件。\n- 若希望平滑过渡，可在关闭前先将这些灯调低亮度或使用 transition 参数。\n\n我已注册条件监测：当床头灯打开且任一其他灯仍然点亮时，会自动执行关闭其他灯的动作，保证床头灯独占亮灯。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "建议方案（中文）：\n\n目标：在 5 分钟内所有 PIR 都检测到“无人”时，关闭所有灯。\n\n设备清单（将被操作/监听）：\n- 运动时长传感器（持续无运动时间）:\n  - sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024\n  - sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024\n  - sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024\n- 灯：\n  - light.philips_cn_1061200910_lite_s_2\n  - light.philips_cn_1061201010_lite_s_2\n  - light.yeelink_cn_1162511951_mbulb3_s_2\n  - light.yeelink_cn_1162512052_mbulb3_s_2\n  - light.yeelink_cn_1162512153_mbulb3_s_2\n\n触发条件（建议实现方式）\n- 当“所有”PIR 的“无运动持续时间”都达到或超过 5 分钟时，触发关闭灯操作。\n\n实现细节与示例（Home Assistant 推荐做法）：\n1) 使用 template binary_sensor 汇总三个传感器，判断是否都 >= 5 分钟（300 秒）。\n\n示例 binary_sensor（放在 configuration.yaml 或 templates 处）：\n\nbinary_sensor:\n  - platform: template\n    sensors:\n      no_motion_all_5min:\n        friendly_name: \"No motion (all) 5 min\"\n        value_template: >-\n          {% set s1 = states('sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_no_motion_duration_p_2_1024') %}\n          {% set s2 = states('sensor.xiaomi_cn_blt_3_2gunh8471d911_pir1_no_motion_duration_p_2_1024') %}\n          {% set s3 = states('sensor.xiaomi_cn_blt_3_3hvoj9582ea22_pir1_no_motion_duration_p_2_1024') %}\n\n          {# helper to convert duration-like strings (HH:MM:SS) or numeric seconds to seconds #}\n          {% macro to_seconds(s) -%}\n            {% if s in ['unknown','unavailable',''] %}\n              -1\n            {% elif s is string and s | regex_search('^\\\\d+:\\\\d{2}:\\\\d{2}$') %}\n              {{ (s.split(':')[0] | int) * 3600 + (s.split(':')[1] | int) * 60 + (s.split(':')[2] | int) }}\n            {% else %}\n              {{ s | float(default=-1) }}\n            {% endif %}\n          {%- endmacro %}\n\n          {{ to_seconds(s1) >= 300 and to_seconds(s2) >= 300 and to_seconds(s3) >= 300 }}\n\n说明：上面的模板兼容两种常见格式：HH:MM:SS 或 以秒为数值的 string。如果你的传感器输出不同格式，请根据实际格式调整解析逻辑。\n\n2) 使用 automation，当该二元传感器变为 on 时，关闭所有灯。并加一个条件：只有在至少一盏灯为开的情况下才执行（避免不必要调用）。\n\n示例 automation：\n\nalias: Turn off all lights when no motion for 5 minutes\ntrigger:\n  - platform: state\n    entity_id: binary_sensor.no_motion_all_5min\n    to: 'on'\ncondition:\n  - condition: or\n    conditions:\n      - condition: state\n        entity_id: light.philips_cn_1061200910_lite_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.philips_cn_1061201010_lite_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162511951_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512052_mbulb3_s_2\n        state: 'on'\n      - condition: state\n        entity_id: light.yeelink_cn_1162512153_mbulb3_s_2\n        state: 'on'\naction:\n  - service: light.turn_off\n    target:\n      entity_id:\n        - light.philips_cn_1061200910_lite_s_2\n        - light.philips_cn_1061201010_lite_s_2\n        - light.yeelink_cn_1162511951_mbulb3_s_2\n        - light.yeelink_cn_1162512052_mbulb3_s_2\n        - light.yeelink_cn_1162512153_mbulb3_s_2\n\n可选增强：\n- 加入时间段限制（例如夜间才生效）。\n- 加入“例外”房间/灯（例如某盏常亮的夜灯不要关闭）。\n- 将模板二元传感器设为 restore: true（若支持）或将 automation 设为持久启用，以便重启后仍然生效。\n- 添加日志记录或通知以便调试（例如在第一次触发时发送一次通知）。\n\n测试建议：\n- 临时把 300 改为 00:00:10（10 秒）来快速验证 automation 行为；确认一切正常后再改回 5 分钟。\n- 在 Home Assistant 的开发者工具中测试模板（Template），确认 to_seconds 解析正确并返回布尔值。\n\n如果你希望我直接生成 ready-to-paste 的 YAML 文件（含注释）或把二元传感器改成另一种实现方式（例如直接用 template trigger 而非创建 binary_sensor），告诉我你的偏好/当前传感器的输出样例（如字符串格式：是 \"00:05:00\" 还是 \"300\" 等），我可以据此调整模板以保证可靠性。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "建议的自动化方案（中文）：\n\n设备对应假设：\n- desk lamp（书房台灯）假设为：light.philips_cn_1061201010_lite_s_2（如果不是，请替换为正确的灯实体）\n- 另一个灯：light.philips_cn_1061200910_lite_s_2\n- 音乐播放器：media_player.xiaomi_cn_701074704_l15a\n\n触发器（传感器触发条件）：\n- 当书房台灯的状态从 off 变为 on（即台灯被打开时）触发。\n\n执行动作（如何调整设备状态/设置）：\n- 如果音乐播放器当前正在播放（state == \"playing\"），则发送停止/暂停播放的命令，使音乐停止。\n- 可选策略：\n  - media_player.media_pause：只是暂停，便于以后恢复。\n  - media_player.media_stop：停止播放（更彻底）。\n  - media_player.turn_off：把播放器关机（如果支持且需要）。\n\n示例 Home Assistant 自动化（YAML）：\n- alias: \"书房台灯打开时停止音乐\"\n  description: \"当书房台灯打开时停止播放音乐\"\n  trigger:\n    - platform: state\n      entity_id: light.philips_cn_1061201010_lite_s_2   # 如果实际不是此实体，请替换\n      from: 'off'\n      to: 'on'\n  condition:\n    - condition: state\n      entity_id: media_player.xiaomi_cn_701074704_l15a\n      state: 'playing'   # 可选：只有正在播放时才执行\n  action:\n    - service: media_player.media_stop   # 或 media_player.media_pause / media_player.turn_off\n      target:\n        entity_id: media_player.xiaomi_cn_701074704_l15a\n  mode: single\n\n说明与建议：\n- 若您更希望能恢复音乐，建议使用 media_player.media_pause 而不是 turn_off。\n- 若不需要检查播放器状态，可以删除 condition 部分，触发时总是发送停止命令。\n- 如果台灯实体不是我假设的那个，请把 trigger.entity_id 改为实际台灯的实体 ID（在给定清单中可能是另一个 light.philips_cn_... 实体）。\n- 将此自动化启用并保存，即为“持久化”行为：每次台灯打开都会自动执行停止音乐操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "假设与对应关系\n- 床头灯（bedside）: light.yeelink_cn_1162511951_mbulb3_s_2\n- 卧室主灯（bedroom）: light.philips_cn_1061200910_lite_s_2\n（若对应关系不同，请把实体 ID 互换）\n\n目标\n当床头灯亮度低于 10% 时，持续把卧室主灯调暗并调为暖色（即“dim and warm up”）。\n\n触发条件建议\n- 触发器：监测床头灯的 brightness_pct 属性。\n- 触发阈值：brightness_pct < 10。\n- 防抖/持久：要求该状态保持一定时间（例如 10 秒）再触发，避免短时波动误触发。\n\n动作与持久化策略\n- 在触发后，把卧室灯设为较低亮度（建议 brightness_pct = 15~25）并设置为暖色（例如 2200–2700 K），并使用短过渡（transition）让变化柔和。\n- 为了“持久”（即只要床头灯保持 <10% 就持续保证卧室灯处于该暗暖状态），使用一个循环（repeat / wait）每隔一段时间（如 30s）重复设置，直到床头灯亮度回到 ≥10%。\n- 可选：如果卧室灯处于关闭状态，可以选择把它打开并应用暗暖设置；也可以限制仅在卧室灯已打开时才调整（取决于偏好）。\n- 可选恢复：当床头灯回到 ≥10% 时，选择恢复卧室灯到之前的状态（需事先保存状态/属性），或恢复为默认场景/亮度。\n\n示例（Home Assistant YAML）\n（默认行为：当床头灯 brightness_pct < 10 且持续 10 秒，循环保持卧室灯为暗暖，直到床头灯 ≥ 10）\n\nalias: Persist: Dim & warm bedroom when bedside <10%\ntrigger:\n  - platform: numeric_state\n    entity_id: light.yeelink_cn_1162511951_mbulb3_s_2\n    attribute: brightness_pct\n    below: 10\n    for: '00:00:10'\naction:\n  - repeat:\n      while:\n        - condition: template\n          value_template: \"{{ state_attr('light.yeelink_cn_1162511951_mbulb3_s_2','brightness_pct')|default(0)|int < 10 }}\"\n      sequence:\n        - service: light.turn_on\n          target:\n            entity_id: light.philips_cn_1061200910_lite_s_2\n          data:\n            brightness_pct: 15\n            kelvin: 2200\n            transition: 5\n        - delay: '00:00:30'\nmode: restart\n\n说明与调优建议\n- brightness_pct: 15 可根据喜好调整（10–25% 常用于夜间柔和照明）。\n- kelvin: 2200 是较暖的色温，也可以用 2700（更常见的暖白）。部分灯具使用 color_temp（mired）或 hs_color，若该灯不支持 kelvin，请改用可支持的属性。\n- transition: 5 让亮度/色温变化更平滑。\n- repeat 的 delay 决定了“巡检”频率（30 秒为示例），可改为 10–60 秒。\n- 若希望在床头灯恢复后自动还原卧室灯到触发前状态，需要在触发前保存卧室灯状态（scene.create 或使用 input_* 保存），并在床头灯 >=10 时恢复。\n\n如果你需要，我可以：\n- 把上面的 Automation 转换为你系统中完全可用的 YAML（包括保存/恢复原状态的实现），或\n- 把逻辑改为“仅在卧室灯已打开时才调整”或“即使关闭也打开并调整”版本。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "我在当前设备列表中找到了媒体设备 media_player.xiaomi_cn_701074704_l15a（属性 is_volume_muted 可用，并且 media_player.volume_mute 服务可调用），但没有任何 domain 为 fan 的实体，因此无法直接对“风扇”执行 fan.turn_off。注意系统确实支持 fan.turn_off 服务——但前提是要有 fan 实体。可选替代方案：如果风扇是插在可控插座/开关上（例如列表中的 switch.cuco_cn_269067598_cp1_on_p_2_1 / switch.cuco_cn_269067699_cp1_on_p_2_1），可以把自动化改为在音箱静音时调用 switch.turn_off 来关风扇。要实现原始需求，请添加/暴露一个 fan 实体，或确认并使用控制风扇的开关实体，然后我可以给出具体的自动化配置。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "已为你开始播放音乐：小米AI音箱已取消静音，音量设置为60%，并已开始播放（当前状态：playing）。需要我调整音量、播放指定歌曲/播放列表或停止播放吗？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "我已检查可用设备（light.philips_cn_1061200910_lite_s_2，light.philips_cn_1061201010_lite_s_2）。两者当前状态均为“off”（已关）。因此“Little Book Light”已经是关闭状态，无需再执行关闭操作。需要我为你确认是哪一个实体对应“Little Book Light”或对其中某一盏灯执行其它操作吗？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "已为您准备睡眠场景，操作结果如下：\n\n已成功：\n- 关闭两盏米家主灯（light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2）。\n- 开启两盏米家夜灯模式开关（switch.philips_cn_1061200910_lite_night_light_en_p_3_4、switch.philips_cn_1061201010_lite_night_light_en_p_3_4）。\n- 将一组延时关灯（number.philips_cn_1061200910_lite_dvalue_p_3_1）设置为 10 秒（成功）。\n- 将三盏 Yeelight 台灯（light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2）点亮为低亮度（已打开）。\n- 关闭两个插座（switch.cuco_cn_269067598_cp1_on_p_2_1、switch.cuco_cn_269067699_cp1_on_p_2_1）。\n\n未完全成功 / 需要确认：\n- 将另一只米家灯的延时值（number.philips_cn_1061201010_lite_dvalue_p_3_1）设置为 10 秒时发生错误，未生效。\n- 尝试关闭媒体设备（media_player.xiaomi_cn_701074704_l15a）时出现 400 错误，未成功关闭（可能已处于关闭状态或服务调用有问题）。\n\n需要我现在重试这两个未完成的操作，或做其它如播放睡眠音乐、定时关闭灯、设置早晨闹钟等吗？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "已将“小米AI音箱（第二代） 音箱”的音量降低到约 2%。如果需要静音、恢复到通话适合的其他音量（例如 5%、10%）或调整其他设备，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "大部分设备可以被关闭：所有可控的 light 和 switch（例如 Philips 灯、Yeelink 灯、插座 switch 等）都有 turn_off 服务，可以关闭；也可停止/静音媒体播放（media_player）的一些操作。但检测到 media_player（小米 AI 音箱，entity: media_player.xiaomi_cn_701074704_l15a）并不包含“turn_off”（所需的 supported_features 256 未启用），无法通过常规关机服务切断其电源。建议的替代方案：对该音箱执行 media_stop 或 volume_mute（已静音），或手动断电/在设备端关闭电源，或确认设备集成是否支持远程关闭后再执行完全关机。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "已为阅读模式调整灯光：五盏灯已全部打开并设为亮度70%。三盏 Yeelink 灯（light.yeelink_cn_1162511951/2052/2153）已设置色温 4000K（中性偏暖），三盏 Philips 灯（light.philips_cn_1061200910/1061201010）因仅支持亮度已设为70%并启用预设效果（mode 1）。如需更暖（例如3000K）、更冷（例如5000K）、更亮或更暗，或只调整其中某一盏，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "当前未找到明确名为“living room light”的灯实体，也没有已保存的“我的最爱色温”值。虽然系统中有支持 color_temp 的灯（例如多个 yeelink 灯支持 color_temp_kelvin），且 light.turn_on 服务支持 color_temp_kelvin 参数，技术上可实现，但在当前信息下无法自动把“我的最爱色温”应用到指定的客厅灯。请告诉我哪个灯是“客厅灯”或直接给出/确认你要的色温值，我就能设置。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "欢迎回家！我已为你执行到家场景：\n\n- 门窗传感器：状态为 off（device_class=door，表示已关闭）。\n- 灯光：已打开以下灯并设置为 80% 亮度：\n  • light.yeelink_cn_1162511951_mbulb3_s_2\n  • light.yeelink_cn_1162512052_mbulb3_s_2\n  • light.yeelink_cn_1162512153_mbulb3_s_2\n  • light.philips_cn_1061201010_lite_s_2\n  • light.philips_cn_1061200910_lite_s_2\n- 插座/开关：已打开两个开关：\n  • switch.cuco_cn_269067598_cp1_on_p_2_1\n  • switch.cuco_cn_269067699_cp1_on_p_2_1\n- 音箱（小米 AI 音箱）：已打开并开始播放，音量设置为 30%。\n\n说明：在执行过程中有一次接口返回“400 Bad Request”的提示，但最终设备均已处于目标状态，音箱也在播放。如果你想我调整亮度、改播放的音乐或静音/暂停音箱，或执行其它到家动作，请告诉我。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "网关当前已连接到你的网络（sensor.lumi_cn_551385025_mcn001_access_mode 显示“2.4G 无线”，并有 IP 192.168.43.141，Wi‑Fi SSID 为 shuashua），所以“如果网关未连接则执行关灯再开灯”的触发条件不满足。系统确实可以控制灯（存在 light 实体且支持 turn_off/turn_on 服务），但按你设定的条件现在不会执行该动作。如果你想立即执行关灯再开灯来吓唬入侵者，请明确要求直接执行而不是依赖该条件。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "我已经为你布置了基础的万圣节气氛，操作如下：\n\n- 两盏 Philips 台灯（light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2）已切到“mode 2”特效并降到较低亮度（营造闪烁/幽暗效果）。\n- 三盏 Yeelink 灯泡（light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2）已调为更暖的色温（已降到可用的最低暖光 2700K）并调低亮度（约30%），营造烛光般的暖橙色氛围。\n- 小爱音箱（media_player.xiaomi_cn_701074704_l15a）已取消静音并将音量设置为 25%，准备播放万圣节音乐或恐怖音效。\n- 你家的两个插座开关（switch.cuco_cn_269067598_cp1_on_p_2_1、switch.cuco_cn_269067699_cp1_on_p_2_1）当前处于开启，可为灯饰/道具供电。\n- 房内已有三个人体感应事件设备可用于触发联动（motion sensors），可实现有人经过时触发闪烁灯光或播放惊吓音效。\n\n还可以为你做的事情（请选择或回复）：\n1) 现在开始播放“万圣节恐怖音乐/音效”播放列表（我会用小爱音箱播放）。\n2) 启用“有人经过即触发”模式：当任一人体传感器检测到移动时，让台灯短时闪烁并播放惊吓音效。请确认是否启用以及是否需要仅在夜间生效（比如 18:00–24:00）。\n3) 增强灯光效果：将 Philips 灯做频闪/更强烈的鬼屋灯效（我可以循环切换颜色或更低亮度脉冲）。\n4) 还原设置：结束时恢复到原来状态（恢复灯光亮度/音量/静音、关闭特效）。\n\n告诉我你想接着做哪一项，我来继续设置。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "我在当前实体列表中未找到名为“atmosphere”或包含“atmosphere”的分组（group）或设备，所以无法确认要关闭哪些设备，因而无法直接执行“Turn off the atmosphere group devices”。可行的替代方案：\n1) 请提供准确的组名（例如 group.atmosphere）或要关闭的设备清单；\n2) 如果你是想关闭所有氛围灯，我可以关闭当前为“on”的这些灯：light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2。这些设备当前状态为 on，且均支持被关闭。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "你这句是陈述“我要在客厅沙发小睡”，并不是给出要设备执行的指令，所以当前设备不会自动去执行任何动作。如果你的意思是“帮我把客厅调成适合小睡的状态”，我可以执行——当前设备可用情况：客厅有多盏可调光的灯（多盏 yeelink 灯 正在开，亮度 76），米家台灯也在开且夜间模式已启用（亮度很低），音箱处于静音（已静音、音量 0.1），并有多个运动传感器与门窗传感器可用于检测有人/无人。你可以这样下达具体指令，例如“把客厅灯调暗到10%”、“把所有灯关掉”、“把音箱取消静音并播放轻音乐”或“设一个 30 分钟的小睡闹钟”，我就能去执行。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "I’ve set up a comfortable reading environment for you:\n- Turned off the two Philips Lite lights.\n- Set the Yeelight bulb to warm white (≈3000 K) at 60% brightness for comfortable reading.\n- Set the Philips Lite auto-off timer to 1 hour (3600 s) so lights will turn off automatically.\n- Disabled the Philips “night light” mode switch.\n- Unmuted the Xiaomi speaker and set volume to 15%.\n\nWould you like me to: play soft/ambient music or white noise on the speaker, change the brightness or color temperature, or set a different auto-off / sleep timer? If yes, tell me what you prefer and I’ll apply it.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "我无法找到名称中带有“星”或“stars”的灯具，无法确定要关的是哪盏灯。当前系统中可控的相关灯包括：\n- 米家智能台灯Lite  灯 (light.philips_cn_1061200910_lite_s_2) — 当前状态：on\n- 米家智能台灯Lite  灯 (light.philips_cn_1061201010_lite_s_2) — 当前状态：on\n- 灯泡  灯 (light.yeelink_cn_1162511951_mbulb3_s_2 / light.yeelink_cn_1162512052_mbulb3_s_2 / light.yeelink_cn_1162512153_mbulb3_s_2) — 当前状态：on\n请告诉我该灯的准确名称或所在位置（例如“卧室带星星贴纸的台灯”或直接说实体ID），我就能帮您关闭。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "Current gateway Do-Not-Disturb settings (from the gateway):\n- Status: Open\n- Effective time: 21:00-09:00\n- Indicator brightness: 100%\n\nHow would you like to configure it? Please tell me the three items (or pick a preset):\n1) Status: Open or Close\n2) Effective time: format HH:MM-HH:MM (e.g., 22:00-07:00)\n3) Indicator brightness: 1–100 (%)\n\nPresets you can choose quickly:\n- Night (suggested): Open, 22:00-07:00, brightness 0% (indicator off)\n- Sleep: Open, 23:00-08:00, brightness 5%\n- Off: Close, -- (time ignored), brightness 100%\n\nReply with your desired configuration (for example: “Apply: Open, 23:00-08:00, 5%”) and I will apply it.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "用户只是感叹天气，没有下达任何可执行的设备指令，因此当前设备无法执行。请明确要我做什么，例如打开窗户、调节空调温度或开启相关设备。",
+            "是否正确": false
+        }
+    ]
+}

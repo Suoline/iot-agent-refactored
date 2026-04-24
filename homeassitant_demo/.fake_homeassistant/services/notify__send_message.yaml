@@ -1,0 +1,27 @@
+domain: notify
+service: send_message
+name: Send a notification message
+description: Sends a notification message.
+fields:
+  message:
+    required: true
+    name: Message
+    description: Your notification message.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  title:
+    required: false
+    name: Title
+    description: Title for your notification message.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - notify
+handler: builtin:notify.send_message
+supports_response: false

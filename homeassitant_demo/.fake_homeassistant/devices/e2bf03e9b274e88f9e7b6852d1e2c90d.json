@@ -1,0 +1,48 @@
+{
+  "device_id": "e2bf03e9b274e88f9e7b6852d1e2c90d",
+  "name": "米家智能台灯Lite",
+  "name_by_user": "米家智能台灯Lite",
+  "area_id": "3108946409de_jia_ke_ting",
+  "manufacturer": "飞利浦",
+  "model": "philips.light.lite",
+  "model_id": null,
+  "sw_version": "2.0.2_0199",
+  "hw_version": null,
+  "serial_number": null,
+  "identifiers": [
+    [
+      "xiaomi_home",
+      "cn_1061201010"
+    ]
+  ],
+  "connections": [],
+  "configuration_url": "https://home.mi.com/webapp/content/baike/product/index.html?model=philips.light.lite",
+  "via_device_id": null,
+  "entities": [
+    "button.philips_cn_1061201010_lite_brightness_down_a_3_1",
+    "button.philips_cn_1061201010_lite_brightness_up_a_3_2",
+    "button.philips_cn_1061201010_lite_toggle_a_2_1",
+    "event.philips_cn_1061201010_lite_notify_you_e_3_1",
+    "light.philips_cn_1061201010_lite_s_2",
+    "number.philips_cn_1061201010_lite_dvalue_p_3_1",
+    "number.philips_cn_1061201010_lite_notify_time_p_3_3",
+    "switch.philips_cn_1061201010_lite_night_light_en_p_3_4",
+    "switch.philips_cn_1061201010_lite_notify_switch_p_3_2"
+  ],
+  "metadata": {
+    "config_entries": [
+      "03M9ZSUATZIEH2U3048VCI34VX"
+    ],
+    "config_entries_subentries": {
+      "03M9ZSUATZIEH2U3048VCI34VX": [
+        null
+      ]
+    },
+    "created_at": "2025-10-19T08:38:07.849896+00:00",
+    "disabled_by": null,
+    "entry_type": null,
+    "labels": [],
+    "modified_at": "2025-11-04T08:18:03.365096+00:00",
+    "primary_config_entry": "03M9ZSUATZIEH2U3048VCI34VX"
+  }
+}

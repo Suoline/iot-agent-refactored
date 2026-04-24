@@ -1,0 +1,14 @@
+domain: media_player
+service: volume_up
+name: Turn up volume
+description: Turns up the volume.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 4
+    - 1024
+handler: builtin:media_player.volume_up
+supports_response: false

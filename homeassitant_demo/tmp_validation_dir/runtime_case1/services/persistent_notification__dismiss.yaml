@@ -1,0 +1,16 @@
+domain: persistent_notification
+service: dismiss
+name: Dismiss
+description: Deletes a notification from the notifications panel.
+fields:
+  notification_id:
+    required: true
+    name: Notification ID
+    description: ID of the notification to be deleted.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

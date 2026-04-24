@@ -1,0 +1,10 @@
+domain: homeassistant
+service: turn_off
+name: Generic turn off
+description: Generic action to turn devices off under any domain.
+fields: {}
+target:
+  entity:
+  - {}
+handler: builtin:homeassistant.turn_off
+supports_response: false

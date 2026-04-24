@@ -1,0 +1,8 @@
+domain: person
+service: reload
+name: Reload
+description: Reloads persons from the YAML-configuration.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

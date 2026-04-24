@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 21,
+        "正确率": "42.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "本次任务执行情况：已成功获取智能路由器的网络状态，包括IP地址、WiFi网络名称和网络变化状态。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "所有灯都开着。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "好的，所有设备均已成功关闭。\n- 设备ID \"31ae92d8a163d77f8d6a5741c0d1b89c\"：成功关闭。\n- 设备ID \"e2bf03e9b274e88f9e7b6852d1e2c90d\"：成功关闭。\n- 设备ID \"164c1a92b8ce9cda0e2a8c13440b4722\"：成功关闭。\n- 设备ID \"b75d2b03c9dfaebf1f3b9d24551c5833\"：成功关闭。\n- 设备ID \"c86e3c14d0egbfc02g4cae35662d6944\"：成功关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "音乐已关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "好的，所有任务都已执行：\n\n- 设备 164c1a92b8ce9cda0e2a8c13440b4722：调节亮度到10%，执行成功。\n- 设备 b75d2b03c9dfaebf1f3b9d24551c5833：调节亮度到10%，执行成功。\n- 设备 c86e3c14d0egbfc02g4cae35662d6944：调节亮度到10%，执行成功。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "好的，已完成计划表中的所有任务，具体执行情况如下：\n- 设备：21ab4b42c3e6a3fb27f93385082d4075，任务：切换到下一首歌，执行成功。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "好的，已将智能音箱的音量降低2%，当前音量为0.098。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "好的，已按计划为您打开收音机。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "好的，我已完成所有计划，具体执行情况如下：\n- 设备：21ab4b42c3e6a3fb27f93385082d4075 ，动作：暂停播放 ，执行成功。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "很抱歉，我无法播放您刚才听的歌曲，因为我没有具体的歌曲名称。我已经为您将音量调整到10。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "好的，已为您播放英文歌曲，并将音量设置为10。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "好的，我已经为您播放了“Sunny Day”，并将音量设置为10。同时，我也关闭了卧室灯。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "好的，我已按照计划表执行了所有任务：\n\n- 音箱的音量已调节为10。\n- 客厅灯的亮度已调节至30%。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "好的，已按计划表执行以下任务：\n- 关闭设备 c86e3c14d0egbfc02g4cae35662d6944：成功。\n- 关闭设备 e2bf03e9b274e88f9e7b6852d1e2c90d：成功。\n- 打开设备 164c1a92b8ce9cda0e2a8c13440b4722：成功。\n- 打开设备 31ae92d8a163d77f8d6a5741c0d1b89c：成功。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "客厅窗户是关闭的。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "好的，已将客厅灯的亮度调节至 50%。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "好的，已将客厅灯的色温调整到3500K。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "好的，加湿器已打开。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "好的，已将空调打开。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "床头灯已调暗至当前亮度的三分之一。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "好的，书房的灯已打开并调暗。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "好的，我已根据计划表完成了任务。\n\n任务执行情况：\n- 设备 'b75d2b03c9dfaebf1f3b9d24551c5833' 已成功执行 '关闭' 命令。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "好的，我已经为您设置了持久化规则：当客厅有人移动时，客厅的灯会自动打开。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "好的，我已经为您设置了持久化规则：当有人在卧室且天黑时，卧室灯（设备ID: 164c1a92b8ce9cda0e2a8c13440b4722）将自动开启。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "好的，自动化规则已建立。当光线变暗时，如果窗户是开着的，系统会提醒您。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "好的，我已经为您设置了持久化任务。当床头灯打开时，米家智能台灯Lite/小书灯、灯泡/卧室灯、灯泡/客厅灯和灯泡/书房灯都将关闭。您将会收到条件满足时的通知。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "已为您设置持久化规则：如果设备ID为'53bea65f446cb0a8150250354cb28a40'或'f4cfb76e557dc1b961361465dc39b51d'的传感器检测到无人移动时间超过5分钟，则关闭所有灯。\n\n但设备ID为'a5dfc87f668ed2c072472576ed40c62e'的传感器未能成功建立持久化规则，原因是已达到最大推理/工具调用步数，停止执行。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "好的，我已经为您设置了持久化规则：当书房台灯（e2bf03e9b274e88f9e7b6852d1e2c90d）开启时，智能音箱（21ab4b42c3e6a3fb27f93385082d4075）将停止播放音乐。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "本次任务执行情况：卧室灯亮度已调至1%，色温已调至2700K。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "好的，我已经为您设置了自动化规则：当音箱静音时，风扇将自动关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "好的，我已按照计划表执行了任务：\n- 设备 `21ab4b42c3e6a3fb27f93385082d4075` 已成功播放周杰伦的歌。\n- 设备 `21ab4b42c3e6a3fb27f93385082d4075` 的音量已调节到10。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "好的，已将米家智能台灯Lite 灯关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "好的，所有灯都已关闭，祝您有个好睡眠。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "好的，所有不必要的设备都已关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "好的，已将书房灯的亮度调节至中等。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "我无法将客厅灯设置为您最喜欢的色温，因为我没有在记忆库中找到具体的色温值。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "好的，已按照计划表执行了所有任务：\n\n- 设备 `b75d2b03c9dfaebf1f3b9d24551c5833` (客厅灯) 已开启。\n- 设备 `164c1a92b8ce9cda0e2a8c13440b4722` (卧室灯) 已开启。\n- 设备 `e0517e77f3a8314caeddef8a8c3c1487` (风扇) 已打开。\n- 设备 `df406d66e297203b9cbccd7f7b2b0376` (加湿器) 已开启。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "本次任务执行情况：\n我已尝试规划并执行您的任务，但由于无法获取网关的连接状态，因此无法判断是否需要执行后续操作，任务未能完全执行。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "好的，我已经为您尝试营造万圣节气氛。\n\n具体执行情况如下：\n*   设备ID为`164c1a92b8ce9cda0e2a8c13440b4722`的灯泡已开启，颜色设置为橙色，亮度为30。\n*   设备ID为`b75d2b03c9dfaebf1f3b9d24551c5833`的灯泡已开启，亮度设置为30，色温设置为暖白色。\n*   设备ID为`31ae92d8a163d77f8d6a5741c0d1b89c`的米家智能台灯Lite已开启，亮度设置为50。但设置“Halloween mood”灯光效果失败，因为它不支持此效果，目前支持的选项为“mode 0”、“mode 1”和“mode 2”。\n\n总体来说，万圣节气氛已初步营造，但部分灯光效果未能完全实现。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "好的，氛围组设备已全部关闭。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "好的，已完成计划表中的所有任务：\n\n* 设备 `b75d2b03c9dfaebf1f3b9d24551c5833` (客厅灯) 已执行关闭操作，以调整光线，方便午睡。\n* 设备 `e0517e77f3a8314caeddef8a8c3c1487` (插座) 已执行打开操作，以控制风扇，保持空气流通。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "好的，我已经完成了计划表中的任务。\n\n任务执行情况：\n- 设备ID \"164c1a92b8ce9cda0e2a8c13440b4722\" 的 \"关闭\" 命令已成功执行。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "好的，我已经为您打开了网关的勿扰模式。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "执行异常: 'structured_response'",
+            "是否正确": false
+        }
+    ]
+}

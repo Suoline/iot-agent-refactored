@@ -1,0 +1,8 @@
+domain: backup
+service: create_automatic
+name: Create automatic backup
+description: Creates a new backup with automatic backup settings.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

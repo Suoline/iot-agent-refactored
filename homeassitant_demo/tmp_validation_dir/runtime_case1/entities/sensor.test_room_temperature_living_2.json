@@ -1,0 +1,26 @@
+{
+  "entity_id": "sensor.test_room_temperature_living_2",
+  "domain": "sensor",
+  "object_id": "test_room_temperature_living_2",
+  "unique_id": null,
+  "device_id": "device.test_temp_sensor_01",
+  "area_id": "room.living_room",
+  "platform": "mock",
+  "name": "Living Temp 2",
+  "original_name": null,
+  "device_class": "temperature",
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": null,
+  "service_profile": {},
+  "links": {},
+  "actions": {},
+  "state": 28.0,
+  "attributes": {
+    "friendly_name": "Living Temp 2",
+    "unit_of_measurement": "°C"
+  },
+  "metadata": {}
+}

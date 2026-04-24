@@ -1,0 +1,11 @@
+domain: counter
+service: decrement
+name: Decrement
+description: Decrements a counter by its step size.
+fields: {}
+target:
+  entity:
+  - domain:
+    - counter
+handler: builtin:service.not_implemented
+supports_response: false

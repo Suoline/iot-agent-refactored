@@ -1,0 +1,8 @@
+domain: tts
+service: clear_cache
+name: Clear TTS cache
+description: Removes all cached text-to-speech files and purges the memory.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,30 @@
+domain: media_player
+service: browse_media
+name: Browse media
+description: Browses the available media.
+fields:
+  media_content_type:
+    required: false
+    name: Content type
+    description: The type of the content to browse, such as image, music, TV show,
+      video, episode, channel, or playlist.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  media_content_id:
+    required: false
+    name: Content ID
+    description: The ID of the content to browse. Integration dependent.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 131072
+handler: builtin:service.not_implemented
+supports_response: false

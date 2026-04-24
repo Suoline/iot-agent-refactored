@@ -1,0 +1,27 @@
+domain: scene
+service: apply
+name: Apply
+description: Activates a scene with configuration.
+fields:
+  entities:
+    required: true
+    name: Entities state
+    description: List of entities and their target state.
+    selector:
+      object:
+        multiple: false
+  transition:
+    required: false
+    name: Transition
+    description: Time it takes the devices to transition into the states defined in
+      the scene.
+    selector:
+      number:
+        min: 0
+        max: 300
+        unit_of_measurement: seconds
+        step: 1
+        mode: slider
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

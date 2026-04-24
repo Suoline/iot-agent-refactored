@@ -1,0 +1,26 @@
+domain: update
+service: install
+name: Install update
+description: Installs an update for a device or service.
+fields:
+  version:
+    required: false
+    name: Version
+    description: The version to install. If omitted, the latest version will be installed.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  backup:
+    required: false
+    name: Backup
+    description: If supported by the integration, this creates a backup before starting
+      the update.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - update
+handler: builtin:service.not_implemented
+supports_response: false

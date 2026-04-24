@@ -1,0 +1,10 @@
+domain: homeassistant
+service: toggle
+name: Generic toggle
+description: Generic action to toggle devices on/off under any domain.
+fields: {}
+target:
+  entity:
+  - {}
+handler: builtin:homeassistant.toggle
+supports_response: false

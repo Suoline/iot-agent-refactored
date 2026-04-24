@@ -1,0 +1,11 @@
+domain: camera
+service: enable_motion_detection
+name: Enable motion detection
+description: Enables the motion detection.
+fields: {}
+target:
+  entity:
+  - domain:
+    - camera
+handler: builtin:service.not_implemented
+supports_response: false

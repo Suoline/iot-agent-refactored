@@ -1,0 +1,9 @@
+domain: homeassistant
+service: save_persistent_states
+name: Save persistent states
+description: Saves the persistent states immediately. Maintains the normal periodic
+  saving interval.
+fields: {}
+target: null
+handler: builtin:homeassistant.save_persistent_states
+supports_response: true

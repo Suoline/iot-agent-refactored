@@ -1,0 +1,21 @@
+domain: climate
+service: set_fan_mode
+name: Set fan mode
+description: Sets fan operation mode.
+fields:
+  fan_mode:
+    required: true
+    name: Fan mode
+    description: Fan operation mode.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - climate
+    supported_features:
+    - 8
+handler: builtin:service.not_implemented
+supports_response: false

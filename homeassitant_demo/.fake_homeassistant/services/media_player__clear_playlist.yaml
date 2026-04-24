@@ -1,0 +1,13 @@
+domain: media_player
+service: clear_playlist
+name: Clear playlist
+description: Removes all items from the playlist.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 8192
+handler: builtin:service.not_implemented
+supports_response: false

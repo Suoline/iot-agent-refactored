@@ -1,0 +1,8 @@
+domain: homeassistant
+service: reload_core_config
+name: Reload Core configuration
+description: Reloads the Core configuration from the YAML-configuration.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

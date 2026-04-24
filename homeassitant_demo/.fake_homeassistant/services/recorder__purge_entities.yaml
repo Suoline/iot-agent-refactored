@@ -1,0 +1,47 @@
+domain: recorder
+service: purge_entities
+name: Purge entities
+description: Starts a purge task to remove the data related to specific entities from
+  your database.
+fields:
+  entity_id:
+    required: false
+    name: Entities to remove
+    description: List of entities for which the data is to be removed from the Recorder
+      database.
+    selector:
+      entity:
+        multiple: true
+        reorder: false
+  domains:
+    required: false
+    name: Domains to remove
+    description: List of domains for which the data needs to be removed from the Recorder
+      database.
+    selector:
+      object:
+        multiple: false
+  entity_globs:
+    required: false
+    name: Entity globs to remove
+    description: List of glob patterns used to select the entities for which the data
+      is to be removed from the Recorder database.
+    selector:
+      object:
+        multiple: false
+  keep_days:
+    required: false
+    name: Days to keep
+    description: Number of days to keep the data for rows matching the filter. Starting
+      today, counting backward. A value of `7` means that everything older than a
+      week will be purged. The default of 0 days will remove all matching rows immediately.
+    selector:
+      number:
+        min: 0
+        max: 365
+        unit_of_measurement: days
+        step: 1
+        mode: slider
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

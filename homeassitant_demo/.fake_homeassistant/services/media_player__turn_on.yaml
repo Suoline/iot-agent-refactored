@@ -1,0 +1,13 @@
+domain: media_player
+service: turn_on
+name: Turn on
+description: Turns on the power of the media player.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 128
+handler: builtin:service.not_implemented
+supports_response: false

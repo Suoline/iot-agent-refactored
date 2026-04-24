@@ -1,0 +1,11 @@
+domain: input_number
+service: decrement
+name: Decrement
+description: Decrements the current value by 1 step.
+fields: {}
+target:
+  entity:
+  - domain:
+    - input_number
+handler: builtin:service.not_implemented
+supports_response: false

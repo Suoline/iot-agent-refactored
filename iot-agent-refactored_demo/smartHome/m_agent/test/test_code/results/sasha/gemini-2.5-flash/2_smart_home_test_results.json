@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 8,
+        "正确率": "16.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "Network Status:\nAccess Mode: 2.4G Wireless\nIP Address: 192.168.43.141\nWiFi SSID: shuashua",
+            "是否正确": false
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "Returning structured response: response='NO' explanation='I cannot get the state of the lights with the current tools.'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "All the lights have been turned off.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "Returning structured response: response='NO' explanation='所有人体传感器的电池电量均为100%，无需更换电池。'",
+            "是否正确": true
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "音乐已关闭。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "Returning structured response: response='NO' explanation='请提供一个具体的亮度百分比来调暗整个房子。'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "好的，已为您切换到下一首歌曲。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "I have lowered the volume by 2% to 0.08.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "The radio has been turned on.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "NO. 我无法暂停播放。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "好的，我已让音箱重新播放上一首歌曲。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "Returning structured response: response='NO' explanation='我无法播放一首英文歌曲，因为我不知道要播放哪首英文歌曲。并且，我没有找到支持搜索音乐的设备。'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "NO, I cannot fulfill the request to turn off the bedroom light because I lack information about which light is in the bedroom. However, I can play 'Sunny Day' using \"小米AI音箱（第二代） 音箱\".",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "NO, I cannot dim the living room light because I do not have enough information to identify which light is in the living room.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "NO, I cannot fulfill this request. I need more information to identify which lights are in the study and which are in the bedroom. The current device information only shows \"米家智能台灯Lite 灯\" and \"灯泡 灯\" without specifying their location.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "NO，缺少客厅光照度传感器信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "NO, 我无法判断客厅的窗户是否关闭，因为我没有找到名为“客厅窗户”的设备。我只找到了两个通用的门窗传感器，其中一个处于“on”状态，另一个处于“off”状态，但无法确定它们是否与客厅窗户相关联。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "NO, 缺少客厅灯的具体设备信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "NO, I cannot fulfill this request. I need more information about which light is in the living room. The available light entities do not specify their location.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "NO, I cannot fulfill this request. There is no humidifier or any device that can control humidity in the current smart home system.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "NO, 我无法执行此任务，因为我没有找到任何可以调节温度的设备，例如空调或风扇。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "NO, I need more information. There are two bedside lights, and I need to know which one you would like to dim. Additionally, I need to know if the \"light\" domain supports setting brightness to a specific percentage.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "Returning structured response: response='NO' explanation='I cannot answer this question because I do not have the ability to check the status of the door.'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "NO，缺少书房中灯的设备信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "NO, I cannot fulfill this request. I need more information to identify which light is the \"living room light\" among the available lights. Also, I can see a \"gateway\" device, but there is no specific \"gateway light\" entity that can be directly turned on or off. I can only adjust the indicator brightness or set a do not disturb mode for the gateway's indicator light.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "NO，缺少客厅灯和客厅人体传感器的信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "NO, 缺少卧室中灯、人体传感器和光照传感器的具体信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "好的，我已经为您设置了持久性提醒：当窗户（binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2）开着并且光照度（sensor.xiaomi_cn_blt_3_1ftnm7360c800_pir1_illumination_p_2_1005）低于50 lx时，您将收到“提醒我窗户开着”的通知。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "NO, I cannot fulfill this request. I need more information about which room the \"门窗传感器\" (door and window sensor) is located in to determine if it is the living room window. Additionally, I need to know if there is a service available to set up a notification for a specific duration (more than 30 minutes).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "NO, I need more information. Please specify which light is the \"bedside light\" and which are \"all other lights\" from the available devices: \"米家智能台灯Lite 灯\" (Mijia Smart Desk Lamp Lite Light) and \"灯泡 灯\" (Light Bulb Light).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "Returning structured response: response='NO' explanation='我无法设置持久性任务或自动化规则。我只能获取设备信息。'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "Returning structured response: response='NO' explanation='我无法设置持久性任务，因为我没有创建或修改自动化规则的工具。我只能获取设备信息和它们支持的服务。'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "NO.\n缺少信息：我需要知道哪个设备是“床头灯”以及哪个设备是“卧室灯”，因为存在多个名为“米家智能台灯Lite 灯”和“灯泡 灯”的设备。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "NO，缺少风扇设备信息。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "好的，音乐已开始播放。\n",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "NO, I cannot turn off the Little Book Light. I found \"米家智能台灯Lite 灯\" (Mijia Smart Desk Lamp Lite Light) and \"灯泡 灯\" (Light Bulb Light). Could you please clarify which light you would like to turn off?",
+            "是否正确": false
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "好的，所有灯都已关闭。\n",
+            "是否正确": true
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "好的，我已经为您调高了音箱的音量。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "所有不必要的设备都已关闭。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "NO, I cannot adjust the light to a suitable mode for reading because I lack information about the available light modes for the \"米家智能台灯Lite 灯\" (light.philips_cn_1061200910_lite_s_2). I only know the mode names are \"mode 0\", \"mode 1\", and \"mode 2\", but I don't know what each mode signifies or if any of them are suitable for reading.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "NO, I cannot set the living room light to your favorite color temperature. I need to know which light is the \"living room light\" and what your \"favorite color temperature\" is.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "Returning structured response: response='NO' explanation='This is not a smart home control command.'",
+            "是否正确": false
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "NO, 缺少判断网关是否未连接到网络的工具。我只能获取网关当前的接入方式，无法判断网关是否处于未连接状态，也无法在网关未连接时触发后续操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "NO, I cannot create a Halloween atmosphere at home because I need more information. Please specify what color you would like the lights to be and what kind of sound you would like to play.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "NO, I do not have information about the atmosphere group devices. Could you please tell me the specific devices you want to control?",
+            "是否正确": false
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "NO, 缺少客厅的设备信息，以及用户想对设备执行什么操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "好的，我已经为您打开了所有灯，并将色温调整为3000K，亮度调整为50%，方便您阅读。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "NO, I need more information to identify which light is decorated with stars.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "NO, I cannot configure the gateway's do-not-disturb mode without knowing whether you want to enable or disable it. The current state is \"Open\".",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "Returning structured response: response='NO' explanation='我无法执行此任务，因为我是一个智能家居控制AI，无法处理与天气相关的请求。'",
+            "是否正确": false
+        }
+    ]
+}

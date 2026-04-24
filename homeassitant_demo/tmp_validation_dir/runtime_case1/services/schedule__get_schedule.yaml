@@ -1,0 +1,11 @@
+domain: schedule
+service: get_schedule
+name: Get schedule
+description: Retrieves the configured time ranges of one or multiple schedules.
+fields: {}
+target:
+  entity:
+  - domain:
+    - schedule
+handler: builtin:service.not_implemented
+supports_response: false

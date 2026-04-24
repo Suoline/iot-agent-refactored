@@ -1,0 +1,79 @@
+{
+  "instruction": "bad-instruction",
+  "summary": {
+    "total_envs": 6,
+    "init_ok": 6,
+    "func_ok": 0,
+    "restore_ok": 6,
+    "failed_envs": [
+      "te_normal_pair_a_v1",
+      "te_normal_pair_b_v1",
+      "te_one_shot_network_error_pair_a_v1",
+      "te_one_shot_network_error_pair_b_v1",
+      "te_fake_success_pair_a_v1",
+      "te_fake_success_pair_b_v1"
+    ]
+  },
+  "results": [
+    {
+      "env_id": "te_normal_pair_a_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    },
+    {
+      "env_id": "te_normal_pair_b_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    },
+    {
+      "env_id": "te_one_shot_network_error_pair_a_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    },
+    {
+      "env_id": "te_one_shot_network_error_pair_b_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    },
+    {
+      "env_id": "te_fake_success_pair_a_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    },
+    {
+      "env_id": "te_fake_success_pair_b_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "run_func failed: boom"
+      ]
+    }
+  ]
+}

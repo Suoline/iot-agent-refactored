@@ -1,0 +1,11 @@
+domain: humidifier
+service: turn_on
+name: Turn on
+description: Turns the humidifier on.
+fields: {}
+target:
+  entity:
+  - domain:
+    - humidifier
+handler: builtin:service.not_implemented
+supports_response: false

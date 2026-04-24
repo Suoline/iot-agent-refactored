@@ -1,0 +1,25 @@
+domain: logger
+service: set_default_level
+name: Set default level
+description: Sets the default log level for integrations.
+fields:
+  level:
+    required: false
+    name: Level
+    description: Default severity level for all integrations.
+    selector:
+      select:
+        options:
+        - debug
+        - info
+        - warning
+        - error
+        - fatal
+        - critical
+        translation_key: level
+        custom_value: false
+        sort: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

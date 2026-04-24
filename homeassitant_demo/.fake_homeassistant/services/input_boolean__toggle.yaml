@@ -1,0 +1,11 @@
+domain: input_boolean
+service: toggle
+name: Toggle
+description: Toggles the helper on/off.
+fields: {}
+target:
+  entity:
+  - domain:
+    - input_boolean
+handler: builtin:service.not_implemented
+supports_response: false

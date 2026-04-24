@@ -1,0 +1,11 @@
+domain: water_heater
+service: turn_on
+name: Turn on
+description: Turns water heater on.
+fields: {}
+target:
+  entity:
+  - domain:
+    - water_heater
+handler: builtin:service.not_implemented
+supports_response: false

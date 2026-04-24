@@ -1,0 +1,24 @@
+domain: fan
+service: increase_speed
+name: Increase speed
+description: Increases the speed of a fan.
+fields:
+  percentage_step:
+    required: false
+    name: Increment
+    description: Percentage step by which the speed should be increased.
+    selector:
+      number:
+        min: 0
+        max: 100
+        unit_of_measurement: '%'
+        step: 1
+        mode: slider
+target:
+  entity:
+  - domain:
+    - fan
+    supported_features:
+    - 1
+handler: builtin:service.not_implemented
+supports_response: false

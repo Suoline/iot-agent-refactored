@@ -1,0 +1,21 @@
+domain: media_player
+service: select_sound_mode
+name: Select sound mode
+description: Selects a specific sound mode.
+fields:
+  sound_mode:
+    required: false
+    name: Sound mode
+    description: Name of the sound mode to switch to.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 65536
+handler: builtin:service.not_implemented
+supports_response: false

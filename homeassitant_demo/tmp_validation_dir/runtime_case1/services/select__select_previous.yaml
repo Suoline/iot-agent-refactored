@@ -1,0 +1,17 @@
+domain: select
+service: select_previous
+name: Previous
+description: Selects the previous option.
+fields:
+  cycle:
+    required: false
+    name: Cycle
+    description: If the option should cycle from the first to the last.
+    selector:
+      boolean: {}
+target:
+  entity:
+  - domain:
+    - select
+handler: builtin:select.select_previous
+supports_response: false

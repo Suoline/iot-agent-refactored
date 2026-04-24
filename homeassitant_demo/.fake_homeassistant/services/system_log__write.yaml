@@ -1,0 +1,40 @@
+domain: system_log
+service: write
+name: Write
+description: Write log entry.
+fields:
+  message:
+    required: true
+    name: Message
+    description: Message to log.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  level:
+    required: false
+    name: Level
+    description: Log level.
+    selector:
+      select:
+        options:
+        - debug
+        - info
+        - warning
+        - error
+        - critical
+        translation_key: level
+        custom_value: false
+        sort: false
+        multiple: false
+  logger:
+    required: false
+    name: Logger
+    description: Logger name under which to log the message. Defaults to `system_log.external`.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

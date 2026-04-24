@@ -1,0 +1,71 @@
+domain: device_tracker
+service: see
+name: See
+description: Manually update the records of a seen legacy device tracker in the known_devices.yaml
+  file.
+fields:
+  mac:
+    required: false
+    name: MAC address
+    description: MAC address of the device.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  dev_id:
+    required: false
+    name: Device ID
+    description: ID of the device (find the ID in `known_devices.yaml`).
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  host_name:
+    required: false
+    name: Hostname
+    description: Hostname of the device.
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  location_name:
+    required: false
+    name: Location
+    description: 'Name of the location where the device is located. The options are:
+      `home`, `not_home`, or the name of the zone.'
+    selector:
+      text:
+        multiline: false
+        multiple: false
+  gps:
+    required: false
+    name: GPS coordinates
+    description: 'GPS coordinates where the device is located, specified by latitude
+      and longitude (for example: [51.513845, -0.100539]).'
+    selector:
+      object:
+        multiple: false
+  gps_accuracy:
+    required: false
+    name: GPS accuracy
+    description: Accuracy of the GPS coordinates.
+    selector:
+      number:
+        min: 0
+        mode: box
+        unit_of_measurement: m
+        step: 1
+  battery:
+    required: false
+    name: Battery level
+    description: Battery level of the device.
+    selector:
+      number:
+        min: 0
+        max: 100
+        unit_of_measurement: '%'
+        step: 1
+        mode: slider
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

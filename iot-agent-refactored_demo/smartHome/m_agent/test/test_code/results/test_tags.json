@@ -1,0 +1,416 @@
+{
+    "标签值": [
+        "简单命令",
+        "命令链",
+        "设备推断",
+        "意图解析",
+        "持久化",
+        "使用偏好"
+    ],
+    "标签统计": {
+        "简单命令": 12,
+        "命令链": 14,
+        "设备推断": 29,
+        "意图解析": 18,
+        "持久化": 9,
+        "使用偏好": 14
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "所属标签": [
+                "简单命令",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "所属标签": [
+                "简单命令"
+            ]
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "所属标签": [
+                "命令链",
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "所属标签": [
+                "命令链",
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "所属标签": [
+                "命令链",
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "所属标签": [
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "所属标签": [
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "所属标签": [
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "所属标签": [
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "所属标签": [
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "所属标签": [
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "所属标签": [
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "所属标签": [
+                "命令链",
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "所属标签": [
+                "设备推断",
+                "意图解析",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "所属标签": [
+                "设备推断",
+                "意图解析",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "所属标签": [
+                "设备推断",
+                "意图解析",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "所属标签": [
+                "设备推断",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "所属标签": [
+                "设备推断",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "所属标签": [
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "所属标签": [
+                "设备推断",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "所属标签": [
+                "设备推断",
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "所属标签": [
+                "持久化"
+            ]
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "所属标签": [
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "所属标签": [
+                "设备推断"
+            ]
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "所属标签": [
+                "命令链",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "所属标签": [
+                "意图解析",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "意图解析",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "所属标签": [
+                "设备推断",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "所属标签": [
+                "设备推断",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "所属标签": [
+                "命令链",
+                "意图解析"
+            ]
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "所属标签": [
+                "意图解析",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "所属标签": [
+                "命令链",
+                "意图解析",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "意图解析",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "所属标签": [
+                "设备推断",
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "所属标签": [
+                "使用偏好"
+            ]
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "所属标签": [
+                "命令链",
+                "设备推断",
+                "意图解析",
+                "使用偏好"
+            ]
+        }
+    ]
+}

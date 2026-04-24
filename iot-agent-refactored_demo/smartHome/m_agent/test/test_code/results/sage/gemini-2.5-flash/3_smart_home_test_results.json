@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 14,
+        "正确率": "28.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "I have checked the network status of the Xiaomi Smart Multi-mode Gateway 2. The Access Mode is 2.4G Wireless, the IP Address is 192.168.43.141, the WiFi Network Name is shuashua, and there are no recent network changes detected.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "All the lights are on.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "I have turned off all the lights.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "The human body sensors do not need battery replacement at this time, as all of them have a battery level of 100%.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "I have turned off the music on the device media_player.xiaomi_cn_701074704_l15a (小米AI音箱（第二代） 音箱).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "I have dimmed all the lights in the house to 1% brightness.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "Switched to the next song on device ID: media_player.xiaomi_cn_701074704_l15a.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "I have lowered the volume of \"小米AI音箱（第二代）\" (device ID: media_player.xiaomi_cn_701074704_l15a) to 8%.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "I have turned on the radio.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "Playback paused on device media_player.xiaomi_cn_701074704_l15a.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "I have played Jay Chou's song again on the device with ID `button.xiaomi_cn_701074704_l15a_play_music_a_7_5`.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "I have initiated playing music on the Xiaomi AI Speaker (device ID: `media_player.xiaomi_cn_701074704_l15a`).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "The bedroom light (device ID: light.yeelink_cn_5_s_9569) has been turned off.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "I have increased the volume for the speaker with device ID `media_player.xiaomi_cn_701074704_l15a`. I can dim a light for you, but I need some more information. I see several lights: light.philips_cn_1061200910_lite_s_2 (米家智能台灯Lite 灯), light.philips_cn_1061201010_lite_s_2 (米家智能台灯Lite 灯), light.yeelink_cn_1162511951_mbulb3_s_2 (灯泡 灯), light.yeelink_cn_1162512052_mbulb3_s_2 (灯泡 灯), and light.yeelink_cn_1162512153_mbulb3_s_2 (灯泡 灯). Which one is the living room light? Also, what percentage brightness would you like to set it to?",
+            "是否正确": false
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "I have turned off all study lights and turned on all bedroom lights.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "The living room is not very dark, the current light level is 100.0 lx.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "The living room window is closed.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "I have set the brightness of the living room light to 50%.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "I have warmed up the living room light.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "I couldn't find any humidifier devices or devices related to humidity in your connected devices. Therefore, I am unable to turn on a humidifier or increase the humidity.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "I am sorry, I cannot fulfill this request. I do not have any devices that can lower the temperature or turn on the air conditioning.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "I have dimmed the bedside light to one third of its previous brightness. The new brightness is 1.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "I am sorry, I cannot check if the door is closed. The tool I used to check conditions stopped executing.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "I have turned on all the lights in the study and set them to a dim level (20% brightness).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "I have turned off the living room light and the gateway light is on.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "You will be notified when there is movement in the living room, and the living room light will be turned on.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "",
+            "是否正确": false
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "I will remind you if the window is open when it gets dark.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "I will notify you if the living room window has been open for more than 30 minutes.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "You will be notified when the bedside light is turned on, and all other lights will be turned off.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "I have set up the persistence. I will turn off all lights if no human movement is detected for 5 minutes.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "I have set up the persistence. When the desk lamp in the study is turned on, the music will be turned off.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "I have set up the persistence. I will dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "You will be notified when the speaker is muted, and the fan will be turned off.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "I have played Jay Chou's music on the speaker (device ID: media_player.xiaomi_cn_701074704_l15a) at volume 10.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "I have turned off the Little Book Light.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "I've turned off all the lights. I couldn't find any lockable doors, thermostats, or blinds in your smart home system, so I was unable to perform those actions.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "I've adjusted the speaker volume to the lowest setting, as you prefer during calls.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "I have turned off the following devices:\n- 米家智能台灯Lite 灯 (light.philips_cn_1061200910_lite_s_2)\n- 米家智能台灯Lite * 个性化功能 开启/关闭夜间模式 (switch.philips_cn_1061200910_lite_night_light_en_p_3_4)\n- 米家智能台灯Lite 灯 (light.philips_cn_1061201010_lite_s_2)\n- 米家智能台灯Lite * 个性化功能 开启/关闭夜间模式 (switch.philips_cn_1061201010_lite_night_light_en_p_3_4)\n- 灯泡 灯 (light.yeelink_cn_1162511951_mbulb3_s_2)\n- 灯泡 灯 (light.yeelink_cn_1162512052_mbulb3_s_2)\n- 灯泡 灯 (light.yeelink_cn_1162512153_mbulb3_s_2)\n- 插座 开关 开关 (switch.cuco_cn_269067598_cp1_on_p_2_1)\n- 插座 开关 开关 (switch.cuco_cn_269067699_cp1_on_p_2_1)",
+            "是否正确": false
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "I've adjusted the lights for you. The study desk lamp is on at medium brightness, and the study light bulb is off.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "",
+            "是否正确": false
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "",
+            "是否正确": false
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "You will be notified when the gateway is not connected to your network. When this occurs, all lights will be turned off and then turned on again to scare the intruder.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "I have set all lights to a spooky orange color and dimmed them to 30% to create a Halloween atmosphere. I am unable to play Halloween-themed light music at this time, as the available tools do not support playing specific themed music directly or the command format is not correctly interpreted by the device.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "I have turned off the atmosphere group devices.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "I have turned off the living room fan and turned on the living room speaker at a low volume. I was unable to open the living room windows as there are no devices with that capability.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "I have turned off the room light and set the bedside lamp to 10% brightness for your reading. I don't have information about your preferred temperature for sleeping or reading, so I cannot adjust it.",
+            "是否正确": true
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "I have turned off the light decorated with stars (device ID: `light.philips_cn_1061200910_lite_s_2`).",
+            "是否正确": false
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "执行异常: Connection error.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "I cannot fulfill this request as I do not have access to any controllable door or window devices. I can see door/window sensors with entity IDs `binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2` and `binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2`, but these are only for sensing the state, not for controlling them.",
+            "是否正确": false
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+domain: input_select
+service: select_last
+name: Last
+description: Selects the last option.
+fields: {}
+target:
+  entity:
+  - domain:
+    - input_select
+handler: builtin:service.not_implemented
+supports_response: false

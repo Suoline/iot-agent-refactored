@@ -1,0 +1,59 @@
+{
+  "entity_id": "button.philips_cn_1061200910_lite_toggle_a_2_1",
+  "domain": "button",
+  "object_id": "philips_cn_1061200910_lite_toggle_a_2_1",
+  "unique_id": "xiaomi_home.philips_cn_1061200910_lite_toggle_a_2_1",
+  "device_id": "31ae92d8a163d77f8d6a5741c0d1b89c",
+  "area_id": null,
+  "platform": "xiaomi_home",
+  "name": null,
+  "original_name": " 灯 开关状态切换",
+  "device_class": null,
+  "entity_category": null,
+  "hidden_by": null,
+  "disabled_by": null,
+  "supported_features": 0,
+  "capabilities": null,
+  "service_profile": {},
+  "links": {
+    "light": "light.philips_cn_1061200910_lite_s_2"
+  },
+  "actions": {
+    "on_press": [
+      {
+        "type": "call_service",
+        "domain": "light",
+        "service": "toggle",
+        "data": {
+          "entity_id": "${links.light}"
+        }
+      }
+    ]
+  },
+  "state": "2025-10-27T11:25:38.188629+00:00",
+  "attributes": {
+    "friendly_name": "米家智能台灯Lite  灯 开关状态切换"
+  },
+  "metadata": {
+    "aliases": [],
+    "categories": {},
+    "config_entry_id": "01K7XSWSYQ9DG0S1026TAH12TV",
+    "config_subentry_id": null,
+    "created_at": "2025-10-19T08:38:07.850046+00:00",
+    "icon": null,
+    "id": "27f82fbf118d5393e57972d5a1e4b706",
+    "has_entity_name": true,
+    "labels": [],
+    "modified_at": "2025-10-19T08:38:07.850235+00:00",
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_icon": null,
+    "suggested_object_id": "philips_cn_1061200910_lite_toggle_a_2_1",
+    "translation_key": null,
+    "previous_unique_id": null,
+    "unit_of_measurement": null
+  }
+}

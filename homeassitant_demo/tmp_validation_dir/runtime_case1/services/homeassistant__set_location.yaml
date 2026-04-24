@@ -1,0 +1,36 @@
+domain: homeassistant
+service: set_location
+name: Set location
+description: Updates the Home Assistant location.
+fields:
+  latitude:
+    required: true
+    name: Latitude
+    description: Latitude of your location.
+    selector:
+      number:
+        mode: box
+        min: -90
+        max: 90
+        step: any
+  longitude:
+    required: true
+    name: Longitude
+    description: Longitude of your location.
+    selector:
+      number:
+        mode: box
+        min: -180
+        max: 180
+        step: any
+  elevation:
+    required: false
+    name: Elevation
+    description: Elevation of your location above sea level.
+    selector:
+      number:
+        mode: box
+        step: any
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

@@ -1,0 +1,309 @@
+{
+    "统计信息": {
+        "总用例数": 50,
+        "通过数": 9,
+        "正确率": "18.00%"
+    },
+    "详细结果": [
+        {
+            "用例编号": 1,
+            "测试用例字符串": "Network status",
+            "模型输出": "网络状态：\n- IP 地址: 192.168.43.141\n- WiFi SSID: shuashua\n- 接入模式: 2.4G 无线\n- 网络变更状态: unknown\n  最近事件类型: 网络发生变化\n  最后更新时间: 2025-11-04T06:50:12+00:00",
+            "是否正确": false
+        },
+        {
+            "用例编号": 2,
+            "测试用例字符串": "Are all the lights on?",
+            "模型输出": "Yes. All listed lights are on:\n- light.philips_cn_1061200910_lite_s_2: on\n- light.philips_cn_1061201010_lite_s_2: on\n- light.yeelink_cn_1162511951_mbulb3_s_2: on\n- light.yeelink_cn_1162512052_mbulb3_s_2: on\n- light.yeelink_cn_1162512153_mbulb3_s_2: on",
+            "是否正确": true
+        },
+        {
+            "用例编号": 3,
+            "测试用例字符串": "Turn off all the lights.",
+            "模型输出": "已将以下灯具全部关闭：light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2。若还需要其他操作，请告诉我。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 4,
+            "测试用例字符串": "Does the human body sensor need battery replacement?",
+            "模型输出": "当前两颗小米人体传感器2S的电池电量均显示100%，没有需要更换的迹象；电量信息最近更新于2025-10-27，状态正常，因此无需更换电池。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 5,
+            "测试用例字符串": "Turn off the music.",
+            "模型输出": "已将音乐设备关闭，设备为：小米AI音箱（第二代） 音箱（media_player.xiaomi_cn_701074704_l15a）",
+            "是否正确": true
+        },
+        {
+            "用例编号": 6,
+            "测试用例字符串": "Dim the entire house.",
+            "模型输出": "已将房屋内三盏灯调暗至约15%亮度。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 7,
+            "测试用例字符串": "Switch to the next song.",
+            "模型输出": "执行异常: Failed to parse structured output for tool 'ClarificationResponse': Failed to parse data to ClarificationResponse: 1 validation error for ClarificationResponse\nresponse\n  Field required [type=missing, input_value={'explanation': '已查...曲可播放。” ,'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing.",
+            "是否正确": false
+        },
+        {
+            "用例编号": 8,
+            "测试用例字符串": "Lower the volume by 2%.",
+            "模型输出": "已将设备“小米AI音箱（第二代）”的音量从10%降至8%，降低了2个百分点。如需继续调整，请告诉我要再降多少。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 9,
+            "测试用例字符串": "Turn on the radio.",
+            "模型输出": "收音机已开启，正在通过小米AI音箱（第二代）播放电台，音量已设为50%。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 10,
+            "测试用例字符串": "Pause the playback.",
+            "模型输出": "已暂停播放。设备：小米AI音箱（第二代） 音箱（media_player.xiaomi_cn_701074704_l15a）现在处于暂停状态。当前音量为 0.1，未静音，媒体内容类型为音乐。若需要我继续播放、调整音量或切换源，请告诉我。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 11,
+            "测试用例字符串": "That song was great just now; I want to listen to it again.",
+            "模型输出": "已在小米AI音箱（第二代）开始播放这首歌。需要我将其循环播放吗，或者在其他设备上同步播放？也可以让我调整音量到合适的水平。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 12,
+            "测试用例字符串": "Play an English song.",
+            "模型输出": "已经在设备 media_player.xiaomi_cn_701074704_l15a 上播放英文歌曲。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 13,
+            "测试用例字符串": "Play 'Sunny Day' and turn off the bedroom light.",
+            "模型输出": "系统中未识别到明确的卧室灯实体（bedroom light），因此无法完成“关闭卧室灯”的指令。虽然存在可用于播放Sunny Day的媒体播放器（如 media_player.xiaomi_cn_701074704_l15a，支持 play_media），但因缺少卧室灯的目标实体，无法同时完成两项指令。请提供卧室灯的具体实体ID或名称以执行完整指令。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 14,
+            "测试用例字符串": "Increase the speaker volume and dim the living room light.",
+            "模型输出": "已执行操作：将小米AI音箱（媒体播放器）音量提高到 80%，将客厅的三盏灯亮度调暗到 20%。当前状态：音箱音量级别 0.8（80%），三盏灯亮度均为 20%。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 15,
+            "测试用例字符串": "Turn off all study lights and turn on all bedroom lights.",
+            "模型输出": "已完成指令：已关闭所有书房灯具，开启所有卧室灯具。当前状态如下：\n- light.philips_cn_1061200910_lite_s_2: off\n- light.philips_cn_1061201010_lite_s_2: off\n- light.yeelink_cn_1162511951_mbulb3_s_2: on\n- light.yeelink_cn_1162512052_mbulb3_s_2: on\n- light.yeelink_cn_1162512153_mbulb3_s_2: on\n如需我进一步调整亮度或场景，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 16,
+            "测试用例字符串": "Is the living room very dark?",
+            "模型输出": "基于当前设备状态，客厅照明设备处于开启状态，亮度约80，且有光照传感器显示存在可观测光照（如约100 lx），综合判断客厅并不很暗，因此可以回答任务需要的指令。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 17,
+            "测试用例字符串": "Is the living room window closed?",
+            "模型输出": "从门窗传感器列表中，存在两组门窗传感器接触状态，其中一个为 on（通常表示开启），另一个为 off（关闭）。但没有窗户具体位置的映射信息（如哪一个传感器属于客厅），因此无法确定客厅窗户是否处于关闭状态。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 18,
+            "测试用例字符串": "Set the living room light brightness to 50%.",
+            "模型输出": "已将客厅灯的亮度设置为50%。涉及的灯具包括：light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2。三盏灯均已开启，亮度约为50%（brightness 127）。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 19,
+            "测试用例字符串": "Warm up the living room light a bit.",
+            "模型输出": "已将客厅灯光调暖并略微提升亮度：四盏灯均已开启，具体情况如下：\n- light.philips_cn_1061200910_lite_s_2：亮度 120（亮度模式）\n- light.yeelink_cn_1162511951_mbulb3_s_2：亮度 140，色温 3500K\n- light.yeelink_cn_1162512052_mbulb3_s_2：亮度 140，色温 3500K\n- light.yeelink_cn_1162512153_mbulb3_s_2：亮度 140，色温 3500K\n当前状态：全部在亮，色温偏暖，氛围温和舒适。\n如需更暖或更亮，告诉我，我可以再微调色温或亮度。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 20,
+            "测试用例字符串": "The air is too dry.",
+            "模型输出": "当前筛选后的设备为空，无法直接提升室内湿度。为解决干燥空气，请考虑以下选项：\n1) 将加湿器或具加湿功能的设备添加到系统中，并提供设备名称与希望执行的操作（如开启、设定目标湿度）。我可以直接执行，例如：开启 humidifier.living_room 并设定湿度到 45%。\n2) 如你愿意，我可以帮你设置一个自动化：当室内湿度低于某个阈值时自动开启加湿器，湿度达到目标后停止。请告知目标湿度值和你想要的设备ID（若已知）。\n3) 如果你有湿度传感器，请告诉我传感器的实体ID，我可以读取当前湿度并给出更具体的建议。你现在希望我怎么继续？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 21,
+            "测试用例字符串": "It's a bit hot.",
+            "模型输出": "已获取当前系统信息并检查 climate 域的实体与服务。虽然系统提供了气候控制相关的服务（如开启/关闭、设置模式、设置温度等），但在当前设备列表中未发现任何 domain 为 climate 的实体，因此无法直接通过气候设备执行降温指令（如开启空调并设定温度）。若你愿意，我可以尝试通过现有的其他设备（如风扇开关、灯光调节等）来缓解热感，但这不等同于真正的空调降温。请指示是否有可用的 climate 实体或指定具体设备来执行降温操作。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 22,
+            "测试用例字符串": "The bedside light is too bright; dim it to one third of the current brightness.",
+            "模型输出": "已将 bedside light 调暗至当前亮度的约三分之一，亮度设为 27（当前范围 0-255，原亮度 80，降幅约为 66%）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 23,
+            "测试用例字符串": "Did I close the door after I got home?",
+            "模型输出": "当前有两扇门的门磁传感器状态：1) binary_sensor.isa_cn_blt_3_1md0u6qht0k00_dw2hl_contact_state_p_2_2：状态为关(off)，门磁传感器接触状态，最近更新时间：2025-11-04T06:56:41+00:00。2) binary_sensor.isa_cn_blt_3_2ne1v7riu1l11_dw2hl_contact_state_p_2_2：状态为开(on)，门磁传感器接触状态，最近更新时间：2025-11-04T06:56:41+00:00。结论：回到家后并非所有门都已关好，其中一扇门仍然处于开启状态。如果你能提供具体是哪一扇门的传感器名称，我可以给出更明确的帮助，或在门未关时设定提醒。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 24,
+            "测试用例字符串": "Turn on all the lights in the study, but keep the bulbs dim.",
+            "模型输出": "系统在获取到的灯具列表中，未能明确识别“书房（study）”区域所包含的灯具。虽然返回了大量灯具信息，但没有标签或分组信息指示哪些灯属于书房，或如何区分书房灯与其他区域灯。因此，基于当前信息，无法在不影响其他区域的前提下可靠地执行“打开书房所有灯并保持较低亮度”的指令。请提供书房灯具的清单、标签或分组信息，或确认允许将所有灯在保持低亮度的前提下逐步开启。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 25,
+            "测试用例字符串": "Turn off the living room light, but keep the gateway light on.",
+            "模型输出": "已执行：将 Living Room 的两盏灯关闭，网关灯保持开启。当前状态如下：\n- light.yeelink_cn_1162511951_mbulb3_s_2: off\n- light.yeelink_cn_1162512052_mbulb3_s_2: off\n- light.yeelink_cn_1162512153_mbulb3_s_2: on",
+            "是否正确": false
+        },
+        {
+            "用例编号": 26,
+            "测试用例字符串": "Set up persistence: Turn on the living room light when someone moves around in the living room.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212120690656846QdJcw8aI)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 27,
+            "测试用例字符串": "Set up persistence: Turn on the light when someone is in the bedroom and it is dark.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212226494755901gwS3bLPD)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 28,
+            "测试用例字符串": "Set up persistence: Remind me if the window is open when it gets dark.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 2026032021234091669619pFbZM0iX)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 29,
+            "测试用例字符串": "Set up persistence: Notify me if the living room window has been open for more than 30 minutes.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212446206751887St9hkowi)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 30,
+            "测试用例字符串": "Set up persistence: Turn off all other lights when the bedside light is turned on.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212554332472256ro6nDhIb)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 31,
+            "测试用例字符串": "Set up persistence: Turn off all lights if no human movement is detected for 5 minutes.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212653918055361eybrAjqL)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 32,
+            "测试用例字符串": "Set up persistence: Turn off the music When the desk lamp in the study is turned on",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212807602948225WNHq8O0Q)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 33,
+            "测试用例字符串": "Set up persistence: Dim and warm up the bedroom light if the bedside light brightness is below 10%.",
+            "模型输出": "执行异常: Error code: 400 - {'error': {'code': 'invalid_function_parameters', 'message': \"Provider API error: Invalid schema for function 'PythonInterpreterTool': In context=('properties', 'command'), schema must have a 'type' key. (request id: 20260320212933845894100VSXC5oFC)\", 'param': 'tools[1].function.parameters', 'type': 'invalid_request_error'}}",
+            "是否正确": false
+        },
+        {
+            "用例编号": 34,
+            "测试用例字符串": "Set up persistence: Turn off the fan when the speaker is muted.",
+            "模型输出": "在当前设备清单中未发现任何风扇（fan）实体，因此无法将“扬声器静音时关闭风扇”的持久化规则落地。虽然存在一个扬声器媒体播放器（media_player.xiaomi_cn_701074704_l15a），并且其属性中包含 is_volume_muted（静音状态）等信息，但缺乏可操作的风扇实体及其 fan.turn_off 的目标。若未来添加了风扇设备（例如 fan.my_fan），并且该风扇支持 turn_off，则可以给出具体的自动化设置示例。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 35,
+            "测试用例字符串": "It's too quiet; play some music.",
+            "模型输出": "已将 Xiaomi AI 音箱（第二代）设为播放音乐，音量调至 70%。若需要换成其他音乐源或调低/调高音量，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 36,
+            "测试用例字符串": "Turn off the Little Book Light.",
+            "模型输出": "已将 Little Book Light 关灯。设备 light.philips_cn_1061200910_lite_s_2 的状态现在为 off（米家智能台灯Lite 灯）。如果你还需要我同时按下两个按钮以确认关灯，或设置后续场景，请告诉我。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 37,
+            "测试用例字符串": "I'm going to sleep.",
+            "模型输出": "已为你进入睡眠模式：将两盏主灯关闭，并开启夜灯。操作设备：关闭 light.philips_cn_1061200910_lite_s_2、关闭 light.philips_cn_1061201010_lite_s_2，开启 switch.philips_cn_1061200910_lite_night_light_en_p_3_4。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 38,
+            "测试用例字符串": "I'm on a call now; adjust the speaker volume.",
+            "模型输出": "已为扬声器将音量调至60%，并已解除静音。当前处于通话模式更利于对方听清楚，如需进一步调整，请告知目标音量（百分比或具体数值）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 39,
+            "测试用例字符串": "Preparing to go out; turn off all unnecessary devices.",
+            "模型输出": "已为出门场景关闭筛选后的所有设备：light.philips_cn_1061200910_lite_s_2、light.philips_cn_1061201010_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2、switch.cuco_cn_269067598_cp1_on_p_2_1、switch.cuco_cn_269067699_cp1_on_p_2_1、media_player.xiaomi_cn_701074704_l15a。上述设备均显示已关闭。执行过程中出现一次 400 类错误提示，可能是某个设备不支持该操作或请求格式问题，但并未影响已关机的设备。如需要，我可进一步核对每个设备的实际状态并 retry 任何未成功的设备。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 40,
+            "测试用例字符串": "I'm going to start reading; adjust the light to a suitable mode.",
+            "模型输出": "已为你将筛选出的灯具调至适合阅读的模式，当前状态如下（皆已开启，过渡时间1秒）：\n- light.philips_cn_1061200910_lite_s_2：开启，亮度约80%（204），当前以亮度模式运行，色温请求为4000K（未在状态中直接显示色温数值）\n- light.philips_cn_1061201010_lite_s_2：开启，亮度约80%（204），当前以亮度模式运行，色温请求为4000K（未在状态中直接显示色温数值）\n- light.yeelink_cn_1162511951_mbulb3_s_2：开启，亮度80%（204），色温约2700K（2702K，370 mireds，color_temp）\n- light.yeelink_cn_1162512052_mbulb3_s_2：开启，亮度80%（204），色温约2700K（2702K，370 mireds，color_temp）\n- light.yeelink_cn_1162512153_mbulb3_s_2：开启，亮度80%（204），色温约2700K（2702K，370 mireds，color_temp）\n\n如果你希望进一步优化阅读氛围，可以考虑以下选项（任选其一/组合）：\n- 统一把所有灯的色温设为大约4000K的中性光，或改为更暖的3000K以减轻眼睛疲劳。\n- 将 Philips 灯切换到特定阅读模式（如 mode 1/2）以获得更稳定的亮度分布。\n- 按区域或单灯单独调整以实现更均匀的照明。 \n需要我按上述任一方案继续调整吗？",
+            "是否正确": false
+        },
+        {
+            "用例编号": 41,
+            "测试用例字符串": "Set the living room light to my favorite color temperature.",
+            "模型输出": "设备具备将灯具设定为 color_temp 的能力（灯具支持 color_temp，且处于开启状态），但指令缺少具体的目标色温数值（你的“favorite color temperature”对应的 Kelvin 值）。需要你提供一个具体数值（单位：K，范围约2700–6500K），或告知默认的收藏值。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 42,
+            "测试用例字符串": "I'm home.",
+            "模型输出": "已根据指令完成设定：所有筛选出的灯具已开启，亮度100%，色温约2700K；智能音箱已开启。具体状态：\n- light.philips_cn_1061200910_lite_s_2：已开，亮度255（100%），色温2700K\n- light.yeelink_cn_1162511951_mbulb3_s_2：已开，亮度255，色温2702K\n- light.yeelink_cn_1162512052_mbulb3_s_2：已开，亮度255，色温2702K\n- light.yeelink_cn_1162512153_mbulb3_s_2：已开，亮度255，色温2702K\n- media_player.xiaomi_cn_701074704_l15a：已开\n\n需要我接下来执行哪些操作吗？例如：切换到某个场景（如放松、阅读）、继续播放音乐、调节灯光色温或音量、或在回家时执行特定的播放列表。",
+            "是否正确": true
+        },
+        {
+            "用例编号": 43,
+            "测试用例字符串": "If the gateway is not connected to my network, turn off all lights and then turn them on again to scare the intruder.",
+            "模型输出": "从设备状态看，网关（小米智能多模网关2）正在连接网络并具备网络信息：IP地址为192.168.43.141，网络状态显示正常。因此前提条件“网关未连接到网络”不成立，当前设备无法执行该指令。若你愿意，我可以在网关确实离线时尝试执行，或提供在网关在线时的替代安全提醒方案（如警报声+灯光模式等）。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 44,
+            "测试用例字符串": "Create a Halloween atmosphere at home.",
+            "模型输出": "已为家中营造万圣节氛围：使用你筛选出的4盏灯实现暖橙色、柔和的灯光效果，营造 spooky 但不过于刺眼的氛围。当前状态与设定如下：\n- 三盏 Yeelink 灯 (light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2)：已开启，亮度约为 102/255，色温2700K（暖白，偏橙调）\n- Philips Hue 灯带 (light.philips_cn_1061200910_lite_s_2)：已开启，亮度约为 153/255，效果模式为 mode 2，实现柔和的脉动/持续光泽感\n\n效果描述\n- 整体呈现暖黄橙色光照，营造“烛光、南瓜灯”的氛围，适合万圣节夜晚的轻松氛围与阅读/观影情境。\n\n可选增强建议\n- 小范围“鬼火”脉动：将 Hue 灯带继续维持 mode 2，并配合短时的亮度波动，制造摇曳效果；若需要可手动在不同时间段切换为 mode 1，形成间歇性跳跃灯光。\n- 强化橙色调：将三盏 Yeelink 灯的色温进一步偏暖到大约 3000K-3200K，或尝试橙色调（如果设备支持颜色模式）以增强南瓜灯效果。\n- 阴影角落点缀：把其中一盏灯调暗至 20-30%并调整到更偏暖的色温，制造阴影与轮廓，提升“幽灵般”的现场感。\n- 场景快速切换：若你愿意，可以设置一个“Halloween Night”场景，在夜段自动渐暗、慢慢切换到橙色/暖黄，并在临近整点时回到当前状态，形成节日氛围的微妙变化。\n\n如需，我可以立即为你执行：\n- 将三盏 Yeelink 灯进一步调到 3200K、亮度 60% 的橙色调；\n- 为 Hue 灯带设置周期性脉动效果（例如每 5 秒来回一次模式切换）；\n- 增加一个阴影角落场景，将其中一盏灯调暗并微调色温。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 45,
+            "测试用例字符串": "Turn off the atmosphere group devices.",
+            "模型输出": "已获取到系统中所有实体信息，但未发现名为“atmosphere group”或包含“气氛/ atmosphere”等字样的设备组、场景或开关服务可用于一次性关闭该组设备。由于缺少明确的分组标识，无法直接执行“Turn off the atmosphere group devices”这条指令。若需要，我可以关闭特定的设备（如所有灯具）或在系统中创建/指定一个分组后再执行。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 46,
+            "测试用例字符串": "I'm going to take a nap on the living room sofa.",
+            "模型输出": "已为你在客厅沙发区域创建柔和的睡眠氛围：4 盏灯均已开启并调至极低亮度，约等于 5% 的亮度水平。具体状态：Philips Lite S 2 亮度为 12（ lacks color 温度调节功能），三只 Yeelight 灯的色温设为 2700K，亮度都为 12。若你想要再暗一点、再亮一些，或希望切换为其它灯光模式，请告诉我，我可以立即调整。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 47,
+            "测试用例字符串": "I can't fall asleep easily; I plan to read some materials before going to bed.",
+            "模型输出": "已为你设置一个阅读友好、安静的灯光环境：4 个灯均已开启，色温保持在暖色系（2700K 左右），亮度约为 40%，营造一个舒适的阅读氛围，便于入睡前阅读材料。包含的设备有：light.philips_cn_1061200910_lite_s_2、light.yeelink_cn_1162511951_mbulb3_s_2、light.yeelink_cn_1162512052_mbulb3_s_2、light.yeelink_cn_1162512153_mbulb3_s_2。若你觉得亮度偏低或偏高，可以直接使用两个按钮（brightness_up/down）进行快速微调。- 亮度上调通常能让阅读更清晰，但请避免过于明亮以防过度刺激。- 亮度下调有助于放松和促睡。 若你愿意，我也可以帮你设定一个“阅读”场景（固定暖光、当前亮度），并在你准备入睡时逐步降低亮度。现在就用这些灯光开始阅读吧，如有需要我可以继续调整。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 48,
+            "测试用例字符串": "Turn off the light decorated with stars.",
+            "模型输出": "无法唯一确定“带星星装饰的灯”对应的实体。当前系统中有多盏灯处于开启状态，但没有明确标注为“带星星装饰”的灯。请提供具体的灯的名称/实体ID，或允许我对所有疑似带星星装饰的灯执行关闭。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 49,
+            "测试用例字符串": "Help me configure the gateway's do-not-disturb mode.",
+            "模型输出": "根据当前设备状态和可用服务清单，没有发现任何与网关（gateway）“请勿打扰”模式相关的服务或开关。返回的实体列表中主要是灯光、传感器、通知等设备，并未看到网关的请勿打扰配置项或对应的服务名，因此无法直接执行“配置网关的请勿打扰模式”的指令。若你能提供网关的型号、具体的服务名，或让我进一步检索网关域下的所有服务，我可以据此完成配置；也可以在你提供开始/结束时间等参数后，尝试创建一个定时/持续的请勿打扰方案。",
+            "是否正确": false
+        },
+        {
+            "用例编号": 50,
+            "测试用例字符串": "Oh, the weather is so nice today.",
+            "模型输出": "当前指令是一句关于天气的感叹/陈述，并非可执行的智能家居控制指令（如开灯、调温、查询天气等），因此当前设备无法“执行”这条指令。若你想让我执行与天气相关的动作，请给出具体的操作指令（如：打开客厅灯光、查询天气、调节空调温度等）。",
+            "是否正确": false
+        }
+    ]
+}

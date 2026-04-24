@@ -1,0 +1,388 @@
+- domain: homeassistant
+  service: turn_on
+  name: Generic turn on
+  description: Generic action to turn devices on under any domain.
+  target:
+    entity:
+      - {}
+  handler: builtin:homeassistant.turn_on
+- domain: homeassistant
+  service: turn_off
+  name: Generic turn off
+  description: Generic action to turn devices off under any domain.
+  target:
+    entity:
+      - {}
+  handler: builtin:homeassistant.turn_off
+- domain: homeassistant
+  service: toggle
+  name: Generic toggle
+  description: Generic action to toggle devices on or off under any domain.
+  target:
+    entity:
+      - {}
+  handler: builtin:homeassistant.toggle
+- domain: homeassistant
+  service: update_entity
+  name: Update entity
+  description: Forces one or more entities to update their data.
+  fields:
+    entity_id:
+      required: true
+      name: Entities to update
+      description: List of entities to force update.
+      selector:
+        entity:
+          multiple: true
+          reorder: false
+  target:
+    entity:
+      - {}
+  handler: builtin:homeassistant.update_entity
+- domain: homeassistant
+  service: save_persistent_states
+  name: Save persistent states
+  description: Persist runtime states immediately.
+  handler: builtin:homeassistant.save_persistent_states
+  supports_response: true
+- domain: switch
+  service: turn_on
+  name: Turn on
+  description: Turn the switch on.
+  fields:
+    entity_id:
+      required: true
+      name: Entity
+      description: Target switch entity.
+  target:
+    entity:
+      - {}
+  handler: builtin:switch.turn_on
+- domain: switch
+  service: turn_off
+  name: Turn off
+  description: Turn the switch off.
+  fields:
+    entity_id:
+      required: true
+      name: Entity
+      description: Target switch entity.
+  target:
+    entity:
+      - {}
+  handler: builtin:switch.turn_off
+- domain: switch
+  service: toggle
+  name: Toggle
+  description: Toggle the switch state.
+  fields:
+    entity_id:
+      required: true
+      name: Entity
+      description: Target switch entity.
+  target:
+    entity:
+      - {}
+  handler: builtin:switch.toggle
+- domain: light
+  service: turn_on
+  name: Turn on
+  description: Turn on a light and optionally update brightness or color temperature.
+  fields:
+    entity_id:
+      required: true
+    brightness:
+      required: false
+    brightness_pct:
+      required: false
+    brightness_step_pct:
+      required: false
+    color_temp:
+      required: false
+    color_temp_kelvin:
+      required: false
+    effect:
+      required: false
+  target:
+    entity:
+      - {}
+  handler: builtin:light.turn_on
+- domain: light
+  service: turn_off
+  name: Turn off
+  description: Turn off a light.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:light.turn_off
+- domain: light
+  service: toggle
+  name: Toggle
+  description: Toggle a light state.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:light.toggle
+- domain: number
+  service: set_value
+  name: Set value
+  description: Set a numeric entity value.
+  fields:
+    entity_id:
+      required: true
+    value:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:number.set_value
+- domain: text
+  service: set_value
+  name: Set value
+  description: Set a text entity value.
+  fields:
+    entity_id:
+      required: true
+    value:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:text.set_value
+- domain: select
+  service: select_first
+  name: Select first
+  description: Select the first option.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:select.select_first
+- domain: select
+  service: select_last
+  name: Select last
+  description: Select the last option.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:select.select_last
+- domain: select
+  service: select_next
+  name: Select next
+  description: Select the next option.
+  fields:
+    entity_id:
+      required: true
+    cycle:
+      required: false
+  target:
+    entity:
+      - {}
+  handler: builtin:select.select_next
+- domain: select
+  service: select_previous
+  name: Select previous
+  description: Select the previous option.
+  fields:
+    entity_id:
+      required: true
+    cycle:
+      required: false
+  target:
+    entity:
+      - {}
+  handler: builtin:select.select_previous
+- domain: select
+  service: select_option
+  name: Select option
+  description: Select a specific option.
+  fields:
+    entity_id:
+      required: true
+    option:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:select.select_option
+- domain: button
+  service: press
+  name: Press
+  description: Press a button entity.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:button.press
+- domain: media_player
+  service: volume_set
+  name: Set volume
+  description: Set speaker volume level.
+  fields:
+    entity_id:
+      required: true
+    volume_level:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.volume_set
+- domain: media_player
+  service: volume_up
+  name: Volume up
+  description: Increase volume.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.volume_up
+- domain: media_player
+  service: volume_down
+  name: Volume down
+  description: Decrease volume.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.volume_down
+- domain: media_player
+  service: volume_mute
+  name: Volume mute
+  description: Mute or unmute audio.
+  fields:
+    entity_id:
+      required: true
+    is_volume_muted:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.volume_mute
+- domain: media_player
+  service: media_play
+  name: Play
+  description: Start media playback.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_play
+- domain: media_player
+  service: media_pause
+  name: Pause
+  description: Pause media playback.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_pause
+- domain: media_player
+  service: media_play_pause
+  name: Play/pause
+  description: Toggle media playback.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_play_pause
+- domain: media_player
+  service: media_stop
+  name: Stop
+  description: Stop media playback.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_stop
+- domain: media_player
+  service: media_previous_track
+  name: Previous track
+  description: Switch to the previous track.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_previous_track
+  supports_response: true
+- domain: media_player
+  service: media_next_track
+  name: Next track
+  description: Switch to the next track.
+  fields:
+    entity_id:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:media_player.media_next_track
+  supports_response: true
+- domain: notify
+  service: send_message
+  name: Send message
+  description: Send a message to the notify target.
+  fields:
+    entity_id:
+      required: true
+    message:
+      required: true
+    data:
+      required: false
+  target:
+    entity:
+      - {}
+  handler: builtin:notify.send_message
+- domain: climate
+  service: set_hvac_mode
+  name: Set HVAC mode
+  description: Set climate HVAC mode.
+  fields:
+    entity_id:
+      required: true
+    hvac_mode:
+      required: true
+  target:
+    entity:
+      - {}
+  handler: builtin:climate.set_hvac_mode
+- domain: climate
+  service: set_temperature
+  name: Set temperature
+  description: Set climate target temperature.
+  fields:
+    entity_id:
+      required: true
+    temperature:
+      required: true
+    hvac_mode:
+      required: false
+  target:
+    entity:
+      - {}
+  handler: builtin:climate.set_temperature

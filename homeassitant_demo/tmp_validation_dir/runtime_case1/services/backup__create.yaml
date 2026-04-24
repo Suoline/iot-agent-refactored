@@ -1,0 +1,8 @@
+domain: backup
+service: create
+name: Create backup
+description: Creates a new backup.
+fields: {}
+target: null
+handler: builtin:service.not_implemented
+supports_response: false

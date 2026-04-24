@@ -1,0 +1,13 @@
+domain: media_player
+service: media_next_track
+name: Next
+description: Selects the next track.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 32
+handler: builtin:media_player.media_next_track
+supports_response: true

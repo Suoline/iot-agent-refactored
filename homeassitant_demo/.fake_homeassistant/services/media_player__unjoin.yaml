@@ -1,0 +1,14 @@
+domain: media_player
+service: unjoin
+name: Unjoin
+description: Removes the player from a group. Only works on platforms which support
+  player groups.
+fields: {}
+target:
+  entity:
+  - domain:
+    - media_player
+    supported_features:
+    - 524288
+handler: builtin:service.not_implemented
+supports_response: false
