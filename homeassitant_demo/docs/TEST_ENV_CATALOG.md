@@ -1,7 +1,7 @@
 # 测试环境总览（环境 / 设备 / 故障 / 空间）
 
 本文档用于回答“有哪些测试环境、各自设备与空间信息、故障类型与规则”。  
-如果你需要 API 调用方式，请看：[测试环境调用指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENVIRONMENTS.md)。
+如果你需要 API 调用方式，请看：[测试环境调用指南](TEST_ENVIRONMENTS.md)。
 
 > 统计口径日期：`2026-04-20`  
 > 说明：`base_env` 为动态环境，统计会随 `copied_data` 基线变化而变化。

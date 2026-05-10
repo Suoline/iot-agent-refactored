@@ -18,7 +18,7 @@
 
 详细原则见：
 
-- [DESIGN_RULES.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\DESIGN_RULES.md)
+- [DESIGN_RULES.md](DESIGN_RULES.md)
 
 ## 2. 扩展入口一览
 
@@ -67,9 +67,9 @@
 
 涉及位置：
 
-- [base.yaml](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\data\services\base.yaml)
-- [runtime.py](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\runtime.py)
-- [tests/test_api.py](F:\coding_workspace\codex_workspace\homeassitant_demo\tests\test_api.py)
+- [base.yaml](../src/fake_homeassistant_v2/data/services/base.yaml)
+- [runtime.py](../src/fake_homeassistant_v2/runtime.py)
+- [tests/test_api.py](../tests/test_api.py)
 
 ## 3. 新增实体的最小步骤
 
@@ -223,7 +223,7 @@ actions 适合表达：
 
 自定义 handler 示例可以参考：
 
-- [tests/custom_handlers.py](F:\coding_workspace\codex_workspace\homeassitant_demo\tests\custom_handlers.py)
+- [tests/custom_handlers.py](../tests/custom_handlers.py)
 
 ## 8. 推荐扩展流程
 
@@ -255,9 +255,9 @@ actions 适合表达：
 
 扩展完成后按需更新：
 
-- 对外接口变化：更新 [API.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\API.md)
-- 内部机制变化：更新 [ARCHITECTURE.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\ARCHITECTURE.md)
-- 扩展规则变化：更新 [DESIGN_RULES.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\DESIGN_RULES.md)
+- 对外接口变化：更新 [API.md](API.md)
+- 内部机制变化：更新 [ARCHITECTURE.md](ARCHITECTURE.md)
+- 扩展规则变化：更新 [DESIGN_RULES.md](DESIGN_RULES.md)
 
 不要把这些知识重新堆回 `README.md`。
 
@@ -363,7 +363,7 @@ curl -X POST http://127.0.0.1:8123/api/mock/original_env
 
 测试环境 API 详细行为见：
 
-- [TEST_ENVIRONMENTS.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENVIRONMENTS.md)
+- [TEST_ENVIRONMENTS.md](TEST_ENVIRONMENTS.md)
 
 ## 12. 动态 `base_env`（非 YAML）
 

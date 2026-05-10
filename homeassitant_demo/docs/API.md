@@ -4,10 +4,10 @@
 
 如果你需要了解内部实现或扩展方式，请看：
 
-- [测试环境调用指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENVIRONMENTS.md)
-- [架构说明](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\ARCHITECTURE.md)
-- [扩展指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md)
-- [设计约定](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\DESIGN_RULES.md)
+- [测试环境调用指南](TEST_ENVIRONMENTS.md)
+- [架构说明](ARCHITECTURE.md)
+- [扩展指南](EXTENDING.md)
+- [设计约定](DESIGN_RULES.md)
 
 ## 基础信息
 
@@ -406,7 +406,7 @@ Content-Type: application/json
   - `te_fake_success_pair_*_v1` 仅支持 `fake_success`
   - 对这些环境传入不支持的 `fault_mode` 会返回 `400`
 - `base_env` 仅支持 `normal` 模式；传入其他 `fault_mode` 会返回 `400`
-- 详细说明见：[测试环境调用指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENVIRONMENTS.md)
+- 详细说明见：[测试环境调用指南](TEST_ENVIRONMENTS.md)
 
 `base_env` 调用示例：
 

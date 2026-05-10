@@ -17,7 +17,7 @@
 
 代码位置：
 
-- [runtime.py](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\runtime.py)
+- [runtime.py](../src/fake_homeassistant_v2/runtime.py)
 
 职责：
 
@@ -117,7 +117,7 @@
 
 代码位置：
 
-- [models.py](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\models.py)
+- [models.py](../src/fake_homeassistant_v2/models.py)
 
 关键模型：
 
@@ -230,8 +230,8 @@
 
 代码位置：
 
-- [importer.py](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\importer.py)
-- [legacy_parser.py](F:\coding_workspace\codex_workspace\homeassitant_demo\src\fake_homeassistant_v2\legacy_parser.py)
+- [importer.py](../src/fake_homeassistant_v2/importer.py)
+- [legacy_parser.py](../src/fake_homeassistant_v2/legacy_parser.py)
 
 导入器职责：
 
@@ -275,4 +275,4 @@
 
 详细步骤见：
 
-- [EXTENDING.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md)
+- [EXTENDING.md](EXTENDING.md)

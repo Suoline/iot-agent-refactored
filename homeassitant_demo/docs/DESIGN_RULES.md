@@ -144,5 +144,5 @@ skill 只是执行流程：
 
 在此之前，优先维护：
 
-- [ARCHITECTURE.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\ARCHITECTURE.md)
-- [EXTENDING.md](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+- [EXTENDING.md](EXTENDING.md)

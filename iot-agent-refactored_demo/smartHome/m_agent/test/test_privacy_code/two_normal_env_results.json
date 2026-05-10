@@ -1,0 +1,35 @@
+{
+  "instruction": "把空调温度调高2度",
+  "summary": {
+    "total_envs": 2,
+    "init_ok": 2,
+    "func_ok": 0,
+    "restore_ok": 2,
+    "failed_envs": [
+      "te_normal_pair_a_v1",
+      "te_normal_pair_b_v1"
+    ]
+  },
+  "results": [
+    {
+      "env_id": "te_normal_pair_a_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "callback failed: Error code: 429 - {'error': {'code': 'bad_response_status_code', 'message': 'Provider API error: bad response status code 429', 'param': '429', 'type': 'upstream_error'}}"
+      ]
+    },
+    {
+      "env_id": "te_normal_pair_b_v1",
+      "init_ok": true,
+      "func_ok": false,
+      "restore_ok": true,
+      "func_result": null,
+      "errors": [
+        "callback failed: {'message': 'We were unable to start processing your request within the 900-second timeout limit. Please try again later.'}"
+      ]
+    }
+  ]
+}

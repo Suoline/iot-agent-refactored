@@ -1,12 +1,12 @@
 {
     "filter_devices": {
-        "devices": [
+        "entities": [
             {
-                "device_id": "light.yeelink_cn_1162511951_mbulb3_s_2",
-                "device_name": "灯泡  灯",
-                "device_reason": "当前处于开启，建议关闭以节能"
+                "entity_id": "sensor.test_living_room_temperature_main",
+                "entity_name": "客厅温度传感器",
+                "entity_reason": "靠近客厅空调的温度传感器，state=26.0°C，last_changed=2026-05-06T12:35:24.551670+08:00，last_updated=2026-05-06T12:35:24.551974+08:00"
             }
         ]
     },
-    "planning_result": "已为你关闭一盏灯：\n\n- 设备：灯泡  灯（device_id: light.yeelink_cn_1162511951_mbulb3_s_2）\n- 操作：已关闭\n\n需要我也关闭其它设备吗？"
+    "planning_result": "[\n  {\n    \"entity_id\": \"sensor.test_living_room_temperature_main\",\n    \"friendly_name\": \"客厅温度传感器\",\n    \"state\": \"26.0 °C\",\n    \"last_changed\": \"2026-05-06T12:35:24.551670+08:00\",\n    \"last_updated\": \"2026-05-06T12:35:24.551974+08:00\"\n  }\n]"
 }

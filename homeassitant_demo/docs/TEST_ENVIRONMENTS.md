@@ -1,7 +1,7 @@
 # 测试环境调用指南
 
 本文档说明如何通过 API 切换到测试环境、配置故障模式，以及恢复到原始环境。
-测试环境清单、设备与空间信息、故障规则总览请看：[测试环境总览](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENV_CATALOG.md)。
+测试环境清单、设备与空间信息、故障规则总览请看：[测试环境总览](TEST_ENV_CATALOG.md)。
 
 ## 1. 本次已实现功能
 

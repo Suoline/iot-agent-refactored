@@ -8,7 +8,7 @@ import six_env_runner
 def test_run_six_envs_calls_all_envs_in_order_and_callback_receives_instruction(monkeypatch: Any) -> None:
     init_calls: list[str] = []
     restore_calls: list[str] = []
-    callback_calls: list[tuple[dict[str, Any], str]] = []
+    callback_calls: list[str] = []
 
     def fake_init_env(env_id: str, **_: Any) -> dict[str, Any]:
         init_calls.append(env_id)
@@ -18,19 +18,18 @@ def test_run_six_envs_calls_all_envs_in_order_and_callback_receives_instruction(
         restore_calls.append("restore")
         return {"status": "restored"}
 
-    def fake_callback(instruction: dict[str, Any], env_id: str) -> str:
-        callback_calls.append((instruction, env_id))
-        return f"ok-{env_id}"
+    def fake_callback(instruction: str) -> str:
+        callback_calls.append(instruction)
+        return f"ok-{instruction}"
 
     monkeypatch.setattr(six_env_runner, "init_env", fake_init_env)
     monkeypatch.setattr(six_env_runner, "restore_env", fake_restore_env)
 
-    instruction = {"cmd": "demo"}
+    instruction = "demo"
     results = six_env_runner.run_six_envs(instruction=instruction, func=fake_callback)
 
     assert init_calls == list(six_env_runner.SIX_ENV_IDS)
-    assert [env_id for _, env_id in callback_calls] == list(six_env_runner.SIX_ENV_IDS)
-    assert all(payload == instruction for payload, _ in callback_calls)
+    assert callback_calls == [instruction] * len(six_env_runner.SIX_ENV_IDS)
     assert len(restore_calls) == len(six_env_runner.SIX_ENV_IDS)
     assert len(results) == len(six_env_runner.SIX_ENV_IDS)
     assert all(item["init_ok"] is True for item in results)
@@ -49,7 +48,7 @@ def test_run_six_envs_with_none_func_uses_noop_callback(monkeypatch: Any) -> Non
     monkeypatch.setattr(six_env_runner, "init_env", fake_init_env)
     monkeypatch.setattr(six_env_runner, "restore_env", fake_restore_env)
 
-    results = six_env_runner.run_six_envs(instruction={"cmd": "no-op"}, func=None)
+    results = six_env_runner.run_six_envs(instruction="no-op", func=None)
 
     assert len(results) == len(six_env_runner.SIX_ENV_IDS)
     assert all(item["init_ok"] is True for item in results)
@@ -61,7 +60,7 @@ def test_run_six_envs_with_none_func_uses_noop_callback(monkeypatch: Any) -> Non
 def test_run_six_envs_init_failure_still_restores_and_continues(monkeypatch: Any) -> None:
     init_calls: list[str] = []
     restore_calls: list[str] = []
-    callback_calls: list[str] = []
+    callback_calls = 0
     failing_env = six_env_runner.SIX_ENV_IDS[1]
 
     def fake_init_env(env_id: str, **_: Any) -> dict[str, Any]:
@@ -74,19 +73,20 @@ def test_run_six_envs_init_failure_still_restores_and_continues(monkeypatch: Any
         restore_calls.append("restore")
         return {"status": "restored"}
 
-    def fake_callback(_: Any, env_id: str) -> str:
-        callback_calls.append(env_id)
-        return f"ok-{env_id}"
+    def fake_callback(_: str) -> str:
+        nonlocal callback_calls
+        callback_calls += 1
+        return "ok"
 
     monkeypatch.setattr(six_env_runner, "init_env", fake_init_env)
     monkeypatch.setattr(six_env_runner, "restore_env", fake_restore_env)
 
-    results = six_env_runner.run_six_envs(instruction={"cmd": "demo"}, func=fake_callback)
+    results = six_env_runner.run_six_envs(instruction="demo", func=fake_callback)
     result_by_env = {item["env_id"]: item for item in results}
 
     assert init_calls == list(six_env_runner.SIX_ENV_IDS)
     assert len(restore_calls) == len(six_env_runner.SIX_ENV_IDS)
-    assert failing_env not in callback_calls
+    assert callback_calls == len(six_env_runner.SIX_ENV_IDS) - 1
     assert result_by_env[failing_env]["init_ok"] is False
     assert result_by_env[failing_env]["func_ok"] is False
     assert result_by_env[failing_env]["restore_ok"] is True
@@ -104,15 +104,20 @@ def test_run_six_envs_callback_failure_still_restores_and_continues(monkeypatch:
         restore_calls.append("restore")
         return {"status": "restored"}
 
-    def fake_callback(_: Any, env_id: str) -> str:
-        if env_id == failing_env:
+    call_count = 0
+
+    def fake_callback(_: str) -> str:
+        nonlocal call_count
+        current_env = six_env_runner.SIX_ENV_IDS[call_count]
+        call_count += 1
+        if current_env == failing_env:
             raise RuntimeError("callback boom")
-        return f"ok-{env_id}"
+        return "ok"
 
     monkeypatch.setattr(six_env_runner, "init_env", fake_init_env)
     monkeypatch.setattr(six_env_runner, "restore_env", fake_restore_env)
 
-    results = six_env_runner.run_six_envs(instruction={"cmd": "demo"}, func=fake_callback)
+    results = six_env_runner.run_six_envs(instruction="demo", func=fake_callback)
     result_by_env = {item["env_id"]: item for item in results}
 
     assert len(restore_calls) == len(six_env_runner.SIX_ENV_IDS)
@@ -139,13 +144,13 @@ def test_run_six_envs_restore_failure_is_recorded(monkeypatch: Any) -> None:
             raise RuntimeError("restore boom")
         return {"status": "restored"}
 
-    def fake_callback(_: Any, env_id: str) -> str:
-        return f"ok-{env_id}"
+    def fake_callback(_: str) -> str:
+        return "ok"
 
     monkeypatch.setattr(six_env_runner, "init_env", fake_init_env)
     monkeypatch.setattr(six_env_runner, "restore_env", fake_restore_env)
 
-    results = six_env_runner.run_six_envs(instruction={"cmd": "demo"}, func=fake_callback)
+    results = six_env_runner.run_six_envs(instruction="demo", func=fake_callback)
     result_by_env = {item["env_id"]: item for item in results}
 
     assert result_by_env[failing_env]["restore_ok"] is False

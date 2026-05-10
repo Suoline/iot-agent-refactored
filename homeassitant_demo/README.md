@@ -8,23 +8,59 @@
 
 ## 快速开始
 
-在项目根目录执行：
+推荐使用 conda 环境运行，环境文件已提供：`environment.yml`
 
-```powershell
-cd F:\coding_workspace\codex_workspace\homeassitant_demo
-D:\anaconda\Scripts\pip.exe install -e .[test]
+环境名：`fake-homeassitant-env`
+
+### 1. 创建并激活环境
+
+macOS/Linux (Bash):
+
+```bash
+cd /path/to/homeassitant_demo
+conda env create -f environment.yml
+conda activate fake-homeassitant-env
 ```
 
-启动服务：
+Windows (PowerShell):
 
 ```powershell
-cd F:\coding_workspace\codex_workspace\homeassitant_demo
-D:\anaconda\python.exe -m fake_homeassistant_v2
+cd <path-to>\homeassitant_demo
+conda env create -f environment.yml
+conda activate fake-homeassitant-env
 ```
 
-或者：
+如果环境已经存在，更新依赖：
+
+macOS/Linux (Bash):
+
+```bash
+conda env update -f environment.yml --prune
+```
+
+Windows (PowerShell):
 
 ```powershell
+conda env update -f environment.yml --prune
+```
+
+### 2. 启动服务
+
+macOS/Linux (Bash):
+
+```bash
+python -m fake_homeassistant_v2
+```
+
+Windows (PowerShell):
+
+```powershell
+python -m fake_homeassistant_v2
+```
+
+或者（跨平台）：
+
+```bash
 fake-ha
 ```
 
@@ -32,17 +68,31 @@ fake-ha
 
 - `http://127.0.0.1:8123`
 
-快速验证：
+### 3. 快速验证（smoke test）
 
-```powershell
+```bash
 curl http://127.0.0.1:8123/api/
 curl http://127.0.0.1:8123/api/states
 curl http://127.0.0.1:8123/api/services
 ```
 
+### 4. 运行测试
+
+macOS/Linux (Bash):
+
+```bash
+pytest -q
+```
+
+Windows (PowerShell):
+
+```powershell
+pytest -q
+```
+
 ## 运行时数据
 
-- 默认运行时目录：`F:\coding_workspace\codex_workspace\homeassitant_demo\.fake_homeassistant`
+- 默认运行时目录：项目根目录下 `.fake_homeassistant`
 - 首次启动且运行时目录为空时，会自动从 `fake_homeassitant_try/copied_data` 导入旧样本数据
 - 如果设置 `FAKE_HA_TOKEN`，则所有 `/api/*` 和 `/api/mock/*` 请求都需要 `Authorization: Bearer ...`
 
@@ -50,12 +100,12 @@ curl http://127.0.0.1:8123/api/services
 
 按下面顺序阅读：
 
-1. [API 文档](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\API.md)
-2. [测试环境总览](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENV_CATALOG.md)
-3. [测试环境调用指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\TEST_ENVIRONMENTS.md)
-4. [架构说明](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\ARCHITECTURE.md)
-5. [扩展指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md)
-6. [设计约定](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\DESIGN_RULES.md)
+1. [API 文档](docs/API.md)
+2. [测试环境总览](docs/TEST_ENV_CATALOG.md)
+3. [测试环境调用指南](docs/TEST_ENVIRONMENTS.md)
+4. [架构说明](docs/ARCHITECTURE.md)
+5. [扩展指南](docs/EXTENDING.md)
+6. [设计约定](docs/DESIGN_RULES.md)
 
 各文档职责：
 
@@ -78,4 +128,4 @@ curl http://127.0.0.1:8123/api/services
 
 当前仓库先不内置专门的 Codex skill。
 
-原因是这个阶段更适合先把长期有效的知识沉淀到项目文档里；等后续你确认会反复让 Codex 帮你扩展设备、实体和 service，再从 [扩展指南](F:\coding_workspace\codex_workspace\homeassitant_demo\docs\EXTENDING.md) 中提炼一个薄 skill，会更稳定，也更容易维护。
+原因是这个阶段更适合先把长期有效的知识沉淀到项目文档里；等后续你确认会反复让 Codex 帮你扩展设备、实体和 service，再从 [扩展指南](docs/EXTENDING.md) 中提炼一个薄 skill，会更稳定，也更容易维护。

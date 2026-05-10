@@ -97,6 +97,7 @@ class SmartHomeAgentState(TypedDict):
     filter_devices: str
     planning_result:str
     final_answer:str
+    execution_completed_at: str
 
     # Classification result
     classification: EmailClassification | None
