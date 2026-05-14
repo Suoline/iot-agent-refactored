@@ -3,7 +3,7 @@ __pycache__/
 .fake_homeassistant/
 *.log
 logs/
-note/base_agent_result.json
+**/note/base_agent_result.json
 results/
 method_call_status.json
 .idea/
