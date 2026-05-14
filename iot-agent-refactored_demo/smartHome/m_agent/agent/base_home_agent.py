@@ -22,7 +22,7 @@ from pydantic import BaseModel, Field
 from typing import List  # 推荐导入List，规范类型注解
 
 from smartHome.m_agent.memory.fake_api_tool.fake_api_func import tool_get_all_entities_states, \
-    tool_get_states_by_entity_id
+    tool_get_states_by_entity_id, tool_get_all_devices
 
 
 class DeviceInfo(BaseModel):
@@ -213,8 +213,14 @@ def tool_filter(task:str):
     """
     prompt = f"""
         【任务】：{task}
-        调用工具来获取task中所需的设备IDs
-        最后保留设备ID，和简单说明理由。如果没有任何设备满足约束条件，说明原因。
+        调用 @tool tool_get_all_devices 获取所有可用设备列表，
+        调用 @tool query_tool 查询用户记忆中记录的各设备归属哪个房间。
+
+        **重要**：HomeAssistant 中记录的 area_id 和设备名称不可靠，不能作为确定设备所在房间的依据。
+        设备实际属于哪个房间，必须以 query_tool 返回的用户对话记忆为准。
+
+        最后保留设备ID和简单说明理由（理由需注明依据 query_tool 还是 HA 数据）。
+        如果没有任何设备满足约束条件，说明原因。
         """
     # prompt = f"""
     #     【任务】：{task}
@@ -227,9 +233,10 @@ def tool_filter(task:str):
     #     """
     agent = create_agent(model=get_llm(),
                          tools=[
-                                # query_tool,
+                                query_tool,
                                 # ask_human
-                                tool_get_all_entities_states
+                                # tool_get_all_entities_states
+                                tool_get_all_devices
                                 ],
                          response_format=DeviceIdList,
                          middleware=[log_before, log_response, log_before_agent, log_after_agent],
@@ -295,9 +302,9 @@ def tool_planner(task:str,devices:DeviceIdList):
     - 除非任务明确包含持久化监控某个设备或许显示提到持久化、建立自动化规则，否则计划中不能出现持久化操作
     - 不要奢望通过和用户交互得到答案，用户无法直接回复你。所以不要问用户，自己做。
     - **不要向用户确认计划！！！制定计划就自己执行**
-    - 对于用户没有指明要调整设备到什么状态，如果存在用户偏好（通用偏好或者设备特定偏好），那么应该按照其规划调用方案；否则依照常理来规划。
-    - 如果需要知晓某个设备的使用偏好，请使用@tool query_tool查询对应设备ID的偏好
-    - 如果需要知晓某个设备ID的实时状态来制定计划，请使用@tool get_device_current_status。例如类似调亮灯光这类任务，需要先知道当前亮度值，才能确定要调整后亮度值。
+    - 对于涉及用户偏好、设备使用习惯、场景指令的任务，请使用@tool query_tool查询对应设备或场景的记忆
+    - 对于需要感知设备当前状态来制定计划的（例如"调亮某灯"需先知道当前亮度），请使用@tool get_device_current_status
+    - HomeAssistant 中记录的设备名称和 area_id 仅供参考，设备实际的归属和位置应以 query_tool 返回的用户记忆为准
     """
     # prompt=f"""
     # 【任务】：{task}
@@ -321,7 +328,7 @@ def tool_planner(task:str,devices:DeviceIdList):
         tools=[
             # get_devices_states,get_devices_capabilities,get_devices_usage_habits,
                 query_tool,
-                tool_get_states_by_entity_id,
+                # tool_get_states_by_entity_id,
                 executor_planning],
         middleware=[log_before, log_response, log_before_agent, log_after_agent],
         context_schema=AgentContext
@@ -361,30 +368,6 @@ def node_deliver(state:SmartHomeAgentState)-> Command[Literal[END]]:
         goto=END
     )
 
-def run_ourAgent_for_full_result(task:str):
-    agent_builder = StateGraph(SmartHomeAgentState)
-    # Add nodes
-    agent_builder.add_node("router_node", node_router)
-    agent_builder.add_node("deliver_node", node_deliver)
-
-    agent_builder.add_edge(START, "router_node")
-    # agent_builder.add_edge("filter_node", "planner_and_executor_node")
-    # agent_builder.add_edge("planner_and_executor_node", END)
-
-    agent = agent_builder.compile()
-    # GLOBALCONFIG.nested_logger=GLOBALCONFIG.agent_init_dialogue_logger
-    # Test with an urgent billing issue
-    # task="关闭卧室灯泡"
-    # task="关闭灯164c1a92b8ce9cda0e2a8c13440b4722"
-    initial_state = {
-        "command": task,
-        "messages": [HumanMessage(content=task)]
-    }
-    result = agent.invoke(initial_state)
-    # for m in result["messages"]:
-    #     m.pretty_print()
-
-    return result
 def run_ourAgent(task:str):
     agent_builder = StateGraph(SmartHomeAgentState)
     # Add nodes

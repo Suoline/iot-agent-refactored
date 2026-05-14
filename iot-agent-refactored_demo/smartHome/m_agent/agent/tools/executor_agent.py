@@ -6,7 +6,8 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 
 from smartHome.m_agent.common.global_config import GLOBALCONFIG
-from smartHome.m_agent.memory.fake_api_tool.fake_api_func import tool_get_states_by_entity_id, tool_get_services_by_domain, tool_execute_action_by_entity_id
+from smartHome.m_agent.memory.fake_api_tool.fake_api_func import tool_get_states_by_entity_id, \
+    tool_get_services_by_domain, tool_execute_action_by_entity_id, tool_get_device_entities
 
 
 @tool
@@ -51,19 +52,20 @@ def get_device_current_status(device_id:str,what_status:str):
     :param what_status:
     :return:
     """
-    prompt = f"""
-            【实体ID】：{device_id}
-            【任务】：{what_status}
-            """
     # prompt = f"""
-    #         【设备ID】：{device_id}
+    #         【实体ID】：{device_id}
     #         【任务】：{what_status}
-    #         一个设备有多个实体，你可以首先调用工具查看设备下所有实体各自能得到什么状态类型
-    #         选择实体后再调用工具获取该设备的当前状态
     #         """
+    prompt = f"""
+            【设备ID】：{device_id}
+            【任务】：{what_status}
+            一个设备有多个实体，你可以首先调用工具查看设备下所有实体
+            选择实体后再调用工具获取该设备的当前状态
+            """
     agent = create_agent(model=get_llm(),
                          tools=[
                              # get_device_all_entities_states,
+                             tool_get_device_entities,
                              tool_get_states_by_entity_id],
                          middleware=[log_before, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
@@ -85,24 +87,19 @@ def execute_device_action(device_id: str, action: str):
     :param action:
     :return:
     """
+
     prompt = f"""
-                【实体ID】：{device_id}
+                【设备ID】：{device_id}
                 【任务】：{action}
-                调用工具对设备执行动作
+                一个设备有多个实体，你可以首先调用工具查看设备下所有实体
+                选择实体后再调用工具对设备执行动作
                 - 注意有些实体的状态可以采用不同的单位，比如百分比、具体数值等等。应该严格遵循任务中提出的单位来调度实体。
                 - 不要向用户提问，只需依照任务执行动作即可，任务中未提及的操作参数不应设置（比如任务只说开灯，那么亮度值和色温值就不必设置，采用原来的默认值）
                 """
-    # prompt = f"""
-    #             【设备ID】：{device_id}
-    #             【任务】：{action}
-    #             一个设备有多个实体，你可以首先调用工具查看设备下所有实体各自能进行什么操作
-    #             选择实体后再调用工具对设备执行动作
-    #             - 注意有些实体的状态可以采用不同的单位，比如百分比、具体数值等等。应该严格遵循任务中提出的单位来调度实体。
-    #             - 不要向用户提问，只需依照任务执行动作即可，任务中未提及的操作参数不应设置（比如任务只说开灯，那么亮度值和色温值就不必设置，采用原来的默认值）
-    #             """
     agent = create_agent(model=get_llm(),
                          tools=[
                                  # get_device_all_entities_capabilities,
+                                tool_get_device_entities,
                                  tool_get_states_by_entity_id,
                                  tool_get_services_by_domain,
                                  tool_execute_action_by_entity_id,
@@ -146,6 +143,7 @@ def start_device_persistent_monitoring(device_id: str,when_true:str,then_do:str)
     agent = create_agent(model=get_llm(),
                          tools=[
                              # get_device_all_entities_capabilities,
+                             tool_get_device_entities,
                              tool_get_states_by_entity_id,PythonInterpreterTool,NotifyOnConditionTool],
                          middleware=[log_before, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext

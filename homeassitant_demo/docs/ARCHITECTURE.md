@@ -43,7 +43,9 @@
 - 保存设备定义 `devices`
 - 保存实体定义 `entities`
 - 保存 service 定义 `services`
-- 提供 `get_entity()`、`get_service()` 等查询入口
+- 提供 `get_device()`、`list_devices()` 等设备查询入口
+- 提供 `get_entity()`、`list_entities()` 等实体查询入口
+- 提供 `get_service()` 等服务查询入口
 
 它管理的是“定义”，不是运行中的状态快照。
 
@@ -151,7 +153,30 @@
 2. 直接查询 `StateStore`
 3. 返回状态快照
 
-### 4.2 执行 service
+### 4.2 查询设备注册表
+
+`GET /api/devices` 或 `GET /api/devices/{device_id}`：
+
+1. FastAPI 入口接收请求
+2. 查询 `RegistryStore`：
+   - 全部设备：`list_devices()` 返回 `self.devices` 字典的所有值
+   - 单个设备：`get_device(device_id)` 查找字典，不存在则抛出 `NotFoundError`（404）
+3. 对于 `/{device_id}`，附加查询 `StateStore` 获取该设备所有实体（`device.entities`）的当前状态
+4. 返回设备定义（及可选的实体状态）
+
+### 4.3 查询实体注册表
+
+`GET /api/entities` 或 `GET /api/entities/{entity_id}`：
+
+1. FastAPI 入口接收请求
+2. 查询 `RegistryStore`：
+   - 全部实体：`list_entities()` 返回 `self.entities` 字典的所有值
+   - 单个实体：`get_entity(entity_id)` 查找字典，不存在则抛出 `NotFoundError`（404）
+3. 返回实体定义（`EntityDefinition`），包含 `device_id`、`domain`、`device_class` 等元数据
+
+注意：实体定义（`EntityDefinition`）与实体状态（`StateRecord`）是分离的。定义描述实体是什么，状态描述实体当前是什么状态。
+
+### 4.4 执行 service
 
 `POST /api/services/{domain}/{service}`：
 
@@ -166,7 +191,7 @@
 9. 触发 `state_changed` 事件
 10. 返回变更后的状态列表，或在允许时返回 `service_response`
 
-### 4.3 新增实体
+### 4.5 新增实体
 
 `PUT /api/mock/entities/{entity_id}`：
 
@@ -174,7 +199,7 @@
 2. 为该实体创建或补齐状态
 3. 将最新状态落盘到 `state_store.json`
 
-### 4.4 新增设备
+### 4.6 新增设备
 
 `PUT /api/mock/devices/{device_id}`：
 
@@ -183,7 +208,7 @@
 3. 为这些实体补齐状态
 4. 持久化状态
 
-### 4.5 切换测试环境
+### 4.7 切换测试环境
 
 `POST /api/mock/init_env`：
 

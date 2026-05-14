@@ -74,6 +74,8 @@ fake-ha
 curl http://127.0.0.1:8123/api/
 curl http://127.0.0.1:8123/api/states
 curl http://127.0.0.1:8123/api/services
+curl http://127.0.0.1:8123/api/devices
+curl http://127.0.0.1:8123/api/entities
 ```
 
 ### 4. 运行测试

@@ -240,10 +240,12 @@ actions 适合表达：
 
 最少验证：
 
-1. 新实体能在 `/api/states` 中看到
-2. 对应 service 能调用成功
-3. 状态变化后会持久化
-4. 重启后状态或定义符合预期
+1. 新实体能在 `/api/states` 中看到状态
+2. 新实体能在 `/api/entities` 中看到定义（含 `device_id`）
+3. 如果通过设备注册，能在 `/api/devices/{device_id}` 中看到设备-实体关联
+4. 对应 service 能调用成功
+5. 状态变化后会持久化
+6. 重启后状态或定义符合预期
 
 如果新增的是 service 或 handler，还应额外验证：
 

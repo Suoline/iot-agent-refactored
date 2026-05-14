@@ -140,6 +140,91 @@ def tool_get_services_by_domain(domain: str) -> dict[str, Any] | str:
 
 
 @tool
+def tool_get_all_devices() -> list[dict[str, Any]] | str | None:
+    """获取所有设备注册信息。
+
+    对应 HTTP 路由:
+        GET /api/devices
+
+    Returns:
+        成功时返回设备定义列表，每个设备包含 device_id、name、area_id、entities（实体 ID 列表）等字段。
+    """
+    return _request_json("GET", "/api/devices")
+
+
+@tool
+def tool_get_device_by_id(device_id: str) -> dict[str, Any] | str | None:
+    """按 device_id 查询单个设备的注册信息及其所有实体的当前状态。
+
+    对应 HTTP 路由:
+        GET /api/devices/{device_id}
+
+    Args:
+        device_id: 设备 ID，例如 device.test_living_room_ac_main。
+
+    Returns:
+        成功时返回 {"device": {...}, "entity_states": [...]}。
+    """
+    encoded_device_id = quote(device_id, safe="._-")
+    return _request_json("GET", f"/api/devices/{encoded_device_id}")
+
+
+@tool
+def tool_get_device_entities(device_id: str) -> list[str] | str | None:
+    """按 device_id 查询该设备下的所有实体 ID 列表（不含状态）。
+
+    对应 HTTP 路由:
+        GET /api/devices/{device_id}
+
+    Args:
+        device_id: 设备 ID，例如 device.test_living_room_ac_main。
+
+    Returns:
+        成功时返回该设备下的实体 ID 字符串列表，例如:
+        ["climate.test_ac_01", "sensor.test_room_temperature_living_1"]。
+        如需查询实体的当前状态，请使用 tool_get_states_by_entity_id。
+        如需查询实体定义，请使用 tool_get_entity_definition。
+    """
+    encoded_device_id = quote(device_id, safe="._-")
+    result = _request_json("GET", f"/api/devices/{encoded_device_id}")
+    if isinstance(result, dict) and "device" in result:
+        return result["device"].get("entities", [])
+    return result
+
+
+@tool
+def tool_get_all_entities() -> list[dict[str, Any]] | str | None:
+    """获取所有实体定义（EntityDefinition），非状态快照。
+
+    对应 HTTP 路由:
+        GET /api/entities
+
+    Returns:
+        成功时返回实体定义列表，每个实体包含 entity_id、domain、device_id、name、device_class 等字段。
+        如果需要查询实体的当前状态，请使用 tool_get_all_entities_states。
+    """
+    return _request_json("GET", "/api/entities")
+
+
+@tool
+def tool_get_entity_definition(entity_id: str) -> dict[str, Any] | str | None:
+    """按 entity_id 查询单个实体的定义信息（EntityDefinition）。
+
+    对应 HTTP 路由:
+        GET /api/entities/{entity_id}
+
+    Args:
+        entity_id: 实体 ID，例如 light.philips_cn_1061200910_lite_s_2。
+
+    Returns:
+        成功时返回实体的完整定义，包含 device_id、domain、device_class、actions 等字段。
+        如需查询实体当前状态，请使用 tool_get_states_by_entity_id。
+    """
+    encoded_entity_id = quote(entity_id, safe="._-")
+    return _request_json("GET", f"/api/entities/{encoded_entity_id}")
+
+
+@tool
 def tool_execute_action_by_entity_id(domain: str, service: str, body: str) -> dict[str, Any] | str:
     """调用指定 domain/service，对实体执行操作。
 

@@ -213,6 +213,18 @@ class RegistryStore:
         self.services[service.key] = service
         self.storage.write_service(service)
 
+    def get_device(self, device_id: str) -> DeviceDefinition:
+        device = self.devices.get(device_id)
+        if device is None:
+            raise NotFoundError(f"Unknown device_id: {device_id}")
+        return device
+
+    def list_devices(self) -> list[DeviceDefinition]:
+        return list(self.devices.values())
+
+    def list_entities(self) -> list[EntityDefinition]:
+        return list(self.entities.values())
+
     def get_entity(self, entity_id: str) -> EntityDefinition:
         entity = self.entities.get(entity_id)
         if entity is None:

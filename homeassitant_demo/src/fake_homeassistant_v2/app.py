@@ -166,6 +166,36 @@ def create_app(
         runtime.state_store.persist()
         return request_model.entity.model_dump(mode="json")
 
+    # ── Device registry query endpoints ──────────────────────────────────────────
+
+    @app.get("/api/devices", dependencies=[Depends(require_auth)])
+    async def api_devices() -> list[dict[str, Any]]:
+        return [device.model_dump(mode="json") for device in runtime.registry.list_devices()]
+
+    @app.get("/api/devices/{device_id}", dependencies=[Depends(require_auth)])
+    async def get_device(device_id: str) -> dict[str, Any]:
+        device = runtime.registry.get_device(device_id)
+        entity_states = [
+            runtime.state_store.get(entity_id).model_dump(mode="json")
+            for entity_id in device.entities
+            if entity_id in runtime.state_store.states
+        ]
+        return {
+            "device": device.model_dump(mode="json"),
+            "entity_states": entity_states,
+        }
+
+    # ── Entity registry query endpoints ──────────────────────────────────────────
+
+    @app.get("/api/entities", dependencies=[Depends(require_auth)])
+    async def api_entities() -> list[dict[str, Any]]:
+        return [entity.model_dump(mode="json") for entity in runtime.registry.list_entities()]
+
+    @app.get("/api/entities/{entity_id}", dependencies=[Depends(require_auth)])
+    async def get_entity_definition(entity_id: str) -> dict[str, Any]:
+        entity = runtime.registry.get_entity(entity_id)
+        return entity.model_dump(mode="json")
+
     @app.post("/api/mock/reload", dependencies=[Depends(require_auth)], response_model=ReloadResponse)
     async def reload_runtime() -> ReloadResponse:
         runtime.reload()

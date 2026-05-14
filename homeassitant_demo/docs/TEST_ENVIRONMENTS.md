@@ -142,9 +142,10 @@ POST /api/mock/original_env
 ## 6. 推荐调用顺序
 
 1. `POST /api/mock/init_env` 进入目标测试环境
-2. `POST /api/services/...` 执行业务调用
-3. `GET /api/states/...` 校验状态和联动结果
-4. `POST /api/mock/original_env` 恢复原始环境
+2. `GET /api/devices` 确认设备列表、`GET /api/entities` 确认实体定义已切换
+3. `POST /api/services/...` 执行业务调用
+4. `GET /api/states/...` 校验状态和联动结果
+5. `POST /api/mock/original_env` 恢复原始环境
 
 ## 7. 动态内置环境 `base_env`
 

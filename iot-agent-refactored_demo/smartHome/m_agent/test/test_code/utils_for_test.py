@@ -2,7 +2,7 @@ from langchain.agents import create_agent
 
 from smartHome.m_agent.common.get_llm import create_custom_llm
 from smartHome.m_agent.common.global_config import GLOBALCONFIG
-from smartHome.m_agent.agent.langchain_middleware import AgentContext, log_before, log_response, log_before_agent, \
+from smartHome.m_agent.agent.hooks.langchain_middleware import AgentContext, log_before, log_response, log_before_agent, \
     log_after_agent
 from pydantic import BaseModel, Field
 
