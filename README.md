@@ -27,9 +27,9 @@ base：
 privacy_：
 
 - 利用langchain提供的middleware机制，在调用llm前后对内容进行编码和解码，主要原理是处理messages列表和调用工具的入参。
-- 但是encode_text和decode_text暂未落地，还是测试的demo实现。
+- 编码链路已做降频处理：每次进入模型前会批量处理整组 messages，优先使用本地正则脱敏 entity_id、时间戳、日期、context id、IP 等稳定格式；只有剩余需要兜底识别的自然语言内容才会合并成一次隐私 LLM 请求。
+- 隐私映射使用全局 token 分配与最终文本缓存。同一原文再次出现时直接复用缓存结果，不重复请求隐私 LLM；不同原文即使被建议为相同语义名，也会统一编号，避免 token 冲突并保证可逆解码。
 
 retryValidate：
 
 - 目前是在base_agent执行完指令后，再构建一个检验任务复用base去检测。
-

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from smartHome.m_agent.agent.utils.privacy_codex import transform_messages, encode_text, decode_text
+from smartHome.m_agent.agent.utils.privacy_codex import transform_messages, encode_messages, decode_text
 from smartHome.m_agent.common.global_config import GLOBALCONFIG
 from langchain.agents.middleware import before_model, after_model, AgentState, before_agent, after_agent
 from langgraph.runtime import Runtime
@@ -27,7 +27,7 @@ def log_before(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
     if(GLOBALCONFIG.privacy_protection_enabled):
         messages = state["messages"]
 
-        encoded_messages = transform_messages(messages, encode_text)
+        encoded_messages = encode_messages(messages)
 
         print("进入模型前（编码后）======================")
         for m in encoded_messages:

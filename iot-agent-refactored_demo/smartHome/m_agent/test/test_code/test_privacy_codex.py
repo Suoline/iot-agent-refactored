@@ -63,16 +63,21 @@ class _StubLLM:
         return self._responses.pop(0)
 
 
+class _Message:
+    def __init__(self, content=None, additional_kwargs=None):
+        self.content = content
+        self.additional_kwargs = additional_kwargs or {}
+
+
 class PrivacyCodexTestCase(unittest.TestCase):
     def setUp(self) -> None:
         privacy_codex._PRIVACY_HANDLER = None
         privacy_codex._ENCODE_MAP.clear()
         privacy_codex._DECODE_MAP.clear()
+        privacy_codex._TEXT_CACHE.clear()
 
     def test_encode_then_decode_round_trip(self) -> None:
-        stub_llm = _StubLLM([
-            '{"encoded_text": {"climate.test_bedroom_ac_main": "entity_id"}}',
-        ])
+        stub_llm = _StubLLM([])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
             encoded = privacy_codex.encode_text("设备 climate.test_bedroom_ac_main 已开启")
@@ -80,12 +85,10 @@ class PrivacyCodexTestCase(unittest.TestCase):
 
         self.assertEqual(encoded, "设备 @entity_id@ 已开启")
         self.assertEqual(decoded, "设备 climate.test_bedroom_ac_main 已开启")
+        self.assertEqual(stub_llm.invocations, [])
 
     def test_previous_tokens_can_still_be_decoded_after_multiple_encodes(self) -> None:
-        stub_llm = _StubLLM([
-            '{"encoded_text": {"climate.test_living_room_ac_main": "entity_id"}}',
-            '{"encoded_text": {"sensor.test_living_room_temperature": "sensor_id"}}',
-        ])
+        stub_llm = _StubLLM([])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
             first_encoded = privacy_codex.encode_text("climate.test_living_room_ac_main")
@@ -97,10 +100,7 @@ class PrivacyCodexTestCase(unittest.TestCase):
             )
 
     def test_same_original_value_reuses_existing_token(self) -> None:
-        stub_llm = _StubLLM([
-            '{"encoded_text": {"climate.test_living_room_ac_main": "entity_id"}}',
-            '{"encoded_text": {"climate.test_living_room_ac_main": "entity_id_new"}}',
-        ])
+        stub_llm = _StubLLM([])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
             first_encoded = privacy_codex.encode_text("climate.test_living_room_ac_main")
@@ -111,21 +111,70 @@ class PrivacyCodexTestCase(unittest.TestCase):
 
     def test_conflicting_semantic_name_is_renumbered(self) -> None:
         stub_llm = _StubLLM([
-            '{"encoded_text": {"climate.test_living_room_ac_main": "entity_id"}}',
-            '{"encoded_text": {"climate.test_bedroom_ac_main": "entity_id"}}',
+            '{"encoded_text": {"家庭状态A": "status_01"}}',
+            '{"encoded_text": {"家庭状态B": "status_01"}}',
         ])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
-            first_encoded = privacy_codex.encode_text("climate.test_living_room_ac_main")
-            second_encoded = privacy_codex.encode_text("climate.test_bedroom_ac_main")
+            first_encoded = privacy_codex.encode_text("家庭状态A")
+            second_encoded = privacy_codex.encode_text("家庭状态B")
 
-        self.assertEqual(first_encoded, "@entity_id@")
-        self.assertEqual(second_encoded, "@entity_id_02@")
+        self.assertEqual(first_encoded, "@status_01@")
+        self.assertEqual(second_encoded, "@status_01_02@")
+        self.assertEqual(privacy_codex.decode_text(first_encoded), "家庭状态A")
+        self.assertEqual(privacy_codex.decode_text(second_encoded), "家庭状态B")
+
+    def test_same_original_text_uses_cache_without_second_llm_call(self) -> None:
+        stub_llm = _StubLLM([
+            '{"encoded_text": {"家庭状态A": "status_01"}}',
+        ])
+
+        with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
+            first_encoded = privacy_codex.encode_text("家庭状态A")
+            second_encoded = privacy_codex.encode_text("家庭状态A")
+
+        self.assertEqual(first_encoded, "@status_01@")
+        self.assertEqual(second_encoded, "@status_01@")
+        self.assertEqual(len(stub_llm.invocations), 1)
+
+    def test_stable_values_are_encoded_locally_without_llm(self) -> None:
+        stub_llm = _StubLLM([])
+        context_id = "0f0fa9d171c74db1aa7b3b2ef7f0ad06"
+        original = (
+            "climate.test_living_room_ac_main "
+            "2026-05-06T12:04:11.507253+08:00 "
+            f"{context_id}"
+        )
+
+        with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
+            encoded = privacy_codex.encode_text(original)
+            decoded = privacy_codex.decode_text(encoded)
+
+        self.assertIn("@entity_id@", encoded)
+        self.assertIn("@timestamp@", encoded)
+        self.assertIn("@context_id@", encoded)
+        self.assertEqual(decoded, original)
+        self.assertEqual(stub_llm.invocations, [])
+
+    def test_encode_messages_batches_llm_fallback_once(self) -> None:
+        stub_llm = _StubLLM([
+            '{"encoded_text": {"家庭状态A": "status_01", "家庭状态B": "status_01"}}',
+        ])
+        messages = [
+            _Message(content="家庭状态A"),
+            _Message(content={"nested": ["家庭状态B", "climate.test_bedroom_ac_main"]}),
+        ]
+
+        with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
+            encoded_messages = privacy_codex.encode_messages(messages)
+
+        self.assertEqual(encoded_messages[0].content, "@status_01@")
+        self.assertEqual(encoded_messages[1].content["nested"][0], "@status_01_02@")
+        self.assertEqual(encoded_messages[1].content["nested"][1], "@entity_id@")
+        self.assertEqual(len(stub_llm.invocations), 1)
 
     def test_empty_string_does_not_clear_history(self) -> None:
-        stub_llm = _StubLLM([
-            '{"encoded_text": {"sensor.test_bedroom_temperature": "sensor_id"}}',
-        ])
+        stub_llm = _StubLLM([])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
             encoded = privacy_codex.encode_text("sensor.test_bedroom_temperature")
@@ -146,13 +195,11 @@ class PrivacyCodexTestCase(unittest.TestCase):
         self.assertEqual(decoded, "56")
 
     def test_decode_preserves_date_like_text(self) -> None:
-        stub_llm = _StubLLM([
-            '{"encoded_text": {"2026-05-06": "date_value"}}',
-        ])
+        stub_llm = _StubLLM([])
 
         with patch.object(privacy_codex, "create_custom_llm", return_value=stub_llm):
             privacy_codex.encode_text("2026-05-06")
-            decoded = privacy_codex.decode_text("@date_value@")
+            decoded = privacy_codex.decode_text("@date@")
 
         self.assertEqual(decoded, "2026-05-06")
 

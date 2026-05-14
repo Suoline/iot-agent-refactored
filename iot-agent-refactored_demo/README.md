@@ -31,6 +31,11 @@ python -m smartHome.m_agent.test.test_code.test_entry
 - 需要按本地环境填写模型服务与 Home Assistant 相关配置。
 - `llm_config.ini` 中包含敏感信息（如 API Key / Token），不要在 README 或提交记录中暴露真实密钥。
 
+## 隐私处理
+- 隐私保护版 Agent 通过 LangChain middleware 在模型调用前编码消息、模型调用后解码消息。
+- 编码时先使用本地规则处理 `entity_id`、时间戳、日期、context id、IP 地址等稳定格式，并复用全局唯一 token 映射。
+- 同一原文会命中最终文本缓存，不会重复请求隐私 LLM；同一批 messages 中剩余需要 LLM 兜底识别的文本会合并为一次请求，降低 429 风险。
+
 ## 注意事项
 - 项目包含对 Home Assistant 接口能力的调用，默认存在本地接口依赖（如 `127.0.0.1:8123` 场景）。
 - 常见启动失败排查：
