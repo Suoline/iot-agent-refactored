@@ -371,7 +371,10 @@ class LinkRuleSpec(BaseModel):
     source_service: str
     target_domain: str
     match: str = "same_area_id"
+    match_key: str | None = None
     target_device_class: str | None = None
+    propagate: str = "state"
+    target_action: str | None = None
 
 
 class FaultRuleSpec(BaseModel):
@@ -572,12 +575,66 @@ class TestEnvManager:
             return self.active_fault_mode
         return None
 
-    def apply_climate_temperature_links(
+    def _extract_propagate_value(
+        self,
+        propagate: str,
+        source_entity: EntityDefinition,
+        payload: dict[str, Any],
+        explicit_value: Any = None,
+    ) -> Any:
+        if explicit_value is not None:
+            return explicit_value
+        if propagate == "state":
+            current = self.runtime.state_store.states.get(source_entity.entity_id)
+            return current.state if current is not None else source_entity.state
+        if propagate.startswith("attr:"):
+            attr_name = propagate[5:]
+            current = self.runtime.state_store.states.get(source_entity.entity_id)
+            if current is not None and attr_name in current.attributes:
+                return current.attributes[attr_name]
+            return source_entity.attributes.get(attr_name)
+        if propagate.startswith("payload:"):
+            key = propagate[8:]
+            return payload.get(key)
+        return None
+
+    def _find_link_targets(
+        self,
+        rule: LinkRuleSpec,
+        source_entity: EntityDefinition,
+    ) -> list[EntityDefinition]:
+        targets: list[EntityDefinition] = []
+        for entity in self.runtime.registry.entities.values():
+            if entity.domain != rule.target_domain:
+                continue
+            if entity.entity_id == source_entity.entity_id:
+                continue
+            if rule.target_device_class and entity.device_class != rule.target_device_class:
+                continue
+
+            if rule.match == "same_area_id":
+                if entity.area_id is None or entity.area_id != source_entity.area_id:
+                    continue
+            elif rule.match == "same_device":
+                if entity.device_id != source_entity.device_id:
+                    continue
+            elif rule.match == "source_entity":
+                if rule.match_key is None or entity.entity_id != rule.match_key:
+                    continue
+            else:
+                continue
+
+            targets.append(entity)
+        return targets
+
+    def apply_link_rules(
         self,
         *,
         source_entity: EntityDefinition,
-        temperature: float,
+        source_service: str,
+        payload: dict[str, Any],
         context: ContextModel,
+        propagate_value: Any = None,
     ) -> list[str]:
         if self.active_env_id is None:
             return []
@@ -587,30 +644,41 @@ class TestEnvManager:
 
         changed: list[str] = []
         for rule in env.link_rules:
-            if rule.source_domain != "climate" or rule.source_service != "set_temperature":
-                continue
-            if source_entity.domain != rule.source_domain:
-                continue
-            if rule.match != "same_area_id":
-                continue
-            if source_entity.area_id is None:
+            if rule.source_domain != source_entity.domain or rule.source_service != source_service:
                 continue
 
-            for target in self.runtime.registry.entities.values():
-                if target.domain != rule.target_domain:
-                    continue
-                if target.area_id is None or target.area_id != source_entity.area_id:
-                    continue
-                if rule.target_device_class and target.device_class != rule.target_device_class:
-                    continue
-                if target.entity_id == source_entity.entity_id:
+            value = self._extract_propagate_value(
+                rule.propagate, source_entity, payload, propagate_value,
+            )
+            if value is None:
+                continue
+
+            targets = self._find_link_targets(rule, source_entity)
+            for target in targets:
+                if rule.target_action == "dry_run":
                     continue
                 current = self.runtime.state_store.states.get(target.entity_id)
                 attributes = dict(current.attributes) if current is not None else dict(target.attributes)
-                self.runtime.set_state(target.entity_id, state=temperature, attributes=attributes, context=context)
+                self.runtime.set_state(target.entity_id, state=value, attributes=attributes, context=context)
                 changed.append(target.entity_id)
 
         return list(dict.fromkeys(changed))
+
+    def apply_climate_temperature_links(
+        self,
+        *,
+        source_entity: EntityDefinition,
+        temperature: float,
+        context: ContextModel,
+    ) -> list[str]:
+        """Deprecated: use apply_link_rules instead."""
+        return self.apply_link_rules(
+            source_entity=source_entity,
+            source_service="set_temperature",
+            payload={},
+            context=context,
+            propagate_value=temperature,
+        )
 
 
 @dataclass(slots=True)
@@ -781,7 +849,21 @@ class ServiceEngine:
                 return_response=return_response,
             )
         )
-        changed_states = [self.runtime.state_store.get(entity_id) for entity_id in dict.fromkeys(result.changed_entity_ids)]
+        # 对每个被操作的实体执行联动规则
+        for entity_id in target_entity_ids:
+            try:
+                source_entity = self.runtime.registry.get_entity(entity_id)
+            except NotFoundError:
+                continue
+            linked = self.runtime.test_env_manager.apply_link_rules(
+                source_entity=source_entity,
+                source_service=service,
+                payload=payload,
+                context=call_context,
+            )
+            result.changed_entity_ids.extend(linked)
+        changed_entity_ids = list(dict.fromkeys(result.changed_entity_ids))
+        changed_states = [self.runtime.state_store.get(entity_id) for entity_id in changed_entity_ids]
         return ServiceCallResponse(changed_states=changed_states, service_response=result.response)
 
 
@@ -898,15 +980,7 @@ def register_builtin_handlers(registry: HandlerRegistry) -> None:
             attributes["hvac_mode"] = hvac_mode
         next_state = str(attributes.get("hvac_mode", current.state))
         ctx.runtime.set_state(entity.entity_id, state=next_state, attributes=attributes, context=ctx.context)
-        changed = [entity.entity_id]
-        changed.extend(
-            ctx.runtime.test_env_manager.apply_climate_temperature_links(
-                source_entity=entity,
-                temperature=target_temperature,
-                context=ctx.context,
-            )
-        )
-        return HandlerResult(changed_entity_ids=changed)
+        return HandlerResult(changed_entity_ids=[entity.entity_id])
 
     def number_set_value(ctx: ServiceExecutionContext) -> HandlerResult:
         entity = _single_entity(ctx)

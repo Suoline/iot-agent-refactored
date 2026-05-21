@@ -1,107 +1,108 @@
 env_id: te_ac_sensor_v1
 default_fault_mode: normal
 supported_fault_modes:
-  - normal
-  - one_shot_network_error
-  - fake_success
+- normal
+- one_shot_network_error
+- fake_success
 devices:
-  - device_id: device.test_ac_01
-    name: Test AC
-    area_id: room.living_room
-    manufacturer: Demo
-    model: AC-1
-    entities:
-      - climate.test_ac_01
-  - device_id: device.test_temp_sensor_01
-    name: Test Temp Sensors
-    area_id: room.living_room
-    manufacturer: Demo
-    model: SENSOR-3
-    entities:
-      - sensor.test_room_temperature_living_1
-      - sensor.test_room_temperature_living_2
-      - sensor.test_room_temperature_bedroom_1
+- device_id: device.test_ac_01
+  name: Test AC
+  area_id: room.living_room
+  manufacturer: Demo
+  model: AC-1
+  entities:
+  - climate.test_ac_01
+- device_id: device.test_temp_sensor_01
+  name: Test Temp Sensors
+  area_id: room.living_room
+  manufacturer: Demo
+  model: SENSOR-3
+  entities:
+  - sensor.test_room_temperature_living_1
+  - sensor.test_room_temperature_living_2
+  - sensor.test_room_temperature_bedroom_1
 entities:
-  - entity_id: climate.test_ac_01
-    domain: climate
-    object_id: test_ac_01
-    device_id: device.test_ac_01
-    area_id: room.living_room
-    platform: mock
-    name: Test AC
-    state: cool
-    attributes:
-      friendly_name: Test AC
-      hvac_mode: cool
-      hvac_modes:
-        - "off"
-        - cool
-        - heat
-      temperature: 24.0
-      current_temperature: 28.0
-      unit_of_measurement: "°C"
-  - entity_id: sensor.test_room_temperature_living_1
-    domain: sensor
-    object_id: test_room_temperature_living_1
-    device_id: device.test_temp_sensor_01
-    area_id: room.living_room
-    platform: mock
-    name: Living Temp 1
-    device_class: temperature
-    state: 28.0
-    attributes:
-      friendly_name: Living Temp 1
-      unit_of_measurement: "°C"
-  - entity_id: sensor.test_room_temperature_living_2
-    domain: sensor
-    object_id: test_room_temperature_living_2
-    device_id: device.test_temp_sensor_01
-    area_id: room.living_room
-    platform: mock
-    name: Living Temp 2
-    device_class: temperature
-    state: 28.0
-    attributes:
-      friendly_name: Living Temp 2
-      unit_of_measurement: "°C"
-  - entity_id: sensor.test_room_temperature_bedroom_1
-    domain: sensor
-    object_id: test_room_temperature_bedroom_1
-    device_id: device.test_temp_sensor_01
-    area_id: room.bedroom
-    platform: mock
-    name: Bedroom Temp 1
-    device_class: temperature
-    state: 26.0
-    attributes:
-      friendly_name: Bedroom Temp 1
-      unit_of_measurement: "°C"
+- entity_id: climate.test_ac_01
+  domain: climate
+  object_id: test_ac_01
+  device_id: device.test_ac_01
+  area_id: room.living_room
+  platform: mock
+  name: Test AC
+  state: cool
+  attributes:
+    friendly_name: Test AC
+    hvac_mode: cool
+    hvac_modes:
+    - 'off'
+    - cool
+    - heat
+    temperature: 24.0
+    current_temperature: 28.0
+    unit_of_measurement: °C
+- entity_id: sensor.test_room_temperature_living_1
+  domain: sensor
+  object_id: test_room_temperature_living_1
+  device_id: device.test_temp_sensor_01
+  area_id: room.living_room
+  platform: mock
+  name: Living Temp 1
+  device_class: temperature
+  state: 28.0
+  attributes:
+    friendly_name: Living Temp 1
+    unit_of_measurement: °C
+- entity_id: sensor.test_room_temperature_living_2
+  domain: sensor
+  object_id: test_room_temperature_living_2
+  device_id: device.test_temp_sensor_01
+  area_id: room.living_room
+  platform: mock
+  name: Living Temp 2
+  device_class: temperature
+  state: 28.0
+  attributes:
+    friendly_name: Living Temp 2
+    unit_of_measurement: °C
+- entity_id: sensor.test_room_temperature_bedroom_1
+  domain: sensor
+  object_id: test_room_temperature_bedroom_1
+  device_id: device.test_temp_sensor_01
+  area_id: room.bedroom
+  platform: mock
+  name: Bedroom Temp 1
+  device_class: temperature
+  state: 26.0
+  attributes:
+    friendly_name: Bedroom Temp 1
+    unit_of_measurement: °C
 initial_states:
-  - entity_id: climate.test_ac_01
-    state: cool
-    attributes:
-      hvac_mode: cool
-      temperature: 24.0
-      current_temperature: 28.0
-  - entity_id: sensor.test_room_temperature_living_1
-    state: 28.0
-  - entity_id: sensor.test_room_temperature_living_2
-    state: 28.0
-  - entity_id: sensor.test_room_temperature_bedroom_1
-    state: 26.0
+- entity_id: climate.test_ac_01
+  state: cool
+  attributes:
+    hvac_mode: cool
+    temperature: 24.0
+    current_temperature: 28.0
+- entity_id: sensor.test_room_temperature_living_1
+  state: 28.0
+- entity_id: sensor.test_room_temperature_living_2
+  state: 28.0
+- entity_id: sensor.test_room_temperature_bedroom_1
+  state: 26.0
 link_rules:
-  - source_domain: climate
-    source_service: set_temperature
-    target_domain: sensor
-    match: same_area_id
-    target_device_class: temperature
+- source_domain: climate
+  source_service: set_temperature
+  target_domain: sensor
+  match: same_area_id
+  target_device_class: temperature
+  propagate: payload:temperature
 fault_profiles:
   one_shot_network_error:
-    - domain: climate
-      service: set_temperature
-      entity_id: climate.test_ac_01
-      times: 1
+  - domain: climate
+    service: set_temperature
+    entity_id: climate.test_ac_01
+    times: 1
   fake_success:
-    - domain: climate
-      service: set_temperature
-      entity_id: climate.test_ac_01
+  - domain: climate
+    service: set_temperature
+    entity_id: climate.test_ac_01

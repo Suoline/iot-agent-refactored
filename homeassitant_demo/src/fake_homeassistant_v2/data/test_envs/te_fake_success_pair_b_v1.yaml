@@ -1,129 +1,130 @@
 env_id: te_fake_success_pair_b_v1
 default_fault_mode: fake_success
 supported_fault_modes:
-  - fake_success
+- fake_success
 devices:
-  - device_id: device.test_living_room_ac_main
-    name: 客厅空调设备
-    name_by_user: 客厅空调设备
-    area_id: room.living_room
-    manufacturer: Demo
-    model: AC-V1
-    entities:
-      - climate.test_living_room_ac_main
-  - device_id: device.test_living_room_temperature_sensor_main
-    name: 客厅温度传感器设备
-    name_by_user: 客厅温度传感器设备
-    area_id: room.living_room
-    manufacturer: Demo
-    model: TEMP-SENSOR-V1
-    entities:
-      - sensor.test_living_room_temperature_main
-  - device_id: device.test_bedroom_ac_main
-    name: 卧室空调设备
-    name_by_user: 卧室空调设备
-    area_id: room.bedroom
-    manufacturer: Demo
-    model: AC-V1
-    entities:
-      - climate.test_bedroom_ac_main
-  - device_id: device.test_bedroom_temperature_sensor_main
-    name: 卧室温度传感器设备
-    name_by_user: 卧室温度传感器设备
-    area_id: room.bedroom
-    manufacturer: Demo
-    model: TEMP-SENSOR-V1
-    entities:
-      - sensor.test_bedroom_temperature_main
+- device_id: device.test_living_room_ac_main
+  name: 客厅空调设备
+  name_by_user: 客厅空调设备
+  area_id: room.living_room
+  manufacturer: Demo
+  model: AC-V1
+  entities:
+  - climate.test_living_room_ac_main
+- device_id: device.test_living_room_temperature_sensor_main
+  name: 客厅温度传感器设备
+  name_by_user: 客厅温度传感器设备
+  area_id: room.living_room
+  manufacturer: Demo
+  model: TEMP-SENSOR-V1
+  entities:
+  - sensor.test_living_room_temperature_main
+- device_id: device.test_bedroom_ac_main
+  name: 卧室空调设备
+  name_by_user: 卧室空调设备
+  area_id: room.bedroom
+  manufacturer: Demo
+  model: AC-V1
+  entities:
+  - climate.test_bedroom_ac_main
+- device_id: device.test_bedroom_temperature_sensor_main
+  name: 卧室温度传感器设备
+  name_by_user: 卧室温度传感器设备
+  area_id: room.bedroom
+  manufacturer: Demo
+  model: TEMP-SENSOR-V1
+  entities:
+  - sensor.test_bedroom_temperature_main
 entities:
-  - entity_id: climate.test_living_room_ac_main
-    domain: climate
-    object_id: test_living_room_ac_main
-    device_id: device.test_living_room_ac_main
-    area_id: room.living_room
-    platform: mock
-    name: 客厅空调
-    state: cool
-    attributes:
-      friendly_name: 客厅空调
-      hvac_mode: cool
-      hvac_modes:
-        - "off"
-        - cool
-        - heat
-      temperature: 22.0
-      current_temperature: 26.0
-      unit_of_measurement: "°C"
-  - entity_id: sensor.test_living_room_temperature_main
-    domain: sensor
-    object_id: test_living_room_temperature_main
-    device_id: device.test_living_room_temperature_sensor_main
-    area_id: room.living_room
-    platform: mock
-    name: 客厅温度传感器
-    device_class: temperature
-    state: 26.0
-    attributes:
-      friendly_name: 客厅温度传感器
-      unit_of_measurement: "°C"
-  - entity_id: climate.test_bedroom_ac_main
-    domain: climate
-    object_id: test_bedroom_ac_main
-    device_id: device.test_bedroom_ac_main
-    area_id: room.bedroom
-    platform: mock
-    name: 卧室空调
-    state: cool
-    attributes:
-      friendly_name: 卧室空调
-      hvac_mode: cool
-      hvac_modes:
-        - "off"
-        - cool
-        - heat
-      temperature: 23.0
-      current_temperature: 25.0
-      unit_of_measurement: "°C"
-  - entity_id: sensor.test_bedroom_temperature_main
-    domain: sensor
-    object_id: test_bedroom_temperature_main
-    device_id: device.test_bedroom_temperature_sensor_main
-    area_id: room.bedroom
-    platform: mock
-    name: 卧室温度传感器
-    device_class: temperature
-    state: 25.0
-    attributes:
-      friendly_name: 卧室温度传感器
-      unit_of_measurement: "°C"
+- entity_id: climate.test_living_room_ac_main
+  domain: climate
+  object_id: test_living_room_ac_main
+  device_id: device.test_living_room_ac_main
+  area_id: room.living_room
+  platform: mock
+  name: 客厅空调
+  state: cool
+  attributes:
+    friendly_name: 客厅空调
+    hvac_mode: cool
+    hvac_modes:
+    - 'off'
+    - cool
+    - heat
+    temperature: 22.0
+    current_temperature: 26.0
+    unit_of_measurement: °C
+- entity_id: sensor.test_living_room_temperature_main
+  domain: sensor
+  object_id: test_living_room_temperature_main
+  device_id: device.test_living_room_temperature_sensor_main
+  area_id: room.living_room
+  platform: mock
+  name: 客厅温度传感器
+  device_class: temperature
+  state: 26.0
+  attributes:
+    friendly_name: 客厅温度传感器
+    unit_of_measurement: °C
+- entity_id: climate.test_bedroom_ac_main
+  domain: climate
+  object_id: test_bedroom_ac_main
+  device_id: device.test_bedroom_ac_main
+  area_id: room.bedroom
+  platform: mock
+  name: 卧室空调
+  state: cool
+  attributes:
+    friendly_name: 卧室空调
+    hvac_mode: cool
+    hvac_modes:
+    - 'off'
+    - cool
+    - heat
+    temperature: 23.0
+    current_temperature: 25.0
+    unit_of_measurement: °C
+- entity_id: sensor.test_bedroom_temperature_main
+  domain: sensor
+  object_id: test_bedroom_temperature_main
+  device_id: device.test_bedroom_temperature_sensor_main
+  area_id: room.bedroom
+  platform: mock
+  name: 卧室温度传感器
+  device_class: temperature
+  state: 25.0
+  attributes:
+    friendly_name: 卧室温度传感器
+    unit_of_measurement: °C
 initial_states:
-  - entity_id: climate.test_living_room_ac_main
-    state: cool
-    attributes:
-      hvac_mode: cool
-      temperature: 22.0
-      current_temperature: 26.0
-  - entity_id: sensor.test_living_room_temperature_main
-    state: 26.0
-  - entity_id: climate.test_bedroom_ac_main
-    state: cool
-    attributes:
-      hvac_mode: cool
-      temperature: 23.0
-      current_temperature: 25.0
-  - entity_id: sensor.test_bedroom_temperature_main
-    state: 25.0
+- entity_id: climate.test_living_room_ac_main
+  state: cool
+  attributes:
+    hvac_mode: cool
+    temperature: 22.0
+    current_temperature: 26.0
+- entity_id: sensor.test_living_room_temperature_main
+  state: 26.0
+- entity_id: climate.test_bedroom_ac_main
+  state: cool
+  attributes:
+    hvac_mode: cool
+    temperature: 23.0
+    current_temperature: 25.0
+- entity_id: sensor.test_bedroom_temperature_main
+  state: 25.0
 link_rules:
-  - source_domain: climate
-    source_service: set_temperature
-    target_domain: sensor
-    match: same_area_id
-    target_device_class: temperature
+- source_domain: climate
+  source_service: set_temperature
+  target_domain: sensor
+  match: same_area_id
+  target_device_class: temperature
+  propagate: payload:temperature
 fault_profiles:
   fake_success:
-    - domain: climate
-      service: set_temperature
-      entity_id: climate.test_living_room_ac_main
-    - domain: climate
-      service: set_temperature
-      entity_id: climate.test_bedroom_ac_main
+  - domain: climate
+    service: set_temperature
+    entity_id: climate.test_living_room_ac_main
+  - domain: climate
+    service: set_temperature
+    entity_id: climate.test_bedroom_ac_main

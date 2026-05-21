@@ -1,0 +1,89 @@
+env_id: te_light_sensor_v1
+default_fault_mode: normal
+supported_fault_modes:
+  - normal
+
+devices:
+  - device_id: device.test_living_light
+    name: 客厅灯
+    area_id: room.living_room
+    entities:
+      - light.test_living_light
+  - device_id: device.test_living_sensor
+    name: 客厅光照传感器
+    area_id: room.living_room
+    entities:
+      - sensor.test_living_illuminance
+  - device_id: device.test_bedroom_light
+    name: 卧室灯
+    area_id: room.bedroom
+    entities:
+      - light.test_bedroom_light
+  - device_id: device.test_bedroom_sensor
+    name: 卧室光照传感器
+    area_id: room.bedroom
+    entities:
+      - sensor.test_bedroom_illuminance
+
+entities:
+  - entity_id: light.test_living_light
+    domain: light
+    object_id: test_living_light
+    device_id: device.test_living_light
+    area_id: room.living_room
+    state: 'off'
+    attributes:
+      brightness: 0
+
+  - entity_id: sensor.test_living_illuminance
+    domain: sensor
+    object_id: test_living_illuminance
+    device_id: device.test_living_sensor
+    area_id: room.living_room
+    device_class: illuminance
+    state: 0
+    attributes:
+      unit_of_measurement: lx
+
+  - entity_id: light.test_bedroom_light
+    domain: light
+    object_id: test_bedroom_light
+    device_id: device.test_bedroom_light
+    area_id: room.bedroom
+    state: 'off'
+    attributes:
+      brightness: 0
+
+  - entity_id: sensor.test_bedroom_illuminance
+    domain: sensor
+    object_id: test_bedroom_illuminance
+    device_id: device.test_bedroom_sensor
+    area_id: room.bedroom
+    device_class: illuminance
+    state: 0
+    attributes:
+      unit_of_measurement: lx
+
+initial_states:
+  - entity_id: light.test_living_light
+    state: 'off'
+    attributes:
+      brightness: 0
+  - entity_id: sensor.test_living_illuminance
+    state: 0
+  - entity_id: light.test_bedroom_light
+    state: 'off'
+    attributes:
+      brightness: 0
+  - entity_id: sensor.test_bedroom_illuminance
+    state: 0
+
+link_rules:
+  - source_domain: light
+    source_service: turn_on
+    target_domain: sensor
+    target_device_class: illuminance
+    match: same_area_id
+    propagate: attr:brightness
+
+fault_profiles: {}
