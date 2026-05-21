@@ -1,9 +1,0 @@
-domain: cloud
-service: remote_connect
-name: Enable remote access
-description: Makes the instance UI accessible from outside of the local network by
-  enabling your Home Assistant Cloud connection.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

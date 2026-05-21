@@ -1,8 +1,0 @@
-domain: logger
-service: set_level
-name: Set level
-description: Sets the log level for one or more integrations.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

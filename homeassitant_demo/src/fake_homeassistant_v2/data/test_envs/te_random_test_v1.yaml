@@ -1,0 +1,142 @@
+env_id: te_random_test_v1
+default_fault_mode: normal
+supported_fault_modes:
+  - normal
+  - one_shot_network_error
+
+devices:
+  - device_id: device.living_tv
+    name: 客厅电视
+    area_id: room.living_room
+    entities:
+      - media_player.living_tv
+  - device_id: device.living_light
+    name: 客厅灯
+    area_id: room.living_room
+    entities:
+      - light.living_light
+      - sensor.living_illuminance
+  - device_id: device.living_motion
+    name: 客厅人体传感器
+    area_id: room.living_room
+    entities:
+      - binary_sensor.living_motion
+  - device_id: device.bedroom_ac
+    name: 卧室空调
+    area_id: room.bedroom
+    entities:
+      - climate.bedroom_ac
+  - device_id: device.bedroom_temp_sensor
+    name: 卧室温度传感器
+    area_id: room.bedroom
+    entities:
+      - sensor.bedroom_temperature
+  - device_id: device.bedroom_fan
+    name: 卧室风扇
+    area_id: room.bedroom
+    entities:
+      - switch.bedroom_fan
+
+entities:
+  - entity_id: media_player.living_tv
+    domain: media_player
+    object_id: living_tv
+    device_id: device.living_tv
+    area_id: room.living_room
+    state: "off"
+    attributes:
+      volume_level: 0.3
+      is_volume_muted: false
+
+  - entity_id: light.living_light
+    domain: light
+    object_id: living_light
+    device_id: device.living_light
+    area_id: room.living_room
+    state: "off"
+    attributes:
+      brightness: 0
+
+  - entity_id: sensor.living_illuminance
+    domain: sensor
+    object_id: living_illuminance
+    device_id: device.living_light
+    area_id: room.living_room
+    device_class: illuminance
+    state: 0
+    attributes:
+      unit_of_measurement: lx
+
+  - entity_id: binary_sensor.living_motion
+    domain: binary_sensor
+    object_id: living_motion
+    device_id: device.living_motion
+    area_id: room.living_room
+    device_class: motion
+    state: "off"
+
+  - entity_id: climate.bedroom_ac
+    domain: climate
+    object_id: bedroom_ac
+    device_id: device.bedroom_ac
+    area_id: room.bedroom
+    state: "cool"
+    attributes:
+      hvac_mode: "cool"
+      hvac_modes: ["off", "cool", "heat"]
+      temperature: 24.0
+      current_temperature: 28.0
+
+  - entity_id: sensor.bedroom_temperature
+    domain: sensor
+    object_id: bedroom_temperature
+    device_id: device.bedroom_temp_sensor
+    area_id: room.bedroom
+    device_class: temperature
+    state: 28.0
+    attributes:
+      unit_of_measurement: "°C"
+
+  - entity_id: switch.bedroom_fan
+    domain: switch
+    object_id: bedroom_fan
+    device_id: device.bedroom_fan
+    area_id: room.bedroom
+    state: "off"
+
+initial_states:
+  - entity_id: media_player.living_tv
+    state: "off"
+    attributes:
+      volume_level: 0.3
+  - entity_id: light.living_light
+    state: "off"
+    attributes:
+      brightness: 0
+  - entity_id: climate.bedroom_ac
+    state: "cool"
+    attributes:
+      temperature: 24.0
+  - entity_id: switch.bedroom_fan
+    state: "off"
+
+link_rules:
+  - source_domain: climate
+    source_service: set_temperature
+    target_domain: sensor
+    target_device_class: temperature
+    match: same_area_id
+    propagate: payload:temperature
+  - source_domain: light
+    source_service: turn_on
+    target_domain: sensor
+    target_device_class: illuminance
+    match: same_area_id
+    propagate: attr:brightness
+
+fault_profiles:
+  one_shot_network_error:
+    - domain: climate
+      service: set_temperature
+      entity_id: climate.bedroom_ac
+      times: 1

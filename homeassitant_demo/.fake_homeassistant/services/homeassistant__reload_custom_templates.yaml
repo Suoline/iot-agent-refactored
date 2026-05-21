@@ -1,9 +1,0 @@
-domain: homeassistant
-service: reload_custom_templates
-name: Reload custom Jinja2 templates
-description: Reloads Jinja2 templates found in the `custom_templates` folder in your
-  config. New values will be applied on the next render of the template.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

@@ -1,9 +1,0 @@
-domain: homeassistant
-service: check_config
-name: Check configuration
-description: Checks the Home Assistant YAML-configuration files for errors. Errors
-  will be shown in the Home Assistant logs.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

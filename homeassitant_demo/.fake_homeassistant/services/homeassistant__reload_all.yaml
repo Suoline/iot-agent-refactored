@@ -1,9 +1,0 @@
-domain: homeassistant
-service: reload_all
-name: Reload all
-description: Reloads all YAML configuration that can be reloaded without restarting
-  Home Assistant.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

@@ -1,8 +1,0 @@
-domain: scene
-service: reload
-name: Reload
-description: Reloads the scenes from the YAML-configuration.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

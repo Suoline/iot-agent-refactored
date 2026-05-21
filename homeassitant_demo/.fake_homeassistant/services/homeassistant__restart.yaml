@@ -1,8 +1,0 @@
-domain: homeassistant
-service: restart
-name: Restart
-description: Restarts Home Assistant.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

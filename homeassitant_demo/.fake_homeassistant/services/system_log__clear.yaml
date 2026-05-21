@@ -1,8 +1,0 @@
-domain: system_log
-service: clear
-name: Clear
-description: Deletes all log entries.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

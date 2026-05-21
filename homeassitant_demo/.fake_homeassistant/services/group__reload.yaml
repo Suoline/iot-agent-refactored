@@ -1,8 +1,0 @@
-domain: group
-service: reload
-name: Reload
-description: Reloads group configuration, entities, and notify services from YAML-configuration.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false

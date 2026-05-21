@@ -1,8 +1,0 @@
-domain: frontend
-service: reload_themes
-name: Reload themes
-description: Reloads themes from the YAML-configuration.
-fields: {}
-target: null
-handler: builtin:service.not_implemented
-supports_response: false
