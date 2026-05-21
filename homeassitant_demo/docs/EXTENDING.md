@@ -265,6 +265,8 @@ actions 适合表达：
 
 ## 11. 新增一个自定义测试环境（YAML 模板 + 最小示例）
 
+> 想要快速上手编写配置文件？先看 **[如何编写测试环境配置](CREATING_TEST_ENV.md)**，那份文档以完整示例为主线，逐行注释，更容易懂。
+
 如果你要扩展 `POST /api/mock/init_env` 可切换的测试环境，直接在目录里新增一个 YAML：
 
 - `src/fake_homeassistant_v2/data/test_envs/`

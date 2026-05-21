@@ -105,9 +105,10 @@ pytest -q
 1. [API 文档](docs/API.md)
 2. [测试环境总览](docs/TEST_ENV_CATALOG.md)
 3. [测试环境调用指南](docs/TEST_ENVIRONMENTS.md)
-4. [架构说明](docs/ARCHITECTURE.md)
-5. [扩展指南](docs/EXTENDING.md)
-6. [设计约定](docs/DESIGN_RULES.md)
+4. [如何编写测试环境配置](docs/CREATING_TEST_ENV.md)
+5. [架构说明](docs/ARCHITECTURE.md)
+6. [扩展指南](docs/EXTENDING.md)
+7. [设计约定](docs/DESIGN_RULES.md)
 
 各文档职责：
 
@@ -115,6 +116,7 @@ pytest -q
 - `docs/API.md`: 对外 API、调用方式、错误码、示例
 - `docs/TEST_ENV_CATALOG.md`: 测试环境清单总览（环境、设备、空间、故障规则、A/B差异）
 - `docs/TEST_ENVIRONMENTS.md`: 测试环境切换、故障模式、恢复原始环境、调用示例
+- `docs/CREATING_TEST_ENV.md`: **如何从零编写测试环境 YAML 配置文件，附完整示例和设备配置片段**
 - `docs/ARCHITECTURE.md`: 内部实现与运行机制
 - `docs/EXTENDING.md`: 如何新增设备、实体、service、actions、handler
 - `docs/DESIGN_RULES.md`: 设计取舍与扩展约束
