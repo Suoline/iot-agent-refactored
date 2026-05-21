@@ -308,6 +308,7 @@ link_rules:
     target_domain: sensor
     match: same_area_id
     target_device_class: temperature
+    propagate: payload:temperature
 fault_profiles:
   one_shot_network_error:
     - domain: climate
@@ -325,12 +326,12 @@ fault_profiles:
 可直接参考已内置样例：
 
 - `src/fake_homeassistant_v2/data/test_envs/te_ac_sensor_v1.yaml`
-
-该示例包含：
-
-- 空调 + 多个温度传感器实体
-- 同房间联动（按 `area_id`）
-- `normal` / `one_shot_network_error` / `fake_success`
+  - 空调 + 多个温度传感器实体
+  - 同房间联动（按 `area_id`）
+  - `normal` / `one_shot_network_error` / `fake_success`
+- `src/fake_homeassistant_v2/data/test_envs/te_light_sensor_v1.yaml`
+  - 灯光 + 光照传感器
+  - 灯光亮度变化 → 同房间光照传感器值联动
 
 ### 11.3 调用步骤
 
@@ -356,7 +357,62 @@ curl -X POST http://127.0.0.1:8123/api/mock/init_env `
 curl -X POST http://127.0.0.1:8123/api/mock/original_env
 ```
 
-### 11.4 常见约束
+### 11.4 link_rules 配置规则
+
+`link_rules` 定义服务调用后的跨实体联动。每条规则包含以下字段：
+
+| 字段 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `source_domain` | 是 | — | 触发联动的源实体 domain，如 `light`、`climate` |
+| `source_service` | 是 | — | 触发联动的服务名，如 `turn_on`、`set_temperature` |
+| `target_domain` | 是 | — | 被联动影响的目标实体 domain，如 `sensor` |
+| `match` | 否 | `same_area_id` | 匹配策略（见下方） |
+| `match_key` | 否 | — | `match=source_entity` 时指定精确 entity_id |
+| `target_device_class` | 否 | — | 进一步限制目标实体的 device_class，如 `illuminance` |
+| `propagate` | 否 | `state` | 传播给目标的值来源（见下方） |
+| `target_action` | 否 | — | 设为 `dry_run` 时只记录不执行 |
+
+**match 匹配策略**：
+
+| 值 | 含义 |
+|----|------|
+| `same_area_id` | 匹配与源实体 `area_id` 相同的目标实体（默认） |
+| `same_device` | 匹配与源实体 `device_id` 相同的目标实体 |
+| `source_entity` | 精确匹配 `match_key` 指定的 entity_id |
+
+**propagate 传播值来源**：
+
+| 格式 | 含义 | 示例 |
+|------|------|------|
+| `state` | 源实体当前 state 值 | `"on"` / `"cool"` |
+| `attr:字段名` | 源实体当前 attributes 中指定字段 | `attr:brightness` → `204` |
+| `payload:字段名` | 服务调用 payload 中指定字段 | `payload:temperature` → `25` |
+
+**climate 联动示例**（温度为传感器值）：
+
+```yaml
+link_rules:
+  - source_domain: climate
+    source_service: set_temperature
+    target_domain: sensor
+    target_device_class: temperature
+    match: same_area_id
+    propagate: payload:temperature
+```
+
+**light 联动示例**（亮度值同步到光照传感器）：
+
+```yaml
+link_rules:
+  - source_domain: light
+    source_service: turn_on
+    target_domain: sensor
+    target_device_class: illuminance
+    match: same_area_id
+    propagate: attr:brightness
+```
+
+### 11.5 常见约束
 
 - `default_fault_mode` 必须包含在 `supported_fault_modes` 里。
 - `fault_profiles` 的 key 必须是 `supported_fault_modes` 中声明过的模式。

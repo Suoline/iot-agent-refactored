@@ -3,7 +3,7 @@
 本文档用于回答“有哪些测试环境、各自设备与空间信息、故障类型与规则”。  
 如果你需要 API 调用方式，请看：[测试环境调用指南](TEST_ENVIRONMENTS.md)。
 
-> 统计口径日期：`2026-04-20`  
+> 统计口径日期：`2026-05-21`  
 > 说明：`base_env` 为动态环境，统计会随 `copied_data` 基线变化而变化。
 
 ## 1. 环境总表
@@ -11,6 +11,7 @@
 | env_id | 来源 | 默认故障模式 | 可选故障模式 | 空间（area） | 设备数 | 实体数 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `te_ac_sensor_v1` | YAML | `normal` | `normal`, `one_shot_network_error`, `fake_success` | `room.living_room`, `room.bedroom` | 2 | 4 | 空调+温度传感器联动示例环境 |
+| `te_light_sensor_v1` | YAML | `normal` | `normal` | `room.living_room`, `room.bedroom` | 4 | 4 | 灯光亮度→光照传感器联动示例环境 |
 | `te_normal_pair_a_v1` | YAML | `normal` | `normal` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
 | `te_normal_pair_b_v1` | YAML | `normal` | `normal` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
 | `te_one_shot_network_error_pair_a_v1` | YAML | `one_shot_network_error` | `one_shot_network_error` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
@@ -37,7 +38,27 @@
 - 结构特性：
   - 卧室温度传感器实体（`sensor.test_room_temperature_bedroom_1`）挂在同一温度传感器设备 `device.test_temp_sensor_01` 下。
 
-### 2.2 六套 pair 环境（共用拓扑）
+### 2.2 `te_light_sensor_v1`
+
+- 设备：4 个
+  - `device.test_living_light`（客厅灯，`area_id=room.living_room`）
+  - `device.test_living_sensor`（客厅光照传感器，`area_id=room.living_room`）
+  - `device.test_bedroom_light`（卧室灯，`area_id=room.bedroom`）
+  - `device.test_bedroom_sensor`（卧室光照传感器，`area_id=room.bedroom`）
+- 实体：4 个（每个设备 1 个对应实体）
+  - `light.test_living_light`
+  - `sensor.test_living_illuminance`（device_class: illuminance）
+  - `light.test_bedroom_light`
+  - `sensor.test_bedroom_illuminance`（device_class: illuminance）
+- 空间分布：
+  - `room.living_room`：灯 + 光照传感器
+  - `room.bedroom`：灯 + 光照传感器
+- 联动行为：
+  - `light.turn_on` → 同 `area_id` 的 `sensor`（device_class=illuminance）state 变为灯光 `brightness` 值
+  - 不跨房间联动（卧室灯只影响卧室传感器）
+- 故障模式：仅 `normal`
+
+### 2.3 六套 pair 环境（共用拓扑）
 
 环境列表：
 
@@ -60,7 +81,7 @@
 - `room.living_room`：2 设备，2 实体
 - `room.bedroom`：2 设备，2 实体
 
-### 2.3 `base_env`（设备摘要 + 空间信息）
+### 2.4 `base_env`（设备摘要 + 空间信息）
 
 - 来源：`fake_homeassitant_try/copied_data`（运行时动态生成，非 YAML 文件）
 - 当前快照摘要（`2026-04-20`）：
