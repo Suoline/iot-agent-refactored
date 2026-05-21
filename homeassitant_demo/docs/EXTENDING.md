@@ -321,7 +321,115 @@ fault_profiles:
       entity_id: climate.test_demo
 ```
 
-### 11.2 最小可运行示例
+### 11.2 可支持的设备类型与 built-in 服务
+
+新增实体时，`domain` 决定该实体**支持哪些 service 调用**。下表列出当前内置支持的 domain：
+
+| domain | 支持的 service | 说明 |
+|--------|---------------|------|
+| `climate` | `set_temperature` | 空调/温控器，payload 可含 `temperature`、`hvac_mode` |
+| `light` | `turn_on`、`turn_off`、`toggle` | 灯光，`turn_on` 额外支持 `brightness_pct`、`color_temp_kelvin`、`effect` |
+| `switch` | `turn_on`、`turn_off`、`toggle` | 开关（用于插座、风扇等二值设备） |
+| `media_player` | `volume_set`、`volume_up`、`volume_down`、`volume_mute`、`media_play`、`media_pause`、`media_play_pause`、`media_stop`、`media_previous_track`、`media_next_track` | 电视/音箱等媒体设备 |
+| `number` | `set_value` | 数值型实体（如网关指示灯亮度） |
+| `text` | `set_value` | 文本型实体（如网关勿扰时段） |
+| `select` | `select_option`、`select_first`、`select_last`、`select_next`、`select_previous` | 下拉选项型实体 |
+| `button` | `press` | 按钮型实体，可绑定联动 action |
+| `sensor` | （只读，无写操作） | 传感器，通常作为联动目标 |
+| `binary_sensor` | （只读，无写操作） | 二值传感器（门磁/人体） |
+| `homeassistant` | `turn_on`、`turn_off`、`toggle`、`update_entity` | 通用操作，可接受 entity_id 列表 |
+
+> 需要未列出的 domain/service？见第 7 节"新增自定义 handler"。
+
+### 11.3 常见设备配置示例
+
+下面给出几种典型智能家居设备的实体配置片段，可直接复制到 `entities` 列表中使用。
+
+**电视机（media_player）**
+
+```yaml
+- entity_id: media_player.test_living_tv
+  domain: media_player
+  object_id: test_living_tv
+  device_id: device.test_living_tv
+  area_id: room.living_room
+  platform: mock
+  state: "off"
+  attributes:
+    volume_level: 0.3
+    is_volume_muted: false
+```
+
+可调用的 service：`volume_set`（payload: `volume_level`）、`media_play`、`media_pause`、`turn_on`（通过 `homeassistant.turn_on`）等。
+
+**冰箱（climate，作为温控设备）**
+
+```yaml
+- entity_id: climate.test_kitchen_fridge
+  domain: climate
+  object_id: test_kitchen_fridge
+  device_id: device.test_kitchen_fridge
+  area_id: room.kitchen
+  platform: mock
+  state: "cool"
+  attributes:
+    hvac_mode: "cool"
+    hvac_modes: ["off", "cool"]
+    temperature: 4.0
+    current_temperature: 4.5
+```
+
+可调用的 service：`set_temperature`（payload: `temperature`、`hvac_mode`）。
+
+**风扇（switch）**
+
+```yaml
+- entity_id: switch.test_bedroom_fan
+  domain: switch
+  object_id: test_bedroom_fan
+  device_id: device.test_bedroom_fan
+  area_id: room.bedroom
+  platform: mock
+  state: "off"
+```
+
+可调用的 service：`turn_on`、`turn_off`、`toggle`。
+
+**灯光（light）**
+
+```yaml
+- entity_id: light.test_kitchen_light
+  domain: light
+  object_id: test_kitchen_light
+  device_id: device.test_kitchen_light
+  area_id: room.kitchen
+  platform: mock
+  state: "off"
+  attributes:
+    brightness: 0
+    supported_color_modes: ["brightness", "color_temp"]
+```
+
+可调用的 service：`turn_on`（payload 可选 `brightness_pct`、`color_temp_kelvin`）、`turn_off`、`toggle`。
+
+**温度传感器（sensor）**
+
+```yaml
+- entity_id: sensor.test_living_temp
+  domain: sensor
+  object_id: test_living_temp
+  device_id: device.test_temp_sensor
+  area_id: room.living_room
+  platform: mock
+  device_class: temperature
+  state: 24.0
+  attributes:
+    unit_of_measurement: "°C"
+```
+
+只读，通常作为联动目标。配合 `link_rules` 在空调温度变化时自动更新。
+
+### 11.4 最小可运行示例
 
 可直接参考已内置样例：
 
@@ -333,7 +441,7 @@ fault_profiles:
   - 灯光 + 光照传感器
   - 灯光亮度变化 → 同房间光照传感器值联动
 
-### 11.3 调用步骤
+### 11.5 调用步骤
 
 新增 YAML 后，无需重启进程；直接调用：
 
@@ -357,7 +465,7 @@ curl -X POST http://127.0.0.1:8123/api/mock/init_env `
 curl -X POST http://127.0.0.1:8123/api/mock/original_env
 ```
 
-### 11.4 link_rules 配置规则
+### 11.6 link_rules 配置规则
 
 `link_rules` 定义服务调用后的跨实体联动。每条规则包含以下字段：
 
@@ -412,7 +520,7 @@ link_rules:
     propagate: attr:brightness
 ```
 
-### 11.5 常见约束
+### 11.7 常见约束
 
 - `default_fault_mode` 必须包含在 `supported_fault_modes` 里。
 - `fault_profiles` 的 key 必须是 `supported_fault_modes` 中声明过的模式。
