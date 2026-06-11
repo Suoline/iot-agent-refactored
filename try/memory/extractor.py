@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import re
 
+from pydantic import BaseModel, Field
+
+from .llm_support import StructuredOutputInvoker
 from .schemas import EvidenceRef, ExtractedMemoryCandidate, MemorySource
 
 
@@ -182,3 +185,100 @@ class HeuristicMemoryExtractor:
         match = re.search(ROOM_PATTERN, text)
         return match.group(1) if match else None
 
+
+class LLMExtractedCandidatePayload(BaseModel):
+    memory_type: str
+    scope_hint: str
+    subject_text: str
+    predicate: str
+    object_text: str
+    condition: str | None = None
+    action: str | None = None
+    room_text: str | None = None
+    alias_text: str | None = None
+    raw_mentions: list[str] = Field(default_factory=list)
+    operation_hint: str = "add"
+    natural_text: str | None = None
+    structured_payload: dict = Field(default_factory=dict)
+
+
+class LLMExtractionResult(BaseModel):
+    candidates: list[LLMExtractedCandidatePayload] = Field(default_factory=list)
+
+
+class LLMStructuredMemoryExtractor:
+    def __init__(
+        self,
+        invoker: StructuredOutputInvoker | None = None,
+        *,
+        fallback: HeuristicMemoryExtractor | None = None,
+    ) -> None:
+        self.invoker = invoker
+        self.fallback = fallback or HeuristicMemoryExtractor()
+
+    def extract_from_turn(
+        self,
+        user_text: str,
+        *,
+        source: MemorySource,
+        turn_id: str,
+    ) -> list[ExtractedMemoryCandidate]:
+        if not user_text.strip():
+            return []
+        evidence = [EvidenceRef(ref_type="turn", ref_id=turn_id)]
+        if self.invoker is None:
+            return self.fallback.extract_from_turn(user_text, source=source, turn_id=turn_id)
+
+        try:
+            result = self.invoker.invoke(
+                LLMExtractionResult,
+                self._build_messages(user_text, source),
+            )
+            candidates = [
+                ExtractedMemoryCandidate(
+                    memory_type=item.memory_type,  # type: ignore[arg-type]
+                    scope_hint=item.scope_hint,  # type: ignore[arg-type]
+                    subject_text=item.subject_text.strip(),
+                    predicate=item.predicate.strip(),
+                    object_text=item.object_text.strip(),
+                    condition=item.condition.strip() if item.condition else None,
+                    action=item.action.strip() if item.action else None,
+                    room_text=item.room_text.strip() if item.room_text else None,
+                    alias_text=item.alias_text.strip() if item.alias_text else None,
+                    raw_mentions=[mention.strip() for mention in item.raw_mentions if mention.strip()],
+                    source=source,
+                    operation_hint=item.operation_hint,  # type: ignore[arg-type]
+                    evidence_refs=evidence,
+                    natural_text=item.natural_text.strip() if item.natural_text else None,
+                    structured_payload=item.structured_payload,
+                )
+                for item in result.candidates
+                if item.subject_text.strip() and item.predicate.strip() and item.object_text.strip()
+            ]
+            if candidates:
+                return candidates
+        except Exception:
+            pass
+        return self.fallback.extract_from_turn(user_text, source=source, turn_id=turn_id)
+
+    @staticmethod
+    def _build_messages(user_text: str, source: MemorySource) -> list[dict[str, str]]:
+        return [
+            {
+                "role": "system",
+                "content": (
+                    "你是智能家居长期记忆抽取器。"
+                    "只抽取适合长期保存的记忆，不要抽取当前瞬时状态。"
+                    "允许的 memory_type 只有：capability, alias, location, preference, habit, constraint, routine, "
+                    "episode, reflection, layout_relation, safety_rule, stable_state_fact。"
+                    "scope_hint 只能是：entity, device, room, user, home。"
+                    "如果输入里没有长期记忆价值，返回空 candidates。"
+                    "尽量抽取用户明确表达、纠错、规则、偏好、别名、位置、触发场景；"
+                    "不要编造 device_id 或 entity_id，只保留文本指代。"
+                ),
+            },
+            {
+                "role": "user",
+                "content": f"source={source}\n对话内容：{user_text}",
+            },
+        ]

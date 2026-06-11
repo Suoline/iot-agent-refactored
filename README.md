@@ -40,11 +40,13 @@ retryValidate：
 - 这一版采用：
   - `SQLite` 作为 canonical store
   - `SQLite FTS5` 作为文本召回
-  - `Hybrid Resolver` 处理“自然语言指代 -> device/entity/room/home 绑定”
+  - `LLM structured extractor + Hybrid Resolver` 处理“对话抽取 -> device/entity/room/home 绑定”
 - demo 侧已经接入到：
   - `iot-agent-refactored_demo/smartHome/m_agent/agent/tools/query_tool_func.py`
   - `iot-agent-refactored_demo/smartHome/m_agent/agent/base_home_agent.py`
 - 当前接入方式：
   - 任务开始时同步一次 HA 事实并执行轻量 maintenance
   - `query_tool` 不再返回硬编码对话，而是返回结构化记忆检索后的摘要
+  - 对话写回时优先走 LLM 结构化抽取，无法稳定抽取时再回退到启发式规则
+  - 多候选设备绑定时优先走“小候选集 LLM 消歧”，无法稳定裁决时再回退到启发式规则
   - 任务结束时会回写 usage/outcome，并按需要生成 reflection

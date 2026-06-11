@@ -14,7 +14,11 @@ if REPO_ROOT not in sys.path:
 
 try_memory = importlib.import_module("try.memory")
 try_memory_confidence = importlib.import_module("try.memory.confidence")
+try_memory_extractor = importlib.import_module("try.memory.extractor")
+try_memory_llm_support = importlib.import_module("try.memory.llm_support")
+try_memory_resolver = importlib.import_module("try.memory.resolver")
 
+from smartHome.m_agent.common.get_llm import get_llm
 from smartHome.m_agent.memory.fake_api_tool import fake_api_func
 
 MemoryRecord = try_memory.MemoryRecord
@@ -22,6 +26,9 @@ MemoryService = try_memory.MemoryService
 create_memory_service = try_memory.create_memory_service
 SearchResultPackage = try_memory.SearchResultPackage
 EvidenceRef = try_memory.EvidenceRef
+LLMStructuredMemoryExtractor = try_memory_extractor.LLMStructuredMemoryExtractor
+LangChainStructuredInvoker = try_memory_llm_support.LangChainStructuredInvoker
+LLMDisambiguator = try_memory_resolver.LLMDisambiguator
 
 get_default_half_life = try_memory_confidence.get_default_half_life
 get_source_authority = try_memory_confidence.get_source_authority
@@ -55,7 +62,12 @@ class DemoTaskContext:
 
 class DemoMemoryRuntime:
     def __init__(self, db_path: str | None = None) -> None:
-        self.service: MemoryService = create_memory_service(db_path or MEMORY_DB_PATH)
+        llm_invoker = LangChainStructuredInvoker(get_llm)
+        self.service: MemoryService = create_memory_service(
+            db_path or MEMORY_DB_PATH,
+            extractor=LLMStructuredMemoryExtractor(llm_invoker),
+            disambiguator=LLMDisambiguator(llm_invoker),
+        )
         self.fetcher = DemoHAFetcher()
         self._seeded = False
         self.current_task: DemoTaskContext | None = None

@@ -30,11 +30,12 @@ class MemoryService:
         db_path: str | Path,
         *,
         user_id: str = "user.primary",
+        extractor=None,
         disambiguator: DisambiguationResolver | None = None,
     ) -> None:
         self.store = SqliteMemoryStore(db_path)
         self.fts_index = SQLiteFTSIndex(self.store)
-        self.extractor = HeuristicMemoryExtractor()
+        self.extractor = extractor or HeuristicMemoryExtractor()
         self.matcher = MemoryMatcher(self.store, self.fts_index)
         self.resolver = MemoryResolver(self.store, user_id=user_id, disambiguator=disambiguator)
         self.update_policy = MemoryUpdatePolicy(self.store, self.matcher)
@@ -180,4 +181,3 @@ class MemoryService:
 
     def list_records(self, **kwargs) -> list[MemoryRecord]:
         return self.store.list_records(**kwargs)
-

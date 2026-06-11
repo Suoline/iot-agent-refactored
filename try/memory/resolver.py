@@ -3,6 +3,9 @@ from __future__ import annotations
 import re
 from typing import Any, Protocol
 
+from pydantic import BaseModel
+
+from .llm_support import StructuredOutputInvoker
 from .matcher import normalize_text
 from .schemas import CandidateResolution, ExtractedMemoryCandidate
 from .sqlite_store import SqliteMemoryStore
@@ -44,6 +47,74 @@ class HeuristicDisambiguator:
         if len(exact) == 1:
             return exact[0]["device_id"]
         return None
+
+
+class LLMDisambiguationResult(BaseModel):
+    chosen_device_id: str | None = None
+    unresolved: bool = False
+    rationale: str | None = None
+
+
+class LLMDisambiguator:
+    def __init__(
+        self,
+        invoker: StructuredOutputInvoker | None = None,
+        *,
+        fallback: HeuristicDisambiguator | None = None,
+    ) -> None:
+        self.invoker = invoker
+        self.fallback = fallback or HeuristicDisambiguator()
+
+    def choose_device(
+        self,
+        mention: str,
+        room_text: str | None,
+        candidates: list[dict[str, Any]],
+    ) -> str | None:
+        heuristic_choice = self.fallback.choose_device(mention, room_text, candidates)
+        if heuristic_choice:
+            return heuristic_choice
+        if self.invoker is None or len(candidates) <= 1:
+            return None
+        try:
+            result = self.invoker.invoke(
+                LLMDisambiguationResult,
+                self._build_messages(mention, room_text, candidates),
+            )
+            if result.unresolved:
+                return None
+            chosen = result.chosen_device_id
+            valid_ids = {item["device_id"] for item in candidates}
+            if chosen in valid_ids:
+                return chosen
+        except Exception:
+            return None
+        return None
+
+    @staticmethod
+    def _build_messages(
+        mention: str,
+        room_text: str | None,
+        candidates: list[dict[str, Any]],
+    ) -> list[dict[str, str]]:
+        candidate_lines = "\n".join(
+            f"- device_id={item['device_id']}; room={item.get('room_text')}; text={item.get('display_text')}"
+            for item in candidates
+        )
+        return [
+            {
+                "role": "system",
+                "content": (
+                    "你是智能家居设备指代消歧器。"
+                    "你只能在给定候选设备中选择一个 device_id，或明确返回 unresolved=true。"
+                    "如果信息不足、多个候选都合理，必须返回 unresolved=true，不能猜。"
+                ),
+            },
+            {
+                "role": "user",
+                "content": f"提及对象：{mention}\n房间线索：{room_text or '无'}\n候选列表：\n{candidate_lines}",
+            },
+        ]
 
 
 class MemoryResolver:
@@ -199,4 +270,3 @@ class MemoryResolver:
         if candidate.memory_type in {"preference", "constraint", "routine", "reflection", "habit", "safety_rule"}:
             return "home"
         return None
-

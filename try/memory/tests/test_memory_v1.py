@@ -5,9 +5,13 @@ import importlib
 
 memory_mod = importlib.import_module("try.memory")
 schemas_mod = importlib.import_module("try.memory.schemas")
+extractor_mod = importlib.import_module("try.memory.extractor")
+resolver_mod = importlib.import_module("try.memory.resolver")
 
 create_memory_service = memory_mod.create_memory_service
 ExtractedMemoryCandidate = schemas_mod.ExtractedMemoryCandidate
+LLMStructuredMemoryExtractor = extractor_mod.LLMStructuredMemoryExtractor
+LLMDisambiguator = resolver_mod.LLMDisambiguator
 
 
 class DummyFetcher:
@@ -45,6 +49,17 @@ class DummyFetcher:
 
     def get_all_services(self):
         return [{"domain": "light", "services": {"turn_on": {}, "turn_off": {}}}]
+
+
+class FakeInvoker:
+    def __init__(self, responses):
+        self.responses = list(responses)
+        self.calls = []
+
+    def invoke(self, schema, messages):
+        self.calls.append((schema, messages))
+        response = self.responses.pop(0)
+        return schema.model_validate(response)
 
 
 def test_sync_ha_facts_and_search(tmp_path):
@@ -163,3 +178,56 @@ def test_finalize_task_failure_creates_reflection(tmp_path):
     reflections = service.list_records(memory_types=["reflection"])
     assert any("选错了设备" in item.natural_text for item in reflections)
 
+
+def test_llm_extractor_uses_structured_output():
+    invoker = FakeInvoker(
+        [
+            {
+                "candidates": [
+                    {
+                        "memory_type": "alias",
+                        "scope_hint": "device",
+                        "subject_text": "书房台灯",
+                        "predicate": "alias_of",
+                        "object_text": "小书灯",
+                        "room_text": "书房",
+                        "alias_text": "小书灯",
+                        "raw_mentions": ["书房台灯", "小书灯"],
+                        "operation_hint": "add_active",
+                        "natural_text": "用户把书房台灯称为小书灯",
+                    }
+                ]
+            }
+        ]
+    )
+    extractor = LLMStructuredMemoryExtractor(invoker)
+    records = extractor.extract_from_turn("以后我把书房台灯叫做小书灯", source="user_explicit", turn_id="turn-1")
+
+    assert len(records) == 1
+    assert records[0].memory_type == "alias"
+    assert records[0].object_text == "小书灯"
+    assert invoker.calls
+
+
+def test_llm_disambiguator_chooses_from_small_candidate_set():
+    invoker = FakeInvoker(
+        [
+            {
+                "chosen_device_id": "device.study_lamp_b",
+                "unresolved": False,
+                "rationale": "名称和房间更匹配",
+            }
+        ]
+    )
+    disambiguator = LLMDisambiguator(invoker)
+    chosen = disambiguator.choose_device(
+        "书房台灯",
+        "书房",
+        [
+            {"device_id": "device.study_lamp_a", "display_text": "米家智能台灯Lite 在书房靠窗", "room_text": "书房"},
+            {"device_id": "device.study_lamp_b", "display_text": "米家智能台灯Lite 在书房书桌", "room_text": "书房"},
+        ],
+    )
+
+    assert chosen == "device.study_lamp_b"
+    assert invoker.calls
