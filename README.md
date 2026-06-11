@@ -33,3 +33,18 @@ privacy_：
 retryValidate：
 
 - 目前是在base_agent执行完指令后，再构建一个检验任务复用base去检测。
+
+## 关于记忆模块 V1
+
+- 当前仓库新增了一个独立的记忆原型模块：`try/memory`
+- 这一版采用：
+  - `SQLite` 作为 canonical store
+  - `SQLite FTS5` 作为文本召回
+  - `Hybrid Resolver` 处理“自然语言指代 -> device/entity/room/home 绑定”
+- demo 侧已经接入到：
+  - `iot-agent-refactored_demo/smartHome/m_agent/agent/tools/query_tool_func.py`
+  - `iot-agent-refactored_demo/smartHome/m_agent/agent/base_home_agent.py`
+- 当前接入方式：
+  - 任务开始时同步一次 HA 事实并执行轻量 maintenance
+  - `query_tool` 不再返回硬编码对话，而是返回结构化记忆检索后的摘要
+  - 任务结束时会回写 usage/outcome，并按需要生成 reflection

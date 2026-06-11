@@ -21,6 +21,7 @@ from langchain.tools import tool
 from pydantic import BaseModel, Field
 from typing import List  # 推荐导入List，规范类型注解
 
+from smartHome.m_agent.memory import get_demo_memory_runtime
 from smartHome.m_agent.memory.fake_api_tool.fake_api_func import tool_get_all_entities_states, \
     tool_get_states_by_entity_id, tool_get_all_devices
 
@@ -231,23 +232,26 @@ def tool_filter(task:str):
     #     1）若任务为“查看音量”，那么应该向@tool query_tool提出“能查看音量的所有设备ID”
     #     2）若任务为“打开餐桌上的灯”，那么应该向@tool query_tool提出“餐桌上的灯的设备ID”
     #     """
-    agent = create_agent(model=get_llm(),
-                         tools=[
-                                query_tool,
-                                # ask_human
-                                # tool_get_all_entities_states
-                                tool_get_all_devices
-                                ],
-                         response_format=DeviceIdList,
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
-                         context_schema=AgentContext
-                         )
-    result = agent.invoke(
-        input={"messages": [
-            {"role": "system", "content": prompt},
-        ]},
-        context = AgentContext(agent_name="home_过滤节点")
-    )
+    runtime = get_demo_memory_runtime()
+    runtime.set_stage("device_filter")
+    try:
+        agent = create_agent(model=get_llm(),
+                             tools=[
+                                    query_tool,
+                                    tool_get_all_devices
+                                    ],
+                             response_format=DeviceIdList,
+                             middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                             context_schema=AgentContext
+                             )
+        result = agent.invoke(
+            input={"messages": [
+                {"role": "system", "content": prompt},
+            ]},
+            context = AgentContext(agent_name="home_过滤节点")
+        )
+    finally:
+        runtime.clear_stage()
 
     deviceInfoList = result["structured_response"]
     # # 无缩进（紧凑格式，适合传输/存储）
@@ -323,22 +327,25 @@ def tool_planner(task:str,devices:DeviceIdList):
     # [设备能力和属性信息]：{device_info}
     # """
 
-    agent = create_agent(
-        model=get_llm(),
-        tools=[
-            # get_devices_states,get_devices_capabilities,get_devices_usage_habits,
+    runtime = get_demo_memory_runtime()
+    runtime.set_stage("planning")
+    try:
+        agent = create_agent(
+            model=get_llm(),
+            tools=[
                 query_tool,
-                # tool_get_states_by_entity_id,
                 executor_planning],
-        middleware=[log_before, log_response, log_before_agent, log_after_agent],
-        context_schema=AgentContext
-    )
-    result = agent.invoke(
-        input={"messages": [
-            {"role": "system", "content": prompt},
-        ]},
-        context = AgentContext(agent_name="home_规划阶段")
-    )
+            middleware=[log_before, log_response, log_before_agent, log_after_agent],
+            context_schema=AgentContext
+        )
+        result = agent.invoke(
+            input={"messages": [
+                {"role": "system", "content": prompt},
+            ]},
+            context = AgentContext(agent_name="home_规划阶段")
+        )
+    finally:
+        runtime.clear_stage()
 
     # msg_content = "\n" + "\n".join(map(repr, result["messages"]))
     # GLOBALCONFIG.logger.info("================" + "规划阶段")
@@ -369,6 +376,8 @@ def node_deliver(state:SmartHomeAgentState)-> Command[Literal[END]]:
     )
 
 def run_ourAgent(task:str):
+    runtime = get_demo_memory_runtime()
+    runtime.start_task(task)
     agent_builder = StateGraph(SmartHomeAgentState)
     # Add nodes
     agent_builder.add_node("router_node", node_router)
@@ -387,11 +396,14 @@ def run_ourAgent(task:str):
         "command": task,
         "messages": [HumanMessage(content=task)]
     }
-    result = agent.invoke(initial_state)
-    # for m in result["messages"]:
-    #     m.pretty_print()
-
-    return result["messages"][-1].content
+    try:
+        result = agent.invoke(initial_state)
+        output = result["messages"][-1].content
+        runtime.finish_task(output)
+        return output
+    except Exception as exc:
+        runtime.finish_task(str(exc), success=False)
+        raise
 
 
 def temp_test(task:str):
