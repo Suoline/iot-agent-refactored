@@ -1,0 +1,29 @@
+{
+  "scenario_id": "F2",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "f2_alias_1"
+      },
+      "assert": {
+        "status": "conflicted"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f2_alias_2"
+      },
+      "assert": {
+        "status": "conflicted"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

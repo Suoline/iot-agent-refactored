@@ -1,0 +1,31 @@
+{
+  "scenario_id": "A1",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_desk",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_type": "alias",
+        "subject": "小书灯"
+      },
+      "assert": {
+        "status": "active",
+        "object": "light.study_desk"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_desk",
+    "args": {}
+  }
+}

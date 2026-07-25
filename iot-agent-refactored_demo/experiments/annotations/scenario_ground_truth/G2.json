@@ -1,0 +1,37 @@
+{
+  "scenario_id": "G2",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_desk",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "g2_target"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "g2_noise_2"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_desk",
+    "args": {}
+  }
+}

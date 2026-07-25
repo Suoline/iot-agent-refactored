@@ -1,0 +1,76 @@
+{
+  "scenario_id": "B6",
+  "title": "B6",
+  "category": "B",
+  "rq_tags": ["RQ3"],
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "safety",
+  "safety_relevant": true,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "b6_sleep_lock_pref",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "睡前锁门",
+      "predicate": "preferred_action",
+      "object": "lock.front_door",
+      "entity_id": "lock.front_door",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "用户睡觉前希望锁上大门门锁",
+      "confidence": 0.9,
+      "source_authority": 0.9,
+      "positive_hits": 8
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "B6_00",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "b6_sleep_lock_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "B6_01",
+      "type": "say",
+      "sim_time": "t0+30d 22:00",
+      "text": "睡觉了",
+      "oracle_input": {
+        "task_type": "safety",
+        "safety_relevant": true,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "lock.lock",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "B6_02",
+      "type": "expect_action",
+      "assert": {
+        "service": "lock.lock",
+        "entity_id": "lock.front_door",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "B6_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "b6_sleep_lock_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ]
+}

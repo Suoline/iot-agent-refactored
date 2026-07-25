@@ -1,0 +1,39 @@
+{
+  "scenario_id": "F1",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "f1_living_light_broad"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f1_living_ceiling_fact"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f1_living_light_broad"
+      },
+      "assert": {
+        "related_memory_ids": [
+          "f1_living_ceiling_fact"
+        ]
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

@@ -1,0 +1,168 @@
+{
+  "scenario_id": "G2",
+  "title": "G2",
+  "category": "G",
+  "rq_tags": ["RQ1", "RQ4"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "g2_noise_1",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "客厅灯偏好",
+      "predicate": "preferred_brightness",
+      "object": "40",
+      "entity_id": "light.living_ceiling",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "用户喜欢客厅灯 40 亮度"
+    },
+    {
+      "memory_id": "g2_noise_2",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "小灯",
+      "predicate": "refers_to",
+      "object": "light.living_floor",
+      "entity_id": "light.living_floor",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅落地灯也被叫作小灯"
+    },
+    {
+      "memory_id": "g2_noise_3",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "卧室空调温度",
+      "predicate": "preferred_temperature",
+      "object": "27",
+      "entity_id": "climate.bedroom_ac",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "用户偏好卧室空调27度"
+    },
+    {
+      "memory_id": "g2_noise_4",
+      "memory_type": "location",
+      "scope": "entity",
+      "subject": "客厅落地灯",
+      "predicate": "located_in",
+      "object": "客厅",
+      "entity_id": "light.living_floor",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅落地灯位于客厅"
+    },
+    {
+      "memory_id": "g2_noise_5",
+      "memory_type": "routine",
+      "scope": "routine",
+      "subject": "观影模式",
+      "predicate": "routine_name",
+      "object": "routine.movie_mode",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "观影模式会调整客厅灯光和窗帘"
+    },
+    {
+      "memory_id": "g2_noise_6",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "床头灯",
+      "predicate": "refers_to",
+      "object": "light.bedroom_bedside",
+      "entity_id": "light.bedroom_bedside",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "床头灯指卧室床头灯"
+    },
+    {
+      "memory_id": "g2_noise_7",
+      "memory_type": "capability",
+      "scope": "entity",
+      "subject": "客厅顶灯",
+      "predicate": "supports",
+      "object": "brightness",
+      "entity_id": "light.living_ceiling",
+      "source": "ha_registry",
+      "half_life_days": 180,
+      "natural_text": "客厅顶灯支持亮度调节"
+    },
+    {
+      "memory_id": "g2_noise_8",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "客厅氛围灯偏好",
+      "predicate": "preferred_brightness",
+      "object": "20",
+      "entity_id": "light.living_ambient",
+      "source": "user_behavior",
+      "half_life_days": 180,
+      "natural_text": "用户看电影时喜欢把氛围灯亮度调到20"
+    },
+    {
+      "memory_id": "g2_target",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "书房台灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "书房台灯指的是 light.study_desk"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "G2_01",
+      "type": "say",
+      "sim_time": "t0+1d 09:00",
+      "text": "开书房台灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "G2_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g2_target"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "G2_03",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.study_desk",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "G2_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g2_noise_2"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ]
+}

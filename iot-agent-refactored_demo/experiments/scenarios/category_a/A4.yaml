@@ -1,0 +1,74 @@
+{
+  "scenario_id": "A4",
+  "title": "A4",
+  "category": "A",
+  "rq_tags": ["RQ4"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "a4_alias_little_book_light",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "小书灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "那个灯",
+      "structured_payload": {
+        "resampled_text": "小书灯指的是书房台灯 light.study_desk"
+      }
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "A4_01",
+      "type": "event",
+      "sim_time": "t0+400d 09:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "A4_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a4_alias_little_book_light"
+      },
+      "assert": {
+        "status": "active",
+        "resampled": true
+      }
+    },
+    {
+      "step_id": "A4_03",
+      "type": "say",
+      "sim_time": "t0+401d 20:00",
+      "text": "开小书灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "fuzzy",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A4_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.study_desk",
+        "args": {}
+      }
+    }
+  ]
+}

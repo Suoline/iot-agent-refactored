@@ -1,0 +1,132 @@
+{
+  "scenario_id": "F6",
+  "title": "F6",
+  "category": "F",
+  "rq_tags": ["RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "f6_alias_1",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "小书灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "小书灯指书房台灯"
+    },
+    {
+      "memory_id": "f6_alias_2",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "小书灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "用户另一会话里也说小书灯指书房台灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "F6_01",
+      "type": "event",
+      "sim_time": "t0 09:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "merge",
+            "source_ids": ["f6_alias_1", "f6_alias_2"],
+            "coverage_proof": {
+              "status": "provided"
+            },
+            "merged_record": {
+              "memory_id": "f6_alias_merged_ok",
+              "memory_type": "alias",
+              "scope": "entity",
+              "subject": "小书灯",
+              "predicate": "refers_to",
+              "object": "light.study_desk",
+              "entity_id": "light.study_desk",
+              "source": "user_explicit",
+              "half_life_days": 365,
+              "natural_text": "小书灯指书房台灯"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "F6_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f6_alias_merged_ok"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "F6_03",
+      "type": "event",
+      "sim_time": "t0+1d 09:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "merge",
+            "source_ids": ["f6_alias_1", "f6_alias_2"],
+            "merged_record": {
+              "memory_id": "f6_alias_merged_bad",
+              "memory_type": "alias",
+              "scope": "entity",
+              "subject": "小书灯",
+              "predicate": "refers_to",
+              "object": "light.study_desk",
+              "entity_id": "light.study_desk",
+              "source": "user_explicit",
+              "half_life_days": 365,
+              "natural_text": "小书灯指书房台灯"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "F6_04",
+      "type": "event",
+      "sim_time": "t0+1d 09:10",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "F6_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f6_alias_merged_bad"
+      },
+      "assert": {
+        "status": "deleted"
+      }
+    },
+    {
+      "step_id": "F6_06",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f6_alias_1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ]
+}

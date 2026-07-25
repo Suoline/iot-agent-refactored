@@ -1,0 +1,41 @@
+{
+  "scenario_id": "B5",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "climate.set_temperature",
+    "entity_id": "climate.bedroom_ac",
+    "args": {
+      "temperature": 27
+    }
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "b5_old_habit"
+      },
+      "assert": {
+        "status": "expired"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "b5_new_habit"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "climate.set_temperature",
+    "entity_id": "climate.bedroom_ac",
+    "args": {
+      "temperature": 27
+    }
+  }
+}

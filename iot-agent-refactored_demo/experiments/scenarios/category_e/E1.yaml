@@ -1,0 +1,91 @@
+{
+  "scenario_id": "E1",
+  "title": "E1",
+  "category": "E",
+  "rq_tags": ["RQ5"],
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [],
+  "steps": [
+    {
+      "step_id": "E1_01",
+      "type": "say",
+      "sim_time": "t0 09:00",
+      "text": "定义观影模式：关客厅顶灯、开氛围灯、关窗帘",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "add_active",
+            "memory_id": "e1_movie_mode",
+            "memory_type": "routine",
+            "scope": "routine",
+            "subject": "观影模式",
+            "predicate": "routine_name",
+            "object": "routine.movie_mode",
+            "source": "user_explicit",
+            "half_life_days": 180,
+            "natural_text": "观影模式包含关客厅顶灯、开氛围灯、关窗帘"
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "E1_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "e1_movie_mode"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "E1_03",
+      "type": "say",
+      "sim_time": "t0+1d 20:00",
+      "text": "观影模式",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "E1_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "routine.run",
+        "entity_id": "routine.movie_mode",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "E1_05",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ceiling": {
+          "state": "off",
+          "attributes": {}
+        },
+        "light.living_ambient": {
+          "state": "on",
+          "attributes": {}
+        },
+        "cover.living_curtain": {
+          "state": "closed",
+          "attributes": {
+            "position": 0
+          }
+        }
+      }
+    }
+  ]
+}

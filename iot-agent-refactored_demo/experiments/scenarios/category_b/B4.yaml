@@ -1,0 +1,73 @@
+{
+  "scenario_id": "B4",
+  "title": "B4",
+  "category": "B",
+  "rq_tags": ["RQ1", "RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "b4_sleep_temp_pref",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "睡前空调温度",
+      "predicate": "prefers_temperature",
+      "object": "26",
+      "entity_id": "climate.bedroom_ac",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "睡觉时把空调设成26度",
+      "status": "active"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "B4_01",
+      "type": "say",
+      "sim_time": "t0+3d 09:00",
+      "text": "以后睡觉别自动调空调了",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "invalidate",
+            "old_memory_id": "b4_sleep_temp_pref"
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "B4_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "b4_sleep_temp_pref"
+      },
+      "assert": {
+        "status": "expired"
+      }
+    },
+    {
+      "step_id": "B4_03",
+      "type": "say",
+      "sim_time": "t0+3d 22:00",
+      "text": "睡觉了",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "B4_04",
+      "type": "expect_clarify",
+      "assert": true
+    }
+  ]
+}

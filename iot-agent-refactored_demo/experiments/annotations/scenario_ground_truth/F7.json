@@ -1,0 +1,29 @@
+{
+  "scenario_id": "F7",
+  "planner_mode": "oracle",
+  "task_type": "query",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "f7_gym_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f7_gym_pref"
+      },
+      "assert": {
+        "status": "deleted"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

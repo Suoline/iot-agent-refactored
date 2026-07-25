@@ -1,0 +1,125 @@
+{
+  "scenario_id": "A2",
+  "title": "A2",
+  "category": "A",
+  "rq_tags": ["RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [],
+  "steps": [
+    {
+      "step_id": "A2_01",
+      "type": "say",
+      "sim_time": "t0 09:00",
+      "text": "卧室灯就是卧室顶灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "add_active",
+            "memory_id": "a2_bedroom_alias_v1",
+            "memory_type": "alias",
+            "scope": "entity",
+            "subject": "卧室灯",
+            "predicate": "refers_to",
+            "object": "light.bedroom_ceiling",
+            "entity_id": "light.bedroom_ceiling",
+            "source": "user_explicit",
+            "half_life_days": 365,
+            "natural_text": "卧室灯指卧室顶灯"
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "A2_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "A2_03",
+      "type": "say",
+      "sim_time": "t0+3d 09:00",
+      "text": "以后卧室灯指床头灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "revise",
+            "old_memory_id": "a2_bedroom_alias_v1",
+            "new_record": {
+              "memory_id": "a2_bedroom_alias_v2",
+              "memory_type": "alias",
+              "scope": "entity",
+              "subject": "卧室灯",
+              "predicate": "refers_to",
+              "object": "light.bedroom_bedside",
+              "entity_id": "light.bedroom_bedside",
+              "source": "user_correction",
+              "half_life_days": 365,
+              "natural_text": "卧室灯以后指床头灯"
+            }
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "A2_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v1"
+      },
+      "assert": {
+        "status": "superseded"
+      }
+    },
+    {
+      "step_id": "A2_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v2"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "A2_06",
+      "type": "say",
+      "sim_time": "t0+3d 20:00",
+      "text": "开卧室灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A2_07",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.bedroom_bedside",
+        "args": {}
+      }
+    }
+  ]
+}

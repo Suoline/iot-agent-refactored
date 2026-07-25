@@ -1,0 +1,25 @@
+{
+  "scenario_id": "G5",
+  "planner_mode": "oracle",
+  "task_type": "query",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [],
+  "expected_absent_memory": [
+    {
+      "selector": {
+        "memory_type": "state",
+        "entity_id": "light.living_ceiling"
+      }
+    },
+    {
+      "selector": {
+        "memory_type": "state",
+        "entity_id": "light.living_ceiling"
+      }
+    }
+  ],
+  "preferred_action": null
+}

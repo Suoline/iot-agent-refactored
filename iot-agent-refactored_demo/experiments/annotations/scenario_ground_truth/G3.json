@@ -1,0 +1,21 @@
+{
+  "scenario_id": "G3",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "g3_stale_color_temp_fact"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

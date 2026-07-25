@@ -1,0 +1,45 @@
+{
+  "scenario_id": "A2",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.bedroom_bedside",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v1"
+      },
+      "assert": {
+        "status": "superseded"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "a2_bedroom_alias_v2"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.bedroom_bedside",
+    "args": {}
+  }
+}

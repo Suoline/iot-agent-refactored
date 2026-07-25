@@ -1,0 +1,122 @@
+{
+  "scenario_id": "F2",
+  "title": "F2",
+  "category": "F",
+  "rq_tags": ["RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [],
+  "steps": [
+    {
+      "step_id": "F2_01",
+      "type": "say",
+      "sim_time": "t0 09:00",
+      "text": "小书灯是书房台灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "add_active",
+            "memory_id": "f2_alias_1",
+            "memory_type": "alias",
+            "scope": "entity",
+            "subject": "小书灯",
+            "predicate": "refers_to",
+            "object": "light.study_desk",
+            "entity_id": "light.study_desk",
+            "source": "user_explicit",
+            "half_life_days": 365,
+            "natural_text": "小书灯指书房台灯",
+            "confidence": 0.9,
+            "source_authority": 0.9
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "F2_02",
+      "type": "say",
+      "sim_time": "t0+1d 09:00",
+      "text": "小书灯是书房顶灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "add_active",
+            "memory_id": "f2_alias_2",
+            "memory_type": "alias",
+            "scope": "entity",
+            "subject": "小书灯",
+            "predicate": "refers_to",
+            "object": "light.study_ceiling",
+            "entity_id": "light.study_ceiling",
+            "source": "user_explicit",
+            "half_life_days": 365,
+            "natural_text": "小书灯指书房顶灯",
+            "confidence": 0.9,
+            "source_authority": 0.9
+          },
+          {
+            "op": "patch",
+            "memory_id": "f2_alias_1",
+            "updates": {
+              "status": "conflicted"
+            }
+          },
+          {
+            "op": "patch",
+            "memory_id": "f2_alias_2",
+            "updates": {
+              "status": "conflicted"
+            }
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "F2_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f2_alias_1"
+      },
+      "assert": {
+        "status": "conflicted"
+      }
+    },
+    {
+      "step_id": "F2_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f2_alias_2"
+      },
+      "assert": {
+        "status": "conflicted"
+      }
+    },
+    {
+      "step_id": "F2_05",
+      "type": "say",
+      "sim_time": "t0+2d 09:00",
+      "text": "开小书灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "F2_06",
+      "type": "expect_clarify",
+      "assert": true
+    }
+  ]
+}

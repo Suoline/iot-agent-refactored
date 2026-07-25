@@ -1,0 +1,90 @@
+{
+  "scenario_id": "C2",
+  "title": "C2",
+  "category": "C",
+  "rq_tags": ["RQ1"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "automation",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "c2_holiday_rule",
+      "memory_type": "routine",
+      "scope": "entity",
+      "subject": "节假日氛围灯规则",
+      "predicate": "scheduled_action",
+      "object": "light.living_ambient",
+      "entity_id": "light.living_ambient",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "国庆假期每晚开氛围灯",
+      "valid_from": "2026-01-11T20:00:00+08:00",
+      "valid_until": "2026-01-18T20:00:00+08:00",
+      "positive_hits": 8
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "C2_01",
+      "type": "say",
+      "sim_time": "t0+5d 20:00",
+      "text": "执行节假日氛围灯规则",
+      "oracle_input": {
+        "task_type": "automation",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "C2_02",
+      "type": "expect_no_action",
+      "assert": true
+    },
+    {
+      "step_id": "C2_03",
+      "type": "say",
+      "sim_time": "t0+12d 20:00",
+      "text": "执行节假日氛围灯规则",
+      "oracle_input": {
+        "task_type": "automation",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "C2_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_ambient",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "C2_05",
+      "type": "event",
+      "sim_time": "t0+20d 20:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "C2_06",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c2_holiday_rule"
+      },
+      "assert": {
+        "status": "expired"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "scenario_id": "B1",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_type": "habit",
+        "subject": "睡前空调温度"
+      },
+      "assert": {
+        "status": "candidate"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

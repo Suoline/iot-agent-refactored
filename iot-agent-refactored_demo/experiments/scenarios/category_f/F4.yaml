@@ -1,0 +1,92 @@
+{
+  "scenario_id": "F4",
+  "title": "F4",
+  "category": "F",
+  "rq_tags": ["RQ4"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "f4_lock_episode",
+      "memory_type": "episode",
+      "scope": "entity",
+      "subject": "门锁任务",
+      "predicate": "uses",
+      "object": "lock.front_door",
+      "entity_id": "lock.front_door",
+      "source": "user_explicit",
+      "half_life_days": 30,
+      "natural_text": "门锁任务执行 episode"
+    },
+    {
+      "memory_id": "f4_hall_location",
+      "memory_type": "location",
+      "scope": "entity",
+      "subject": "大门门锁",
+      "predicate": "located_in",
+      "object": "玄关",
+      "entity_id": "lock.front_door",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "大门门锁在玄关"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "F4_01",
+      "type": "event",
+      "sim_time": "t0+2d 22:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "patch",
+            "memory_id": "f4_lock_episode",
+            "updates": {
+              "positive_hits": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "F4_015",
+      "type": "expect_no_action",
+      "assert": true
+    },
+    {
+      "step_id": "F4_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f4_lock_episode"
+      },
+      "assert": {
+        "positive_hits": 1
+      }
+    },
+    {
+      "step_id": "F4_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f4_hall_location"
+      },
+      "assert": {
+        "positive_hits": 0
+      }
+    },
+    {
+      "step_id": "F4_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f4_hall_location"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ]
+}

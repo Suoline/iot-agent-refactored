@@ -1,0 +1,45 @@
+{
+  "scenario_id": "G1",
+  "title": "G1",
+  "category": "G",
+  "rq_tags": ["RQ5"],
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [],
+  "steps": [
+    {
+      "step_id": "G1_01",
+      "type": "say",
+      "sim_time": "t0 09:00",
+      "text": "开卧室灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "G1_02",
+      "type": "expect_clarify",
+      "assert": true
+    },
+    {
+      "step_id": "G1_025",
+      "type": "expect_no_action",
+      "assert": true
+    },
+    {
+      "step_id": "G1_03",
+      "type": "expect_absent_memory",
+      "selector": {
+        "memory_type": "alias",
+        "subject": "卧室灯"
+      }
+    }
+  ]
+}

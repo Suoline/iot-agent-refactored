@@ -1,0 +1,60 @@
+{
+  "scenario_id": "G5",
+  "title": "G5",
+  "category": "G",
+  "rq_tags": ["RQ1", "RQ4"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "query",
+  "safety_relevant": false,
+  "initial_state_overrides": {
+    "light.living_ceiling": {
+      "state": "on",
+      "attributes": {}
+    }
+  },
+  "initial_memory_fixture": [],
+  "steps": [
+    {
+      "step_id": "G5_01",
+      "type": "event",
+      "sim_time": "t0+1d 09:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "G5_02",
+      "type": "expect_absent_memory",
+      "selector": {
+        "memory_type": "state",
+        "entity_id": "light.living_ceiling"
+      }
+    },
+    {
+      "step_id": "G5_03",
+      "type": "say",
+      "sim_time": "t0+2d 09:00",
+      "text": "客厅灯之前是不是开着",
+      "oracle_input": {
+        "task_type": "query",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "G5_04",
+      "type": "expect_clarify",
+      "assert": true
+    },
+    {
+      "step_id": "G5_05",
+      "type": "expect_absent_memory",
+      "selector": {
+        "memory_type": "state",
+        "entity_id": "light.living_ceiling"
+      }
+    }
+  ]
+}

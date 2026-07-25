@@ -1,0 +1,69 @@
+{
+  "scenario_id": "C4",
+  "title": "C4",
+  "category": "C",
+  "rq_tags": ["RQ1", "RQ3"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "c4_suspicious_pref",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "可疑空调偏好",
+      "predicate": "preferred_temperature",
+      "object": "25",
+      "entity_id": "climate.bedroom_ac",
+      "source": "user_behavior",
+      "half_life_days": 180,
+      "natural_text": "一条命中率不高的可疑偏好",
+      "confidence": 0.55,
+      "source_authority": 0.65,
+      "positive_hits": 0,
+      "negative_hits": 4
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "C4_00",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c4_suspicious_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "C4_01",
+      "type": "say",
+      "sim_time": "t0+1d 21:00",
+      "text": "按这条记忆执行",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "C4_02",
+      "type": "expect_clarify",
+      "assert": true
+    },
+    {
+      "step_id": "C4_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c4_suspicious_pref"
+      },
+      "assert": {
+        "negative_hits": 4
+      }
+    }
+  ]
+}

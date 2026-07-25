@@ -1,0 +1,68 @@
+{
+  "scenario_id": "G4",
+  "title": "G4",
+  "category": "G",
+  "rq_tags": ["RQ3"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "g4_low_conf_candidate",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "台灯",
+      "predicate": "refers_to",
+      "object": "light.study_ceiling",
+      "entity_id": "light.study_ceiling",
+      "source": "llm_inference",
+      "half_life_days": 365,
+      "natural_text": "模型猜测台灯可能是书房顶灯",
+      "confidence": 0.45,
+      "source_authority": 0.45,
+      "status": "candidate"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "G4_00",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g4_low_conf_candidate"
+      },
+      "assert": {
+        "status": "candidate"
+      }
+    },
+    {
+      "step_id": "G4_01",
+      "type": "say",
+      "sim_time": "t0 09:00",
+      "text": "按这条低置信度记忆去控制",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "G4_02",
+      "type": "expect_clarify",
+      "assert": true
+    },
+    {
+      "step_id": "G4_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g4_low_conf_candidate"
+      },
+      "assert": {
+        "status": "candidate"
+      }
+    }
+  ]
+}

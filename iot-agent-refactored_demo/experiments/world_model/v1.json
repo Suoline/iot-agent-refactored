@@ -1,0 +1,43 @@
+{
+  "world_version": "wm-v1",
+  "t0": "2026-01-01T00:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "rooms": [
+    {"room_id": "room_bedroom", "name": "卧室"},
+    {"room_id": "room_study", "name": "书房"},
+    {"room_id": "room_living", "name": "客厅"},
+    {"room_id": "room_hall", "name": "玄关"}
+  ],
+  "entities": [
+    {"entity_id": "light.bedroom_ceiling", "type": "light", "room": "bedroom", "display_name": "卧室顶灯", "capabilities": ["on_off", "brightness", "color_temp"]},
+    {"entity_id": "light.bedroom_bedside", "type": "light", "room": "bedroom", "display_name": "卧室床头灯", "capabilities": ["on_off", "brightness"]},
+    {"entity_id": "light.study_desk", "type": "light", "room": "study", "display_name": "书房台灯", "capabilities": ["on_off", "brightness", "color_temp"]},
+    {"entity_id": "light.study_ceiling", "type": "light", "room": "study", "display_name": "书房顶灯", "capabilities": ["on_off", "brightness"]},
+    {"entity_id": "light.living_ceiling", "type": "light", "room": "living", "display_name": "客厅顶灯", "capabilities": ["on_off", "brightness", "color_temp"]},
+    {"entity_id": "light.living_ambient", "type": "light", "room": "living", "display_name": "客厅氛围灯", "capabilities": ["on_off", "brightness", "rgb_color"]},
+    {"entity_id": "light.living_floor", "type": "light", "room": "living", "display_name": "客厅落地灯", "capabilities": ["on_off", "brightness"]},
+    {"entity_id": "cover.living_curtain", "type": "cover", "room": "living", "display_name": "客厅窗帘", "capabilities": ["open", "close", "set_position"]},
+    {"entity_id": "lock.front_door", "type": "lock", "room": "hall", "display_name": "大门门锁", "capabilities": ["lock", "unlock"]},
+    {"entity_id": "sensor.hall_motion", "type": "binary_sensor", "room": "hall", "display_name": "玄关人体传感器", "capabilities": ["motion"]},
+    {"entity_id": "climate.bedroom_ac", "type": "climate", "room": "bedroom", "display_name": "卧室空调", "capabilities": ["on_off", "set_temp", "hvac_mode"]},
+    {"entity_id": "switch.study_heater", "type": "switch", "room": "study", "display_name": "书房小太阳", "capabilities": ["on_off"]}
+  ],
+  "services": {
+    "light.turn_on": {"type": "light", "required": ["entity"], "optional": ["brightness", "color_temp"]},
+    "light.turn_off": {"type": "light", "required": ["entity"], "optional": []},
+    "cover.set_position": {"type": "cover", "required": ["entity", "position"], "optional": []},
+    "lock.lock": {"type": "lock", "required": ["entity"], "optional": []},
+    "lock.unlock": {"type": "lock", "required": ["entity"], "optional": []},
+    "climate.set_temperature": {"type": "climate", "required": ["entity", "temperature"], "optional": []},
+    "switch.turn_on": {"type": "switch", "required": ["entity"], "optional": []},
+    "switch.turn_off": {"type": "switch", "required": ["entity"], "optional": []}
+  },
+  "events": [
+    {"event_id": "evt_lock_jam", "offset_days": 2, "time": "22:00", "kind": "failure_injection", "payload": {"entity_id": "lock.front_door", "failure": "jammed"}},
+    {"event_id": "evt_unreachable", "offset_days": 3, "time": "20:00", "kind": "failure_injection", "payload": {"entity_id": "light.living_ambient", "failure": "unreachable"}},
+    {"event_id": "evt_dev_removed", "offset_days": 5, "time": "09:00", "kind": "world_mutation", "payload": {"entity_id": "switch.study_heater", "mutation": "remove"}},
+    {"event_id": "evt_cap_changed", "offset_days": 6, "time": "09:00", "kind": "world_mutation", "payload": {"entity_id": "light.living_ceiling", "mutation": "remove_capability", "capability": "color_temp"}},
+    {"event_id": "evt_sensor_moved", "offset_days": 7, "time": "09:00", "kind": "world_mutation", "payload": {"entity_id": "sensor.hall_motion", "mutation": "move_room", "room": "living"}}
+  ]
+}
+

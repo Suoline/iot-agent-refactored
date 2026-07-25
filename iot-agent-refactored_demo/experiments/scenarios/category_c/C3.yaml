@@ -1,0 +1,66 @@
+{
+  "scenario_id": "C3",
+  "title": "C3",
+  "category": "C",
+  "rq_tags": ["RQ1"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "c3_old_pref",
+      "memory_type": "preference",
+      "scope": "entity",
+      "subject": "睡前空调温度",
+      "predicate": "preferred_temperature",
+      "object": "24",
+      "entity_id": "climate.bedroom_ac",
+      "source": "user_explicit",
+      "half_life_days": 90,
+      "natural_text": "用户以前睡前喜欢24度",
+      "confidence": 0.72,
+      "source_authority": 0.9,
+      "created_at": "2026-01-01T00:00:00+08:00",
+      "updated_at": "2026-01-01T00:00:00+08:00"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "C3_01",
+      "type": "event",
+      "sim_time": "t0+180d 09:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "C3_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c3_old_pref"
+      },
+      "assert": {
+        "status": "stale"
+      }
+    },
+    {
+      "step_id": "C3_03",
+      "type": "say",
+      "sim_time": "t0+181d 21:00",
+      "text": "按我原来的偏好执行",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "C3_04",
+      "type": "expect_clarify",
+      "assert": true
+    }
+  ]
+}

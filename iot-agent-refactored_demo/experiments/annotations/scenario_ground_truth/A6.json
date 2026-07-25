@@ -1,0 +1,29 @@
+{
+  "scenario_id": "A6",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_floor",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "a6_living_floor_alias"
+      },
+      "assert": {
+        "status": "archived"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_floor",
+    "args": {}
+  }
+}

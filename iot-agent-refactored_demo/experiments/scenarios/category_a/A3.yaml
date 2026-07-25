@@ -1,0 +1,89 @@
+{
+  "scenario_id": "A3",
+  "title": "A3",
+  "category": "A",
+  "rq_tags": ["RQ3"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "a3_alias_active",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "台灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "这里的台灯通常指书房台灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "A3_01",
+      "type": "event",
+      "sim_time": "t0+1d 09:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "a3_alias_candidate",
+            "memory_type": "alias",
+            "scope": "entity",
+            "subject": "台灯",
+            "predicate": "refers_to",
+            "object": "light.study_ceiling",
+            "entity_id": "light.study_ceiling",
+            "source": "user_behavior",
+            "half_life_days": 365,
+            "natural_text": "一次行为里台灯似乎指书房顶灯",
+            "confidence": 0.65,
+            "source_authority": 0.65,
+            "status": "candidate"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "A3_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a3_alias_candidate"
+      },
+      "assert": {
+        "status": "candidate"
+      }
+    },
+    {
+      "step_id": "A3_03",
+      "type": "say",
+      "sim_time": "t0+2d 20:00",
+      "text": "开台灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A3_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.study_desk",
+        "args": {}
+      }
+    }
+  ]
+}

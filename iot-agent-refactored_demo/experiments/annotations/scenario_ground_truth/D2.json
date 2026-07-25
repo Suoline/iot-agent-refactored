@@ -1,0 +1,21 @@
+{
+  "scenario_id": "D2",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "d2_living_warm_routine"
+      },
+      "assert": {
+        "status": "expired"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

@@ -1,0 +1,19 @@
+{
+  "scenario_id": "G1",
+  "planner_mode": "agent",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": true,
+  "expected_no_action": true,
+  "expected_memory": [],
+  "expected_absent_memory": [
+    {
+      "selector": {
+        "memory_type": "alias",
+        "subject": "卧室灯"
+      }
+    }
+  ],
+  "preferred_action": null
+}

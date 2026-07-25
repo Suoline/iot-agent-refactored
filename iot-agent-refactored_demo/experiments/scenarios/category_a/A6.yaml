@@ -1,0 +1,70 @@
+{
+  "scenario_id": "A6",
+  "title": "A6",
+  "category": "A",
+  "rq_tags": ["RQ4"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "a6_living_floor_alias",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "客厅落地灯",
+      "predicate": "refers_to",
+      "object": "light.living_floor",
+      "entity_id": "light.living_floor",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅落地灯就是客厅落地灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "A6_01",
+      "type": "event",
+      "sim_time": "t0+400d 09:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "A6_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a6_living_floor_alias"
+      },
+      "assert": {
+        "status": "archived"
+      }
+    },
+    {
+      "step_id": "A6_03",
+      "type": "say",
+      "sim_time": "t0+401d 20:00",
+      "text": "开客厅落地灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A6_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_floor",
+        "args": {}
+      }
+    }
+  ]
+}

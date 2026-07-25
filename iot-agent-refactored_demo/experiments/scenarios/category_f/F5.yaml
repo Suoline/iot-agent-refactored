@@ -1,0 +1,112 @@
+{
+  "scenario_id": "F5",
+  "title": "F5",
+  "category": "F",
+  "rq_tags": ["RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "f5_broad_living_light",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "客厅灯",
+      "predicate": "refers_to",
+      "object": "light.living_ceiling|light.living_ambient|light.living_floor",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅灯可能泛指客厅顶灯、氛围灯和落地灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "F5_01",
+      "type": "event",
+      "sim_time": "t0+1d 09:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "split",
+            "old_memory_id": "f5_broad_living_light",
+            "new_records": [
+              {
+                "memory_id": "f5_living_ceiling_alias",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "客厅顶灯",
+                "predicate": "refers_to",
+                "object": "light.living_ceiling",
+                "entity_id": "light.living_ceiling",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "客厅顶灯指 light.living_ceiling"
+              },
+              {
+                "memory_id": "f5_living_ambient_alias",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "客厅氛围灯",
+                "predicate": "refers_to",
+                "object": "light.living_ambient",
+                "entity_id": "light.living_ambient",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "客厅氛围灯指 light.living_ambient"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "F5_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f5_broad_living_light"
+      },
+      "assert": {
+        "status": "superseded"
+      }
+    },
+    {
+      "step_id": "F5_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f5_living_ceiling_alias"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "F5_04",
+      "type": "say",
+      "sim_time": "t0+1d 09:10",
+      "text": "开客厅顶灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "F5_05",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_ceiling",
+        "args": {}
+      }
+    }
+  ]
+}

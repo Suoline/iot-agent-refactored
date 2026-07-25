@@ -1,0 +1,38 @@
+{
+  "scenario_id": "A5",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_ceiling",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "a5_alias_old"
+      },
+      "assert": {
+        "status": "stale",
+        "negative_hits": 1
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "a5_alias_new"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.study_ceiling",
+    "args": {}
+  }
+}

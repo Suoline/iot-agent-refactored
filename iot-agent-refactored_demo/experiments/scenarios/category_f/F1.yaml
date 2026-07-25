@@ -1,0 +1,89 @@
+{
+  "scenario_id": "F1",
+  "title": "F1",
+  "category": "F",
+  "rq_tags": ["RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "f1_living_light_broad",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "客厅灯",
+      "predicate": "refers_to",
+      "object": "light.living_floor",
+      "entity_id": "light.living_floor",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅灯通常指客厅落地灯"
+    },
+    {
+      "memory_id": "f1_living_ceiling_fact",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "客厅顶灯",
+      "predicate": "refers_to",
+      "object": "light.living_ceiling",
+      "entity_id": "light.living_ceiling",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "客厅顶灯指客厅顶灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "F1_01",
+      "type": "event",
+      "sim_time": "t0+1d 09:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "patch",
+            "memory_id": "f1_living_light_broad",
+            "updates": {
+              "related_memory_ids": ["f1_living_ceiling_fact"]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "F1_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f1_living_light_broad"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "F1_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f1_living_ceiling_fact"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "F1_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f1_living_light_broad"
+      },
+      "assert": {
+        "related_memory_ids": [
+          "f1_living_ceiling_fact"
+        ]
+      }
+    }
+  ]
+}

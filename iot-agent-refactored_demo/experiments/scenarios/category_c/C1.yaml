@@ -1,0 +1,79 @@
+{
+  "scenario_id": "C1",
+  "title": "C1",
+  "category": "C",
+  "rq_tags": ["RQ1"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "automation",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "c1_evening_rule",
+      "memory_type": "routine",
+      "scope": "room",
+      "subject": "客厅灯晚上7点自动开",
+      "predicate": "scheduled_action",
+      "object": "light.living_ceiling",
+      "entity_id": "light.living_ceiling",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "positive_hits": 8,
+      "natural_text": "这周客厅灯晚上7点自动开",
+      "valid_until": "2026-01-08T19:00:00+08:00"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "C1_01",
+      "type": "event",
+      "sim_time": "t0+3d 19:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "C1_02",
+      "type": "say",
+      "sim_time": "t0+3d 19:00",
+      "text": "执行晚上7点的客厅灯规则",
+      "oracle_input": {
+        "task_type": "automation",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "C1_03",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_ceiling",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "C1_04",
+      "type": "event",
+      "sim_time": "t0+9d 19:00",
+      "kind": "maintenance",
+      "payload": {}
+    },
+    {
+      "step_id": "C1_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c1_evening_rule"
+      },
+      "assert": {
+        "status": "expired"
+      }
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "scenario_id": "D3",
+  "title": "D3",
+  "category": "D",
+  "rq_tags": ["RQ1", "RQ2"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "d3_sensor_relation_old",
+      "memory_type": "layout_relation",
+      "scope": "entity",
+      "subject": "sensor.hall_motion",
+      "predicate": "located_in",
+      "object": "hall",
+      "entity_id": "sensor.hall_motion",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "玄关人体传感器位于玄关"
+    },
+    {
+      "memory_id": "d3_motion_routine",
+      "memory_type": "routine",
+      "scope": "entity",
+      "subject": "玄关人体传感器触发灯",
+      "predicate": "triggers",
+      "object": "light.living_ceiling",
+      "entity_id": "light.living_ceiling",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "玄关人体传感器触发客厅顶灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "D3_01",
+      "type": "event",
+      "event_id": "evt_sensor_moved",
+      "sim_time": "t0+7d 09:00",
+      "kind": "world_mutation",
+      "payload": {
+        "event_id": "evt_sensor_moved"
+      }
+    },
+    {
+      "step_id": "D3_02",
+      "type": "event",
+      "sim_time": "t0+7d 09:05",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "revise",
+            "old_memory_id": "d3_sensor_relation_old",
+            "new_record": {
+              "memory_id": "d3_sensor_relation_new",
+              "memory_type": "layout_relation",
+              "scope": "entity",
+              "subject": "sensor.hall_motion",
+              "predicate": "located_in",
+              "object": "living",
+              "entity_id": "sensor.hall_motion",
+              "source": "user_correction",
+              "half_life_days": 365,
+              "natural_text": "玄关人体传感器现在位于客厅"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "D3_03",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "d3_sensor_relation_old"
+      },
+      "assert": {
+        "status": "superseded"
+      }
+    },
+    {
+      "step_id": "D3_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "d3_sensor_relation_new"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "D3_05",
+      "type": "say",
+      "sim_time": "t0+7d 09:10",
+      "text": "根据玄关人体传感器触发灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "D3_06",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_ceiling",
+        "args": {}
+      }
+    }
+  ]
+}

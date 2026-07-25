@@ -1,0 +1,65 @@
+{
+  "scenario_id": "G3",
+  "title": "G3",
+  "category": "G",
+  "rq_tags": ["RQ1"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "g3_stale_color_temp_fact",
+      "memory_type": "capability",
+      "scope": "entity",
+      "subject": "客厅顶灯",
+      "predicate": "supports",
+      "object": "color_temp",
+      "entity_id": "light.living_ceiling",
+      "source": "user_explicit",
+      "half_life_days": 180,
+      "natural_text": "客厅顶灯支持调节色温"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "G3_01",
+      "type": "event",
+      "event_id": "evt_cap_changed",
+      "sim_time": "t0+6d 09:00",
+      "kind": "world_mutation",
+      "payload": {
+        "event_id": "evt_cap_changed"
+      }
+    },
+    {
+      "step_id": "G3_02",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g3_stale_color_temp_fact"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "G3_03",
+      "type": "say",
+      "sim_time": "t0+6d 09:10",
+      "text": "把客厅顶灯调成暖色",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "G3_04",
+      "type": "expect_clarify",
+      "assert": true
+    }
+  ]
+}

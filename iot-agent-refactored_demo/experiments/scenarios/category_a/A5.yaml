@@ -1,0 +1,133 @@
+{
+  "scenario_id": "A5",
+  "title": "A5",
+  "category": "A",
+  "rq_tags": ["RQ2", "RQ3"],
+  "planner_mode": "oracle",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [
+    {
+      "memory_id": "a5_alias_old",
+      "memory_type": "alias",
+      "scope": "entity",
+      "subject": "小书灯",
+      "predicate": "refers_to",
+      "object": "light.study_desk",
+      "entity_id": "light.study_desk",
+      "source": "user_explicit",
+      "half_life_days": 365,
+      "natural_text": "小书灯指书房台灯"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "A5_01",
+      "type": "say",
+      "sim_time": "t0 20:00",
+      "text": "开小书灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A5_02",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.study_desk",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "A5_03",
+      "type": "say",
+      "sim_time": "t0 20:05",
+      "text": "不对，不是这个灯，是书房顶灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [
+          {
+            "op": "patch",
+            "memory_id": "a5_alias_old",
+            "updates": {
+              "negative_hits": 1,
+              "status": "stale"
+            }
+          },
+          {
+            "op": "add_active",
+            "memory_id": "a5_alias_new",
+            "memory_type": "alias",
+            "scope": "entity",
+            "subject": "小书灯",
+            "predicate": "refers_to",
+            "object": "light.study_ceiling",
+            "entity_id": "light.study_ceiling",
+            "source": "user_correction",
+            "half_life_days": 365,
+            "natural_text": "更正后小书灯指书房顶灯"
+          }
+        ],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "A5_04",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a5_alias_old"
+      },
+      "assert": {
+        "status": "stale",
+        "negative_hits": 1
+      }
+    },
+    {
+      "step_id": "A5_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "a5_alias_new"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "A5_06",
+      "type": "say",
+      "sim_time": "t0+1d 20:00",
+      "text": "开小书灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "A5_07",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.study_ceiling",
+        "args": {}
+      }
+    }
+  ]
+}

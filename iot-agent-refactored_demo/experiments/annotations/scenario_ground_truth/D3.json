@@ -1,0 +1,37 @@
+{
+  "scenario_id": "D3",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_ceiling",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "d3_sensor_relation_old"
+      },
+      "assert": {
+        "status": "superseded"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "d3_sensor_relation_new"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_ceiling",
+    "args": {}
+  }
+}

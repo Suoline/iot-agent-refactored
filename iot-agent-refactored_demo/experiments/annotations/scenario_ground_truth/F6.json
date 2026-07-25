@@ -1,0 +1,37 @@
+{
+  "scenario_id": "F6",
+  "planner_mode": "oracle",
+  "task_type": "control",
+  "safety_relevant": false,
+  "expected_action": null,
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "f6_alias_merged_ok"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f6_alias_merged_bad"
+      },
+      "assert": {
+        "status": "deleted"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f6_alias_1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": null
+}

@@ -1,0 +1,37 @@
+{
+  "scenario_id": "H1",
+  "planner_mode": "oracle",
+  "task_type": "query",
+  "safety_relevant": false,
+  "expected_action": {
+    "service": "memory.answer",
+    "entity_id": "h1_ac_query_pref",
+    "args": {}
+  },
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [
+    {
+      "selector": {
+        "memory_id": "h1_ac_query_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "h1_ac_query_pref"
+      },
+      "assert": {
+        "status": "active"
+      }
+    }
+  ],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "memory.answer",
+    "entity_id": "h1_ac_query_pref",
+    "args": {}
+  }
+}
