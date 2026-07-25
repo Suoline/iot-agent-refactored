@@ -344,6 +344,142 @@ class MemoryServiceTest(unittest.TestCase):
         self.assertEqual(d2.negative_hits, 1)
         self.assertEqual(d3.negative_hits, 0)
 
+    def test_split_creates_lineage_and_edges(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_split.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "split_parent",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "客厅灯",
+                "predicate": "refers_to",
+                "object": "light.living_ceiling|light.living_ambient|light.living_floor",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "客厅灯泛指多盏灯",
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "split",
+                "old_memory_id": "split_parent",
+                "new_records": [
+                    {
+                        "memory_id": "split_child_a",
+                        "memory_type": "alias",
+                        "scope": "entity",
+                        "subject": "客厅顶灯",
+                        "predicate": "refers_to",
+                        "object": "light.living_ceiling",
+                        "entity_id": "light.living_ceiling",
+                        "source": "user_explicit",
+                        "half_life_days": 365,
+                        "natural_text": "客厅顶灯指客厅顶灯",
+                    },
+                    {
+                        "memory_id": "split_child_b",
+                        "memory_type": "alias",
+                        "scope": "entity",
+                        "subject": "客厅氛围灯",
+                        "predicate": "refers_to",
+                        "object": "light.living_ambient",
+                        "entity_id": "light.living_ambient",
+                        "source": "user_explicit",
+                        "half_life_days": 365,
+                        "natural_text": "客厅氛围灯指客厅氛围灯",
+                    },
+                ],
+            },
+            now,
+        )
+
+        parent = service.get("split_parent")
+        child_a = service.get("split_child_a")
+        child_b = service.get("split_child_b")
+        edges = service.list_edges()
+        self.assertEqual(parent.status, "superseded")
+        self.assertEqual(sorted(parent.supersedes), ["split_child_a", "split_child_b"])
+        self.assertEqual(child_a.derived_from_memory_ids, ["split_parent"])
+        self.assertEqual(child_b.derived_from_memory_ids, ["split_parent"])
+        self.assertIn("split_child_b", child_a.related_memory_ids)
+        self.assertIn("split_child_a", child_b.related_memory_ids)
+        relations = {(edge.source_id, edge.relation, edge.target_id) for edge in edges}
+        self.assertIn(("split_child_a", "specializes", "split_parent"), relations)
+        self.assertIn(("split_parent", "generalizes", "split_child_a"), relations)
+
+    def test_merge_preserves_coverage_and_evidence_union(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_merge.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "merge_a",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "小书灯",
+                "predicate": "refers_to",
+                "object": "light.study_desk",
+                "entity_id": "light.study_desk",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "小书灯指书房台灯",
+                "evidence_refs": [{"turn": "A"}],
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "merge_b",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "小书灯",
+                "predicate": "refers_to",
+                "object": "light.study_desk",
+                "entity_id": "light.study_desk",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "另一会话也说小书灯",
+                "evidence_refs": [{"turn": "B"}],
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "merge",
+                "source_ids": ["merge_a", "merge_b"],
+                "coverage_proof": {"status": "provided", "sources": ["merge_a", "merge_b"]},
+                "merged_record": {
+                    "memory_id": "merge_ok",
+                    "memory_type": "alias",
+                    "scope": "entity",
+                    "subject": "小书灯",
+                    "predicate": "refers_to",
+                    "object": "light.study_desk",
+                    "entity_id": "light.study_desk",
+                    "source": "user_explicit",
+                    "half_life_days": 365,
+                    "natural_text": "小书灯指书房台灯",
+                    "evidence_refs": [{"turn": "merged"}],
+                },
+            },
+            now,
+        )
+
+        merged = service.get("merge_ok")
+        self.assertEqual(sorted(merged.merged_from), ["merge_a", "merge_b"])
+        self.assertEqual(merged.coverage_proof["status"], "provided")
+        self.assertEqual(len(merged.evidence_refs), 3)
+
 
 class RunnerSmokeTest(unittest.TestCase):
     def test_batch_run_generates_metrics(self):

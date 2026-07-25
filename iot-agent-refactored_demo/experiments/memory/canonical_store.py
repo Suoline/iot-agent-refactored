@@ -97,6 +97,13 @@ class CanonicalStore:
                 (edge.edge_id, json.dumps(edge.model_dump(mode="json"), ensure_ascii=False)),
             )
 
+    def list_edges(self) -> list[MemoryEdge]:
+        with self._connect() as conn:
+            rows = conn.execute(
+                "SELECT payload_json FROM memory_edges ORDER BY edge_id"
+            ).fetchall()
+        return [MemoryEdge.model_validate(json.loads(row["payload_json"])) for row in rows]
+
     def get(self, memory_id: str) -> MemoryRecord | None:
         with self._connect() as conn:
             row = conn.execute(

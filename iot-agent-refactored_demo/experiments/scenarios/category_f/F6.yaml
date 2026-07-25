@@ -20,7 +20,8 @@
       "entity_id": "light.study_desk",
       "source": "user_explicit",
       "half_life_days": 365,
-      "natural_text": "小书灯指书房台灯"
+      "natural_text": "小书灯指书房台灯",
+      "evidence_refs": [{"turn": "session_a"}]
     },
     {
       "memory_id": "f6_alias_2",
@@ -32,7 +33,8 @@
       "entity_id": "light.study_desk",
       "source": "user_explicit",
       "half_life_days": 365,
-      "natural_text": "用户另一会话里也说小书灯指书房台灯"
+      "natural_text": "用户另一会话里也说小书灯指书房台灯",
+      "evidence_refs": [{"turn": "session_b"}]
     }
   ],
   "steps": [
@@ -59,7 +61,8 @@
               "entity_id": "light.study_desk",
               "source": "user_explicit",
               "half_life_days": 365,
-              "natural_text": "小书灯指书房台灯"
+              "natural_text": "小书灯指书房台灯",
+              "evidence_refs": [{"turn": "merged"}]
             }
           }
         ]
@@ -72,7 +75,13 @@
         "memory_id": "f6_alias_merged_ok"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "merged_from": ["f6_alias_1", "f6_alias_2"],
+        "coverage_proof": {
+          "status": "provided",
+          "sources": ["f6_alias_1", "f6_alias_2"]
+        },
+        "evidence_refs": [{"turn": "merged"}, {"turn": "session_a"}, {"turn": "session_b"}]
       }
     },
     {
@@ -123,6 +132,16 @@
       "type": "expect_memory",
       "selector": {
         "memory_id": "f6_alias_1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "step_id": "F6_07",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f6_alias_2"
       },
       "assert": {
         "status": "active"

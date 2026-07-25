@@ -41,6 +41,8 @@ def _apply_custom_event(world: HAOracle, service: MemoryService, step: dict, now
     kind = step.get("kind")
     payload = step.get("payload", {})
     if kind == "maintenance":
+        for op in payload.get("memory_ops", []):
+            service.apply_memory_op(op, now)
         started = time.perf_counter()
         result = service.maintenance(now)
         result["maintenance_latency_ms"] = (time.perf_counter() - started) * 1000

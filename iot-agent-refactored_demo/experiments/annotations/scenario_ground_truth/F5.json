@@ -16,7 +16,11 @@
         "memory_id": "f5_broad_living_light"
       },
       "assert": {
-        "status": "superseded"
+        "status": "superseded",
+        "supersedes": [
+          "f5_living_ambient_alias",
+          "f5_living_ceiling_alias"
+        ]
       }
     },
     {
@@ -24,7 +28,21 @@
         "memory_id": "f5_living_ceiling_alias"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "derived_from_memory_ids": [
+          "f5_broad_living_light"
+        ]
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f5_living_ambient_alias"
+      },
+      "assert": {
+        "status": "active",
+        "derived_from_memory_ids": [
+          "f5_broad_living_light"
+        ]
       }
     }
   ],

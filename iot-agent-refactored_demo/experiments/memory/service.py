@@ -4,6 +4,7 @@ from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+import uuid
 
 from .canonical_store import CanonicalStore
 from .confidence import TASK_THRESHOLDS, effective_confidence, memory_worth, source_confidence
@@ -11,6 +12,7 @@ from .expiration import is_usable_stale, refresh_status, stale_runtime_status
 from .schemas import (
     CandidateDevice,
     MatchedMemory,
+    MemoryEdge,
     MemoryRecord,
     SearchResultPackage,
     UsageEvent,
@@ -88,6 +90,13 @@ class MemoryService:
             merged.coverage_proof = op.get("coverage_proof")
             if merged.coverage_proof is None:
                 merged.needs_review = True
+            merged.evidence_refs = self._union_evidence_refs(records, merged.evidence_refs)
+            merged.related_memory_ids = sorted({
+                memory_id
+                for record in records
+                for memory_id in record.related_memory_ids
+                if memory_id not in merged.merged_from
+            })
             self.upsert(merged, event_type="merge")
             for record in records:
                 record.status = "superseded"
@@ -100,15 +109,27 @@ class MemoryService:
             if not self.config.get("use_split", True):
                 return []
             original = self.get(op["old_memory_id"])
+            child_ids = sorted(child["memory_id"] for child in op["new_records"])
             if original:
                 original.status = "superseded"
                 original.layer = "archived"
+                original.supersedes = child_ids
                 original.updated_at = now
                 self.upsert(original, event_type="split_source")
             created = []
             for child in op["new_records"]:
-                record = self._record_from_op(child, now, active=True)
+                child_payload = {
+                    **child,
+                    "derived_from_memory_ids": sorted(set(child.get("derived_from_memory_ids", []) + [op["old_memory_id"]])),
+                    "related_memory_ids": sorted(
+                        set(child.get("related_memory_ids", []) + [item for item in child_ids if item != child["memory_id"]])
+                    ),
+                }
+                record = self._record_from_op(child_payload, now, active=True)
                 self.upsert(record, event_type="split_child")
+                if original:
+                    self._create_edge(record.memory_id, "specializes", original.memory_id, now, source_memory_id=record.memory_id)
+                    self._create_edge(original.memory_id, "generalizes", record.memory_id, now, source_memory_id=original.memory_id)
                 created.append(record)
             return created
         if kind == "patch":
@@ -260,6 +281,9 @@ class MemoryService:
     def list_records(self, *, include_deleted: bool = False):
         return self.store.list(include_deleted=include_deleted)
 
+    def list_edges(self):
+        return self.store.list_edges()
+
     def _memory_graph(self) -> tuple[dict[str, MemoryRecord], dict[str, set[str]]]:
         records = self.store.list(include_deleted=True)
         by_id = {record.memory_id: record for record in records if record.status != "deleted"}
@@ -284,6 +308,38 @@ class MemoryService:
                 connect(record.memory_id, memory_id)
             connect(record.memory_id, record.superseded_by)
         return by_id, graph
+
+    def _create_edge(
+        self,
+        source_id: str,
+        relation: str,
+        target_id: str,
+        now: datetime,
+        *,
+        source_memory_id: str | None = None,
+    ):
+        edge = MemoryEdge(
+            edge_id=f"edge_{uuid.uuid4().hex}",
+            source_id=source_id,
+            relation=relation,
+            target_id=target_id,
+            confidence=1.0,
+            valid_from=now,
+            source_memory_id=source_memory_id or source_id,
+        )
+        self.store.upsert_edge(edge)
+        return edge
+
+    def _union_evidence_refs(self, records: list[MemoryRecord], current: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for payload in [*current, *[ref for record in records for ref in record.evidence_refs]]:
+            key = str(payload)
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append(payload)
+        return rows
 
     def _propagate_ripple(self, root_id: str, now: datetime):
         if not self.config.get("use_ripple", True):

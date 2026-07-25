@@ -12,7 +12,29 @@
         "memory_id": "f6_alias_merged_ok"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "merged_from": [
+          "f6_alias_1",
+          "f6_alias_2"
+        ],
+        "coverage_proof": {
+          "status": "provided",
+          "sources": [
+            "f6_alias_1",
+            "f6_alias_2"
+          ]
+        },
+        "evidence_refs": [
+          {
+            "turn": "merged"
+          },
+          {
+            "turn": "session_a"
+          },
+          {
+            "turn": "session_b"
+          }
+        ]
       }
     },
     {
@@ -26,6 +48,14 @@
     {
       "selector": {
         "memory_id": "f6_alias_1"
+      },
+      "assert": {
+        "status": "active"
+      }
+    },
+    {
+      "selector": {
+        "memory_id": "f6_alias_2"
       },
       "assert": {
         "status": "active"
