@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -13,11 +14,19 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _generated_at_or_mtime(manifest: Path, data: dict) -> str:
+    generated_at = data.get("generated_at")
+    if generated_at:
+        return generated_at
+    return datetime.fromtimestamp(manifest.stat().st_mtime, tz=timezone.utc).isoformat()
+
+
 def main():
     reports_root = REPO_ROOT / "experiments" / "results" / "reports"
     rows = []
     for manifest in sorted(reports_root.rglob("manifest.json")):
         data = _load_json(manifest)
+        failed_task_ids = data.get("failed_task_ids", []) or []
         rows.append(
             {
                 "manifest_path": str(manifest.relative_to(REPO_ROOT)),
@@ -27,6 +36,9 @@ def main():
                 "world_version": data.get("world_version"),
                 "system_policy_version": data.get("system_policy_version"),
                 "scenario_count": data.get("scenario_count"),
+                "generated_at": _generated_at_or_mtime(manifest, data),
+                "failed_task_count": len(failed_task_ids),
+                "failed_task_ids": failed_task_ids,
                 "metrics_file": data.get("metrics_file"),
                 "per_scenario_file": data.get("per_scenario_file"),
             }

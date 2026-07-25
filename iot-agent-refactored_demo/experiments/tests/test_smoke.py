@@ -1080,6 +1080,10 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertTrue(index_path.exists())
         data = json.loads(index_path.read_text(encoding="utf-8"))
         self.assertTrue(isinstance(data, list))
+        self.assertTrue(data)
+        self.assertTrue(data[0].get("generated_at"))
+        self.assertIn("failed_task_count", data[0])
+        self.assertIn("failed_task_ids", data[0])
 
     def test_generate_significance_outputs(self):
         subprocess.run(
