@@ -22,6 +22,7 @@
         "entity_id": "light.living_ambient",
         "source": "user_explicit",
         "positive_hits": 8,
+        "confidence": 0.9,
         "layer": "archived"
       }
     }

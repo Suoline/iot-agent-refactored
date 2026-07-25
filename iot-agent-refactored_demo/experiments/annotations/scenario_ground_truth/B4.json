@@ -13,6 +13,9 @@
       },
       "assert": {
         "status": "expired",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "climate.bedroom_ac",
         "layer": "archived",
         "source": "user_explicit",
         "confidence": 0.9
