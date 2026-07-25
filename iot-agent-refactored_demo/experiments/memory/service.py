@@ -614,10 +614,18 @@ class MemoryService:
         text = record.natural_text.strip()
         fuzzy = any(token in text for token in ["那个", "这个", "那盏", "这盏"]) or len(text) <= 6
         if fuzzy and self.config.get("use_resampling", True):
-            record.natural_text = (
+            original_text = record.natural_text
+            resampled_text = (
                 record.structured_payload.get("resampled_text")
                 or f"{record.subject} {record.predicate} {record.object}"
             )
+            record.natural_text = resampled_text
+            record.structured_payload = {
+                **record.structured_payload,
+                "resampled_from": original_text,
+                "resampled_at": now.isoformat(),
+                "resampled_text": resampled_text,
+            }
             record.resampled = True
             record.last_accessed_at = now
             record.updated_at = now

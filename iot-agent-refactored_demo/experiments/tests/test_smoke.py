@@ -81,6 +81,8 @@ class MemoryServiceTest(unittest.TestCase):
         fuzzy = service.get("mem_fuzzy_alias")
         self.assertTrue(fuzzy.resampled)
         self.assertEqual(fuzzy.status, "active")
+        self.assertEqual(fuzzy.structured_payload["resampled_from"], "那个灯")
+        self.assertIn("resampled_at", fuzzy.structured_payload)
 
         service.apply_memory_op(
             {
