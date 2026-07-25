@@ -12,7 +12,15 @@
         "memory_id": "g4_low_conf_candidate"
       },
       "assert": {
-        "status": "candidate"
+        "status": "candidate",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_ceiling",
+        "object": "light.study_ceiling",
+        "source": "llm_inference",
+        "confidence": 0.45,
+        "source_authority": 0.45,
+        "layer": "active"
       }
     },
     {
@@ -20,7 +28,15 @@
         "memory_id": "g4_low_conf_candidate"
       },
       "assert": {
-        "status": "candidate"
+        "status": "candidate",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_ceiling",
+        "object": "light.study_ceiling",
+        "source": "llm_inference",
+        "confidence": 0.45,
+        "source_authority": 0.45,
+        "layer": "active"
       }
     }
   ],

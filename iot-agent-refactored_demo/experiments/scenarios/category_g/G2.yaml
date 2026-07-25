@@ -142,7 +142,13 @@
         "memory_id": "g2_target"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_desk",
+        "object": "light.study_desk",
+        "source": "user_explicit",
+        "layer": "active"
       }
     },
     {
@@ -161,7 +167,13 @@
         "memory_id": "g2_noise_2"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.living_floor",
+        "object": "light.living_floor",
+        "source": "user_explicit",
+        "layer": "active"
       }
     }
   ]

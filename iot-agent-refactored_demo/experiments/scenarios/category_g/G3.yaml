@@ -41,7 +41,13 @@
         "memory_id": "g3_stale_color_temp_fact"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "capability",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "object": "color_temp",
+        "source": "user_explicit",
+        "layer": "active"
       }
     },
     {
