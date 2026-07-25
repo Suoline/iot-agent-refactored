@@ -79,7 +79,13 @@
         "memory_id": "d3_sensor_relation_old"
       },
       "assert": {
-        "status": "superseded"
+        "status": "superseded",
+        "memory_type": "layout_relation",
+        "scope": "entity",
+        "entity_id": "sensor.hall_motion",
+        "object": "hall",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     },
     {
@@ -89,7 +95,13 @@
         "memory_id": "d3_sensor_relation_new"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "layout_relation",
+        "scope": "entity",
+        "entity_id": "sensor.hall_motion",
+        "object": "living",
+        "source": "user_correction",
+        "layer": "active"
       }
     },
     {

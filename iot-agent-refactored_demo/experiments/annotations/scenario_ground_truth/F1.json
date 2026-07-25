@@ -12,7 +12,16 @@
         "memory_id": "f1_living_light_broad"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.living_floor",
+        "object": "light.living_floor",
+        "source": "user_explicit",
+        "layer": "active",
+        "related_memory_ids": [
+          "f1_living_ceiling_fact"
+        ]
       }
     },
     {
@@ -20,7 +29,16 @@
         "memory_id": "f1_living_ceiling_fact"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "object": "light.living_ceiling",
+        "source": "user_explicit",
+        "layer": "active",
+        "related_memory_ids": [
+          "f1_living_ceiling_fact"
+        ]
       }
     },
     {
@@ -28,6 +46,13 @@
         "memory_id": "f1_living_light_broad"
       },
       "assert": {
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.living_floor",
+        "object": "light.living_floor",
+        "source": "user_explicit",
+        "layer": "active",
         "related_memory_ids": [
           "f1_living_ceiling_fact"
         ]

@@ -12,7 +12,13 @@
         "memory_id": "f2_alias_1"
       },
       "assert": {
-        "status": "conflicted"
+        "status": "conflicted",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_desk",
+        "object": "light.study_desk",
+        "source": "user_explicit",
+        "layer": "active"
       }
     },
     {
@@ -20,7 +26,13 @@
         "memory_id": "f2_alias_2"
       },
       "assert": {
-        "status": "conflicted"
+        "status": "conflicted",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_ceiling",
+        "object": "light.study_ceiling",
+        "source": "user_explicit",
+        "layer": "active"
       }
     }
   ],

@@ -67,8 +67,14 @@
         "memory_id": "f4_lock_episode"
       },
       "assert": {
+        "status": "active",
+        "memory_type": "episode",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "user_explicit",
         "positive_hits": 1,
-        "ripple_penalty": 0.0
+        "ripple_penalty": 0.0,
+        "layer": "active"
       }
     },
     {
@@ -78,8 +84,14 @@
         "memory_id": "f4_hall_location"
       },
       "assert": {
+        "status": "active",
+        "memory_type": "location",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "user_explicit",
         "positive_hits": 0,
-        "ripple_penalty": 0.0
+        "ripple_penalty": 0.0,
+        "layer": "active"
       }
     },
     {
@@ -89,7 +101,12 @@
         "memory_id": "f4_hall_location"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "location",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "user_explicit",
+        "layer": "active"
       }
     }
   ]
