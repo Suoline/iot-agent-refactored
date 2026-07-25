@@ -47,7 +47,11 @@
       },
       "assert": {
         "status": "active",
-        "object": "light.study_desk"
+        "object": "light.study_desk",
+        "entity_id": "light.study_desk",
+        "source": "user_explicit",
+        "confidence": 0.9,
+        "layer": "active"
       }
     },
     {

@@ -49,7 +49,10 @@
         "memory_id": "b4_sleep_temp_pref"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "layer": "archived",
+        "source": "user_explicit",
+        "confidence": 0.9
       }
     },
     {

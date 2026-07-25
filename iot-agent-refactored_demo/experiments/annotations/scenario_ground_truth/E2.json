@@ -12,7 +12,11 @@
         "memory_id": "e2_sleep_mode"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "layer": "active",
+        "memory_type": "routine",
+        "scope": "routine",
+        "source": "user_explicit"
       }
     }
   ],
