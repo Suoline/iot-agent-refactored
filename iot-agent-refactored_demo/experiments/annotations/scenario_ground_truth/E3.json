@@ -12,7 +12,12 @@
         "memory_id": "e3_sleep_mode"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "routine",
+        "scope": "routine",
+        "source": "user_explicit",
+        "entity_id": "routine.sleep_mode",
+        "layer": "active"
       }
     },
     {
@@ -20,7 +25,12 @@
         "memory_id": "e3_lock_reflection"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "reflection",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "execution_verification",
+        "layer": "active"
       }
     }
   ],

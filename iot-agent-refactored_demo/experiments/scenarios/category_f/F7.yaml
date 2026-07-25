@@ -43,7 +43,11 @@
         "memory_id": "f7_gym_pref"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "preference",
+        "scope": "user",
+        "source": "user_explicit",
+        "layer": "active"
       }
     },
     {
@@ -70,7 +74,11 @@
         "memory_id": "f7_gym_pref"
       },
       "assert": {
-        "status": "deleted"
+        "status": "deleted",
+        "memory_type": "preference",
+        "scope": "user",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     },
     {
