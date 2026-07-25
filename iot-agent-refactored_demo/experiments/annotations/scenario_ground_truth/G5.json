@@ -11,12 +11,14 @@
     {
       "selector": {
         "memory_type": "state",
+        "scope": "entity",
         "entity_id": "light.living_ceiling"
       }
     },
     {
       "selector": {
         "memory_type": "state",
+        "scope": "entity",
         "entity_id": "light.living_ceiling"
       }
     }

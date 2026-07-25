@@ -12,7 +12,12 @@
         "memory_id": "d2_living_warm_routine"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "memory_type": "routine",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     }
   ],

@@ -28,6 +28,7 @@
       "type": "expect_absent_memory",
       "selector": {
         "memory_type": "state",
+        "scope": "entity",
         "entity_id": "light.living_ceiling"
       }
     },
@@ -53,6 +54,7 @@
       "type": "expect_absent_memory",
       "selector": {
         "memory_type": "state",
+        "scope": "entity",
         "entity_id": "light.living_ceiling"
       }
     }

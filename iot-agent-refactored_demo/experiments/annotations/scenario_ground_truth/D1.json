@@ -12,7 +12,12 @@
         "memory_id": "d1_heater_alias"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "switch.study_heater",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     },
     {
@@ -20,7 +25,12 @@
         "memory_id": "d1_heater_location"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "memory_type": "location",
+        "scope": "entity",
+        "entity_id": "switch.study_heater",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     }
   ],

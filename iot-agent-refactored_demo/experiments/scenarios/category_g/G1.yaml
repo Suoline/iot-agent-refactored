@@ -38,7 +38,9 @@
       "type": "expect_absent_memory",
       "selector": {
         "memory_type": "alias",
-        "subject": "卧室灯"
+        "subject": "卧室灯",
+        "scope": "entity",
+        "entity_id": "light.bedroom_ceiling"
       }
     }
   ]
