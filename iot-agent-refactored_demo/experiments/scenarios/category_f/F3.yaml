@@ -18,6 +18,7 @@
       "predicate": "uses",
       "object": "lock.front_door",
       "entity_id": "lock.front_door",
+      "related_memory_ids": ["f3_hall_location"],
       "source": "user_explicit",
       "half_life_days": 30,
       "natural_text": "门锁任务执行 episode"
@@ -30,6 +31,7 @@
       "predicate": "located_in",
       "object": "玄关",
       "entity_id": "lock.front_door",
+      "related_memory_ids": ["f3_layout_relation"],
       "source": "user_explicit",
       "half_life_days": 365,
       "natural_text": "大门门锁在玄关"
@@ -41,9 +43,22 @@
       "subject": "玄关布局",
       "predicate": "contains",
       "object": "lock.front_door",
+      "related_memory_ids": ["f3_far_decoy"],
       "source": "user_explicit",
       "half_life_days": 365,
       "natural_text": "玄关布局包含门锁"
+    },
+    {
+      "memory_id": "f3_far_decoy",
+      "memory_type": "episode",
+      "scope": "entity",
+      "subject": "远端诱饵",
+      "predicate": "related_to",
+      "object": "lock.front_door",
+      "entity_id": "lock.front_door",
+      "source": "user_explicit",
+      "half_life_days": 30,
+      "natural_text": "远端诱饵节点"
     }
   ],
   "steps": [
@@ -55,25 +70,12 @@
       "payload": {
         "memory_ops": [
           {
-            "op": "patch",
+            "op": "mark_outcome",
             "memory_id": "f3_lock_episode",
-            "updates": {
-              "negative_hits": 1
-            }
-          },
-          {
-            "op": "patch",
-            "memory_id": "f3_hall_location",
-            "updates": {
-              "negative_hits": 1
-            }
-          },
-          {
-            "op": "patch",
-            "memory_id": "f3_layout_relation",
-            "updates": {
-              "negative_hits": 1
-            }
+            "used_stage": "verification",
+            "contribution": "misleading",
+            "outcome": "failure",
+            "note": "lock episode failed"
           }
         ]
       }
@@ -85,7 +87,7 @@
         "memory_id": "f3_lock_episode"
       },
       "assert": {
-        "negative_hits": 1
+        "ripple_penalty": 1.0
       }
     },
     {
@@ -95,7 +97,7 @@
         "memory_id": "f3_hall_location"
       },
       "assert": {
-        "negative_hits": 1
+        "ripple_penalty": 0.3
       }
     },
     {
@@ -105,7 +107,17 @@
         "memory_id": "f3_layout_relation"
       },
       "assert": {
-        "negative_hits": 1
+        "ripple_penalty": 0.09
+      }
+    },
+    {
+      "step_id": "F3_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "f3_far_decoy"
+      },
+      "assert": {
+        "ripple_penalty": 0.0
       }
     }
   ]

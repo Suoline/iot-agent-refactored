@@ -12,7 +12,8 @@
         "memory_id": "f4_lock_episode"
       },
       "assert": {
-        "positive_hits": 1
+        "positive_hits": 1,
+        "ripple_penalty": 0.0
       }
     },
     {
@@ -20,7 +21,8 @@
         "memory_id": "f4_hall_location"
       },
       "assert": {
-        "positive_hits": 0
+        "positive_hits": 0,
+        "ripple_penalty": 0.0
       }
     },
     {

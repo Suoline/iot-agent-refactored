@@ -246,6 +246,104 @@ class MemoryServiceTest(unittest.TestCase):
         self.assertEqual(record.layer, "active")
         self.assertEqual(record.positive_hits, 1)
 
+    def test_negative_ripple_propagation_respects_distance(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_ripple.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "ripple_root",
+                "memory_type": "episode",
+                "scope": "entity",
+                "subject": "门锁任务",
+                "predicate": "uses",
+                "object": "lock.front_door",
+                "entity_id": "lock.front_door",
+                "source": "user_explicit",
+                "half_life_days": 30,
+                "natural_text": "门锁任务执行 episode",
+                "related_memory_ids": ["ripple_d1"],
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "ripple_d1",
+                "memory_type": "location",
+                "scope": "entity",
+                "subject": "大门门锁",
+                "predicate": "located_in",
+                "object": "玄关",
+                "entity_id": "lock.front_door",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "大门门锁在玄关",
+                "related_memory_ids": ["ripple_d2"],
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "ripple_d2",
+                "memory_type": "layout_relation",
+                "scope": "room",
+                "subject": "玄关布局",
+                "predicate": "contains",
+                "object": "lock.front_door",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "玄关布局包含门锁",
+                "related_memory_ids": ["ripple_d3"],
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "ripple_d3",
+                "memory_type": "episode",
+                "scope": "entity",
+                "subject": "门锁旁路节点",
+                "predicate": "related_to",
+                "object": "lock.front_door",
+                "entity_id": "lock.front_door",
+                "source": "user_explicit",
+                "half_life_days": 30,
+                "natural_text": "门锁旁路节点",
+            },
+            now,
+        )
+
+        service.apply_memory_op(
+            {
+                "op": "mark_outcome",
+                "memory_id": "ripple_root",
+                "used_stage": "verification",
+                "contribution": "misleading",
+                "outcome": "failure",
+                "note": "lock episode failed",
+            },
+            now,
+        )
+
+        root = service.get("ripple_root")
+        d1 = service.get("ripple_d1")
+        d2 = service.get("ripple_d2")
+        d3 = service.get("ripple_d3")
+        self.assertEqual(root.ripple_penalty, 1.0)
+        self.assertEqual(d1.ripple_penalty, 0.3)
+        self.assertEqual(d2.ripple_penalty, 0.09)
+        self.assertEqual(d3.ripple_penalty, 0.0)
+        self.assertEqual(root.negative_hits, 1)
+        self.assertEqual(d1.negative_hits, 1)
+        self.assertEqual(d2.negative_hits, 1)
+        self.assertEqual(d3.negative_hits, 0)
+
 
 class RunnerSmokeTest(unittest.TestCase):
     def test_batch_run_generates_metrics(self):

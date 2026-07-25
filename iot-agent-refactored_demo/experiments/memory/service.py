@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -50,6 +51,18 @@ class MemoryService:
                 self.upsert(record, event_type="delete")
                 self.store.delete_index_record(record.memory_id)
             return record
+        if kind == "mark_outcome":
+            event = UsageEvent(
+                task_id=op.get("task_id", op["memory_id"]),
+                memory_id=op["memory_id"],
+                used_stage=op["used_stage"],
+                contribution=op["contribution"],
+                outcome=op["outcome"],
+                note=op.get("note", ""),
+                timestamp=now,
+            )
+            self.mark_outcome(event)
+            return self.get(op["memory_id"])
         if kind in {"revise", "invalidate"}:
             old = self.get(op["old_memory_id"])
             if old:
@@ -247,6 +260,67 @@ class MemoryService:
     def list_records(self, *, include_deleted: bool = False):
         return self.store.list(include_deleted=include_deleted)
 
+    def _memory_graph(self) -> tuple[dict[str, MemoryRecord], dict[str, set[str]]]:
+        records = self.store.list(include_deleted=True)
+        by_id = {record.memory_id: record for record in records if record.status != "deleted"}
+        graph: dict[str, set[str]] = {memory_id: set() for memory_id in by_id}
+
+        def connect(left: str | None, right: str | None):
+            if not left or not right or left == right:
+                return
+            if left not in by_id or right not in by_id:
+                return
+            graph.setdefault(left, set()).add(right)
+            graph.setdefault(right, set()).add(left)
+
+        for record in by_id.values():
+            for memory_id in (
+                list(record.related_memory_ids)
+                + list(record.depends_on_memory_ids)
+                + list(record.derived_from_memory_ids)
+                + list(record.supersedes)
+                + list(record.conflicts_with)
+            ):
+                connect(record.memory_id, memory_id)
+            connect(record.memory_id, record.superseded_by)
+        return by_id, graph
+
+    def _propagate_ripple(self, root_id: str, now: datetime):
+        if not self.config.get("use_ripple", True):
+            return []
+        by_id, graph = self._memory_graph()
+        if root_id not in by_id:
+            return []
+        alpha_neg = float(self.config.get("alpha_neg", 0.20))
+        affected: list[str] = []
+        visited = {root_id}
+        queue = deque([(root_id, 0)])
+        while queue:
+            current_id, distance = queue.popleft()
+            if distance >= 2:
+                continue
+            for neighbor_id in sorted(graph.get(current_id, set())):
+                if neighbor_id in visited:
+                    continue
+                visited.add(neighbor_id)
+                next_distance = distance + 1
+                if next_distance > 2:
+                    continue
+                penalty = 0.3 ** next_distance
+                neighbor = by_id.get(neighbor_id)
+                if not neighbor:
+                    continue
+                neighbor.ripple_penalty = round(neighbor.ripple_penalty + penalty, 6)
+                neighbor.negative_hits += 1
+                neighbor.confidence = max(0.01, neighbor.confidence - alpha_neg * penalty)
+                if neighbor.status == "active" and neighbor.confidence < 0.45:
+                    neighbor.status = "stale"
+                neighbor.updated_at = now
+                self.upsert(neighbor, event_type=f"ripple_{next_distance}")
+                affected.append(neighbor.memory_id)
+                queue.append((neighbor_id, next_distance))
+        return affected
+
     def _retrieval_score(
         self,
         *,
@@ -300,10 +374,13 @@ class MemoryService:
             record.negative_hits += 1
             alpha_neg = float(self.config.get("alpha_neg", 0.20))
             record.confidence = max(0.01, record.confidence - alpha_neg)
+            record.ripple_penalty = round(record.ripple_penalty + 1.0, 6)
             if record.status == "active":
                 record.status = "stale"
         record.updated_at = event.timestamp
         self.upsert(record, event_type="usage_outcome")
+        if event.contribution == "misleading" and event.outcome == "failure":
+            self._propagate_ripple(record.memory_id, event.timestamp)
 
     def maintenance(self, now: datetime):
         changed = []
@@ -491,10 +568,13 @@ class MemoryService:
             device_id=payload.get("device_id"),
             entity_id=payload.get("entity_id", payload.get("object")),
             room_id=payload.get("room_id"),
+            user_id=payload.get("user_id"),
             memory_type=memory_type,
             subject=payload["subject"],
             predicate=payload.get("predicate", "refers_to"),
             object=payload["object"],
+            condition=payload.get("condition"),
+            action=payload.get("action"),
             natural_text=payload.get(
                 "natural_text",
                 f"{payload['subject']} {payload.get('predicate', 'refers_to')} {payload['object']}",
@@ -502,19 +582,36 @@ class MemoryService:
             structured_payload=payload.get("structured_payload", {}),
             source=payload.get("source", "user_explicit"),
             evidence_refs=payload.get("evidence_refs", []),
+            source_turn_id=payload.get("source_turn_id"),
+            source_trace_id=payload.get("source_trace_id"),
             confidence=payload.get("confidence", source_confidence(payload.get("source", "user_explicit"))),
             source_authority=payload.get("source_authority", source_confidence(payload.get("source", "user_explicit"))),
             importance=payload.get("importance", 0.5),
             positive_hits=payload.get("positive_hits", 0),
             negative_hits=payload.get("negative_hits", 0),
+            ripple_penalty=payload.get("ripple_penalty", 0.0),
             created_at=created_at,
             updated_at=updated_at,
+            last_accessed_at=payload.get("last_accessed_at"),
+            observed_at=payload.get("observed_at"),
             valid_from=valid_from,
             valid_until=valid_until,
             expires_at=expires_at,
             half_life_days=payload.get("half_life_days", 180),
             status="active" if active else "candidate",
+            layer=payload.get("layer", "active" if active else "active"),
+            supersedes=payload.get("supersedes", []),
+            superseded_by=payload.get("superseded_by"),
+            conflicts_with=payload.get("conflicts_with", []),
+            merged_from=payload.get("merged_from", []),
+            coverage_proof=payload.get("coverage_proof"),
+            related_memory_ids=payload.get("related_memory_ids", []),
+            depends_on_memory_ids=payload.get("depends_on_memory_ids", []),
+            derived_from_memory_ids=payload.get("derived_from_memory_ids", []),
+            needs_review=payload.get("needs_review", False),
             access_count=payload.get("access_count", 0),
+            update_count=payload.get("update_count", 0),
+            last_used_task_id=payload.get("last_used_task_id"),
             resampled=payload.get("resampled", False),
             sensitive=payload.get("sensitive", False),
         )

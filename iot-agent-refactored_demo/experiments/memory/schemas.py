@@ -54,6 +54,7 @@ class MemoryRecord(BaseModel):
     volatility: str = "medium"
     positive_hits: int = 0
     negative_hits: int = 0
+    ripple_penalty: float = 0.0
     created_at: datetime
     updated_at: datetime
     last_accessed_at: Optional[datetime] = None

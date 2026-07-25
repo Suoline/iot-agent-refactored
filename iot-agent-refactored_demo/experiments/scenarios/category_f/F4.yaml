@@ -29,6 +29,7 @@
       "subject": "大门门锁",
       "predicate": "located_in",
       "object": "玄关",
+      "related_memory_ids": ["f4_lock_episode"],
       "entity_id": "lock.front_door",
       "source": "user_explicit",
       "half_life_days": 365,
@@ -44,11 +45,12 @@
       "payload": {
         "memory_ops": [
           {
-            "op": "patch",
+            "op": "mark_outcome",
             "memory_id": "f4_lock_episode",
-            "updates": {
-              "positive_hits": 1
-            }
+            "used_stage": "verification",
+            "contribution": "helpful",
+            "outcome": "success",
+            "note": "lock episode succeeded"
           }
         ]
       }
@@ -65,7 +67,8 @@
         "memory_id": "f4_lock_episode"
       },
       "assert": {
-        "positive_hits": 1
+        "positive_hits": 1,
+        "ripple_penalty": 0.0
       }
     },
     {
@@ -75,7 +78,8 @@
         "memory_id": "f4_hall_location"
       },
       "assert": {
-        "positive_hits": 0
+        "positive_hits": 0,
+        "ripple_penalty": 0.0
       }
     },
     {
