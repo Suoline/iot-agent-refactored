@@ -79,6 +79,46 @@
       "step_id": "D2_05",
       "type": "expect_clarify",
       "assert": true
+    },
+    {
+      "step_id": "D2_06",
+      "type": "say",
+      "sim_time": "t0+6d 09:15",
+      "text": "那就只开客厅顶灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "D2_07",
+      "type": "expect_action",
+      "assert": {
+        "service": "light.turn_on",
+        "entity_id": "light.living_ceiling",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "D2_08",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "d2_living_warm_routine"
+      },
+      "assert": {
+        "status": "expired",
+        "memory_type": "routine",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "source": "user_explicit",
+        "layer": "archived"
+      }
     }
   ]
 }

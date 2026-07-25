@@ -3,7 +3,11 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
-  "expected_action": null,
+  "expected_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_ceiling",
+    "args": {}
+  },
   "expected_clarify": true,
   "expected_no_action": false,
   "expected_memory": [
@@ -19,8 +23,25 @@
         "source": "user_explicit",
         "layer": "archived"
       }
+    },
+    {
+      "selector": {
+        "memory_id": "d2_living_warm_routine"
+      },
+      "assert": {
+        "status": "expired",
+        "memory_type": "routine",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "source": "user_explicit",
+        "layer": "archived"
+      }
     }
   ],
   "expected_absent_memory": [],
-  "preferred_action": null
+  "preferred_action": {
+    "service": "light.turn_on",
+    "entity_id": "light.living_ceiling",
+    "args": {}
+  }
 }

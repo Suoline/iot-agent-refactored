@@ -877,6 +877,16 @@ class RunnerSmokeTest(unittest.TestCase):
         result = run_batch(scenarios, seed=1001, results_root=Path("experiments/results"), run_id="test_d2_g3")
         self.assertEqual(result["metrics"]["TSR"], 1.0)
 
+    def test_capability_routine_fallback_thin_specs(self):
+        scenario = Path("experiments/scenarios/category_d/D2.yaml")
+        result = run_batch(
+            [scenario],
+            seed=1001,
+            results_root=Path("experiments/results"),
+            run_id="test_capability_routine_fallback_thin_specs",
+        )
+        self.assertEqual(result["metrics"]["TSR"], 1.0)
+
     def test_agent_safety_and_high_value_preference(self):
         scenarios = [
             Path("experiments/scenarios/category_b/B6.yaml"),
