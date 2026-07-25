@@ -2,7 +2,7 @@
   "scenario_id": "A1",
   "title": "A1",
   "category": "A",
-  "rq_tags": [],
+  "rq_tags": ["RQ3"],
   "planner_mode": "oracle",
   "world_version": "wm-v1",
   "system_policy_version": "sp-v1",

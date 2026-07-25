@@ -1,5 +1,10 @@
 {
   "scenario_id": "H2",
+  "title": "H2",
+  "category": "H",
+  "rq_tags": [
+    "RQ3"
+  ],
   "planner_mode": "oracle",
   "task_type": "query",
   "safety_relevant": false,

@@ -23,7 +23,6 @@ def main():
     _run("experiments/scripts/generate_statistics.py")
     _run("experiments/scripts/generate_significance.py")
     _run("experiments/scripts/generate_run_index.py")
-    _run("experiments/scripts/generate_run_index.py")
 
 
 if __name__ == "__main__":

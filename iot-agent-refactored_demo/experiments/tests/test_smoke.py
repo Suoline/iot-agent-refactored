@@ -1018,6 +1018,10 @@ class RunnerSmokeTest(unittest.TestCase):
         ia_files = sorted((root / "annotations" / "inter_annotator").glob("*.json"))
         self.assertEqual(len(gt_files), 36)
         self.assertEqual(len(ia_files), 36)
+        a1_payload = json.loads((root / "annotations" / "scenario_ground_truth" / "A1.json").read_text(encoding="utf-8"))
+        self.assertEqual(a1_payload["title"], "A1")
+        self.assertEqual(a1_payload["category"], "A")
+        self.assertEqual(a1_payload["rq_tags"], ["RQ3"])
 
     def test_configured_experiments_script_multi_seed_outputs(self):
         env = dict(os.environ)
@@ -1156,7 +1160,6 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertTrue(Path("docs/实验结果摘要.md").exists())
         self.assertTrue(Path("experiments/results/reports/dev/statistics_summary.json").exists())
         self.assertTrue(Path("experiments/results/reports/dev/significance_summary.json").exists())
-        self.assertTrue(Path("experiments/results/reports/dev/run_index.json").exists())
         self.assertTrue(Path("experiments/results/reports/dev/run_index.json").exists())
 
 

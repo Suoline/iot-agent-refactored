@@ -1,5 +1,10 @@
 {
   "scenario_id": "C1",
+  "title": "C1",
+  "category": "C",
+  "rq_tags": [
+    "RQ1"
+  ],
   "planner_mode": "oracle",
   "task_type": "automation",
   "safety_relevant": false,

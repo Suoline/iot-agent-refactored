@@ -1,5 +1,10 @@
 {
   "scenario_id": "D2",
+  "title": "D2",
+  "category": "D",
+  "rq_tags": [
+    "RQ2"
+  ],
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,

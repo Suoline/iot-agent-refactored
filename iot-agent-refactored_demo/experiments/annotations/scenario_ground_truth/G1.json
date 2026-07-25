@@ -1,5 +1,10 @@
 {
   "scenario_id": "G1",
+  "title": "G1",
+  "category": "G",
+  "rq_tags": [
+    "RQ5"
+  ],
   "planner_mode": "agent",
   "task_type": "control",
   "safety_relevant": false,

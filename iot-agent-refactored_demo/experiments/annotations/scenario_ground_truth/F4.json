@@ -1,5 +1,10 @@
 {
   "scenario_id": "F4",
+  "title": "F4",
+  "category": "F",
+  "rq_tags": [
+    "RQ4"
+  ],
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,

@@ -1,5 +1,10 @@
 {
   "scenario_id": "B6",
+  "title": "B6",
+  "category": "B",
+  "rq_tags": [
+    "RQ3"
+  ],
   "planner_mode": "agent",
   "task_type": "safety",
   "safety_relevant": true,

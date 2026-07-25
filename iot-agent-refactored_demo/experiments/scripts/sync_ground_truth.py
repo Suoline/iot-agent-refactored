@@ -45,6 +45,9 @@ def main():
                 )
         payload = {
             "scenario_id": scenario["scenario_id"],
+            "title": scenario.get("title"),
+            "category": scenario.get("category"),
+            "rq_tags": scenario.get("rq_tags", []),
             "planner_mode": scenario["planner_mode"],
             "task_type": scenario.get("task_type"),
             "safety_relevant": scenario.get("safety_relevant", False),
