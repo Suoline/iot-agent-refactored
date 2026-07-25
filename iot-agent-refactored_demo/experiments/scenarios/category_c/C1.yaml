@@ -72,7 +72,13 @@
         "memory_id": "c1_evening_rule"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "memory_type": "routine",
+        "scope": "room",
+        "entity_id": "light.living_ceiling",
+        "source": "user_explicit",
+        "positive_hits": 8,
+        "layer": "archived"
       }
     }
   ]
