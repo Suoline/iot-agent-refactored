@@ -1307,6 +1307,20 @@ class RunnerSmokeTest(unittest.TestCase):
         )
         self.assertEqual(result["metrics"]["TSR"], 1.0)
 
+    def test_real_llm_seal_readiness_audit_script(self):
+        proc = subprocess.run(
+            [sys.executable, "experiments/scripts/audit_real_llm_seal_readiness.py"],
+            cwd=Path(__file__).resolve().parents[2],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        out_path = Path(proc.stdout.strip())
+        self.assertTrue(out_path.exists())
+        payload = json.loads(out_path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["status"], "candidate_only")
+        self.assertTrue(any(item["code"] == "secondary_seed_target_reached" for item in payload["failures"]))
+
     def test_query_vs_control_threshold_tiers(self):
         scenarios = [
             Path("experiments/scenarios/category_h/H1.yaml"),

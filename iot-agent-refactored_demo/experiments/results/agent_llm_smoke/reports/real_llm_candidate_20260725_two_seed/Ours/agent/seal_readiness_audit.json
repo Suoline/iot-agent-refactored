@@ -1,0 +1,123 @@
+{
+  "run_id": "real_llm_candidate_20260725_two_seed",
+  "status": "candidate_only",
+  "summary": {
+    "seed_count": 2,
+    "scenario_count": 5,
+    "task_count": 10,
+    "agent_api_call_count": 18,
+    "agent_usage_totals": {
+      "input_tokens": 15273,
+      "output_tokens": 3204,
+      "total_tokens": 18477
+    },
+    "candidate_means": {
+      "CB": 1.2,
+      "DMR": 0.0,
+      "ECE": 0.22999299386085537,
+      "Estimated Context Efficiency": 36.76470588235294,
+      "Estimated Maintenance Tokens": 0.0,
+      "Estimated Prompt Tokens": 27.2,
+      "MP": 0.4,
+      "PM": 1.0,
+      "SRR": 0.0,
+      "State TSR": 1.0,
+      "TSR": 1.0,
+      "UAA": 0.6666666666666666,
+      "WDR": 0.0,
+      "action_success": 1.0,
+      "clarification_success": 1.0,
+      "end_to_end_latency_ms": 11304.414954036474,
+      "final_state_success": 1.0,
+      "maintenance_latency_ms": 0.0,
+      "memory_assertion_success": 1.0,
+      "task_success": 1.0
+    }
+  },
+  "passes": [
+    {
+      "code": "all_backends_external_llm",
+      "evidence": [
+        "external_llm"
+      ]
+    },
+    {
+      "code": "no_heuristic_fallback",
+      "evidence": true
+    },
+    {
+      "code": "all_selected_traces_task_success",
+      "evidence": {
+        "task_success_count": 10,
+        "task_count": 10
+      }
+    },
+    {
+      "code": "agent_scenario_count_matches_current_suite",
+      "evidence": 5
+    },
+    {
+      "code": "two_seed_candidate_available",
+      "evidence": 2
+    },
+    {
+      "code": "formal_v2_oracle_confirmatory_available",
+      "evidence": {
+        "status": "pass",
+        "confirmatory_scope": "oracle_only"
+      }
+    }
+  ],
+  "failures": [
+    {
+      "code": "secondary_seed_target_reached",
+      "evidence": {
+        "observed": 2,
+        "required": 20
+      }
+    },
+    {
+      "code": "single_source_git_revision",
+      "evidence": {
+        "g1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+        "e1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+        "b6_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+        "e2_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+        "e3_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+        "g1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+        "e1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+        "b6_seed1002_real_llm_retry1": "eec95c6213b2995d089984d77318faea3fc28f92",
+        "e2_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+        "e3_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92"
+      }
+    },
+    {
+      "code": "real_llm_agent_confirmatory_ready",
+      "evidence": {
+        "result_classification": "real_llm_candidate",
+        "confirmatory_ready": false
+      }
+    },
+    {
+      "code": "no_recorded_failed_attempts",
+      "evidence": [
+        {
+          "scenario_id": "B6",
+          "seed": 1002,
+          "run_id": "b6_seed1002_real_llm",
+          "trace_file": "raw_traces/b6_seed1002_real_llm/Ours/agent/B6/1002.json",
+          "manifest_file": "reports/b6_seed1002_real_llm/Ours/agent/manifest.json",
+          "outcome": "failure",
+          "task_success": false,
+          "agent_backend": "external_llm",
+          "agent_failures": [],
+          "clarification_turns": 1
+        }
+      ]
+    }
+  ],
+  "blocking_conclusion": [
+    "当前真实 LLM Agent 证据链已满足 external_llm / 无 fallback / 10/10 success / trace-consistent 的候选结果要求。",
+    "当前仍未满足论文最终封版要求：secondary seed 数不足 20，来源 run 不是单一 clean revision，且保留了 B6@1002 的失败首次尝试。"
+  ]
+}
