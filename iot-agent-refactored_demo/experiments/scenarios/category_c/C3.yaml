@@ -55,6 +55,48 @@
     {
       "step_id": "C3_03",
       "type": "say",
+      "sim_time": "t0+180d 09:05",
+      "text": "我以前睡觉时喜欢空调几度",
+      "oracle_input": {
+        "task_type": "query",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "memory.answer",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "C3_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "memory.answer",
+        "entity_id": "c3_old_pref",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "C3_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "c3_old_pref"
+      },
+      "assert": {
+        "status": "stale",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "climate.bedroom_ac",
+        "source": "user_explicit",
+        "confidence": 0.72,
+        "source_authority": 0.9,
+        "layer": "active"
+      }
+    },
+    {
+      "step_id": "C3_06",
+      "type": "say",
       "sim_time": "t0+181d 21:00",
       "text": "按我原来的偏好执行",
       "oracle_input": {
@@ -65,7 +107,7 @@
       }
     },
     {
-      "step_id": "C3_04",
+      "step_id": "C3_07",
       "type": "expect_clarify",
       "assert": true
     }

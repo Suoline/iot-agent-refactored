@@ -53,6 +53,47 @@
     {
       "step_id": "G3_03",
       "type": "say",
+      "sim_time": "t0+6d 09:05",
+      "text": "客厅顶灯支持调色温吗",
+      "oracle_input": {
+        "task_type": "query",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "memory.answer",
+          "args": {}
+        }
+      }
+    },
+    {
+      "step_id": "G3_04",
+      "type": "expect_action",
+      "assert": {
+        "service": "memory.answer",
+        "entity_id": "g3_stale_color_temp_fact",
+        "args": {}
+      }
+    },
+    {
+      "step_id": "G3_05",
+      "type": "expect_memory",
+      "selector": {
+        "memory_id": "g3_stale_color_temp_fact"
+      },
+      "assert": {
+        "status": "active",
+        "memory_type": "capability",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "object": "color_temp",
+        "source": "user_explicit",
+        "layer": "active"
+      }
+    },
+    {
+      "step_id": "G3_06",
+      "type": "say",
       "sim_time": "t0+6d 09:10",
       "text": "把客厅顶灯调成暖色",
       "oracle_input": {
@@ -63,7 +104,7 @@
       }
     },
     {
-      "step_id": "G3_04",
+      "step_id": "G3_07",
       "type": "expect_clarify",
       "assert": true
     }

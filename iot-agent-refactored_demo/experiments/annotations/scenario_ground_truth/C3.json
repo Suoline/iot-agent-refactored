@@ -3,7 +3,11 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
-  "expected_action": null,
+  "expected_action": {
+    "service": "memory.answer",
+    "entity_id": "c3_old_pref",
+    "args": {}
+  },
   "expected_clarify": true,
   "expected_no_action": false,
   "expected_memory": [
@@ -21,8 +25,27 @@
         "source_authority": 0.9,
         "layer": "active"
       }
+    },
+    {
+      "selector": {
+        "memory_id": "c3_old_pref"
+      },
+      "assert": {
+        "status": "stale",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "climate.bedroom_ac",
+        "source": "user_explicit",
+        "confidence": 0.72,
+        "source_authority": 0.9,
+        "layer": "active"
+      }
     }
   ],
   "expected_absent_memory": [],
-  "preferred_action": null
+  "preferred_action": {
+    "service": "memory.answer",
+    "entity_id": "c3_old_pref",
+    "args": {}
+  }
 }

@@ -3,7 +3,11 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
-  "expected_action": null,
+  "expected_action": {
+    "service": "memory.answer",
+    "entity_id": "g3_stale_color_temp_fact",
+    "args": {}
+  },
   "expected_clarify": true,
   "expected_no_action": false,
   "expected_memory": [
@@ -20,8 +24,26 @@
         "source": "user_explicit",
         "layer": "active"
       }
+    },
+    {
+      "selector": {
+        "memory_id": "g3_stale_color_temp_fact"
+      },
+      "assert": {
+        "status": "active",
+        "memory_type": "capability",
+        "scope": "entity",
+        "entity_id": "light.living_ceiling",
+        "object": "color_temp",
+        "source": "user_explicit",
+        "layer": "active"
+      }
     }
   ],
   "expected_absent_memory": [],
-  "preferred_action": null
+  "preferred_action": {
+    "service": "memory.answer",
+    "entity_id": "g3_stale_color_temp_fact",
+    "args": {}
+  }
 }
