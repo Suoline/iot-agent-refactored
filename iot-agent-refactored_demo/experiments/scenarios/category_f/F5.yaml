@@ -120,6 +120,28 @@
         "entity_id": "light.living_ceiling",
         "args": {}
       }
+    },
+    {
+      "step_id": "F5_06",
+      "type": "say",
+      "sim_time": "t0+1d 09:20",
+      "text": "开客厅灯",
+      "oracle_input": {
+        "task_type": "control",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "F5_07",
+      "type": "expect_clarify",
+      "assert": true
+    },
+    {
+      "step_id": "F5_08",
+      "type": "expect_no_action",
+      "assert": true
     }
   ]
 }

@@ -8,8 +8,8 @@
     "entity_id": "light.living_ceiling",
     "args": {}
   },
-  "expected_clarify": false,
-  "expected_no_action": false,
+  "expected_clarify": true,
+  "expected_no_action": true,
   "expected_memory": [
     {
       "selector": {
