@@ -140,6 +140,20 @@
         "entity_id": "light.study_ceiling",
         "args": {}
       }
+    },
+    {
+      "step_id": "A5_08",
+      "type": "expect_final_state",
+      "assert": {
+        "light.study_desk": {
+          "state": "on",
+          "attributes": {}
+        },
+        "light.study_ceiling": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

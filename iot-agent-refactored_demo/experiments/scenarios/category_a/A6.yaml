@@ -65,6 +65,16 @@
         "entity_id": "light.living_floor",
         "args": {}
       }
+    },
+    {
+      "step_id": "A6_05",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_floor": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

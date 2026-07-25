@@ -138,6 +138,16 @@
         "entity_id": "light.bedroom_bedside",
         "args": {}
       }
+    },
+    {
+      "step_id": "A2_08",
+      "type": "expect_final_state",
+      "assert": {
+        "light.bedroom_bedside": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

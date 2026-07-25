@@ -9,11 +9,27 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
+  "label_source": "deterministic_executable_specification",
+  "independent_human_annotation_status": "pending",
+  "expected_actions": [
+    {
+      "service": "light.turn_on",
+      "entity_id": "light.study_desk",
+      "args": {}
+    }
+  ],
   "expected_action": {
     "service": "light.turn_on",
     "entity_id": "light.study_desk",
     "args": {}
   },
+  "expected_final_state": {
+    "light.study_desk": {
+      "state": "on",
+      "attributes": {}
+    }
+  },
+  "final_state_applicable": true,
   "expected_clarify": false,
   "expected_no_action": false,
   "expected_memory": [

@@ -47,7 +47,7 @@ def _apply_custom_event(world: HAOracle, service: MemoryService, step: dict, now
         result = service.maintenance(now)
         result["maintenance_latency_ms"] = (time.perf_counter() - started) * 1000
         changed = len(result.get("changed_memory_ids", []))
-        result["maintenance_tokens"] = max(1, changed * 4) if changed else 1
+        result["estimated_maintenance_tokens"] = max(1, changed * 4) if changed else 1
         return result
     if kind == "behavior_observation":
         for op in payload.get("memory_ops", []):
@@ -270,6 +270,7 @@ def run_oracle_scenario(
         "memory": {"seen": False, "success": True},
         "final_state": {"seen": False, "success": True},
     }
+    raw_history: list[str] = []
 
     _load_fixture_records(service, scenario.get("initial_memory_fixture", []), world.current_time)
 
@@ -310,7 +311,7 @@ def run_oracle_scenario(
                             needs_review_ids=maintenance_result.get("needs_review_ids", []),
                             deleted_by_capacity_ids=maintenance_result.get("deleted_by_capacity_ids", []),
                             maintenance_latency_ms=maintenance_result.get("maintenance_latency_ms", 0.0),
-                            maintenance_tokens=maintenance_result.get("maintenance_tokens", 0),
+                            estimated_maintenance_tokens=maintenance_result.get("estimated_maintenance_tokens", 0),
                         )
                     )
             continue
@@ -328,9 +329,13 @@ def run_oracle_scenario(
                 now=world.current_time,
             )
             package = _inject_registry_candidates(world, package, query)
-            trace.prompt_tokens += _approx_tokens(query) + sum(
-                _approx_tokens(item.text) for item in package.matched_memories
-            )
+            if system_config.score_mode == "large_context":
+                trace.estimated_prompt_tokens += sum(_approx_tokens(text) for text in [*raw_history, query])
+            else:
+                trace.estimated_prompt_tokens += _approx_tokens(query) + sum(
+                    _approx_tokens(item.text) for item in package.matched_memories
+                )
+            raw_history.append(query)
             retrieval_trace = RetrievalStepTrace(
                 step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                 stage="planning",
@@ -366,7 +371,7 @@ def run_oracle_scenario(
                 if inferred_action:
                     success, state = _execute_action(world, inferred_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                         trace.chosen_action = inferred_action
                         trace.should_ask_user = False
                     else:
@@ -405,7 +410,7 @@ def run_oracle_scenario(
                     }
                     success, state = _execute_action(world, actual_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {actual_action}")
                         _write_failure_reflection(
@@ -431,7 +436,7 @@ def run_oracle_scenario(
                             item.in_grounding_set = True
                     success, state = _execute_action(world, inferred_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {inferred_action}")
                         _write_failure_reflection(
@@ -461,7 +466,7 @@ def run_oracle_scenario(
                             item.in_grounding_set = True
                     success, state = _execute_action(world, decision.action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {decision.action}")
                         _write_failure_reflection(
@@ -663,11 +668,15 @@ def run_oracle_scenario(
                 )
             )
 
-    for record in service.list_records(include_deleted=True):
+    final_records = service.list_records(include_deleted=True)
+    for record in final_records:
         trace.memory_status_after[record.memory_id] = record.status
+    trace.memory_records_after = [record.model_dump(mode="json") for record in final_records]
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
-        trace.maintenance_tokens = sum(item.maintenance_tokens for item in trace.maintenance_events)
+        trace.estimated_maintenance_tokens = sum(
+            item.estimated_maintenance_tokens for item in trace.maintenance_events
+        )
     trace.action_success = assertion_status["action"]["success"] if assertion_status["action"]["seen"] else None
     trace.clarification_success = (
         assertion_status["clarification"]["success"] if assertion_status["clarification"]["seen"] else None
@@ -770,7 +779,7 @@ def run_agent_scenario(
                             needs_review_ids=maintenance_result.get("needs_review_ids", []),
                             deleted_by_capacity_ids=maintenance_result.get("deleted_by_capacity_ids", []),
                             maintenance_latency_ms=maintenance_result.get("maintenance_latency_ms", 0.0),
-                            maintenance_tokens=maintenance_result.get("maintenance_tokens", 0),
+                            estimated_maintenance_tokens=maintenance_result.get("estimated_maintenance_tokens", 0),
                         )
                     )
             continue
@@ -786,7 +795,7 @@ def run_agent_scenario(
                 now=world.current_time,
             )
             package = _inject_registry_candidates(world, package, query)
-            trace.prompt_tokens += _approx_tokens(query) + sum(
+            trace.estimated_prompt_tokens += _approx_tokens(query) + sum(
                 _approx_tokens(item.text) for item in package.matched_memories
             )
             retrieval_trace = RetrievalStepTrace(
@@ -813,6 +822,7 @@ def run_agent_scenario(
             )
             trace.steps.append(retrieval_trace)
             decision = adapter.plan(package, query)
+            trace.agent_backend = decision.backend
             trace.should_ask_user = decision.should_ask_user
             action_template = oracle_input.get("action_template")
             memory_ops = oracle_input.get("memory_ops", [])
@@ -820,12 +830,13 @@ def run_agent_scenario(
             if not action_template and not memory_ops:
                 inferred_action = _infer_control_action(query, package, world)
             if decision.raw_output:
+                trace.agent_raw_outputs.append(decision.raw_output)
                 trace.usage_events.append({"kind": "agent_output", "text": decision.raw_output})
             if decision.should_ask_user:
                 if inferred_action:
                     success, state = _execute_action(world, inferred_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                         trace.chosen_action = inferred_action
                         trace.should_ask_user = False
                     else:
@@ -864,7 +875,7 @@ def run_agent_scenario(
                     }
                     success, state = _execute_action(world, actual_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {actual_action}")
                         _write_failure_reflection(
@@ -890,7 +901,7 @@ def run_agent_scenario(
                             item.in_grounding_set = True
                     success, state = _execute_action(world, inferred_action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {inferred_action}")
                         _write_failure_reflection(
@@ -920,7 +931,7 @@ def run_agent_scenario(
                             item.in_grounding_set = True
                     success, state = _execute_action(world, decision.action)
                     if success:
-                        trace.final_device_state = state
+                        trace.final_device_state.update(state)
                     else:
                         assertion_failures.append(f"world.apply failed: {decision.action}")
                         _write_failure_reflection(
@@ -1122,11 +1133,15 @@ def run_agent_scenario(
                 )
             )
 
-    for record in service.list_records(include_deleted=True):
+    final_records = service.list_records(include_deleted=True)
+    for record in final_records:
         trace.memory_status_after[record.memory_id] = record.status
+    trace.memory_records_after = [record.model_dump(mode="json") for record in final_records]
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
-        trace.maintenance_tokens = sum(item.maintenance_tokens for item in trace.maintenance_events)
+        trace.estimated_maintenance_tokens = sum(
+            item.estimated_maintenance_tokens for item in trace.maintenance_events
+        )
     trace.action_success = assertion_status["action"]["success"] if assertion_status["action"]["seen"] else None
     trace.clarification_success = (
         assertion_status["clarification"]["success"] if assertion_status["clarification"]["seen"] else None

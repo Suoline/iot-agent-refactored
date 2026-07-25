@@ -8,11 +8,22 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
+  "label_source": "deterministic_executable_specification",
+  "independent_human_annotation_status": "pending",
+  "expected_actions": [
+    {
+      "service": "memory.answer",
+      "entity_id": "c3_old_pref",
+      "args": {}
+    }
+  ],
   "expected_action": {
     "service": "memory.answer",
     "entity_id": "c3_old_pref",
     "args": {}
   },
+  "expected_final_state": null,
+  "final_state_applicable": false,
   "expected_clarify": true,
   "expected_no_action": false,
   "expected_memory": [

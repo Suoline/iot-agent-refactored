@@ -1,5 +1,7 @@
 {
   "scenario_id": "A5",
+  "status": "pending_human_annotation",
+  "instructions": "两位独立标注者分别填写完整 expect_* 标签；不得从系统输出反推标签。",
   "annotator_a": null,
   "annotator_b": null,
   "agreement": null,

@@ -173,7 +173,10 @@ class MemoryService:
     ) -> SearchResultPackage:
         now = now or datetime.now(timezone.utc)
         threshold = TASK_THRESHOLDS.get(task_type, 0.70)
-        if not self.config.get("use_memory", True):
+        if (
+            not self.config.get("use_memory", True)
+            and self.config.get("score_mode") != "large_context"
+        ):
             return SearchResultPackage(
                 query=query,
                 matched_memories=[],
@@ -207,7 +210,8 @@ class MemoryService:
 
         matches = []
         grouped_candidates: dict[str, list[MatchedMemory]] = {}
-        for lexical_score, record in self.index.search(query, records, top_k=top_k):
+        effective_top_k = len(records) if self.config.get("score_mode") == "large_context" else top_k
+        for lexical_score, record in self.index.search(query, records, top_k=effective_top_k):
             eff = (
                 effective_confidence(record, now)
                 if self.config.get("use_dynamic_confidence", True)
@@ -222,6 +226,7 @@ class MemoryService:
             usable = record.status == "active" or is_usable_stale(record, task_type=task_type, now=now)
             if record.status == "candidate" and not self.config.get("use_candidate_gate", True):
                 usable = eff >= threshold
+            passes_threshold = eff >= threshold or (task_type == "safety" and worth > 0.8)
             score = self._retrieval_score(
                 record=record,
                 lexical_score=lexical_score,
@@ -242,7 +247,7 @@ class MemoryService:
                 true_status=record.status,
                 runtime_status=runtime_status,
                 layer=record.layer,
-                in_usable_set=usable and eff >= threshold,
+                in_usable_set=usable and passes_threshold,
             )
             matches.append(matched)
             entity_id = record.entity_id or (
@@ -275,7 +280,11 @@ class MemoryService:
                 )
             )
         candidate_devices.sort(key=lambda item: (-item.score, item.entity_id))
-        should_ask = not executable_matches or executable_matches[0].effective_confidence < threshold
+        top_passes_threshold = bool(executable_matches) and (
+            executable_matches[0].effective_confidence >= threshold
+            or (task_type == "safety" and executable_matches[0].memory_worth > 0.8)
+        )
+        should_ask = not top_passes_threshold
         if len(candidate_devices) > 1 and candidate_devices[0].score - candidate_devices[1].score < 0.10:
             should_ask = True
         ask_reason = None
@@ -465,6 +474,8 @@ class MemoryService:
             return min(1.0, lexical_score + 0.2 * subject_match)
         if score_mode == "ga_analog":
             return min(1.0, (lexical_score + recency + importance + subject_match) / 4)
+        if score_mode == "large_context":
+            return min(1.0, lexical_score + 0.2 * subject_match)
         if score_mode == "source_prior":
             return min(1.0, 0.4 * lexical_score + 0.4 * record.confidence + 0.2 * subject_match)
         if score_mode == "structured_static":

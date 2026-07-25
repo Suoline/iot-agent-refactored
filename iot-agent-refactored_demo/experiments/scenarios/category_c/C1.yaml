@@ -97,6 +97,16 @@
       "step_id": "C1_07",
       "type": "expect_no_action",
       "assert": true
+    },
+    {
+      "step_id": "C1_08",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ceiling": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

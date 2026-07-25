@@ -112,7 +112,7 @@ def _figure_4(metric_rows: list[dict]) -> list[dict]:
 
 
 def _figure_5(metric_rows: list[dict]) -> list[dict]:
-    return [row for row in metric_rows if row["metric"] == "Context Efficiency"]
+    return [row for row in metric_rows if row["metric"] == "Estimated Context Efficiency"]
 
 
 def main():

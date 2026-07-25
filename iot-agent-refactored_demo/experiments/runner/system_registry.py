@@ -96,6 +96,8 @@ def build_system_registry() -> dict[str, SystemConfig]:
             use_resampling=False,
             use_content_aging=False,
             score_mode="large_context",
+            top_k=10000,
+            notes=["全量历史基线；runner 将全部历史文本计入估算上下文"],
         ),
         "B5": SystemConfig(
             system_id="B5",

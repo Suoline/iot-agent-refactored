@@ -38,10 +38,15 @@ def main():
                 "world_version": data.get("world_version"),
                 "system_policy_version": data.get("system_policy_version"),
                 "scenario_count": data.get("scenario_count"),
+                "seed_count": data.get("seed_count", 1 if data.get("seed") is not None else 0),
+                "task_count": data.get("task_count", data.get("scenario_count")),
+                "sampling_unit": data.get("sampling_unit"),
+                "result_classification": data.get("result_classification"),
+                "agent_backends": data.get("agent_backends", []),
                 "generated_at": _generated_at_or_mtime(manifest, data),
                 "failed_task_count": len(failed_task_ids),
                 "failed_task_ids": failed_task_ids,
-                "metrics_file": data.get("metrics_file"),
+                "metrics_file": data.get("metrics_summary_file", data.get("metrics_file")),
                 "per_scenario_file": data.get("per_scenario_file"),
             }
         )

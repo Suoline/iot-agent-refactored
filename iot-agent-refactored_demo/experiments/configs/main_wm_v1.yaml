@@ -1,7 +1,7 @@
 {
   "experiment_id": "sae-memory-v4-wm-v1",
   "world_version": "wm-v1",
-  "scenario_version": "sv-v1",
+  "scenario_version": "sv-v2",
   "system_policy_version": "sp-v1",
   "planner_mode": "oracle",
   "top_k": 10,
@@ -13,10 +13,8 @@
     "temperature": 0.0,
     "max_retries": 0
   },
-  "embedding": {
-    "model": "REQUIRED_EXPLICIT_VALUE",
-    "provider": "REQUIRED_EXPLICIT_VALUE",
-    "normalize": true
+  "retrieval": {
+    "backend": "sqlite_plus_deterministic_lexical_overlap",
+    "vector_database_required": false
   }
 }
-

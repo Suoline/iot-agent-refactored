@@ -119,6 +119,16 @@
         "source": "user_explicit",
         "layer": "archived"
       }
+    },
+    {
+      "step_id": "D2_09",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ceiling": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

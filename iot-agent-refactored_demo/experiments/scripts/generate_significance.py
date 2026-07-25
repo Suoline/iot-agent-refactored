@@ -52,10 +52,10 @@ def _sample_std(values: list[float]) -> float:
     return sqrt(sum((value - avg) ** 2 for value in values) / (len(values) - 1))
 
 
-def _cohen_d(values: list[float]) -> float:
+def _cohen_d(values: list[float]) -> float | None:
     sd = _sample_std(values)
     if sd == 0.0:
-        return 0.0
+        return 0.0 if mean(values) == 0.0 else None
     return mean(values) / sd
 
 
@@ -88,8 +88,9 @@ def _load_by_seed(path: Path) -> dict[str, dict]:
 
 def _compare_run(run_id: str, ours_run_id: str, system_id: str, planner_mode: str) -> dict | None:
     root = results_root() / "aggregated_metrics"
-    ours_path = root / ours_run_id / "Ours" / planner_mode / "metrics.by_seed.json"
-    other_path = root / run_id / system_id / planner_mode / "metrics.by_seed.json"
+    filename = "metrics.by_scenario.json" if planner_mode == "oracle" else "metrics.by_seed.json"
+    ours_path = root / ours_run_id / "Ours" / planner_mode / filename
+    other_path = root / run_id / system_id / planner_mode / filename
     if not ours_path.exists() or not other_path.exists():
         return None
     ours = _load_by_seed(ours_path)
@@ -109,31 +110,42 @@ def _compare_run(run_id: str, ours_run_id: str, system_id: str, planner_mode: st
     metric_payloads: dict[str, dict] = {}
     for metric in metric_names:
         deltas = []
-        for seed in common:
-            if metric not in ours[seed] or metric not in other[seed]:
+        for unit in common:
+            if (
+                metric not in ours[unit]
+                or metric not in other[unit]
+                or ours[unit][metric] is None
+                or other[unit][metric] is None
+            ):
                 continue
-            deltas.append(other[seed][metric] - ours[seed][metric])
+            deltas.append(other[unit][metric] - ours[unit][metric])
         if not deltas:
             continue
         mean_delta, ci_low, ci_high = _bootstrap_mean_ci(deltas)
         p_value = _sign_test_p_value(deltas)
         metric_p_values.append((metric, p_value))
         metric_payloads[metric] = {
-            "paired_count": len(common),
+            "paired_count": len(deltas),
             "delta_mean_vs_ours": mean_delta,
             "delta_ci_low": ci_low,
             "delta_ci_high": ci_high,
             "cohen_d": _cohen_d(deltas),
             "p_value": p_value,
         }
-    holm_adjusted = _holm_adjust(metric_p_values)
+    primary_metrics = {"TSR", "State TSR", "SRR", "WDR", "CE", "UC"}
+    primary_rows = [row for row in metric_p_values if row[0] in primary_metrics]
+    secondary_rows = [row for row in metric_p_values if row[0] not in primary_metrics]
+    holm_adjusted = {**_holm_adjust(primary_rows), **_holm_adjust(secondary_rows)}
     for metric, payload in metric_payloads.items():
         payload["holm_adjusted_p"] = holm_adjusted.get(metric, 1.0)
+        payload["metric_family"] = "primary" if metric in primary_metrics else "secondary"
         metrics[metric] = payload
     return {
         "run_id": run_id,
         "system_id": system_id,
         "planner_mode": planner_mode,
+        "sampling_unit": "scenario" if planner_mode == "oracle" else "seed",
+        "test_method": "paired_exact_sign_test",
         "metrics": metrics,
     }
 

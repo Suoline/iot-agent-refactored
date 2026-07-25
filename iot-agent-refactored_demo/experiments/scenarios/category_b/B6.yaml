@@ -87,6 +87,16 @@
         "positive_hits": 8,
         "layer": "active"
       }
+    },
+    {
+      "step_id": "B6_04",
+      "type": "expect_final_state",
+      "assert": {
+        "lock.front_door": {
+          "state": "locked",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

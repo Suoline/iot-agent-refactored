@@ -34,12 +34,20 @@ def _flatten_summary(path: Path) -> dict:
 def _load_significance_summary() -> dict[tuple[str, str, str], dict]:
     path = results_root() / "reports" / result_stage() / "significance_summary.json"
     if not path.exists():
+        from experiments.scripts.generate_significance import main as generate_significance
+
+        generate_significance()
+    if not path.exists():
         return {}
     payload = _load_json(path)
     index: dict[tuple[str, str, str], dict] = {}
     for row in payload:
         key = (row.get("run_id"), row.get("system_id"), row.get("planner_mode"))
-        index[key] = row.get("metrics", {})
+        metrics = row.get("metrics", {})
+        for stats in metrics.values():
+            stats.setdefault("sampling_unit", row.get("sampling_unit"))
+            stats.setdefault("test_method", row.get("test_method"))
+        index[key] = metrics
     return index
 
 
@@ -62,6 +70,13 @@ def main():
     summary_paths = sorted(root.rglob("metrics.summary.json"))
     rows = [_flatten_summary(path) for path in summary_paths]
     by_key = {(row["run_id"], row["system_id"], row["planner_mode"]): row for row in rows}
+    b0 = by_key.get((configured_run_id("baseline"), "B0", "oracle"))
+    if b0 and b0.get("CB_mean") and b0.get("TSR_mean"):
+        for row in rows:
+            cb = row.get("CB_mean")
+            tsr = row.get("TSR_mean")
+            if row.get("planner_mode") == "oracle" and isinstance(cb, (int, float)) and isinstance(tsr, (int, float)):
+                row["CE_mean"] = ((b0["CB_mean"] - cb) / b0["CB_mean"]) * (tsr / b0["TSR_mean"])
     significance_by_key = _load_significance_summary()
     output_rows = []
     oracle_ours_key = (configured_run_id("oracle"), "Ours", "oracle")
@@ -95,6 +110,8 @@ def main():
             result[f"{metric_name}_cohen_d_vs_ours"] = stats.get("cohen_d")
             result[f"{metric_name}_p_value_vs_ours"] = stats.get("p_value")
             result[f"{metric_name}_holm_adjusted_p_vs_ours"] = stats.get("holm_adjusted_p")
+            result[f"{metric_name}_sampling_unit"] = stats.get("sampling_unit")
+            result[f"{metric_name}_test_method"] = stats.get("test_method")
         output_rows.append(result)
 
     report_root = results_root() / "reports" / result_stage()

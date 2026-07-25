@@ -142,6 +142,16 @@
       "step_id": "F5_08",
       "type": "expect_no_action",
       "assert": true
+    },
+    {
+      "step_id": "F5_09",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ceiling": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

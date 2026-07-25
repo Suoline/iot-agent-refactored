@@ -92,6 +92,16 @@
         "confidence": 0.9,
         "layer": "archived"
       }
+    },
+    {
+      "step_id": "C2_07",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ambient": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

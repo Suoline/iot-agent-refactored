@@ -11,7 +11,7 @@ import sys
 
 from experiments.memory.schemas import UsageEvent
 from experiments.memory.service import MemoryService
-from experiments.metrics.core import task_metrics
+from experiments.metrics.core import aggregate_task_metrics, task_metrics
 from experiments.runner.batch_run import run_batch, run_batch_multi_seed
 from experiments.runner.scenario_loader import load_scenario
 from experiments.world_model.ha_oracle import HAOracle
@@ -666,7 +666,7 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertTrue(trace["task_success"])
         self.assertTrue(trace["action_success"])
         self.assertTrue(trace["memory_assertion_success"])
-        self.assertIsNone(trace["final_state_success"])
+        self.assertTrue(trace["final_state_success"])
         self.assertTrue(trace["assertion_results"])
         self.assertTrue(all("kind" in item and "success" in item for item in trace["assertion_results"]))
 
@@ -1130,6 +1130,45 @@ class RunnerSmokeTest(unittest.TestCase):
         }
         self.assertEqual(task_metrics(trace)["TSR"], 0.0)
 
+    def test_non_applicable_final_state_is_not_aggregated_as_zero(self):
+        trace = {
+            "scenario_id": "G1",
+            "sim_time": HAOracle().current_time.isoformat(),
+            "task_success": True,
+            "outcome": "success",
+            "final_state_success": None,
+        }
+        metrics = aggregate_task_metrics([trace])
+        self.assertEqual(metrics["TSR"], 1.0)
+        self.assertIsNone(metrics["State TSR"])
+        self.assertIsNone(metrics["final_state_success"])
+
+    def test_physical_action_scenarios_have_final_state_contracts(self):
+        missing = []
+        for path in sorted(Path("experiments/scenarios").rglob("*.yaml")):
+            scenario = load_scenario(path)
+            physical_actions = [
+                step
+                for step in scenario["steps"]
+                if step["type"] == "expect_action"
+                and step.get("assert", {}).get("service") != "memory.answer"
+            ]
+            if physical_actions and not any(step["type"] == "expect_final_state" for step in scenario["steps"]):
+                missing.append(scenario["scenario_id"])
+        self.assertEqual(missing, [])
+
+    def test_b4_large_context_is_not_equivalent_to_b0(self):
+        scenario = Path("experiments/scenarios/category_a/A1.yaml")
+        b0 = run_batch([scenario], seed=1001, results_root=Path("experiments/results"), system_id="B0", run_id="test_b4")
+        b4 = run_batch([scenario], seed=1001, results_root=Path("experiments/results"), system_id="B4", run_id="test_b4")
+        self.assertNotEqual(b0["metrics"]["TSR"], b4["metrics"]["TSR"])
+        self.assertGreater(b4["metrics"]["Estimated Prompt Tokens"], b0["metrics"]["Estimated Prompt Tokens"])
+
+    def test_agent_fallback_has_no_scenario_text_special_cases(self):
+        source = Path("experiments/planners/agent_planner.py").read_text(encoding="utf-8")
+        self.assertNotIn("观影模式", source)
+        self.assertNotIn("睡前模式", source)
+
     def test_prompt_tokens_nonzero_in_main_run(self):
         result = run_batch(
             [Path("experiments/scenarios/category_a/A1.yaml")],
@@ -1137,7 +1176,7 @@ class RunnerSmokeTest(unittest.TestCase):
             results_root=Path("experiments/results"),
             run_id="test_prompt_tokens",
         )
-        self.assertGreater(result["metrics"]["prompt_tokens"], 0.0)
+        self.assertGreater(result["metrics"]["Estimated Prompt Tokens"], 0.0)
 
     def test_configured_baselines_script_outputs(self):
         env = dict(os.environ)
@@ -1186,6 +1225,17 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertTrue(Path("experiments/results/reports/dev/statistics_summary.json").exists())
         self.assertTrue(Path("experiments/results/reports/dev/significance_summary.json").exists())
         self.assertTrue(Path("experiments/results/reports/dev/run_index.json").exists())
+        self.assertGreater(Path("experiments/results/tables/dev/table_1.csv").stat().st_size, 20)
+        self.assertGreater(Path("experiments/results/tables/dev/table_2.csv").stat().st_size, 20)
+        audit = json.loads(Path("experiments/results/reports/dev/artifact_audit.json").read_text(encoding="utf-8"))
+        self.assertEqual(audit["status"], "pass")
+        significance = json.loads(
+            Path("experiments/results/reports/dev/significance_summary.json").read_text(encoding="utf-8")
+        )
+        self.assertTrue(all(row["sampling_unit"] == "scenario" for row in significance))
+        annotation = json.loads(Path("experiments/annotations/annotation_agreement.json").read_text(encoding="utf-8"))
+        self.assertEqual(annotation["status"], "pending_human_annotation")
+        self.assertIsNone(annotation["cohen_kappa"])
 
 
 if __name__ == "__main__":

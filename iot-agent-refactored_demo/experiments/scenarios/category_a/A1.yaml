@@ -78,6 +78,16 @@
         "entity_id": "light.study_desk",
         "args": {}
       }
+    },
+    {
+      "step_id": "A1_05",
+      "type": "expect_final_state",
+      "assert": {
+        "light.study_desk": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

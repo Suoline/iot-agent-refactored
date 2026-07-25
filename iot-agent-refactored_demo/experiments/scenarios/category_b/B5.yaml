@@ -212,6 +212,18 @@
           "temperature": 27
         }
       }
+    },
+    {
+      "step_id": "B5_12",
+      "type": "expect_final_state",
+      "assert": {
+        "climate.bedroom_ac": {
+          "state": "off",
+          "attributes": {
+            "target_temp": 27
+          }
+        }
+      }
     }
   ]
 }

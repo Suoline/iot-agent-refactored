@@ -8,6 +8,17 @@
   "planner_mode": "oracle",
   "task_type": "control",
   "safety_relevant": false,
+  "label_source": "deterministic_executable_specification",
+  "independent_human_annotation_status": "pending",
+  "expected_actions": [
+    {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 24
+      }
+    }
+  ],
   "expected_action": {
     "service": "climate.set_temperature",
     "entity_id": "climate.bedroom_ac",
@@ -15,6 +26,15 @@
       "temperature": 24
     }
   },
+  "expected_final_state": {
+    "climate.bedroom_ac": {
+      "state": "off",
+      "attributes": {
+        "target_temp": 24
+      }
+    }
+  },
+  "final_state_applicable": true,
   "expected_clarify": false,
   "expected_no_action": false,
   "expected_memory": [

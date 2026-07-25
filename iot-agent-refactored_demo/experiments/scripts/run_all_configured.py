@@ -14,15 +14,18 @@ def _run(relative: str):
 
 def main():
     _run("experiments/scripts/sync_ground_truth.py")
+    _run("experiments/scripts/compute_annotation_agreement.py")
     _run("experiments/scripts/run_configured_experiments.py")
     _run("experiments/scripts/run_configured_baselines.py")
     _run("experiments/scripts/run_configured_ablations.py")
+    _run("experiments/scripts/generate_significance.py")
+    _run("experiments/scripts/generate_statistics.py")
+    _run("experiments/scripts/audit_mechanism_sensitivity.py")
     _run("experiments/scripts/generate_tables.py")
     _run("experiments/scripts/generate_figures.py")
-    _run("experiments/scripts/generate_report.py")
-    _run("experiments/scripts/generate_statistics.py")
-    _run("experiments/scripts/generate_significance.py")
     _run("experiments/scripts/generate_run_index.py")
+    _run("experiments/scripts/audit_results.py")
+    _run("experiments/scripts/generate_report.py")
 
 
 if __name__ == "__main__":

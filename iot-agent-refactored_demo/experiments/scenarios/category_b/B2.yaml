@@ -96,6 +96,18 @@
           "temperature": 24
         }
       }
+    },
+    {
+      "step_id": "B2_06",
+      "type": "expect_final_state",
+      "assert": {
+        "climate.bedroom_ac": {
+          "state": "off",
+          "attributes": {
+            "target_temp": 24
+          }
+        }
+      }
     }
   ]
 }

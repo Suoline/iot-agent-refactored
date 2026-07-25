@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from experiments.scripts._artifact_paths import preferred_run_ids, results_root, tables_root
+from experiments.scripts._artifact_paths import configured_run_id, preferred_run_ids, results_root, tables_root
 
 
 def _load_json(path: Path) -> dict:
@@ -60,6 +60,23 @@ def _load_metric_rows() -> list[dict]:
             row[f"{metric}_ci_high"] = value
             row[f"{metric}_count"] = 1
         rows.append(row)
+    b0 = next(
+        (
+            row for row in rows
+            if row["run_id"] == configured_run_id("baseline")
+            and row["system_id"] == "B0"
+            and row["planner_mode"] == "oracle"
+        ),
+        None,
+    )
+    if b0 and b0.get("CB_mean") and b0.get("TSR_mean"):
+        for row in rows:
+            if row.get("planner_mode") != "oracle":
+                continue
+            cb = row.get("CB_mean")
+            tsr = row.get("TSR_mean")
+            if isinstance(cb, (int, float)) and isinstance(tsr, (int, float)):
+                row["CE_mean"] = ((b0["CB_mean"] - cb) / b0["CB_mean"]) * (tsr / b0["TSR_mean"])
     return rows
 
 
@@ -102,7 +119,11 @@ def _write_csv(path: Path, rows: list[dict]):
 
 def _table_1(metric_rows: list[dict]) -> list[dict]:
     wanted = {"B0", "B1", "B2", "B3", "B4", "B5", "Ours"}
-    preferred_runs = {"configured_baseline_dev", "configured_agent_dev", "baseline_dev", "dev_agent"}
+    preferred_runs = {
+        configured_run_id("baseline"),
+        configured_run_id("oracle"),
+        configured_run_id("agent"),
+    }
     return [
         row for row in metric_rows
         if row["system_id"] in wanted and row["run_id"] in preferred_runs
@@ -121,7 +142,7 @@ def _table_2(metric_rows: list[dict]) -> list[dict]:
         "-Split",
         "Ours",
     }
-    preferred_runs = {"configured_ablation_dev", "ablation_dev"}
+    preferred_runs = {configured_run_id("ablation"), configured_run_id("oracle")}
     return [
         row for row in metric_rows
         if row["system_id"] in wanted and row["run_id"] in preferred_runs
@@ -137,6 +158,10 @@ def _table_3(per_scenario_rows: list[dict]) -> list[dict]:
         grouped[key].append(row)
     table = []
     for (run_id, system_id, planner_mode, category), rows in grouped.items():
+        def applicable_mean(metric: str):
+            values = [float(row[metric]) for row in rows if row.get(metric) not in {None, ""}]
+            return sum(values) / len(values) if values else None
+
         table.append(
             {
                 "run_id": run_id,
@@ -144,9 +169,9 @@ def _table_3(per_scenario_rows: list[dict]) -> list[dict]:
                 "planner_mode": planner_mode,
                 "category": category,
                 "scenario_count": len(rows),
-                "TSR_mean": sum(float(r["TSR"]) for r in rows) / len(rows),
-                "SRR_mean": sum(float(r["SRR"]) for r in rows) / len(rows),
-                "WDR_mean": sum(float(r["WDR"]) for r in rows) / len(rows),
+                "TSR_mean": applicable_mean("TSR"),
+                "SRR_mean": applicable_mean("SRR"),
+                "WDR_mean": applicable_mean("WDR"),
             }
         )
     return sorted(table, key=lambda row: (row["run_id"], row["system_id"], row["category"]))
@@ -162,8 +187,8 @@ def _table_4(metric_rows: list[dict]) -> list[dict]:
                 "planner_mode",
                 "end_to_end_latency_ms_mean",
                 "maintenance_latency_ms_mean",
-                "prompt_tokens_mean",
-                "Context Efficiency_mean",
+                "Estimated Prompt Tokens_mean",
+                "Estimated Context Efficiency_mean",
             ]
         }
         for row in metric_rows

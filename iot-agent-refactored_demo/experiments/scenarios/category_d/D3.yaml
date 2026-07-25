@@ -128,6 +128,16 @@
         "entity_id": "light.living_ceiling",
         "args": {}
       }
+    },
+    {
+      "step_id": "D3_07",
+      "type": "expect_final_state",
+      "assert": {
+        "light.living_ceiling": {
+          "state": "on",
+          "attributes": {}
+        }
+      }
     }
   ]
 }

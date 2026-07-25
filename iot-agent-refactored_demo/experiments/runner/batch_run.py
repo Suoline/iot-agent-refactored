@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import csv
 import json
+import random
 import subprocess
+import sys
 from dataclasses import asdict
 from datetime import datetime, timezone
 from statistics import mean, pstdev
@@ -25,6 +27,21 @@ def _percentile(sorted_values: list[float], q: float) -> float:
     upper = min(lower + 1, len(sorted_values) - 1)
     weight = idx - lower
     return sorted_values[lower] * (1 - weight) + sorted_values[upper] * weight
+
+
+def _bootstrap_mean_ci(values: list[float], *, samples: int = 2000) -> tuple[float, float]:
+    if not values:
+        return 0.0, 0.0
+    if len(values) == 1 or len(set(values)) == 1:
+        value = mean(values)
+        return value, value
+    rng = random.Random(20260725)
+    means = [
+        mean(values[rng.randrange(len(values))] for _ in values)
+        for _ in range(samples)
+    ]
+    means.sort()
+    return _percentile(means, 0.025), _percentile(means, 0.975)
 
 
 def _git_revision() -> str:
@@ -136,6 +153,7 @@ def run_batch_multi_seed(
     planner_mode: str = "oracle",
     run_id: str = "dev_multi",
 ):
+    started_at = datetime.now(timezone.utc).isoformat()
     writer = TraceWriter(results_root)
     all_traces = []
     by_seed: dict[int, dict] = {}
@@ -159,20 +177,53 @@ def run_batch_multi_seed(
     grouped: dict[str, list[dict]] = {}
     for trace in all_traces:
         grouped.setdefault(trace["scenario_id"], []).append(task_metrics(trace))
+    by_scenario = {
+        scenario_id: {
+            metric: mean(values)
+            for metric in rows[0]
+            if (values := [row[metric] for row in rows if row[metric] is not None])
+        }
+        for scenario_id, rows in grouped.items()
+    }
+    writer.write_json(
+        f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/metrics.by_scenario.json",
+        by_scenario,
+    )
     summary = {}
-    if by_seed:
-        metric_names = list(next(iter(by_seed.values())).keys())
-        for metric in metric_names:
-            values = [metrics[metric] for metrics in by_seed.values()]
-            values_sorted = sorted(values)
+    sampling_unit = "scenario" if planner_mode == "oracle" else "seed"
+    source_rows = by_scenario.values() if sampling_unit == "scenario" else by_seed.values()
+    metric_names = sorted({key for row in source_rows for key in row})
+    for metric in metric_names:
+        values = [row[metric] for row in source_rows if row.get(metric) is not None]
+        if not values:
+            continue
+        ci_low, ci_high = _bootstrap_mean_ci(values)
+        summary[metric] = {
+            "count": len(values),
+            "mean": mean(values),
+            "std": pstdev(values) if len(values) > 1 else 0.0,
+            "min": min(values),
+            "max": max(values),
+            "ci_low": ci_low,
+            "ci_high": ci_high,
+            "sampling_unit": sampling_unit,
+        }
+    for metric in {"SRR", "MP", "DMR", "RRR"}:
+        if metric in summary and aggregate.get(metric) is not None:
+            summary[metric]["mean"] = aggregate[metric]
+            summary[metric]["aggregation"] = "pooled_numerator_denominator"
+    for metric in {"ECE", "Estimated Context Efficiency"}:
+        if metric not in summary and aggregate.get(metric) is not None:
             summary[metric] = {
-                "count": len(values),
-                "mean": mean(values),
-                "std": pstdev(values) if len(values) > 1 else 0.0,
-                "min": min(values),
-                "max": max(values),
-                "ci_low": _percentile(values_sorted, 0.025),
-                "ci_high": _percentile(values_sorted, 0.975),
+                "count": len(grouped) if sampling_unit == "scenario" else len(seeds),
+                "mean": aggregate[metric],
+                "std": None,
+                "min": None,
+                "max": None,
+                "ci_low": None,
+                "ci_high": None,
+                "sampling_unit": sampling_unit,
+                "aggregation": "derived_aggregate",
             }
     per_scenario_summary = []
     for scenario_id, rows in grouped.items():
@@ -211,6 +262,47 @@ def run_batch_multi_seed(
             writer_csv.writeheader()
             for row in per_scenario_summary:
                 writer_csv.writerow(row)
+    final_manifest = {
+        "run_id": run_id,
+        "system_id": system_id,
+        "planner_mode": planner_mode,
+        "seeds": seeds,
+        "seed_count": len(seeds),
+        "scenario_ids": sorted(grouped),
+        "scenario_count": len(grouped),
+        "task_count": len(all_traces),
+        "sampling_unit": sampling_unit,
+        "started_at": started_at,
+        "completed_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "git_revision": _git_revision(),
+        "world_version": all_traces[0]["world_version"] if all_traces else None,
+        "scenario_version": "sv-v2",
+        "system_policy_version": all_traces[0].get("system_policy_version") if all_traces else None,
+        "python_version": sys.version,
+        "agent_backends": sorted({trace.get("agent_backend") for trace in all_traces if trace.get("agent_backend")}),
+        "result_classification": (
+            "heuristic_fallback"
+            if planner_mode == "agent"
+            and any(trace.get("agent_backend") != "external_llm" for trace in all_traces)
+            else "confirmatory"
+        ),
+        "resolved_config": asdict(build_system_registry().get(system_id, SystemConfig(system_id=system_id))),
+        "trace_files": [
+            f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.json"
+            for trace in all_traces
+        ],
+        "maintenance_trace_files": [
+            f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.maintenance.json"
+            for trace in all_traces
+        ],
+        "failed_task_ids": [trace["task_id"] for trace in all_traces if trace.get("outcome") != "success"],
+        "metrics_by_seed_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/metrics.by_seed.json",
+        "metrics_by_scenario_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/metrics.by_scenario.json",
+        "metrics_summary_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/metrics.summary.json",
+        "per_scenario_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/per_scenario.multi_seed.csv",
+    }
+    writer.write_json(f"reports/{run_id}/{system_id}/{planner_mode}/manifest.json", final_manifest)
     return {
         "traces": all_traces,
         "metrics": aggregate,
