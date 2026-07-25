@@ -42,7 +42,14 @@
         "memory_id": "c3_old_pref"
       },
       "assert": {
-        "status": "stale"
+        "status": "stale",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "climate.bedroom_ac",
+        "source": "user_explicit",
+        "confidence": 0.72,
+        "source_authority": 0.9,
+        "layer": "active"
       }
     },
     {

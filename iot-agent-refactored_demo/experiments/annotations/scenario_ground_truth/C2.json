@@ -16,7 +16,13 @@
         "memory_id": "c2_holiday_rule"
       },
       "assert": {
-        "status": "expired"
+        "status": "expired",
+        "memory_type": "routine",
+        "scope": "entity",
+        "entity_id": "light.living_ambient",
+        "source": "user_explicit",
+        "positive_hits": 8,
+        "layer": "archived"
       }
     }
   ],

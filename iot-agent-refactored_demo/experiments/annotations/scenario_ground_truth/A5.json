@@ -17,7 +17,13 @@
       },
       "assert": {
         "status": "stale",
-        "negative_hits": 1
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_desk",
+        "object": "light.study_desk",
+        "source": "user_explicit",
+        "negative_hits": 1,
+        "layer": "active"
       }
     },
     {
@@ -25,7 +31,13 @@
         "memory_id": "a5_alias_new"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.study_ceiling",
+        "object": "light.study_ceiling",
+        "source": "user_correction",
+        "layer": "active"
       }
     }
   ],

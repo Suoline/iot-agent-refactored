@@ -44,7 +44,13 @@
         "memory_id": "a2_bedroom_alias_v1"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.bedroom_ceiling",
+        "object": "light.bedroom_ceiling",
+        "source": "user_explicit",
+        "layer": "active"
       }
     },
     {
@@ -83,7 +89,13 @@
         "memory_id": "a2_bedroom_alias_v1"
       },
       "assert": {
-        "status": "superseded"
+        "status": "superseded",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.bedroom_ceiling",
+        "object": "light.bedroom_ceiling",
+        "source": "user_explicit",
+        "layer": "archived"
       }
     },
     {
@@ -93,7 +105,13 @@
         "memory_id": "a2_bedroom_alias_v2"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "alias",
+        "scope": "entity",
+        "entity_id": "light.bedroom_bedside",
+        "object": "light.bedroom_bedside",
+        "source": "user_correction",
+        "layer": "active"
       }
     },
     {

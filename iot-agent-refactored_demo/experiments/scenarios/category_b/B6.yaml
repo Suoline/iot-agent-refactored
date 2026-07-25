@@ -34,7 +34,15 @@
         "memory_id": "b6_sleep_lock_pref"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "user_explicit",
+        "confidence": 0.9,
+        "source_authority": 0.9,
+        "positive_hits": 8,
+        "layer": "active"
       }
     },
     {
@@ -69,7 +77,15 @@
         "memory_id": "b6_sleep_lock_pref"
       },
       "assert": {
-        "status": "active"
+        "status": "active",
+        "memory_type": "preference",
+        "scope": "entity",
+        "entity_id": "lock.front_door",
+        "source": "user_explicit",
+        "confidence": 0.9,
+        "source_authority": 0.9,
+        "positive_hits": 8,
+        "layer": "active"
       }
     }
   ]
