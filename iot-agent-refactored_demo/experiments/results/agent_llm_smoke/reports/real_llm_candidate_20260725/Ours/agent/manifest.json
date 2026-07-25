@@ -1,0 +1,67 @@
+{
+  "run_id": "real_llm_candidate_20260725",
+  "system_id": "Ours",
+  "planner_mode": "agent",
+  "result_classification": "real_llm_candidate",
+  "generated_at": "2026-07-25T18:25:10.759833+00:00",
+  "git_revision": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+  "world_version": "wm-v1",
+  "scenario_ids": [
+    "G1",
+    "E1",
+    "B6",
+    "E2",
+    "E3"
+  ],
+  "scenario_count": 5,
+  "seed_count": 1,
+  "seeds": [
+    1001
+  ],
+  "agent_backends": [
+    "external_llm"
+  ],
+  "agent_models": [
+    "gpt-5.4-mini-2026-03-17"
+  ],
+  "agent_providers": [
+    "openai"
+  ],
+  "agent_api_call_count": 9,
+  "agent_usage_totals": {
+    "input_tokens": 7365,
+    "output_tokens": 2035,
+    "total_tokens": 9400
+  },
+  "api_smoke_request_count": 1,
+  "api_smoke": {
+    "status": "ok",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "provider": "openai",
+    "usage": {
+      "input_tokens": 29,
+      "output_tokens": 113,
+      "total_tokens": 142,
+      "input_token_details": {},
+      "output_token_details": {
+        "reasoning": 91
+      }
+    },
+    "latency_ms": 4294.302667025477
+  },
+  "failed_task_ids": [],
+  "source_manifests": [
+    "reports/g1_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e1_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/b6_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e2_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e3_seed1001_real_llm/Ours/agent/manifest.json"
+  ],
+  "trace_files": [
+    "raw_traces/g1_seed1001_real_llm/Ours/agent/G1/1001.json",
+    "raw_traces/e1_seed1001_real_llm/Ours/agent/E1/1001.json",
+    "raw_traces/b6_seed1001_real_llm/Ours/agent/B6/1001.json",
+    "raw_traces/e2_seed1001_real_llm/Ours/agent/E2/1001.json",
+    "raw_traces/e3_seed1001_real_llm/Ours/agent/E3/1001.json"
+  ]
+}

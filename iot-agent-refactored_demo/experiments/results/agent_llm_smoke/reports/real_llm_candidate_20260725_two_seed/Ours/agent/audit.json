@@ -1,0 +1,60 @@
+{
+  "run_id": "real_llm_candidate_20260725_two_seed",
+  "status": "pass",
+  "task_count": 10,
+  "scenario_count": 5,
+  "seed_count": 2,
+  "task_success_count": 10,
+  "all_backends_external_llm": true,
+  "backend_values": [
+    "external_llm"
+  ],
+  "provider_values": [
+    "openai"
+  ],
+  "model_values": [
+    "gpt-5.4-mini-2026-03-17"
+  ],
+  "no_heuristic_fallback": true,
+  "agent_api_call_count": 18,
+  "agent_usage_totals": {
+    "input_tokens": 15273,
+    "output_tokens": 3204,
+    "total_tokens": 18477
+  },
+  "latency_summary_ms": {
+    "count": 18,
+    "mean": 5235.377446864732,
+    "min": 2874.848500126973,
+    "max": 12729.71533308737
+  },
+  "clarification_trace_count": 6,
+  "action_trace_count": 4,
+  "failure_type_counts": {},
+  "failed_attempts": [
+    {
+      "scenario_id": "B6",
+      "seed": 1002,
+      "run_id": "b6_seed1002_real_llm",
+      "trace_file": "raw_traces/b6_seed1002_real_llm/Ours/agent/B6/1002.json",
+      "manifest_file": "reports/b6_seed1002_real_llm/Ours/agent/manifest.json",
+      "outcome": "failure",
+      "task_success": false,
+      "agent_backend": "external_llm",
+      "agent_failures": [],
+      "clarification_turns": 1
+    }
+  ],
+  "source_run_git_revisions": {
+    "g1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "b6_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e2_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e3_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "g1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "b6_seed1002_real_llm_retry1": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e2_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e3_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92"
+  }
+}

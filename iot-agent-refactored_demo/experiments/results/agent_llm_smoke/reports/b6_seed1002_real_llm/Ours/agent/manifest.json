@@ -1,0 +1,62 @@
+{
+  "run_id": "b6_seed1002_real_llm",
+  "system_id": "Ours",
+  "planner_mode": "agent",
+  "seed": 1002,
+  "scenario_count": 1,
+  "generated_at": "2026-07-25T19:27:30.847173+00:00",
+  "git_revision": "eec95c6213b2995d089984d77318faea3fc28f92",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "resolved_config": {
+    "system_id": "Ours",
+    "use_memory": true,
+    "use_structure": true,
+    "use_lifecycle": true,
+    "use_dynamic_confidence": true,
+    "use_governance": true,
+    "use_candidate_gate": true,
+    "use_conflict_handling": true,
+    "use_feature_absorption": true,
+    "use_ripple": true,
+    "use_split": true,
+    "use_resampling": true,
+    "use_content_aging": true,
+    "alpha_pos": 0.04,
+    "alpha_neg": 0.2,
+    "score_mode": "ours",
+    "top_k": 10,
+    "active_target_limit": 500,
+    "dormant_target_limit": 300,
+    "archived_target_limit": 200,
+    "planner_mode": "oracle",
+    "notes": []
+  },
+  "agent_backends": [
+    "external_llm"
+  ],
+  "agent_models": [
+    "gpt-5.4-mini-2026-03-17"
+  ],
+  "agent_providers": [
+    "openai"
+  ],
+  "agent_api_call_count": 1,
+  "agent_usage_totals": {
+    "input_tokens": 993,
+    "output_tokens": 501,
+    "total_tokens": 1494
+  },
+  "result_classification": "real_llm_smoke",
+  "trace_files": [
+    "raw_traces/b6_seed1002_real_llm/Ours/agent/B6/1002.json"
+  ],
+  "maintenance_trace_files": [
+    "raw_traces/b6_seed1002_real_llm/Ours/agent/B6/1002.maintenance.json"
+  ],
+  "failed_task_ids": [
+    "B6_1002"
+  ],
+  "metrics_file": "aggregated_metrics/b6_seed1002_real_llm/Ours/agent/metrics.json",
+  "per_scenario_file": "aggregated_metrics/b6_seed1002_real_llm/Ours/agent/per_scenario.csv"
+}

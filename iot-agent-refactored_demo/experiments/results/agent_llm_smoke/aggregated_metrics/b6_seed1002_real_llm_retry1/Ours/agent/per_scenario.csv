@@ -1,0 +1,2 @@
+scenario_id,seed,TSR,State TSR,task_success,action_success,clarification_success,memory_assertion_success,final_state_success,SRR,WDR,CB,PM,UAA,UC,MP,DMR,RRR,Estimated Prompt Tokens,end_to_end_latency_ms,maintenance_latency_ms,Estimated Maintenance Tokens
+B6,1002,1.0,1.0,1.0,1.0,,1.0,1.0,0.0,0.0,0.0,1.0,0.0,,1.0,0.0,,11.0,5655.2910001482815,0.0,0.0

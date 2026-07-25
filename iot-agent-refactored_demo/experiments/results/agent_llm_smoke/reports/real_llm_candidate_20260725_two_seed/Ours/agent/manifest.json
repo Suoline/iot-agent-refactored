@@ -1,0 +1,101 @@
+{
+  "run_id": "real_llm_candidate_20260725_two_seed",
+  "system_id": "Ours",
+  "planner_mode": "agent",
+  "seeds": [
+    1001,
+    1002
+  ],
+  "seed_count": 2,
+  "scenario_ids": [
+    "B6",
+    "E1",
+    "E2",
+    "E3",
+    "G1"
+  ],
+  "scenario_count": 5,
+  "task_count": 10,
+  "sampling_unit": "seed",
+  "generated_at": "2026-07-25T19:35:12.337693+00:00",
+  "git_revision": "eec95c6213b2995d089984d77318faea3fc28f92",
+  "source_run_git_revisions": {
+    "g1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e1_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "b6_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e2_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "e3_seed1001_real_llm": "f7ad9d41ffdf3248ff20d3e39cbf6bfda1207bbc",
+    "g1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e1_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "b6_seed1002_real_llm_retry1": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e2_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92",
+    "e3_seed1002_real_llm": "eec95c6213b2995d089984d77318faea3fc28f92"
+  },
+  "agent_backends": [
+    "external_llm"
+  ],
+  "agent_models": [
+    "gpt-5.4-mini-2026-03-17"
+  ],
+  "agent_providers": [
+    "openai"
+  ],
+  "agent_api_call_count": 18,
+  "agent_usage_totals": {
+    "input_tokens": 15273,
+    "output_tokens": 3204,
+    "total_tokens": 18477
+  },
+  "result_classification": "real_llm_candidate",
+  "confirmatory_ready": false,
+  "confirmatory_gaps": [
+    "真实 LLM Agent 仅覆盖 5 个 agent 场景，尚未达到论文计划中的 secondary N=20。",
+    "当前 two-seed candidate 的来源 run 包含 July 25, 2026 之前的单场景 candidate 与 July 25, 2026 当天新增第二 seed，仍属于扩量中的候选结果。",
+    "Oracle、baseline、ablation 的 formal_v2 是 31 个 oracle 场景，不能直接替代这 5 个真实 agent 场景结果。"
+  ],
+  "source_manifest_files": [
+    "reports/g1_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e1_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/b6_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e2_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/e3_seed1001_real_llm/Ours/agent/manifest.json",
+    "reports/g1_seed1002_real_llm/Ours/agent/manifest.json",
+    "reports/e1_seed1002_real_llm/Ours/agent/manifest.json",
+    "reports/b6_seed1002_real_llm_retry1/Ours/agent/manifest.json",
+    "reports/e2_seed1002_real_llm/Ours/agent/manifest.json",
+    "reports/e3_seed1002_real_llm/Ours/agent/manifest.json"
+  ],
+  "trace_files": [
+    "raw_traces/g1_seed1001_real_llm/Ours/agent/G1/1001.json",
+    "raw_traces/e1_seed1001_real_llm/Ours/agent/E1/1001.json",
+    "raw_traces/b6_seed1001_real_llm/Ours/agent/B6/1001.json",
+    "raw_traces/e2_seed1001_real_llm/Ours/agent/E2/1001.json",
+    "raw_traces/e3_seed1001_real_llm/Ours/agent/E3/1001.json",
+    "raw_traces/g1_seed1002_real_llm/Ours/agent/G1/1002.json",
+    "raw_traces/e1_seed1002_real_llm/Ours/agent/E1/1002.json",
+    "raw_traces/b6_seed1002_real_llm_retry1/Ours/agent/B6/1002.json",
+    "raw_traces/e2_seed1002_real_llm/Ours/agent/E2/1002.json",
+    "raw_traces/e3_seed1002_real_llm/Ours/agent/E3/1002.json"
+  ],
+  "failed_task_ids": [],
+  "failed_attempts": [
+    {
+      "scenario_id": "B6",
+      "seed": 1002,
+      "run_id": "b6_seed1002_real_llm",
+      "trace_file": "raw_traces/b6_seed1002_real_llm/Ours/agent/B6/1002.json",
+      "manifest_file": "reports/b6_seed1002_real_llm/Ours/agent/manifest.json",
+      "outcome": "failure",
+      "task_success": false,
+      "agent_backend": "external_llm",
+      "agent_failures": [],
+      "clarification_turns": 1
+    }
+  ],
+  "metrics_by_seed_file": "aggregated_metrics/real_llm_candidate_20260725_two_seed/Ours/agent/metrics.by_seed.json",
+  "metrics_by_scenario_file": "aggregated_metrics/real_llm_candidate_20260725_two_seed/Ours/agent/metrics.by_scenario.json",
+  "metrics_summary_file": "aggregated_metrics/real_llm_candidate_20260725_two_seed/Ours/agent/metrics.summary.json",
+  "per_scenario_file": "aggregated_metrics/real_llm_candidate_20260725_two_seed/Ours/agent/per_scenario.multi_seed.csv",
+  "audit_file": "reports/real_llm_candidate_20260725_two_seed/Ours/agent/audit.json",
+  "comparison_file": "reports/real_llm_candidate_20260725_two_seed/Ours/agent/comparison.json"
+}

@@ -1,0 +1,19 @@
+{
+  "date": "Saturday, July 25, 2026",
+  "status": "ok",
+  "provider": "openai",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "latency_ms": 4294.302667025477,
+  "has_usage_metadata": true,
+  "usage": {
+    "input_tokens": 29,
+    "output_tokens": 113,
+    "total_tokens": 142,
+    "input_token_details": {},
+    "output_token_details": {
+      "reasoning": 91
+    }
+  },
+  "raw_output_preview": "{\"actions\":[],\"should_ask_user\":true,\"reason\":\"smoke\"}",
+  "tool_call_count": 0
+}

@@ -13,7 +13,7 @@ from unittest import mock
 from experiments.memory.schemas import CandidateDevice, SearchResultPackage, UsageEvent
 from experiments.memory.service import MemoryService
 from experiments.metrics.core import aggregate_task_metrics, task_metrics
-from experiments.planners.agent_planner import AgentPlanner, AgentPlannerDecision
+from experiments.planners.agent_planner import AgentPlanner, AgentPlannerDecision, _build_plan_prompt
 from experiments.runner.batch_run import run_batch, run_batch_multi_seed
 from experiments.runner.scenario_loader import load_scenario
 from experiments.runner.single_run import run_agent_scenario
@@ -656,7 +656,12 @@ class AgentPlannerTest(unittest.TestCase):
             return self.response
 
     @staticmethod
-    def _make_package(*, task_type: str = "control", candidates: list[dict] | None = None) -> SearchResultPackage:
+    def _make_package(
+        *,
+        task_type: str = "control",
+        candidates: list[dict] | None = None,
+        matched_memories: list[dict] | None = None,
+    ) -> SearchResultPackage:
         return SearchResultPackage(
             query="测试任务",
             task_type=task_type,
@@ -664,6 +669,7 @@ class AgentPlannerTest(unittest.TestCase):
                 CandidateDevice.model_validate(item)
                 for item in (candidates or [])
             ],
+            matched_memories=matched_memories or [],
         )
 
     def test_external_llm_plan_accepts_structured_single_action(self):
@@ -860,6 +866,59 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertTrue(decision.should_ask_user)
         self.assertEqual(decision.actions, [])
         self.assertEqual(decision.reason, "safety_multi_action_requires_confirmation")
+
+    def test_external_llm_prompt_marks_high_memory_worth_single_safety_action_as_directly_executable(self):
+        package = self._make_package(
+            task_type="safety",
+            candidates=[
+                {
+                    "entity_id": "lock.front_door",
+                    "name": "大门门锁",
+                    "score": 0.92,
+                    "confidence": 0.95,
+                    "entity_type": "lock",
+                    "available_services": ["lock.lock", "lock.unlock"],
+                    "matched_memories": [
+                        {
+                            "memory_id": "b6_sleep_lock_pref",
+                            "memory_type": "preference",
+                            "text": "用户睡觉前希望锁上大门门锁",
+                            "score": 0.92,
+                            "raw_confidence": 0.90,
+                            "effective_confidence": 0.90,
+                            "memory_worth": 0.92,
+                            "system_status": "active",
+                            "true_status": "active",
+                            "runtime_status": "active",
+                            "layer": "active",
+                            "in_usable_set": True,
+                            "in_grounding_set": True,
+                        }
+                    ],
+                }
+            ],
+            matched_memories=[
+                {
+                    "memory_id": "b6_sleep_lock_pref",
+                    "memory_type": "preference",
+                    "text": "用户睡觉前希望锁上大门门锁",
+                    "score": 0.92,
+                    "raw_confidence": 0.90,
+                    "effective_confidence": 0.90,
+                    "memory_worth": 0.92,
+                    "system_status": "active",
+                    "true_status": "active",
+                    "runtime_status": "active",
+                    "layer": "active",
+                    "in_usable_set": True,
+                    "in_grounding_set": True,
+                }
+            ],
+        )
+        prompt = _build_plan_prompt("睡觉了", package)
+        self.assertIn('"direct_execution_allowed": true', prompt)
+        self.assertIn('"entity_id": "lock.front_door"', prompt)
+        self.assertIn("不要额外澄清", prompt)
 
     def test_external_llm_parse_failure_falls_back_with_failure_type(self):
         stub = self._StubClient(response={"raw_output": "先开灯，然后我来执行。"})

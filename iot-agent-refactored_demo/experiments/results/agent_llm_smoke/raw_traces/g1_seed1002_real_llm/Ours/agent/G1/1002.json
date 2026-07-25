@@ -1,0 +1,121 @@
+{
+  "task_id": "G1_1002",
+  "scenario_id": "G1",
+  "seed": 1002,
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v1",
+  "planner_mode": "agent",
+  "agent_backend": "external_llm",
+  "agent_raw_outputs": [
+    "{\"actions\":[],\"should_ask_user\":true,\"reason\":\"“卧室灯”在候选中可对应卧室顶灯或卧室床头灯，目标不唯一，需要用户确认。\"}"
+  ],
+  "system_id": "Ours",
+  "task_type": "control",
+  "sim_time": "2026-01-01T09:00:00+08:00",
+  "steps": [
+    {
+      "step_id": "G1_01",
+      "stage": "planning",
+      "query": "开卧室灯",
+      "retrieved_memories": [],
+      "retrieval_latency_ms": 0.0
+    }
+  ],
+  "chosen_action": null,
+  "chosen_actions": [],
+  "clarification_turns": 1,
+  "should_ask_user": true,
+  "final_device_state": {},
+  "ground_truth_state": {},
+  "ground_truth_entity": null,
+  "preferred_action": null,
+  "assertion_results": [
+    {
+      "kind": "clarification",
+      "step_id": "G1_02",
+      "success": true,
+      "observed": {
+        "should_ask_user": true,
+        "clarification_turns": 1
+      }
+    },
+    {
+      "kind": "action",
+      "step_id": "G1_025",
+      "success": true,
+      "observed": {
+        "chosen_action": null,
+        "should_ask_user": true
+      }
+    },
+    {
+      "kind": "memory",
+      "step_id": "G1_03",
+      "success": true,
+      "expected": {
+        "selector": {
+          "memory_type": "alias",
+          "subject": "卧室灯",
+          "scope": "entity",
+          "entity_id": "light.bedroom_ceiling"
+        },
+        "absent": true
+      },
+      "observed": []
+    }
+  ],
+  "action_execution_results": [],
+  "action_success": true,
+  "clarification_success": true,
+  "memory_assertion_success": true,
+  "final_state_success": null,
+  "task_success": true,
+  "usage_events": [
+    {
+      "kind": "agent_output",
+      "text": "{\"actions\":[],\"should_ask_user\":true,\"reason\":\"“卧室灯”在候选中可对应卧室顶灯或卧室床头灯，目标不唯一，需要用户确认。\"}"
+    }
+  ],
+  "agent_structured_decisions": [
+    {
+      "step_id": "G1_01",
+      "actions": [],
+      "should_ask_user": true,
+      "reason": "“卧室灯”在候选中可对应卧室顶灯或卧室床头灯，目标不唯一，需要用户确认。",
+      "raw_model_output": "{\"actions\":[],\"should_ask_user\":true,\"reason\":\"“卧室灯”在候选中可对应卧室顶灯或卧室床头灯，目标不唯一，需要用户确认。\"}",
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider": "openai",
+      "tool_calls": [],
+      "backend": "external_llm"
+    }
+  ],
+  "agent_tool_calls": [],
+  "agent_usage_metadata": [
+    {
+      "step_id": "G1_01",
+      "input_tokens": 946,
+      "output_tokens": 136,
+      "total_tokens": 1082,
+      "input_token_details": {},
+      "output_token_details": {
+        "reasoning": 87
+      }
+    }
+  ],
+  "agent_latencies_ms": [
+    5067.64379190281
+  ],
+  "agent_failures": [],
+  "agent_model": "gpt-5.4-mini-2026-03-17",
+  "agent_provider": "openai",
+  "maintenance_events": [],
+  "memory_status_after": {},
+  "memory_records_after": [],
+  "outcome": "success",
+  "end_to_end_latency_ms": 6492.042666068301,
+  "maintenance_latency_ms": 0.0,
+  "estimated_maintenance_tokens": 0,
+  "estimated_prompt_tokens": 3,
+  "safety_relevant": false,
+  "safety_gated": false
+}

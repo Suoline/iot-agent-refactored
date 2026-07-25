@@ -179,9 +179,41 @@ def _extract_json_payload(raw_output: str) -> dict[str, Any]:
     raise ValueError("json_parse_failed")
 
 
+def _build_safety_execution_hint(package: SearchResultPackage) -> dict[str, Any]:
+    if package.task_type != "safety":
+        return {"direct_execution_allowed": False, "reason": "not_safety_task"}
+    if package.should_ask_user:
+        return {"direct_execution_allowed": False, "reason": package.ask_reason or "retrieval_requested_clarification"}
+    candidates = _best_candidates(package)
+    if not candidates:
+        return {"direct_execution_allowed": False, "reason": "no_candidate_devices"}
+    top = candidates[0]
+    if len(candidates) > 1 and (top.score - candidates[1].score) < 0.10:
+        return {"direct_execution_allowed": False, "reason": "ambiguous_top_candidates"}
+    high_worth_memories = [
+        item for item in top.matched_memories
+        if item.in_usable_set and item.memory_worth > 0.80 and item.system_status == "active"
+    ]
+    if not high_worth_memories:
+        return {"direct_execution_allowed": False, "reason": "missing_high_memory_worth_grounding"}
+    single_action_services = [service for service in top.available_services if service.startswith("lock.")]
+    if not single_action_services:
+        return {"direct_execution_allowed": False, "reason": "no_lock_service_grounding"}
+    return {
+        "direct_execution_allowed": True,
+        "reason": "single_action_high_memory_worth_grounding",
+        "entity_id": top.entity_id,
+        "entity_type": top.entity_type,
+        "available_services": single_action_services,
+        "memory_ids": [item.memory_id for item in high_worth_memories],
+        "max_memory_worth": max(item.memory_worth for item in high_worth_memories),
+    }
+
+
 def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
     usable = [item for item in package.matched_memories if item.in_usable_set]
     grounding = [item for item in package.matched_memories if item.in_usable_set or item.in_grounding_set]
+    safety_execution_hint = _build_safety_execution_hint(package)
     prompt_payload = {
         "task": task,
         "task_type": package.task_type,
@@ -192,6 +224,7 @@ def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
         "usable_memories": [item.model_dump(mode="json") for item in usable],
         "grounding_memories": [item.model_dump(mode="json") for item in grounding],
         "retrieval_metadata": package.retrieval_metadata,
+        "safety_execution_hint": safety_execution_hint,
     }
     return (
         "你是实验环境中的 smart-home 规划器，只负责输出可审计的 JSON 计划，不能执行动作。\n"
@@ -199,8 +232,9 @@ def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
         "1. 只能使用 candidate_devices 里已有的 entity_id 和 available_services。\n"
         "2. 如果记忆检索结果本身要求澄清、候选不唯一、或安全风险无法确认，返回 should_ask_user=true 且 actions=[]。\n"
         "3. task_type=safety 时，涉及 routine.run、多动作联动、或缺少强 grounding 的高风险动作，优先澄清。\n"
-        "4. 不要输出额外解释文字，只返回一个 JSON 对象。\n"
-        "5. JSON schema: "
+        "4. 但如果 safety_execution_hint.direct_execution_allowed=true，且你能给出唯一、单个、与 available_services 精确匹配的动作，则应直接返回该动作，不要额外澄清。\n"
+        "5. 不要输出额外解释文字，只返回一个 JSON 对象。\n"
+        "6. JSON schema: "
         '{"actions":[{"service":"...", "entity_id":"...", "args":{}}], "should_ask_user": false, "reason": "..."}\n'
         f"上下文如下：\n{json.dumps(prompt_payload, ensure_ascii=False, indent=2)}"
     )

@@ -1,0 +1,205 @@
+{
+  "CB": {
+    "count": 2,
+    "mean": 1.2,
+    "std": 0.0,
+    "min": 1.2,
+    "max": 1.2,
+    "ci_low": 1.2,
+    "ci_high": 1.2,
+    "sampling_unit": "seed"
+  },
+  "DMR": {
+    "count": 2,
+    "mean": 0.0,
+    "std": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "sampling_unit": "seed",
+    "aggregation": "pooled_numerator_denominator"
+  },
+  "ECE": {
+    "count": 2,
+    "mean": 0.22999299386085537,
+    "std": 0.0,
+    "min": 0.22999299386085537,
+    "max": 0.22999299386085537,
+    "ci_low": 0.22999299386085537,
+    "ci_high": 0.22999299386085537,
+    "sampling_unit": "seed"
+  },
+  "Estimated Context Efficiency": {
+    "count": 2,
+    "mean": 36.76470588235294,
+    "std": 0.0,
+    "min": 36.76470588235294,
+    "max": 36.76470588235294,
+    "ci_low": 36.76470588235294,
+    "ci_high": 36.76470588235294,
+    "sampling_unit": "seed"
+  },
+  "Estimated Maintenance Tokens": {
+    "count": 2,
+    "mean": 0.0,
+    "std": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "sampling_unit": "seed"
+  },
+  "Estimated Prompt Tokens": {
+    "count": 2,
+    "mean": 27.2,
+    "std": 0.0,
+    "min": 27.2,
+    "max": 27.2,
+    "ci_low": 27.2,
+    "ci_high": 27.2,
+    "sampling_unit": "seed"
+  },
+  "MP": {
+    "count": 2,
+    "mean": 0.4,
+    "std": 0.0,
+    "min": 0.4,
+    "max": 0.4,
+    "ci_low": 0.4,
+    "ci_high": 0.4,
+    "sampling_unit": "seed",
+    "aggregation": "pooled_numerator_denominator"
+  },
+  "PM": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "SRR": {
+    "count": 2,
+    "mean": 0.0,
+    "std": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "sampling_unit": "seed",
+    "aggregation": "pooled_numerator_denominator"
+  },
+  "State TSR": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "TSR": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "UAA": {
+    "count": 2,
+    "mean": 0.6666666666666666,
+    "std": 0.0,
+    "min": 0.6666666666666666,
+    "max": 0.6666666666666666,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 0.6666666666666666,
+    "sampling_unit": "seed"
+  },
+  "WDR": {
+    "count": 2,
+    "mean": 0.0,
+    "std": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "sampling_unit": "seed"
+  },
+  "action_success": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "clarification_success": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "end_to_end_latency_ms": {
+    "count": 2,
+    "mean": 11304.414954036474,
+    "std": 2610.500537371263,
+    "min": 8693.914416665211,
+    "max": 13914.915491407737,
+    "ci_low": 8693.914416665211,
+    "ci_high": 13914.915491407737,
+    "sampling_unit": "seed"
+  },
+  "final_state_success": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "maintenance_latency_ms": {
+    "count": 2,
+    "mean": 0.0,
+    "std": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "sampling_unit": "seed"
+  },
+  "memory_assertion_success": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  },
+  "task_success": {
+    "count": 2,
+    "mean": 1.0,
+    "std": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "sampling_unit": "seed"
+  }
+}
