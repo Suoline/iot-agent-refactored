@@ -3,6 +3,8 @@ from __future__ import annotations
 import csv
 import json
 import subprocess
+from dataclasses import asdict
+from datetime import datetime, timezone
 from statistics import mean, pstdev
 from pathlib import Path
 
@@ -104,9 +106,11 @@ def run_batch(
         "planner_mode": planner_mode,
         "seed": seed,
         "scenario_count": len(traces),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "git_revision": _git_revision(),
         "world_version": traces[0]["world_version"] if traces else None,
         "system_policy_version": traces[0].get("system_policy_version") if traces else None,
+        "resolved_config": asdict(system_config),
         "trace_files": [
             f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.json"
             for trace in traces
@@ -115,6 +119,7 @@ def run_batch(
             f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.maintenance.json"
             for trace in traces
         ],
+        "failed_task_ids": [trace["task_id"] for trace in traces if trace.get("outcome") != "success"],
         "metrics_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/metrics.json",
         "per_scenario_file": f"aggregated_metrics/{run_id}/{system_id}/{planner_mode}/per_scenario.csv",
     }

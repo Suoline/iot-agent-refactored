@@ -645,6 +645,13 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertEqual(loaded["scenario_id"], "A1")
         result = run_batch([scenario], seed=1001, results_root=Path("experiments/results"))
         self.assertIn("TSR", result["metrics"])
+        manifest_path = Path("experiments/results/reports/dev/Ours/oracle/manifest.json")
+        self.assertTrue(manifest_path.exists())
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertIn("generated_at", manifest)
+        self.assertIn("resolved_config", manifest)
+        self.assertIn("failed_task_ids", manifest)
+        self.assertIsInstance(manifest["failed_task_ids"], list)
 
     def test_registry_fallback_for_archived_alias(self):
         scenario = Path("experiments/scenarios/category_a/A6.yaml")
