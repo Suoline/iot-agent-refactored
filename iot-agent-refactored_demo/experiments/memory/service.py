@@ -251,6 +251,10 @@ class MemoryService:
             if entity_id:
                 grouped_candidates.setdefault(entity_id, []).append(matched)
 
+        global_constraints = sorted(
+            [item for item in matches if item.memory_type in {"preference", "routine", "reflection"}],
+            key=lambda item: (-item.score, item.memory_id),
+        )
         executable_matches = [item for item in matches if item.in_usable_set]
         clarification_only_matches = [
             item for item in matches
@@ -283,6 +287,7 @@ class MemoryService:
         return SearchResultPackage(
             query=query,
             candidate_devices=candidate_devices,
+            global_constraints=global_constraints,
             matched_memories=matches,
             should_ask_user=should_ask,
             ask_reason=ask_reason,

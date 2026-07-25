@@ -575,6 +575,66 @@ class MemoryServiceTest(unittest.TestCase):
         self.assertEqual(record.layer, "active")
         self.assertGreaterEqual(record.confidence, 0.70)
 
+    def test_search_populates_global_constraints(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_constraints.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "constraint_preference",
+                "memory_type": "preference",
+                "scope": "entity",
+                "subject": "睡前空调温度",
+                "predicate": "preferred_temperature",
+                "object": "26",
+                "entity_id": "climate.bedroom_ac",
+                "source": "user_explicit",
+                "half_life_days": 180,
+                "natural_text": "睡前空调温度偏好 26",
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "constraint_routine",
+                "memory_type": "routine",
+                "scope": "routine",
+                "subject": "睡前模式",
+                "predicate": "routine_name",
+                "object": "routine.sleep_mode",
+                "source": "user_explicit",
+                "half_life_days": 180,
+                "natural_text": "睡前模式",
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "constraint_reflection",
+                "memory_type": "reflection",
+                "scope": "entity",
+                "subject": "门锁失败反思",
+                "predicate": "future_rule",
+                "object": "下次先检查锁芯",
+                "entity_id": "lock.front_door",
+                "source": "execution_verification",
+                "half_life_days": 90,
+                "natural_text": "门锁失败反思",
+            },
+            now,
+        )
+        package = service.search("睡前 门锁", task_type="control", now=now)
+        self.assertTrue(package.global_constraints)
+        self.assertEqual(
+            {item.memory_type for item in package.global_constraints},
+            {"preference", "routine", "reflection"},
+        )
+
 
 class RunnerSmokeTest(unittest.TestCase):
     def test_batch_run_generates_metrics(self):
