@@ -25,29 +25,128 @@
       "confidence": 0.8,
       "source_authority": 0.65,
       "positive_hits": 6
-    },
-    {
-      "memory_id": "b5_new_habit",
-      "memory_type": "habit",
-      "scope": "entity",
-      "subject": "睡前空调温度",
-      "predicate": "prefers_temperature",
-      "object": "27",
-      "entity_id": "climate.bedroom_ac",
-      "source": "user_behavior",
-      "half_life_days": 90,
-      "natural_text": "最近用户睡前把空调设为27度",
-      "status": "candidate",
-      "confidence": 0.65,
-      "source_authority": 0.65,
-      "positive_hits": 4
     }
   ],
   "steps": [
     {
       "step_id": "B5_01",
       "type": "event",
-      "sim_time": "t0+10d 20:00",
+      "sim_time": "t0+1d 20:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "b5_new_habit",
+            "memory_type": "habit",
+            "scope": "entity",
+            "subject": "睡前空调温度",
+            "predicate": "prefers_temperature",
+            "object": "27",
+            "entity_id": "climate.bedroom_ac",
+            "source": "user_behavior",
+            "half_life_days": 90,
+            "natural_text": "最近用户睡前把空调设为27度"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "B5_02",
+      "type": "event",
+      "sim_time": "t0+2d 20:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "b5_new_habit",
+            "memory_type": "habit",
+            "scope": "entity",
+            "subject": "睡前空调温度",
+            "predicate": "prefers_temperature",
+            "object": "27",
+            "entity_id": "climate.bedroom_ac",
+            "source": "user_behavior",
+            "half_life_days": 90,
+            "natural_text": "最近用户睡前把空调设为27度"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "B5_03",
+      "type": "event",
+      "sim_time": "t0+4d 20:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "b5_new_habit",
+            "memory_type": "habit",
+            "scope": "entity",
+            "subject": "睡前空调温度",
+            "predicate": "prefers_temperature",
+            "object": "27",
+            "entity_id": "climate.bedroom_ac",
+            "source": "user_behavior",
+            "half_life_days": 90,
+            "natural_text": "最近用户睡前把空调设为27度"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "B5_04",
+      "type": "event",
+      "sim_time": "t0+5d 20:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "b5_new_habit",
+            "memory_type": "habit",
+            "scope": "entity",
+            "subject": "睡前空调温度",
+            "predicate": "prefers_temperature",
+            "object": "27",
+            "entity_id": "climate.bedroom_ac",
+            "source": "user_behavior",
+            "half_life_days": 90,
+            "natural_text": "最近用户睡前把空调设为27度"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "B5_05",
+      "type": "event",
+      "sim_time": "t0+7d 20:00",
+      "kind": "behavior_observation",
+      "payload": {
+        "memory_ops": [
+          {
+            "op": "add_candidate",
+            "memory_id": "b5_new_habit",
+            "memory_type": "habit",
+            "scope": "entity",
+            "subject": "睡前空调温度",
+            "predicate": "prefers_temperature",
+            "object": "27",
+            "entity_id": "climate.bedroom_ac",
+            "source": "user_behavior",
+            "half_life_days": 90,
+            "natural_text": "最近用户睡前把空调设为27度"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "B5_06",
+      "type": "event",
+      "sim_time": "t0+7d 20:05",
       "kind": "behavior_observation",
       "payload": {
         "memory_ops": [
@@ -59,14 +158,14 @@
       }
     },
     {
-      "step_id": "B5_02",
+      "step_id": "B5_07",
       "type": "event",
-      "sim_time": "t0+10d 20:05",
+      "sim_time": "t0+7d 20:10",
       "kind": "maintenance",
       "payload": {}
     },
     {
-      "step_id": "B5_03",
+      "step_id": "B5_08",
       "type": "expect_memory",
       "selector": {
         "memory_id": "b5_old_habit"
@@ -76,7 +175,7 @@
       }
     },
     {
-      "step_id": "B5_04",
+      "step_id": "B5_09",
       "type": "expect_memory",
       "selector": {
         "memory_id": "b5_new_habit"
@@ -86,9 +185,9 @@
       }
     },
     {
-      "step_id": "B5_05",
+      "step_id": "B5_10",
       "type": "say",
-      "sim_time": "t0+11d 22:00",
+      "sim_time": "t0+8d 22:00",
       "text": "睡觉了",
       "oracle_input": {
         "task_type": "control",
@@ -104,7 +203,7 @@
       }
     },
     {
-      "step_id": "B5_06",
+      "step_id": "B5_11",
       "type": "expect_action",
       "assert": {
         "service": "climate.set_temperature",

@@ -38,10 +38,31 @@ class MemoryService:
             existing = op.get("memory_id") and self.get(op["memory_id"])
             if existing and kind == "add_candidate":
                 existing.positive_hits += 1
+                existing.observed_at = now
+                timestamps = list(existing.structured_payload.get("observation_timestamps", []))
+                missing = max(0, existing.positive_hits - len(timestamps) - 1)
+                if missing:
+                    timestamps = [existing.created_at.isoformat()] * missing + timestamps
+                timestamps.append(now.isoformat())
+                existing.structured_payload = {
+                    **existing.structured_payload,
+                    "observation_timestamps": sorted(timestamps),
+                }
                 existing.updated_at = now
                 self.upsert(existing, event_type="add_candidate_update")
                 return existing
-            record = self._record_from_op(op, now, active=kind == "add_active")
+            payload = dict(op)
+            if kind == "add_candidate":
+                payload.setdefault("observed_at", now)
+                if payload.get("source") == "user_behavior":
+                    payload.setdefault("positive_hits", 1)
+                    timestamps = list(payload.get("structured_payload", {}).get("observation_timestamps", []))
+                    timestamps.append(now.isoformat())
+                    payload["structured_payload"] = {
+                        **payload.get("structured_payload", {}),
+                        "observation_timestamps": timestamps,
+                    }
+            record = self._record_from_op(payload, now, active=kind == "add_active")
             self.upsert(record, event_type=kind)
             return record
         if kind == "delete":
@@ -87,7 +108,7 @@ class MemoryService:
                     raise ValueError("merge rejected by feature absorption guard")
             merged = self._record_from_op(op["merged_record"], now, active=True)
             merged.merged_from = [item.memory_id for item in records]
-            merged.coverage_proof = op.get("coverage_proof")
+            merged.coverage_proof = self._normalize_coverage_proof(op.get("coverage_proof"), source_ids)
             if merged.coverage_proof is None:
                 merged.needs_review = True
             merged.evidence_refs = self._union_evidence_refs(records, merged.evidence_refs)
@@ -341,6 +362,44 @@ class MemoryService:
             rows.append(payload)
         return rows
 
+    def _normalize_coverage_proof(self, proof: Any, source_ids: list[str]) -> dict[str, Any] | None:
+        if not isinstance(proof, dict):
+            return None
+        if proof.get("status") != "provided":
+            return None
+        proof_sources = list(proof.get("sources") or source_ids)
+        if sorted(proof_sources) != sorted(source_ids):
+            return None
+        return {**proof, "sources": list(source_ids)}
+
+    def _candidate_observation_times(self, record: MemoryRecord) -> list[datetime]:
+        raw_timestamps = list(record.structured_payload.get("observation_timestamps", []))
+        timestamps: list[datetime] = []
+        for raw in raw_timestamps:
+            if isinstance(raw, str):
+                timestamps.append(datetime.fromisoformat(raw))
+            elif isinstance(raw, datetime):
+                timestamps.append(raw)
+        if timestamps:
+            return sorted(timestamps)
+        base = record.observed_at or record.created_at
+        return [base for _ in range(max(0, record.positive_hits))]
+
+    def _record_candidate_observation(self, record: MemoryRecord, now: datetime):
+        timestamps = [dt.isoformat() for dt in self._candidate_observation_times(record)]
+        timestamps.append(now.isoformat())
+        record.structured_payload = {
+            **record.structured_payload,
+            "observation_timestamps": sorted(timestamps),
+        }
+
+    def _has_recent_support(self, record: MemoryRecord, *, min_hits: int, window_days: int) -> bool:
+        timestamps = self._candidate_observation_times(record)
+        if len(timestamps) < min_hits:
+            return False
+        recent = timestamps[-min_hits:]
+        return (recent[-1] - recent[0]).total_seconds() <= window_days * 86400
+
     def _propagate_ripple(self, root_id: str, now: datetime):
         if not self.config.get("use_ripple", True):
             return []
@@ -510,14 +569,30 @@ class MemoryService:
     def _promote_candidates(self, record: MemoryRecord):
         if record.status != "candidate":
             return
-        if record.memory_type == "habit" and record.positive_hits >= 3:
+        if record.memory_type in {"alias", "routine"} and record.source in {"user_explicit", "user_correction"}:
             record.status = "active"
             record.layer = "active"
-            record.confidence = max(record.confidence, 0.80)
-        if record.memory_type == "preference" and record.positive_hits >= 3:
+            record.confidence = max(record.confidence, source_confidence(record.source))
+            return
+        if record.memory_type == "reflection" and record.source == "execution_verification":
             record.status = "active"
             record.layer = "active"
-            record.confidence = max(record.confidence, 0.80)
+            record.confidence = max(record.confidence, 0.70)
+            return
+        if record.memory_type == "habit":
+            if record.negative_hits == 0 and self._has_recent_support(record, min_hits=3, window_days=7):
+                record.status = "active"
+                record.layer = "active"
+                record.confidence = max(record.confidence, 0.80)
+            return
+        if record.memory_type == "preference":
+            confirmed = record.source in {"user_explicit", "user_correction"} or bool(
+                record.structured_payload.get("confirmed_by_user", False)
+            )
+            if confirmed or (record.negative_hits == 0 and self._has_recent_support(record, min_hits=3, window_days=7)):
+                record.status = "active"
+                record.layer = "active"
+                record.confidence = max(record.confidence, 0.80 if not confirmed else source_confidence(record.source))
 
     def _apply_dead_memory_policy(self, record: MemoryRecord, now: datetime):
         if not self.config.get("use_governance", True):

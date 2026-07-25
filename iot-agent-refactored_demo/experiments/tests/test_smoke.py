@@ -477,8 +477,103 @@ class MemoryServiceTest(unittest.TestCase):
 
         merged = service.get("merge_ok")
         self.assertEqual(sorted(merged.merged_from), ["merge_a", "merge_b"])
-        self.assertEqual(merged.coverage_proof["status"], "provided")
+        self.assertEqual(merged.coverage_proof, {"status": "provided", "sources": ["merge_a", "merge_b"]})
         self.assertEqual(len(merged.evidence_refs), 3)
+
+    def test_merge_without_full_coverage_proof_rolls_back_sources(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_merge_invalid.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "merge_invalid_a",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "小书灯",
+                "predicate": "refers_to",
+                "object": "light.study_desk",
+                "entity_id": "light.study_desk",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "小书灯指书房台灯",
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_active",
+                "memory_id": "merge_invalid_b",
+                "memory_type": "alias",
+                "scope": "entity",
+                "subject": "小书灯",
+                "predicate": "refers_to",
+                "object": "light.study_desk",
+                "entity_id": "light.study_desk",
+                "source": "user_explicit",
+                "half_life_days": 365,
+                "natural_text": "另一会话也说小书灯",
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "merge",
+                "source_ids": ["merge_invalid_a", "merge_invalid_b"],
+                "coverage_proof": {"status": "provided", "sources": ["merge_invalid_a"]},
+                "merged_record": {
+                    "memory_id": "merge_invalid_ok",
+                    "memory_type": "alias",
+                    "scope": "entity",
+                    "subject": "小书灯",
+                    "predicate": "refers_to",
+                    "object": "light.study_desk",
+                    "entity_id": "light.study_desk",
+                    "source": "user_explicit",
+                    "half_life_days": 365,
+                    "natural_text": "小书灯指书房台灯",
+                },
+            },
+            now,
+        )
+
+        merged = service.get("merge_invalid_ok")
+        self.assertIsNone(merged.coverage_proof)
+        result = service.maintenance(now + timedelta(days=1))
+        self.assertIn("merge_invalid_ok", result["rollback_merge_ids"])
+        self.assertEqual(service.get("merge_invalid_ok").status, "deleted")
+        self.assertEqual(service.get("merge_invalid_a").status, "active")
+        self.assertEqual(service.get("merge_invalid_b").status, "active")
+
+    def test_reflection_candidate_promotes_on_maintenance(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_reflection.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_candidate",
+                "memory_id": "reflection_candidate",
+                "memory_type": "reflection",
+                "scope": "entity",
+                "subject": "门锁失败反思",
+                "predicate": "future_rule",
+                "object": "下次先提醒锁芯异常",
+                "entity_id": "lock.front_door",
+                "source": "execution_verification",
+                "half_life_days": 90,
+                "natural_text": "门锁 jam 后下次不要盲目重试",
+            },
+            now,
+        )
+        service.maintenance(now)
+        record = service.get("reflection_candidate")
+        self.assertEqual(record.status, "active")
+        self.assertEqual(record.layer, "active")
+        self.assertGreaterEqual(record.confidence, 0.70)
 
 
 class RunnerSmokeTest(unittest.TestCase):
@@ -499,6 +594,93 @@ class RunnerSmokeTest(unittest.TestCase):
         scenario = Path("experiments/scenarios/category_b/B2.yaml")
         result = run_batch([scenario], seed=1001, results_root=Path("experiments/results"), run_id="test_b2")
         self.assertEqual(result["metrics"]["TSR"], 1.0)
+
+    def test_habit_candidate_promotion_requires_recent_support_and_no_counterexample(self):
+        db_path = Path(tempfile.gettempdir()) / "memory_service_habit_promotion.sqlite3"
+        if db_path.exists():
+            db_path.unlink()
+        service = MemoryService(db_path)
+        now = HAOracle().current_time
+        service.apply_memory_op(
+            {
+                "op": "add_candidate",
+                "memory_id": "habit_old_window",
+                "memory_type": "habit",
+                "scope": "entity",
+                "subject": "睡前空调温度",
+                "predicate": "prefers_temperature",
+                "object": "24",
+                "entity_id": "climate.bedroom_ac",
+                "source": "user_behavior",
+                "half_life_days": 90,
+                "natural_text": "用户睡前把空调设为24度",
+                "positive_hits": 3,
+                "structured_payload": {
+                    "observation_timestamps": [
+                        "2026-01-01T20:00:00+08:00",
+                        "2026-01-05T20:00:00+08:00",
+                        "2026-01-09T20:00:00+08:00",
+                    ]
+                },
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_candidate",
+                "memory_id": "habit_counterexample",
+                "memory_type": "habit",
+                "scope": "entity",
+                "subject": "睡前空调温度",
+                "predicate": "prefers_temperature",
+                "object": "25",
+                "entity_id": "climate.bedroom_ac",
+                "source": "user_behavior",
+                "half_life_days": 90,
+                "natural_text": "用户睡前把空调设为25度",
+                "positive_hits": 3,
+                "negative_hits": 1,
+                "structured_payload": {
+                    "observation_timestamps": [
+                        "2026-01-01T20:00:00+08:00",
+                        "2026-01-03T20:00:00+08:00",
+                        "2026-01-05T20:00:00+08:00",
+                    ]
+                },
+            },
+            now,
+        )
+        service.apply_memory_op(
+            {
+                "op": "add_candidate",
+                "memory_id": "habit_promotable",
+                "memory_type": "habit",
+                "scope": "entity",
+                "subject": "睡前空调温度",
+                "predicate": "prefers_temperature",
+                "object": "26",
+                "entity_id": "climate.bedroom_ac",
+                "source": "user_behavior",
+                "half_life_days": 90,
+                "natural_text": "用户睡前把空调设为26度",
+                "positive_hits": 3,
+                "structured_payload": {
+                    "observation_timestamps": [
+                        "2026-01-01T20:00:00+08:00",
+                        "2026-01-03T20:00:00+08:00",
+                        "2026-01-05T20:00:00+08:00",
+                    ]
+                },
+            },
+            now,
+        )
+        service.maintenance(now + timedelta(days=8))
+        old_window = service.get("habit_old_window")
+        counterexample = service.get("habit_counterexample")
+        promotable = service.get("habit_promotable")
+        self.assertEqual(old_window.status, "candidate")
+        self.assertEqual(counterexample.status, "candidate")
+        self.assertEqual(promotable.status, "active")
 
     def test_revise_and_merge_paths(self):
         scenarios = [
