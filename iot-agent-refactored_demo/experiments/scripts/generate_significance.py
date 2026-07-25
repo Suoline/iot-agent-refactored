@@ -4,6 +4,7 @@ import json
 import random
 import sys
 from pathlib import Path
+from math import comb, sqrt
 from statistics import mean
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -42,6 +43,43 @@ def _bootstrap_mean_ci(values: list[float], *, samples: int = 1000) -> tuple[flo
     return mean(values), _percentile(means, 0.025), _percentile(means, 0.975)
 
 
+def _sample_std(values: list[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    avg = mean(values)
+    return sqrt(sum((value - avg) ** 2 for value in values) / (len(values) - 1))
+
+
+def _cohen_d(values: list[float]) -> float:
+    sd = _sample_std(values)
+    if sd == 0.0:
+        return 0.0
+    return mean(values) / sd
+
+
+def _sign_test_p_value(values: list[float]) -> float:
+    non_zero = [value for value in values if value != 0.0]
+    count = len(non_zero)
+    if count == 0:
+        return 1.0
+    positive = sum(1 for value in non_zero if value > 0.0)
+    lo = min(positive, count - positive)
+    tail = sum(comb(count, index) for index in range(lo + 1)) / (2 ** count)
+    return min(1.0, 2.0 * tail)
+
+
+def _holm_adjust(metric_rows: list[tuple[str, float]]) -> dict[str, float]:
+    adjusted: dict[str, float] = {}
+    ordered = sorted(metric_rows, key=lambda item: (item[1], item[0]))
+    total = len(ordered)
+    running = 0.0
+    for index, (metric, p_value) in enumerate(ordered):
+        holm_value = min(1.0, (total - index) * p_value)
+        running = max(running, holm_value)
+        adjusted[metric] = running
+    return adjusted
+
+
 def _load_by_seed(path: Path) -> dict[str, dict]:
     return _load_json(path)
 
@@ -59,15 +97,25 @@ def _compare_run(run_id: str, system_id: str, planner_mode: str) -> dict | None:
         return None
     metrics = {}
     metric_names = list(next(iter(other.values())).keys())
+    metric_p_values: list[tuple[str, float]] = []
+    metric_payloads: dict[str, dict] = {}
     for metric in metric_names:
         deltas = [other[seed][metric] - ours[seed][metric] for seed in common]
         mean_delta, ci_low, ci_high = _bootstrap_mean_ci(deltas)
-        metrics[metric] = {
+        p_value = _sign_test_p_value(deltas)
+        metric_p_values.append((metric, p_value))
+        metric_payloads[metric] = {
             "paired_count": len(common),
             "delta_mean_vs_ours": mean_delta,
             "delta_ci_low": ci_low,
             "delta_ci_high": ci_high,
+            "cohen_d": _cohen_d(deltas),
+            "p_value": p_value,
         }
+    holm_adjusted = _holm_adjust(metric_p_values)
+    for metric, payload in metric_payloads.items():
+        payload["holm_adjusted_p"] = holm_adjusted.get(metric, 1.0)
+        metrics[metric] = payload
     return {
         "run_id": run_id,
         "system_id": system_id,

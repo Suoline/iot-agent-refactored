@@ -80,7 +80,17 @@ def _significance_table(path: Path) -> str:
     if not path.exists():
         return "当前没有比较型统计摘要。"
     rows = _load_json(path)
-    header = ["run_id", "system_id", "planner_mode", "TSR_delta_vs_ours", "WDR_delta_vs_ours", "CB_delta_vs_ours", "ECE_delta_vs_ours"]
+    header = [
+        "run_id",
+        "system_id",
+        "planner_mode",
+        "TSR_delta_vs_ours",
+        "TSR_cohen_d",
+        "TSR_holm_p",
+        "WDR_delta_vs_ours",
+        "CB_delta_vs_ours",
+        "ECE_delta_vs_ours",
+    ]
     lines = [
         "| " + " | ".join(header) + " |",
         "| " + " | ".join(["---"] * len(header)) + " |",
@@ -95,6 +105,8 @@ def _significance_table(path: Path) -> str:
                     row["system_id"],
                     row["planner_mode"],
                     f"{metrics.get('TSR', {}).get('delta_mean_vs_ours', 0.0):.4f}",
+                    f"{metrics.get('TSR', {}).get('cohen_d', 0.0):.4f}",
+                    f"{metrics.get('TSR', {}).get('holm_adjusted_p', 1.0):.4f}",
                     f"{metrics.get('WDR', {}).get('delta_mean_vs_ours', 0.0):.4f}",
                     f"{metrics.get('CB', {}).get('delta_mean_vs_ours', 0.0):.4f}",
                     f"{metrics.get('ECE', {}).get('delta_mean_vs_ours', 0.0):.4f}",

@@ -1042,6 +1042,7 @@ class RunnerSmokeTest(unittest.TestCase):
         text = report.read_text(encoding="utf-8")
         self.assertIn("实验结果摘要", text)
         self.assertIn("Ours 结果概览", text)
+        self.assertIn("TSR_cohen_d", text)
 
     def test_generate_statistics_outputs(self):
         subprocess.run(
@@ -1079,6 +1080,11 @@ class RunnerSmokeTest(unittest.TestCase):
         )
         out_path = Path("experiments/results/reports/dev/significance_summary.json")
         self.assertTrue(out_path.exists())
+        payload = json.loads(out_path.read_text(encoding="utf-8"))
+        self.assertTrue(payload)
+        first_metrics = payload[0]["metrics"]
+        self.assertIn("cohen_d", first_metrics["TSR"])
+        self.assertIn("holm_adjusted_p", first_metrics["TSR"])
 
     def test_prompt_tokens_nonzero_in_main_run(self):
         result = run_batch(
