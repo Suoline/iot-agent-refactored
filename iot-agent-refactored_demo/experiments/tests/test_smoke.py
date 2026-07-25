@@ -8,12 +8,15 @@ from datetime import timedelta
 from pathlib import Path
 import subprocess
 import sys
+from unittest import mock
 
-from experiments.memory.schemas import UsageEvent
+from experiments.memory.schemas import CandidateDevice, SearchResultPackage, UsageEvent
 from experiments.memory.service import MemoryService
 from experiments.metrics.core import aggregate_task_metrics, task_metrics
+from experiments.planners.agent_planner import AgentPlanner, AgentPlannerDecision
 from experiments.runner.batch_run import run_batch, run_batch_multi_seed
 from experiments.runner.scenario_loader import load_scenario
+from experiments.runner.single_run import run_agent_scenario
 from experiments.world_model.ha_oracle import HAOracle
 
 
@@ -637,6 +640,298 @@ class MemoryServiceTest(unittest.TestCase):
             {item.memory_type for item in package.global_constraints},
             {"preference", "routine", "reflection"},
         )
+
+
+class AgentPlannerTest(unittest.TestCase):
+    class _StubClient:
+        def __init__(self, response=None, exc: Exception | None = None):
+            self.response = response or {}
+            self.exc = exc
+            self.prompts: list[str] = []
+
+        def invoke(self, prompt: str):
+            self.prompts.append(prompt)
+            if self.exc is not None:
+                raise self.exc
+            return self.response
+
+    @staticmethod
+    def _make_package(*, task_type: str = "control", candidates: list[dict] | None = None) -> SearchResultPackage:
+        return SearchResultPackage(
+            query="测试任务",
+            task_type=task_type,
+            candidate_devices=[
+                CandidateDevice.model_validate(item)
+                for item in (candidates or [])
+            ],
+        )
+
+    def test_external_llm_plan_accepts_structured_single_action(self):
+        stub = self._StubClient(
+            response={
+                "raw_output": json.dumps(
+                    {
+                        "actions": [
+                            {
+                                "service": "light.turn_on",
+                                "entity_id": "light.study_desk",
+                                "args": {},
+                            }
+                        ],
+                        "should_ask_user": False,
+                        "reason": "single_device_match",
+                    },
+                    ensure_ascii=False,
+                ),
+                "tool_calls": [{"name": "plan_only", "args": {}}],
+                "usage": {"total_tokens": 42},
+                "model": "stub-model",
+                "provider": "stub-provider",
+                "latency_ms": 12.5,
+            }
+        )
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            candidates=[
+                {
+                    "entity_id": "light.study_desk",
+                    "name": "书房台灯",
+                    "score": 0.92,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "capabilities": ["on_off"],
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                    "current_state": {"state": "off", "attributes": {}},
+                }
+            ]
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "打开书房台灯")
+        self.assertEqual(decision.backend, "external_llm")
+        self.assertEqual(decision.action["service"], "light.turn_on")
+        self.assertEqual(decision.model, "stub-model")
+        self.assertEqual(decision.provider, "stub-provider")
+        self.assertEqual(decision.tool_calls[0]["name"], "plan_only")
+        self.assertEqual(decision.usage["total_tokens"], 42)
+        self.assertIn("candidate_devices", stub.prompts[0])
+
+    def test_external_llm_plan_preserves_multi_actions_for_non_safety_tasks(self):
+        stub = self._StubClient(
+            response={
+                "raw_output": json.dumps(
+                    {
+                        "actions": [
+                            {
+                                "service": "light.turn_off",
+                                "entity_id": "light.living_ceiling",
+                                "args": {},
+                            },
+                            {
+                                "service": "light.turn_on",
+                                "entity_id": "light.living_ambient",
+                                "args": {},
+                            },
+                        ],
+                        "should_ask_user": False,
+                        "reason": "movie_mode_steps",
+                    },
+                    ensure_ascii=False,
+                ),
+                "model": "stub-model",
+                "provider": "stub-provider",
+            }
+        )
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            candidates=[
+                {
+                    "entity_id": "light.living_ceiling",
+                    "name": "客厅顶灯",
+                    "score": 0.91,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                },
+                {
+                    "entity_id": "light.living_ambient",
+                    "name": "客厅氛围灯",
+                    "score": 0.88,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                },
+            ]
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "定义观影模式")
+        self.assertEqual(decision.backend, "external_llm")
+        self.assertEqual(len(decision.actions), 2)
+        self.assertFalse(decision.should_ask_user)
+
+    def test_external_llm_plan_honors_model_clarification(self):
+        stub = self._StubClient(
+            response={
+                "raw_output": json.dumps(
+                    {
+                        "actions": [],
+                        "should_ask_user": True,
+                        "reason": "room_has_multiple_lights",
+                    },
+                    ensure_ascii=False,
+                ),
+            }
+        )
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            candidates=[
+                {
+                    "entity_id": "light.bedroom_ceiling",
+                    "name": "卧室顶灯",
+                    "score": 0.81,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                },
+                {
+                    "entity_id": "light.bedroom_bedside",
+                    "name": "卧室床头灯",
+                    "score": 0.79,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                },
+            ]
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "开卧室灯")
+        self.assertTrue(decision.should_ask_user)
+        self.assertEqual(decision.backend, "external_llm")
+        self.assertEqual(decision.reason, "room_has_multiple_lights")
+
+    def test_external_llm_plan_safety_multi_action_is_gated(self):
+        stub = self._StubClient(
+            response={
+                "raw_output": json.dumps(
+                    {
+                        "actions": [
+                            {
+                                "service": "light.turn_off",
+                                "entity_id": "light.bedroom_ceiling",
+                                "args": {},
+                            },
+                            {
+                                "service": "lock.lock",
+                                "entity_id": "lock.front_door",
+                                "args": {},
+                            },
+                        ],
+                        "should_ask_user": False,
+                        "reason": "sleep_mode",
+                    },
+                    ensure_ascii=False,
+                ),
+            }
+        )
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            task_type="safety",
+            candidates=[
+                {
+                    "entity_id": "light.bedroom_ceiling",
+                    "name": "卧室顶灯",
+                    "score": 0.85,
+                    "confidence": 0.95,
+                    "entity_type": "light",
+                    "available_services": ["light.turn_on", "light.turn_off"],
+                },
+                {
+                    "entity_id": "lock.front_door",
+                    "name": "大门门锁",
+                    "score": 0.84,
+                    "confidence": 0.95,
+                    "entity_type": "lock",
+                    "available_services": ["lock.lock", "lock.unlock"],
+                },
+            ],
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "睡前模式")
+        self.assertEqual(decision.backend, "external_llm")
+        self.assertTrue(decision.should_ask_user)
+        self.assertEqual(decision.actions, [])
+        self.assertEqual(decision.reason, "safety_multi_action_requires_confirmation")
+
+    def test_external_llm_parse_failure_falls_back_with_failure_type(self):
+        stub = self._StubClient(response={"raw_output": "先开灯，然后我来执行。"})
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            candidates=[
+                {
+                    "entity_id": "light.study_desk",
+                    "name": "书房台灯",
+                    "score": 0.92,
+                    "confidence": 0.95,
+                }
+            ]
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "打开书房台灯")
+        self.assertEqual(decision.backend, "heuristic_fallback")
+        self.assertTrue(decision.failure_type.startswith("external_parse_failed"))
+        self.assertEqual(decision.action["service"], "planner.select")
+
+    def test_external_llm_call_failure_falls_back_with_failure_type(self):
+        stub = self._StubClient(exc=RuntimeError("network down"))
+        planner = AgentPlanner(client_factory=lambda: stub)
+        package = self._make_package(
+            candidates=[
+                {
+                    "entity_id": "light.study_desk",
+                    "name": "书房台灯",
+                    "score": 0.92,
+                    "confidence": 0.95,
+                }
+            ]
+        )
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            decision = planner.decide(package, "打开书房台灯")
+        self.assertEqual(decision.backend, "heuristic_fallback")
+        self.assertEqual(decision.failure_type, "external_call_failed:RuntimeError")
+
+    def test_run_agent_scenario_records_structured_decision_and_execution_results(self):
+        scenario = load_scenario(Path("experiments/scenarios/category_e/E1.yaml"))
+        fake_decision = AgentPlannerDecision(
+            action={"service": "routine.run", "entity_id": "routine.movie_mode", "args": {}},
+            actions=[{"service": "routine.run", "entity_id": "routine.movie_mode", "args": {}}],
+            should_ask_user=False,
+            reason="stubbed_routine",
+            raw_output='{"actions":[{"service":"routine.run","entity_id":"routine.movie_mode","args":{}}],"should_ask_user":false,"reason":"stubbed_routine"}',
+            structured_output={
+                "actions": [{"service": "routine.run", "entity_id": "routine.movie_mode", "args": {}}],
+                "should_ask_user": False,
+                "reason": "stubbed_routine",
+                "raw_model_output": "stub",
+                "model": "stub-model",
+                "provider": "stub-provider",
+                "tool_calls": [],
+                "backend": "external_llm",
+            },
+            backend="external_llm",
+            provider="stub-provider",
+            model="stub-model",
+            usage={"total_tokens": 33},
+            latency_ms=8.0,
+        )
+        with mock.patch("experiments.runner.single_run.AgentAdapter") as adapter_cls:
+            adapter_cls.return_value.plan.return_value = fake_decision
+            trace = run_agent_scenario(scenario, seed=1001, results_root=Path("experiments/results"))
+        self.assertEqual(trace["agent_backend"], "external_llm")
+        self.assertEqual(trace["agent_model"], "stub-model")
+        self.assertEqual(trace["agent_provider"], "stub-provider")
+        self.assertTrue(trace["agent_structured_decisions"])
+        self.assertEqual(trace["chosen_actions"][0]["service"], "routine.run")
+        self.assertTrue(trace["action_execution_results"])
+        self.assertTrue(trace["task_success"])
 
 
 class RunnerSmokeTest(unittest.TestCase):

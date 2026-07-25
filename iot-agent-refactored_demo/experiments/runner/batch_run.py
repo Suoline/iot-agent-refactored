@@ -55,6 +55,32 @@ def _git_revision() -> str:
         return "unknown"
 
 
+def _sum_agent_usage(traces: list[dict]) -> dict[str, int]:
+    totals = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+    }
+    for trace in traces:
+        for batch in trace.get("agent_usage_metadata", []):
+            for key in totals:
+                value = batch.get(key)
+                if isinstance(value, (int, float)):
+                    totals[key] += int(value)
+    return totals
+
+
+def _classify_agent_result(traces: list[dict], planner_mode: str) -> str:
+    if planner_mode != "agent":
+        return "confirmatory"
+    backends = {trace.get("agent_backend") for trace in traces if trace.get("agent_backend")}
+    if backends == {"external_llm"}:
+        return "real_llm_smoke"
+    if backends:
+        return "heuristic_fallback"
+    return "agent_unclassified"
+
+
 def run_batch(
     scenario_paths: list[str | Path],
     *,
@@ -128,6 +154,12 @@ def run_batch(
         "world_version": traces[0]["world_version"] if traces else None,
         "system_policy_version": traces[0].get("system_policy_version") if traces else None,
         "resolved_config": asdict(system_config),
+        "agent_backends": sorted({trace.get("agent_backend") for trace in traces if trace.get("agent_backend")}),
+        "agent_models": sorted({trace.get("agent_model") for trace in traces if trace.get("agent_model")}),
+        "agent_providers": sorted({trace.get("agent_provider") for trace in traces if trace.get("agent_provider")}),
+        "agent_api_call_count": sum(len(trace.get("agent_usage_metadata", [])) for trace in traces),
+        "agent_usage_totals": _sum_agent_usage(traces),
+        "result_classification": _classify_agent_result(traces, planner_mode),
         "trace_files": [
             f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.json"
             for trace in traces
@@ -281,12 +313,11 @@ def run_batch_multi_seed(
         "system_policy_version": all_traces[0].get("system_policy_version") if all_traces else None,
         "python_version": sys.version,
         "agent_backends": sorted({trace.get("agent_backend") for trace in all_traces if trace.get("agent_backend")}),
-        "result_classification": (
-            "heuristic_fallback"
-            if planner_mode == "agent"
-            and any(trace.get("agent_backend") != "external_llm" for trace in all_traces)
-            else "confirmatory"
-        ),
+        "agent_models": sorted({trace.get("agent_model") for trace in all_traces if trace.get("agent_model")}),
+        "agent_providers": sorted({trace.get("agent_provider") for trace in all_traces if trace.get("agent_provider")}),
+        "agent_api_call_count": sum(len(trace.get("agent_usage_metadata", [])) for trace in all_traces),
+        "agent_usage_totals": _sum_agent_usage(all_traces),
+        "result_classification": _classify_agent_result(all_traces, planner_mode),
         "resolved_config": asdict(build_system_registry().get(system_id, SystemConfig(system_id=system_id))),
         "trace_files": [
             f"raw_traces/{run_id}/{system_id}/{trace['planner_mode']}/{trace['scenario_id']}/{trace['seed']}.json"

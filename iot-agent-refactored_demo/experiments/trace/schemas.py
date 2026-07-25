@@ -57,6 +57,7 @@ class TaskTrace(BaseModel):
     sim_time: datetime
     steps: list[RetrievalStepTrace] = Field(default_factory=list)
     chosen_action: Optional[Dict[str, Any]] = None
+    chosen_actions: list[Dict[str, Any]] = Field(default_factory=list)
     clarification_turns: int = 0
     should_ask_user: bool = False
     final_device_state: Dict[str, Any] = Field(default_factory=dict)
@@ -64,12 +65,20 @@ class TaskTrace(BaseModel):
     ground_truth_entity: Optional[str] = None
     preferred_action: Optional[Dict[str, Any]] = None
     assertion_results: list[Dict[str, Any]] = Field(default_factory=list)
+    action_execution_results: list[Dict[str, Any]] = Field(default_factory=list)
     action_success: Optional[bool] = None
     clarification_success: Optional[bool] = None
     memory_assertion_success: Optional[bool] = None
     final_state_success: Optional[bool] = None
     task_success: Optional[bool] = None
     usage_events: list[Dict[str, Any]] = Field(default_factory=list)
+    agent_structured_decisions: list[Dict[str, Any]] = Field(default_factory=list)
+    agent_tool_calls: list[Dict[str, Any]] = Field(default_factory=list)
+    agent_usage_metadata: list[Dict[str, Any]] = Field(default_factory=list)
+    agent_latencies_ms: list[float] = Field(default_factory=list)
+    agent_failures: list[str] = Field(default_factory=list)
+    agent_model: Optional[str] = None
+    agent_provider: Optional[str] = None
     maintenance_events: list[MaintenanceTrace] = Field(default_factory=list)
     memory_status_after: Dict[str, str] = Field(default_factory=dict)
     memory_records_after: list[Dict[str, Any]] = Field(default_factory=list)

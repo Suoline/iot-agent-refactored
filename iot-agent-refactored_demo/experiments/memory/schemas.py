@@ -130,6 +130,10 @@ class CandidateDevice(BaseModel):
     name: str
     score: float
     confidence: float
+    entity_type: Optional[str] = None
+    capabilities: list[str] = Field(default_factory=list)
+    available_services: list[str] = Field(default_factory=list)
+    current_state: Dict[str, Any] = Field(default_factory=dict)
     matched_memories: list[MatchedMemory] = Field(default_factory=list)
     missing_info: list[str] = Field(default_factory=list)
 

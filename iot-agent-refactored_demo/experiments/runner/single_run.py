@@ -70,7 +70,7 @@ def _apply_custom_event(world: HAOracle, service: MemoryService, step: dict, now
 
 def _inject_registry_candidates(world: HAOracle, package, query: str):
     if package.candidate_devices:
-        return package
+        return _enrich_candidate_devices(world, package)
     query_tokens = _tokens(query)
     candidates = []
     for entity_id, entity in world.entities.items():
@@ -84,6 +84,10 @@ def _inject_registry_candidates(world: HAOracle, package, query: str):
                     "name": name,
                     "score": overlap,
                     "confidence": 0.95,
+                    "entity_type": entity.get("type"),
+                    "capabilities": entity.get("capabilities", []),
+                    "available_services": _service_options_for_entity(entity_id, entity),
+                    "current_state": world.get_state(entity_id) if entity_id in world.states else {},
                     "matched_memories": [],
                     "missing_info": [],
                 }
@@ -96,6 +100,35 @@ def _inject_registry_candidates(world: HAOracle, package, query: str):
     if candidates and package.should_ask_user:
         package.should_ask_user = False
         package.ask_reason = None
+    return _enrich_candidate_devices(world, package)
+
+
+def _service_options_for_entity(entity_id: str, entity: dict) -> list[str]:
+    entity_type = entity.get("type")
+    if entity_id.startswith("routine."):
+        return ["routine.run"]
+    if entity_type in {"light", "switch"}:
+        return [f"{entity_type}.turn_on", f"{entity_type}.turn_off"]
+    if entity_type == "cover":
+        return ["cover.set_position"]
+    if entity_type == "lock":
+        return ["lock.lock", "lock.unlock"]
+    if entity_type == "climate":
+        return ["climate.set_temperature"]
+    return []
+
+
+def _enrich_candidate_devices(world: HAOracle, package):
+    enriched: list[CandidateDevice] = []
+    for candidate in package.candidate_devices:
+        entity = world.entities.get(candidate.entity_id, {})
+        payload = candidate.model_dump(mode="json")
+        payload["entity_type"] = entity.get("type", payload.get("entity_type"))
+        payload["capabilities"] = entity.get("capabilities", payload.get("capabilities", []))
+        payload["available_services"] = _service_options_for_entity(candidate.entity_id, entity)
+        payload["current_state"] = world.get_state(candidate.entity_id) if candidate.entity_id in world.states else {}
+        enriched.append(CandidateDevice.model_validate(payload))
+    package.candidate_devices = enriched
     return package
 
 
@@ -121,6 +154,24 @@ def _execute_action(world: HAOracle, action: dict) -> tuple[bool, dict]:
     result = world.apply(service, {"entity": entity_id, **args}, world.current_time)
     state = {entity_id: world.get_state(entity_id)} if result.get("success") and entity_id in world.states else {}
     return bool(result.get("success")), state
+
+
+def _execute_actions(world: HAOracle, actions: list[dict]) -> tuple[bool, dict, list[dict]]:
+    overall_success = True
+    merged_state: dict = {}
+    execution_results: list[dict] = []
+    for action in actions:
+        success, state = _execute_action(world, action)
+        overall_success = overall_success and success
+        merged_state.update(state)
+        execution_results.append(
+            {
+                "action": action,
+                "success": success,
+                "result_state": state,
+            }
+        )
+    return overall_success, merged_state, execution_results
 
 
 def _infer_control_action(query: str, package, world: HAOracle) -> dict | None:
@@ -824,6 +875,10 @@ def run_agent_scenario(
             decision = adapter.plan(package, query)
             trace.agent_backend = decision.backend
             trace.should_ask_user = decision.should_ask_user
+            if decision.model:
+                trace.agent_model = decision.model
+            if decision.provider:
+                trace.agent_provider = decision.provider
             action_template = oracle_input.get("action_template")
             memory_ops = oracle_input.get("memory_ops", [])
             inferred_action = None
@@ -832,32 +887,40 @@ def run_agent_scenario(
             if decision.raw_output:
                 trace.agent_raw_outputs.append(decision.raw_output)
                 trace.usage_events.append({"kind": "agent_output", "text": decision.raw_output})
+            if decision.structured_output:
+                trace.agent_structured_decisions.append(
+                    {
+                        "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        **decision.structured_output,
+                    }
+                )
+            if decision.tool_calls:
+                trace.agent_tool_calls.append(
+                    {
+                        "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        "tool_calls": decision.tool_calls,
+                    }
+                )
+            if decision.usage:
+                trace.agent_usage_metadata.append(
+                    {
+                        "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        **decision.usage,
+                    }
+                )
+            if decision.latency_ms:
+                trace.agent_latencies_ms.append(decision.latency_ms)
+            if decision.failure_type:
+                trace.agent_failures.append(decision.failure_type)
+            planned_actions = list(decision.actions or ([decision.action] if decision.action else []))
+            trace.chosen_actions = planned_actions
             if decision.should_ask_user:
-                if inferred_action:
-                    success, state = _execute_action(world, inferred_action)
-                    if success:
-                        trace.final_device_state.update(state)
-                        trace.chosen_action = inferred_action
-                        trace.should_ask_user = False
-                    else:
-                        assertion_failures.append(f"world.apply failed: {inferred_action}")
-                        _write_failure_reflection(
-                            service,
-                            task_id=trace.task_id,
-                            query=query,
-                            entity_id=inferred_action["entity_id"],
-                            now=world.current_time,
-                            reason="execution_failure",
-                        )
-                        trace.clarification_turns += 1
-                        if trace.safety_relevant:
-                            trace.safety_gated = True
-                        trace.chosen_action = None
-                else:
-                    trace.clarification_turns += 1
-                    if trace.safety_relevant:
-                        trace.safety_gated = True
-                    trace.chosen_action = None
+                trace.clarification_turns += 1
+                if trace.safety_relevant:
+                    trace.safety_gated = True
+                current_grounding_ids = []
+                trace.chosen_action = None
+                trace.chosen_actions = []
             else:
                 if decision.action and decision.action.get("service") == "planner.select" and action_template:
                     current_grounding_ids = [
@@ -874,6 +937,14 @@ def run_agent_scenario(
                         "args": action_template.get("args", {}),
                     }
                     success, state = _execute_action(world, actual_action)
+                    trace.action_execution_results.append(
+                        {
+                            "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                            "action": actual_action,
+                            "success": success,
+                            "result_state": state,
+                        }
+                    )
                     if success:
                         trace.final_device_state.update(state)
                     else:
@@ -887,9 +958,11 @@ def run_agent_scenario(
                             reason="execution_failure",
                         )
                     trace.chosen_action = actual_action
+                    trace.chosen_actions = [actual_action]
                 elif decision.action and decision.action.get("service") == "planner.select" and memory_ops:
                     current_grounding_ids = []
                     trace.chosen_action = None
+                    trace.chosen_actions = []
                 elif decision.action and decision.action.get("service") == "planner.select" and inferred_action:
                     current_grounding_ids = [
                         item.memory_id
@@ -900,6 +973,14 @@ def run_agent_scenario(
                         if item.memory_id in current_grounding_ids:
                             item.in_grounding_set = True
                     success, state = _execute_action(world, inferred_action)
+                    trace.action_execution_results.append(
+                        {
+                            "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                            "action": inferred_action,
+                            "success": success,
+                            "result_state": state,
+                        }
+                    )
                     if success:
                         trace.final_device_state.update(state)
                     else:
@@ -913,6 +994,7 @@ def run_agent_scenario(
                             reason="execution_failure",
                         )
                     trace.chosen_action = inferred_action
+                    trace.chosen_actions = [inferred_action]
                 elif decision.action and decision.action.get("service") == "planner.select":
                     trace.should_ask_user = True
                     trace.clarification_turns += 1
@@ -920,32 +1002,45 @@ def run_agent_scenario(
                         trace.safety_gated = True
                     current_grounding_ids = []
                     trace.chosen_action = None
-                elif decision.action:
+                    trace.chosen_actions = []
+                elif planned_actions:
                     current_grounding_ids = [
                         item.memory_id
                         for item in package.matched_memories
                         if item.in_usable_set
-                    ][:1]
+                    ][:3]
                     for item in retrieval_trace.retrieved_memories:
                         if item.memory_id in current_grounding_ids:
                             item.in_grounding_set = True
-                    success, state = _execute_action(world, decision.action)
+                    success, state, execution_results = _execute_actions(world, planned_actions)
+                    for result in execution_results:
+                        trace.action_execution_results.append(
+                            {
+                                "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                                **result,
+                            }
+                        )
                     if success:
                         trace.final_device_state.update(state)
                     else:
-                        assertion_failures.append(f"world.apply failed: {decision.action}")
-                        _write_failure_reflection(
-                            service,
-                            task_id=trace.task_id,
-                            query=query,
-                            entity_id=decision.action["entity_id"],
-                            now=world.current_time,
-                            reason="execution_failure",
-                        )
-                    trace.chosen_action = decision.action
+                        assertion_failures.append(f"world.apply failed: {planned_actions}")
+                        for result in execution_results:
+                            if result["success"]:
+                                continue
+                            _write_failure_reflection(
+                                service,
+                                task_id=trace.task_id,
+                                query=query,
+                                entity_id=result["action"].get("entity_id"),
+                                now=world.current_time,
+                                reason="execution_failure",
+                            )
+                    trace.chosen_action = planned_actions[0]
+                    trace.chosen_actions = planned_actions
                 else:
                     current_grounding_ids = []
                     trace.chosen_action = decision.action
+                    trace.chosen_actions = planned_actions
         elif step_type == "expect_action":
             asserted = step.get("assert", {})
             if asserted:
