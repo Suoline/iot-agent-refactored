@@ -774,6 +774,20 @@ class RunnerSmokeTest(unittest.TestCase):
         )
         self.assertEqual(result["metrics"]["TSR"], 1.0)
 
+    def test_candidate_isolation_resampling_and_split_thin_specs(self):
+        scenarios = [
+            Path("experiments/scenarios/category_a/A3.yaml"),
+            Path("experiments/scenarios/category_a/A4.yaml"),
+            Path("experiments/scenarios/category_f/F5.yaml"),
+        ]
+        result = run_batch(
+            scenarios,
+            seed=1001,
+            results_root=Path("experiments/results"),
+            run_id="test_candidate_isolation_resampling_split_thin_specs",
+        )
+        self.assertEqual(result["metrics"]["TSR"], 1.0)
+
     def test_habit_candidate_promotion_requires_recent_support_and_no_counterexample(self):
         db_path = Path(tempfile.gettempdir()) / "memory_service_habit_promotion.sqlite3"
         if db_path.exists():
