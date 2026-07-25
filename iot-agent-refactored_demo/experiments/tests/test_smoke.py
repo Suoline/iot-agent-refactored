@@ -1056,6 +1056,10 @@ class RunnerSmokeTest(unittest.TestCase):
         stats_csv = Path("experiments/results/reports/dev/statistics_summary.csv")
         self.assertTrue(stats_json.exists())
         self.assertTrue(stats_csv.exists())
+        payload = json.loads(stats_json.read_text(encoding="utf-8"))
+        self.assertTrue(payload)
+        self.assertIn("TSR_cohen_d_vs_ours", payload[0])
+        self.assertIn("TSR_holm_adjusted_p_vs_ours", payload[0])
 
     def test_generate_run_index_outputs(self):
         subprocess.run(

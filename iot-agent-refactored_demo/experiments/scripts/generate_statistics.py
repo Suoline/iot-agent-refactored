@@ -29,6 +29,18 @@ def _flatten_summary(path: Path) -> dict:
     return row
 
 
+def _load_significance_summary() -> dict[tuple[str, str, str], dict]:
+    path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "significance_summary.json"
+    if not path.exists():
+        return {}
+    payload = _load_json(path)
+    index: dict[tuple[str, str, str], dict] = {}
+    for row in payload:
+        key = (row.get("run_id"), row.get("system_id"), row.get("planner_mode"))
+        index[key] = row.get("metrics", {})
+    return index
+
+
 def _write_csv(path: Path, rows: list[dict]):
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames: list[str] = []
@@ -48,6 +60,7 @@ def main():
     summary_paths = sorted(root.rglob("metrics.summary.json"))
     rows = [_flatten_summary(path) for path in summary_paths]
     by_key = {(row["run_id"], row["system_id"], row["planner_mode"]): row for row in rows}
+    significance_by_key = _load_significance_summary()
     output_rows = []
     for row in rows:
         if row["system_id"] == "Ours":
@@ -73,6 +86,12 @@ def main():
             ours_value = ours.get(key)
             if isinstance(value, (int, float)) and isinstance(ours_value, (int, float)):
                 result[f"{key}_delta_vs_ours"] = value - ours_value
+        comparison = significance_by_key.get((row["run_id"], row["system_id"], row["planner_mode"]), {})
+        for metric_name, stats in comparison.items():
+            result[f"{metric_name}_paired_count"] = stats.get("paired_count")
+            result[f"{metric_name}_cohen_d_vs_ours"] = stats.get("cohen_d")
+            result[f"{metric_name}_p_value_vs_ours"] = stats.get("p_value")
+            result[f"{metric_name}_holm_adjusted_p_vs_ours"] = stats.get("holm_adjusted_p")
         output_rows.append(result)
 
     json_path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "statistics_summary.json"
