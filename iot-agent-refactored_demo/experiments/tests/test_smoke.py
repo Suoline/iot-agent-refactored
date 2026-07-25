@@ -719,6 +719,19 @@ class RunnerSmokeTest(unittest.TestCase):
         )
         self.assertEqual(result["metrics"]["TSR"], 1.0)
 
+    def test_habit_and_routine_threshold_thin_specs(self):
+        scenarios = [
+            Path("experiments/scenarios/category_b/B5.yaml"),
+            Path("experiments/scenarios/category_c/C1.yaml"),
+        ]
+        result = run_batch(
+            scenarios,
+            seed=1001,
+            results_root=Path("experiments/results"),
+            run_id="test_habit_routine_threshold_thin_specs",
+        )
+        self.assertEqual(result["metrics"]["TSR"], 1.0)
+
     def test_expiry_and_threshold_thin_specs(self):
         scenarios = [
             Path("experiments/scenarios/category_b/B1.yaml"),

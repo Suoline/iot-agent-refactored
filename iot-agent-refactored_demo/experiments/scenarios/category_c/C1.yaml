@@ -80,6 +80,23 @@
         "positive_hits": 8,
         "layer": "archived"
       }
+    },
+    {
+      "step_id": "C1_06",
+      "type": "say",
+      "sim_time": "t0+9d 19:05",
+      "text": "执行晚上7点的客厅灯规则",
+      "oracle_input": {
+        "task_type": "automation",
+        "safety_relevant": false,
+        "memory_ops": [],
+        "expected_text_quality": "specific"
+      }
+    },
+    {
+      "step_id": "C1_07",
+      "type": "expect_no_action",
+      "assert": true
     }
   ]
 }

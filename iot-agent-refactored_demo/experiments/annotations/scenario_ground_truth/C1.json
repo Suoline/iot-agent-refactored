@@ -9,7 +9,7 @@
     "args": {}
   },
   "expected_clarify": false,
-  "expected_no_action": false,
+  "expected_no_action": true,
   "expected_memory": [
     {
       "selector": {
