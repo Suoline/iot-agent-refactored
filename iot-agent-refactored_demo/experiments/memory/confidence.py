@@ -28,9 +28,9 @@ HALF_LIFE_DAYS = {
 
 TASK_THRESHOLDS = {
     "query": 0.45,
-    "control": 0.70,
+    "control": 0.56,
     "safety": 0.85,
-    "automation": 0.85,
+    "automation": 0.80,
 }
 
 
@@ -79,4 +79,3 @@ def update_after_outcome(record, *, helpful: bool, misleading: bool):
         if record.status == "active":
             record.status = "stale"
     return record
-

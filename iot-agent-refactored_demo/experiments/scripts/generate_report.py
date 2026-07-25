@@ -9,6 +9,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from experiments.scripts._artifact_paths import configured_run_id, preferred_run_ids, result_stage, results_root
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -16,10 +18,13 @@ def _load_json(path: Path) -> dict:
 
 def _collect_rows() -> list[dict]:
     rows: list[dict] = []
-    root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics"
+    root = results_root() / "aggregated_metrics"
+    wanted_runs = preferred_run_ids()
     for summary_path in sorted(root.rglob("metrics.summary.json")):
         parts = summary_path.parts
         run_id, system_id, planner_mode = parts[-4], parts[-3], parts[-2]
+        if run_id not in wanted_runs:
+            continue
         rows.append(
             {
                 "run_id": run_id,
@@ -34,6 +39,8 @@ def _collect_rows() -> list[dict]:
             continue
         parts = metrics_path.parts
         run_id, system_id, planner_mode = parts[-4], parts[-3], parts[-2]
+        if run_id not in wanted_runs:
+            continue
         rows.append(
             {
                 "run_id": run_id,
@@ -117,20 +124,48 @@ def _significance_table(path: Path) -> str:
     return "\n".join(lines)
 
 
+def _seed_count(run_id: str, system_id: str, planner_mode: str) -> int:
+    path = results_root() / "aggregated_metrics" / run_id / system_id / planner_mode / "metrics.by_seed.json"
+    if not path.exists():
+        return 0
+    return len(json.loads(path.read_text(encoding="utf-8")))
+
+
 def main():
     rows = _collect_rows()
     report_path = REPO_ROOT / "docs" / "实验结果摘要.md"
-    significance_path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "significance_summary.json"
+    report_root = results_root() / "reports" / result_stage()
+    significance_path = report_root / "significance_summary.json"
     generated_on = datetime.now().strftime("%A, %B %d, %Y")
 
-    preferred_runs = {"configured_oracle_dev", "configured_agent_dev", "configured_baseline_dev", "configured_ablation_dev"}
+    preferred_runs = preferred_run_ids()
     primary_rows = [row for row in rows if row["run_id"] in preferred_runs]
     appendix_rows = [row for row in rows if row["run_id"] not in preferred_runs]
 
-    ours_rows = [row for row in primary_rows if row["system_id"] == "Ours"]
-    baseline_rows = [row for row in primary_rows if row["run_id"] == "configured_baseline_dev"]
-    ablation_rows = [row for row in primary_rows if row["run_id"] == "configured_ablation_dev"]
+    ours_rows = [
+        row for row in primary_rows
+        if row["system_id"] == "Ours" and row["run_id"] in {configured_run_id("oracle"), configured_run_id("agent")}
+    ]
+    baseline_rows = [row for row in primary_rows if row["run_id"] == configured_run_id("baseline")]
+    ablation_rows = [row for row in primary_rows if row["run_id"] == configured_run_id("ablation")]
     appendix_rows = sorted(appendix_rows, key=lambda row: (row["run_id"], row["system_id"], row["planner_mode"]))
+    if result_stage() == "formal":
+        oracle_count = _seed_count(configured_run_id("oracle"), "Ours", "oracle")
+        agent_count = _seed_count(configured_run_id("agent"), "Ours", "agent")
+        baseline_count = _seed_count(configured_run_id("baseline"), "B0", "oracle")
+        ablation_count = _seed_count(configured_run_id("ablation"), "-Decay", "oracle")
+        if oracle_count >= 30 and agent_count >= 20 and baseline_count >= 30 and ablation_count >= 20:
+            stage_note = (
+                f"- 当前 formal 结果已达到预注册 seed 数量（Oracle={oracle_count}，Agent={agent_count}，"
+                f"Baseline={baseline_count}，Ablation={ablation_count}），可以进入最终审计与封版整理。"
+            )
+        else:
+            stage_note = (
+                f"- 当前 formal 结果仍是预览数据（Oracle={oracle_count}，Agent={agent_count}，"
+                f"Baseline={baseline_count}，Ablation={ablation_count}），在 seed 数未达标前不得写入论文主结果。"
+            )
+    else:
+        stage_note = "- 目前结果仍属于开发态结果，主要用于验证主线、场景和统计链路是否成立。"
 
     content = [
         "# 实验结果摘要",
@@ -139,7 +174,7 @@ def main():
         "",
         "## 1. 说明",
         "",
-        "本报告基于当前仓库 `experiments/results/aggregated_metrics/` 下已有结果自动汇总。",
+        f"本报告基于当前仓库 `{results_root() / 'aggregated_metrics'}` 下已有结果自动汇总。",
         "本报告优先展示配置化主结果（`configured_*`），其余开发态/调试态运行放在附录。",
         "这些结果用于验证实验主线、baseline/ablation 配置和结果产物链是否可运行，**不是论文最终结果**。",
         "",
@@ -168,7 +203,7 @@ def main():
         "",
         f"- 截至 {generated_on}，实验主线已经可以运行 `Ours / baseline / ablation` 三类系统。",
         "- `PM`、`UAA`、`maintenance_latency_ms`、`RRR` 已开始出现非零信号。",
-        "- 目前结果仍属于开发态结果，主要用于验证主线、场景和统计链路是否成立。",
+        stage_note,
         "",
         "## 6. 相对 Ours 的比较摘要",
         "",
@@ -176,10 +211,10 @@ def main():
         "",
         "## 7. 结果目录",
         "",
-        f"- 聚合指标：`{REPO_ROOT / 'experiments' / 'results' / 'aggregated_metrics'}`",
-        f"- 表格：`{REPO_ROOT / 'experiments' / 'results' / 'tables' / 'dev'}`",
-        f"- 图表：`{REPO_ROOT / 'experiments' / 'results' / 'figures' / 'dev'}`",
-        f"- 报告：`{REPO_ROOT / 'experiments' / 'results' / 'reports'}`",
+        f"- 聚合指标：`{results_root() / 'aggregated_metrics'}`",
+        f"- 表格：`{results_root() / 'tables' / result_stage()}`",
+        f"- 图表：`{results_root() / 'figures' / result_stage()}`",
+        f"- 报告：`{results_root() / 'reports'}`",
         "",
         "## 8. 附录：开发态/调试态运行",
         "",

@@ -11,6 +11,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from experiments.scripts._artifact_paths import configured_run_id, result_stage, results_root
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -84,10 +86,10 @@ def _load_by_seed(path: Path) -> dict[str, dict]:
     return _load_json(path)
 
 
-def _compare_run(run_id: str, system_id: str, planner_mode: str) -> dict | None:
-    root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics" / run_id
-    ours_path = root / "Ours" / planner_mode / "metrics.by_seed.json"
-    other_path = root / system_id / planner_mode / "metrics.by_seed.json"
+def _compare_run(run_id: str, ours_run_id: str, system_id: str, planner_mode: str) -> dict | None:
+    root = results_root() / "aggregated_metrics"
+    ours_path = root / ours_run_id / "Ours" / planner_mode / "metrics.by_seed.json"
+    other_path = root / run_id / system_id / planner_mode / "metrics.by_seed.json"
     if not ours_path.exists() or not other_path.exists():
         return None
     ours = _load_by_seed(ours_path)
@@ -96,11 +98,23 @@ def _compare_run(run_id: str, system_id: str, planner_mode: str) -> dict | None:
     if not common:
         return None
     metrics = {}
-    metric_names = list(next(iter(other.values())).keys())
+    ours_metric_names = set()
+    for row in ours.values():
+        ours_metric_names.update(row.keys())
+    other_metric_names = set()
+    for row in other.values():
+        other_metric_names.update(row.keys())
+    metric_names = sorted(ours_metric_names & other_metric_names)
     metric_p_values: list[tuple[str, float]] = []
     metric_payloads: dict[str, dict] = {}
     for metric in metric_names:
-        deltas = [other[seed][metric] - ours[seed][metric] for seed in common]
+        deltas = []
+        for seed in common:
+            if metric not in ours[seed] or metric not in other[seed]:
+                continue
+            deltas.append(other[seed][metric] - ours[seed][metric])
+        if not deltas:
+            continue
         mean_delta, ci_low, ci_high = _bootstrap_mean_ci(deltas)
         p_value = _sign_test_p_value(deltas)
         metric_p_values.append((metric, p_value))
@@ -126,8 +140,10 @@ def _compare_run(run_id: str, system_id: str, planner_mode: str) -> dict | None:
 
 def main():
     comparisons = []
-    for run_id in ["configured_baseline_dev", "configured_ablation_dev"]:
-        run_root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics" / run_id
+    stage = result_stage()
+    oracle_ours_run_id = configured_run_id("oracle")
+    for run_id in [configured_run_id("baseline"), configured_run_id("ablation")]:
+        run_root = results_root() / "aggregated_metrics" / run_id
         if not run_root.exists():
             continue
         for system_dir in sorted(run_root.iterdir()):
@@ -137,11 +153,11 @@ def main():
             planner_mode = next((child.name for child in system_dir.iterdir() if child.is_dir()), None)
             if not planner_mode:
                 continue
-            comparison = _compare_run(run_id, system_id, planner_mode)
+            comparison = _compare_run(run_id, oracle_ours_run_id, system_id, planner_mode)
             if comparison:
                 comparisons.append(comparison)
 
-    out_dir = REPO_ROOT / "experiments" / "results" / "reports" / "dev"
+    out_dir = results_root() / "reports" / stage
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "significance_summary.json"
     out_path.write_text(json.dumps(comparisons, ensure_ascii=False, indent=2), encoding="utf-8")

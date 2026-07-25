@@ -9,6 +9,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from experiments.scripts._artifact_paths import configured_run_id, result_stage, results_root
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -30,7 +32,7 @@ def _flatten_summary(path: Path) -> dict:
 
 
 def _load_significance_summary() -> dict[tuple[str, str, str], dict]:
-    path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "significance_summary.json"
+    path = results_root() / "reports" / result_stage() / "significance_summary.json"
     if not path.exists():
         return {}
     payload = _load_json(path)
@@ -56,19 +58,20 @@ def _write_csv(path: Path, rows: list[dict]):
 
 
 def main():
-    root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics"
+    root = results_root() / "aggregated_metrics"
     summary_paths = sorted(root.rglob("metrics.summary.json"))
     rows = [_flatten_summary(path) for path in summary_paths]
     by_key = {(row["run_id"], row["system_id"], row["planner_mode"]): row for row in rows}
     significance_by_key = _load_significance_summary()
     output_rows = []
+    oracle_ours_key = (configured_run_id("oracle"), "Ours", "oracle")
     for row in rows:
         if row["system_id"] == "Ours":
             continue
-        if row["run_id"] == "configured_baseline_dev":
-            ours_key = ("configured_baseline_dev", "Ours", row["planner_mode"])
-        elif row["run_id"] == "configured_ablation_dev":
-            ours_key = ("configured_ablation_dev", "Ours", row["planner_mode"])
+        if row["run_id"] == configured_run_id("baseline"):
+            ours_key = oracle_ours_key
+        elif row["run_id"] == configured_run_id("ablation"):
+            ours_key = oracle_ours_key
         else:
             continue
         ours = by_key.get(ours_key)
@@ -94,8 +97,9 @@ def main():
             result[f"{metric_name}_holm_adjusted_p_vs_ours"] = stats.get("holm_adjusted_p")
         output_rows.append(result)
 
-    json_path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "statistics_summary.json"
-    csv_path = REPO_ROOT / "experiments" / "results" / "reports" / "dev" / "statistics_summary.csv"
+    report_root = results_root() / "reports" / result_stage()
+    json_path = report_root / "statistics_summary.json"
+    csv_path = report_root / "statistics_summary.csv"
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(output_rows, ensure_ascii=False, indent=2), encoding="utf-8")
     _write_csv(csv_path, output_rows)

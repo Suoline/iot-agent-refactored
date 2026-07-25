@@ -11,6 +11,7 @@ import sys
 
 from experiments.memory.schemas import UsageEvent
 from experiments.memory.service import MemoryService
+from experiments.metrics.core import task_metrics
 from experiments.runner.batch_run import run_batch, run_batch_multi_seed
 from experiments.runner.scenario_loader import load_scenario
 from experiments.world_model.ha_oracle import HAOracle
@@ -653,6 +654,22 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertIn("failed_task_ids", manifest)
         self.assertIsInstance(manifest["failed_task_ids"], list)
 
+    def test_task_success_and_assertion_results_are_structured(self):
+        scenario = Path("experiments/scenarios/category_a/A1.yaml")
+        result = run_batch(
+            [scenario],
+            seed=1001,
+            results_root=Path("experiments/results"),
+            run_id="test_task_success_structure",
+        )
+        trace = result["traces"][0]
+        self.assertTrue(trace["task_success"])
+        self.assertTrue(trace["action_success"])
+        self.assertTrue(trace["memory_assertion_success"])
+        self.assertIsNone(trace["final_state_success"])
+        self.assertTrue(trace["assertion_results"])
+        self.assertTrue(all("kind" in item and "success" in item for item in trace["assertion_results"]))
+
     def test_registry_fallback_for_archived_alias(self):
         scenario = Path("experiments/scenarios/category_a/A6.yaml")
         result = run_batch([scenario], seed=1001, results_root=Path("experiments/results"), run_id="test_fallback")
@@ -1104,6 +1121,14 @@ class RunnerSmokeTest(unittest.TestCase):
         first_metrics = payload[0]["metrics"]
         self.assertIn("cohen_d", first_metrics["TSR"])
         self.assertIn("holm_adjusted_p", first_metrics["TSR"])
+
+    def test_failed_trace_does_not_count_as_tsr_success(self):
+        trace = {
+            "outcome": "failure",
+            "final_device_state": {"light.study_desk": {"state": "on", "attributes": {}}},
+            "ground_truth_state": {"light.study_desk": {"state": "on", "attributes": {}}},
+        }
+        self.assertEqual(task_metrics(trace)["TSR"], 0.0)
 
     def test_prompt_tokens_nonzero_in_main_run(self):
         result = run_batch(

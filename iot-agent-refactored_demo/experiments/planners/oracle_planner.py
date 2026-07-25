@@ -20,6 +20,25 @@ class OraclePlanner:
         self.ambiguity_margin = ambiguity_margin
 
     def decide(self, package: SearchResultPackage) -> PlannerDecision:
+        if package.task_type == "query":
+            memories = [item for item in package.matched_memories if item.in_usable_set]
+            if not memories:
+                memories = list(package.matched_memories)
+            if not memories:
+                return PlannerDecision(should_ask_user=True, reason="无可回答记忆")
+            memories.sort(key=lambda item: (-item.score, item.memory_id))
+            return PlannerDecision(
+                action={
+                    "service": "memory.answer",
+                    "entity_id": memories[0].memory_id,
+                    "args": {},
+                }
+            )
+        usable_memories = [item for item in package.matched_memories if item.in_usable_set]
+        if package.task_type == "automation" and not usable_memories:
+            return PlannerDecision(action=None, should_ask_user=False, reason="自动化规则当前不可执行")
+        if package.task_type == "control" and not usable_memories and not package.candidate_devices:
+            return PlannerDecision(should_ask_user=True, reason="控制意图置信度不足")
         if package.should_ask_user:
             return PlannerDecision(should_ask_user=True, reason=package.ask_reason)
         candidates = [

@@ -202,7 +202,11 @@ def run_batch_multi_seed(
     per_scenario_multi_path.parent.mkdir(parents=True, exist_ok=True)
     if per_scenario_summary:
         with per_scenario_multi_path.open("w", encoding="utf-8", newline="") as fh:
-            fieldnames = list(per_scenario_summary[0].keys())
+            fieldnames: list[str] = []
+            for row in per_scenario_summary:
+                for key in row.keys():
+                    if key not in fieldnames:
+                        fieldnames.append(key)
             writer_csv = csv.DictWriter(fh, fieldnames=fieldnames)
             writer_csv.writeheader()
             for row in per_scenario_summary:

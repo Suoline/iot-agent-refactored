@@ -63,7 +63,11 @@
         "task_type": "control",
         "safety_relevant": false,
         "memory_ops": [],
-        "expected_text_quality": "specific"
+        "expected_text_quality": "specific",
+        "action_template": {
+          "service": "light.turn_on",
+          "args": {}
+        }
       }
     },
     {

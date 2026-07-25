@@ -10,6 +10,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from experiments.scripts._artifact_paths import preferred_run_ids, results_root, tables_root
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -17,10 +19,13 @@ def _load_json(path: Path) -> dict:
 
 def _load_metric_rows() -> list[dict]:
     rows: list[dict] = []
-    root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics"
+    root = results_root() / "aggregated_metrics"
+    wanted_runs = preferred_run_ids()
     for summary_path in sorted(root.rglob("metrics.summary.json")):
         parts = summary_path.parts
         run_id, system_id, planner_mode = parts[-4], parts[-3], parts[-2]
+        if run_id not in wanted_runs:
+            continue
         payload = _load_json(summary_path)
         row = {
             "run_id": run_id,
@@ -37,6 +42,8 @@ def _load_metric_rows() -> list[dict]:
     for metrics_path in sorted(root.rglob("metrics.json")):
         parts = metrics_path.parts
         run_id, system_id, planner_mode = parts[-4], parts[-3], parts[-2]
+        if run_id not in wanted_runs:
+            continue
         summary_equiv = metrics_path.with_name("metrics.summary.json")
         if summary_equiv.exists():
             continue
@@ -58,10 +65,13 @@ def _load_metric_rows() -> list[dict]:
 
 def _load_per_scenario_rows() -> list[dict]:
     rows: list[dict] = []
-    root = REPO_ROOT / "experiments" / "results" / "aggregated_metrics"
+    root = results_root() / "aggregated_metrics"
+    wanted_runs = preferred_run_ids()
     for csv_path in sorted(root.rglob("per_scenario.csv")):
         parts = csv_path.parts
         run_id, system_id, planner_mode = parts[-4], parts[-3], parts[-2]
+        if run_id not in wanted_runs:
+            continue
         with csv_path.open("r", encoding="utf-8", newline="") as fh:
             reader = csv.DictReader(fh)
             for row in reader:
@@ -180,7 +190,7 @@ def _table_5(metric_rows: list[dict]) -> list[dict]:
 def main():
     metric_rows = _load_metric_rows()
     per_scenario_rows = _load_per_scenario_rows()
-    out_dir = REPO_ROOT / "experiments" / "results" / "tables" / "dev"
+    out_dir = tables_root()
     tables = {
         "table_1.csv": _table_1(metric_rows),
         "table_2.csv": _table_2(metric_rows),

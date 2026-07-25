@@ -49,7 +49,7 @@
         "source": "user_explicit",
         "confidence": 0.72,
         "source_authority": 0.9,
-        "layer": "active"
+        "layer": "dormant"
       }
     },
     {
@@ -91,7 +91,7 @@
         "source": "user_explicit",
         "confidence": 0.72,
         "source_authority": 0.9,
-        "layer": "active"
+        "layer": "dormant"
       }
     },
     {

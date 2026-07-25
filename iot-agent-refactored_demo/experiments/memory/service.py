@@ -636,10 +636,15 @@ class MemoryService:
                 return
             if record.status == "active":
                 record.status = "stale"
-            if record.access_count == 0 and age > record.half_life_days:
+            archive_threshold = record.half_life_days
+            if record.memory_type in {"habit", "preference", "routine", "reflection"}:
+                archive_threshold = record.half_life_days * 2 + 1
+            if record.access_count == 0 and age > archive_threshold:
                 record.status = "archived"
                 record.layer = "archived"
-            elif memory_worth(record) < 0.2 or effective_confidence(record, now) < 0.3:
+            elif record.memory_type not in {"habit", "preference", "routine", "reflection"} and (
+                memory_worth(record) < 0.2 or effective_confidence(record, now) < 0.3
+            ):
                 record.status = "archived"
                 record.layer = "archived"
             else:

@@ -9,6 +9,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from experiments.scripts._artifact_paths import result_stage, results_root
+
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -22,7 +24,7 @@ def _generated_at_or_mtime(manifest: Path, data: dict) -> str:
 
 
 def main():
-    reports_root = REPO_ROOT / "experiments" / "results" / "reports"
+    reports_root = results_root() / "reports"
     rows = []
     for manifest in sorted(reports_root.rglob("manifest.json")):
         data = _load_json(manifest)
@@ -43,7 +45,7 @@ def main():
                 "per_scenario_file": data.get("per_scenario_file"),
             }
         )
-    out_path = reports_root / "dev" / "run_index.json"
+    out_path = reports_root / result_stage() / "run_index.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
     print(out_path)

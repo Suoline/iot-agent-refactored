@@ -61,6 +61,12 @@ class TaskTrace(BaseModel):
     ground_truth_state: Dict[str, Any] = Field(default_factory=dict)
     ground_truth_entity: Optional[str] = None
     preferred_action: Optional[Dict[str, Any]] = None
+    assertion_results: list[Dict[str, Any]] = Field(default_factory=list)
+    action_success: Optional[bool] = None
+    clarification_success: Optional[bool] = None
+    memory_assertion_success: Optional[bool] = None
+    final_state_success: Optional[bool] = None
+    task_success: Optional[bool] = None
     usage_events: list[Dict[str, Any]] = Field(default_factory=list)
     maintenance_events: list[MaintenanceTrace] = Field(default_factory=list)
     memory_status_after: Dict[str, str] = Field(default_factory=dict)

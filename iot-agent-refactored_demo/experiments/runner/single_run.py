@@ -103,6 +103,8 @@ def _execute_action(world: HAOracle, action: dict) -> tuple[bool, dict]:
     service = action["service"]
     entity_id = action["entity_id"]
     args = action.get("args", {})
+    if service == "memory.answer":
+        return True, {}
     if service == "routine.run" and entity_id == "routine.movie_mode":
         results = [
             world.apply("light.turn_off", {"entity": "light.living_ceiling"}, world.current_time),
@@ -119,6 +121,51 @@ def _execute_action(world: HAOracle, action: dict) -> tuple[bool, dict]:
     result = world.apply(service, {"entity": entity_id, **args}, world.current_time)
     state = {entity_id: world.get_state(entity_id)} if result.get("success") and entity_id in world.states else {}
     return bool(result.get("success")), state
+
+
+def _infer_control_action(query: str, package, world: HAOracle) -> dict | None:
+    if not package.candidate_devices:
+        return None
+    if len(package.candidate_devices) > 1 and (
+        package.candidate_devices[0].score - package.candidate_devices[1].score < 0.10
+    ):
+        return None
+    candidate = package.candidate_devices[0]
+    if candidate.score < 0.4:
+        return None
+    entity = world.entities.get(candidate.entity_id)
+    if not entity:
+        return None
+    capabilities = set(entity.get("capabilities", []))
+    if any(keyword in query for keyword in ["暖色", "冷色", "色温", "调色温"]):
+        if "color_temp" not in capabilities:
+            return None
+        return {
+            "service": f"{entity['type']}.turn_on",
+            "entity_id": candidate.entity_id,
+            "args": {"color_temp": 2700},
+        }
+    if any(keyword in query for keyword in ["开", "打开", "只开"]):
+        if entity["type"] in {"light", "switch"}:
+            return {"service": f"{entity['type']}.turn_on", "entity_id": candidate.entity_id, "args": {}}
+        if entity["type"] == "lock":
+            return {"service": "lock.unlock", "entity_id": candidate.entity_id, "args": {}}
+        if entity["type"] == "cover":
+            return {"service": "cover.set_position", "entity_id": candidate.entity_id, "args": {"position": 100}}
+    if any(keyword in query for keyword in ["关", "关闭"]):
+        if entity["type"] in {"light", "switch"}:
+            return {"service": f"{entity['type']}.turn_off", "entity_id": candidate.entity_id, "args": {}}
+        if entity["type"] == "lock":
+            return {"service": "lock.lock", "entity_id": candidate.entity_id, "args": {}}
+        if entity["type"] == "cover":
+            return {"service": "cover.set_position", "entity_id": candidate.entity_id, "args": {"position": 0}}
+    if entity["type"] == "climate" and any(keyword in query for keyword in ["温度", "空调"]):
+        import re
+
+        match = re.search(r"(\d{2})", query)
+        target = int(match.group(1)) if match else int(entity.get("attributes", {}).get("target_temp", 24))
+        return {"service": "climate.set_temperature", "entity_id": candidate.entity_id, "args": {"temperature": target}}
+    return None
 
 
 def _load_fixture_records(service: MemoryService, fixtures: list[dict], now: datetime):
@@ -157,6 +204,30 @@ def _write_failure_reflection(
     )
 
 
+def _append_assertion_result(
+    trace: TaskTrace,
+    *,
+    kind: str,
+    step_id: str,
+    success: bool,
+    expected=None,
+    observed=None,
+    details=None,
+):
+    payload = {
+        "kind": kind,
+        "step_id": step_id,
+        "success": success,
+    }
+    if expected is not None:
+        payload["expected"] = expected
+    if observed is not None:
+        payload["observed"] = observed
+    if details is not None:
+        payload["details"] = details
+    trace.assertion_results.append(payload)
+
+
 def run_oracle_scenario(
     scenario: dict,
     *,
@@ -193,6 +264,12 @@ def run_oracle_scenario(
     last_query = ""
     last_task_type = scenario.get("task_type", "control")
     current_grounding_ids: list[str] = []
+    assertion_status = {
+        "action": {"seen": False, "success": True},
+        "clarification": {"seen": False, "success": True},
+        "memory": {"seen": False, "success": True},
+        "final_state": {"seen": False, "success": True},
+    }
 
     _load_fixture_records(service, scenario.get("initial_memory_fixture", []), world.current_time)
 
@@ -280,13 +357,38 @@ def run_oracle_scenario(
             decision = planner.decide(package)
             last_decision = decision
             trace.should_ask_user = decision.should_ask_user
+            action_template = oracle_input.get("action_template")
+            memory_ops = oracle_input.get("memory_ops", [])
+            inferred_action = None
+            if not action_template and not memory_ops:
+                inferred_action = _infer_control_action(query, package, world)
             if decision.should_ask_user:
-                trace.clarification_turns += 1
-                if trace.safety_relevant:
-                    trace.safety_gated = True
-                trace.chosen_action = None
+                if inferred_action:
+                    success, state = _execute_action(world, inferred_action)
+                    if success:
+                        trace.final_device_state = state
+                        trace.chosen_action = inferred_action
+                        trace.should_ask_user = False
+                    else:
+                        assertion_failures.append(f"world.apply failed: {inferred_action}")
+                        _write_failure_reflection(
+                            service,
+                            task_id=trace.task_id,
+                            query=query,
+                            entity_id=inferred_action["entity_id"],
+                            now=world.current_time,
+                            reason="execution_failure",
+                        )
+                        trace.clarification_turns += 1
+                        if trace.safety_relevant:
+                            trace.safety_gated = True
+                        trace.chosen_action = None
+                else:
+                    trace.clarification_turns += 1
+                    if trace.safety_relevant:
+                        trace.safety_gated = True
+                    trace.chosen_action = None
             else:
-                action_template = oracle_input.get("action_template")
                 if decision.action and decision.action.get("service") == "planner.select" and action_template:
                     current_grounding_ids = [
                         item.memory_id
@@ -315,6 +417,39 @@ def run_oracle_scenario(
                             reason="execution_failure",
                         )
                     trace.chosen_action = actual_action
+                elif decision.action and decision.action.get("service") == "planner.select" and memory_ops:
+                    current_grounding_ids = []
+                    trace.chosen_action = None
+                elif decision.action and decision.action.get("service") == "planner.select" and inferred_action:
+                    current_grounding_ids = [
+                        item.memory_id
+                        for item in package.matched_memories
+                        if item.in_usable_set
+                    ][:1]
+                    for item in retrieval_trace.retrieved_memories:
+                        if item.memory_id in current_grounding_ids:
+                            item.in_grounding_set = True
+                    success, state = _execute_action(world, inferred_action)
+                    if success:
+                        trace.final_device_state = state
+                    else:
+                        assertion_failures.append(f"world.apply failed: {inferred_action}")
+                        _write_failure_reflection(
+                            service,
+                            task_id=trace.task_id,
+                            query=query,
+                            entity_id=inferred_action["entity_id"],
+                            now=world.current_time,
+                            reason="execution_failure",
+                        )
+                    trace.chosen_action = inferred_action
+                elif decision.action and decision.action.get("service") == "planner.select":
+                    trace.should_ask_user = True
+                    trace.clarification_turns += 1
+                    if trace.safety_relevant:
+                        trace.safety_gated = True
+                    current_grounding_ids = []
+                    trace.chosen_action = None
                 elif decision.action:
                     current_grounding_ids = [
                         item.memory_id
@@ -358,6 +493,16 @@ def run_oracle_scenario(
                     or chosen.get("entity_id") != expected_entity
                     or chosen.get("args", {}) != asserted.get("args", {})
                 ):
+                    assertion_status["action"]["seen"] = True
+                    assertion_status["action"]["success"] = False
+                    _append_assertion_result(
+                        trace,
+                        kind="action",
+                        step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        success=False,
+                        expected=asserted,
+                        observed=chosen,
+                    )
                     assertion_failures.append(
                         f"expect_action mismatch for {step.get('step_id')}: got {chosen}, expected {asserted}"
                     )
@@ -372,6 +517,15 @@ def run_oracle_scenario(
                             }
                         )
                 else:
+                    assertion_status["action"]["seen"] = True
+                    _append_assertion_result(
+                        trace,
+                        kind="action",
+                        step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        success=True,
+                        expected=asserted,
+                        observed=chosen,
+                    )
                     for memory_id in current_grounding_ids:
                         trace.usage_events.append(
                             {
@@ -383,19 +537,56 @@ def run_oracle_scenario(
                             }
                         )
         elif step_type == "expect_clarify":
-            if not (trace.should_ask_user and trace.clarification_turns >= 1):
+            clarify_ok = bool(trace.should_ask_user and trace.clarification_turns >= 1)
+            assertion_status["clarification"]["seen"] = True
+            assertion_status["clarification"]["success"] = assertion_status["clarification"]["success"] and clarify_ok
+            _append_assertion_result(
+                trace,
+                kind="clarification",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=clarify_ok,
+                observed={
+                    "should_ask_user": trace.should_ask_user,
+                    "clarification_turns": trace.clarification_turns,
+                },
+            )
+            if not clarify_ok:
                 assertion_failures.append(
                     f"expect_clarify mismatch for {step.get('step_id')}: should_ask_user={trace.should_ask_user}, clarification_turns={trace.clarification_turns}"
                 )
         elif step_type == "expect_no_action":
-            if trace.chosen_action is not None or trace.should_ask_user:
+            no_action_ok = trace.chosen_action is None
+            assertion_status["action"]["seen"] = True
+            assertion_status["action"]["success"] = assertion_status["action"]["success"] and no_action_ok
+            _append_assertion_result(
+                trace,
+                kind="action",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=no_action_ok,
+                observed={
+                    "chosen_action": trace.chosen_action,
+                    "should_ask_user": trace.should_ask_user,
+                },
+            )
+            if not no_action_ok:
                 assertion_failures.append(
-                    f"expect_no_action mismatch for {step.get('step_id')}: chosen_action={trace.chosen_action}, should_ask_user={trace.should_ask_user}"
+                    f"expect_no_action mismatch for {step.get('step_id')}: chosen_action={trace.chosen_action}"
                 )
         elif step_type == "expect_final_state":
             expected_state = step.get("assert", {})
             trace.ground_truth_state = expected_state
-            if trace.final_device_state != expected_state:
+            final_ok = trace.final_device_state == expected_state
+            assertion_status["final_state"]["seen"] = True
+            assertion_status["final_state"]["success"] = assertion_status["final_state"]["success"] and final_ok
+            _append_assertion_result(
+                trace,
+                kind="final_state",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=final_ok,
+                expected=expected_state,
+                observed=trace.final_device_state,
+            )
+            if not final_ok:
                 assertion_failures.append(
                     f"expect_final_state mismatch for {step.get('step_id')}: got {trace.final_device_state}, expected {expected_state}"
                 )
@@ -406,15 +597,33 @@ def run_oracle_scenario(
                 record for record in records
                 if all(getattr(record, key) == value for key, value in selector.items())
             ]
+            memory_ok = bool(matched)
             if not matched:
                 assertion_failures.append(f"expect_memory no match for selector {selector}")
             for record in matched:
                 trace.memory_status_after[record.memory_id] = record.status
                 for key, value in step.get("assert", {}).items():
                     if getattr(record, key) != value:
+                        memory_ok = False
                         assertion_failures.append(
                             f"expect_memory mismatch {record.memory_id}.{key}: got {getattr(record, key)!r}, expected {value!r}"
                         )
+            assertion_status["memory"]["seen"] = True
+            assertion_status["memory"]["success"] = assertion_status["memory"]["success"] and memory_ok
+            _append_assertion_result(
+                trace,
+                kind="memory",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=memory_ok,
+                expected={
+                    "selector": selector,
+                    "assert": step.get("assert", {}),
+                },
+                observed=[
+                    record.model_dump(mode="json")
+                    for record in matched
+                ],
+            )
         elif step_type == "expect_absent_memory":
             selector = step.get("selector", {})
             records = service.store.list(include_deleted=True)
@@ -423,6 +632,17 @@ def run_oracle_scenario(
                 if all(getattr(record, key) == value for key, value in selector.items())
                 and record.status != "deleted"
             ]
+            memory_ok = not matched
+            assertion_status["memory"]["seen"] = True
+            assertion_status["memory"]["success"] = assertion_status["memory"]["success"] and memory_ok
+            _append_assertion_result(
+                trace,
+                kind="memory",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=memory_ok,
+                expected={"selector": selector, "absent": True},
+                observed=[record.model_dump(mode="json") for record in matched],
+            )
             if matched:
                 assertion_failures.append(
                     f"expect_absent_memory mismatch for selector {selector}: found {[record.memory_id for record in matched]}"
@@ -448,10 +668,24 @@ def run_oracle_scenario(
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
         trace.maintenance_tokens = sum(item.maintenance_tokens for item in trace.maintenance_events)
-    trace.outcome = "success" if not assertion_failures else "failure"
+    trace.action_success = assertion_status["action"]["success"] if assertion_status["action"]["seen"] else None
+    trace.clarification_success = (
+        assertion_status["clarification"]["success"] if assertion_status["clarification"]["seen"] else None
+    )
+    trace.memory_assertion_success = assertion_status["memory"]["success"] if assertion_status["memory"]["seen"] else None
+    trace.final_state_success = (
+        assertion_status["final_state"]["success"] if assertion_status["final_state"]["seen"] else None
+    )
+    trace.task_success = not assertion_failures
+    trace.outcome = "success" if trace.task_success else "failure"
     if assertion_failures:
         trace.usage_events.append(
-            {"kind": "assertion_failures", "query": last_query, "failures": assertion_failures, "task_type": last_task_type}
+            {
+                "kind": "assertion_failures",
+                "query": last_query,
+                "failures": assertion_failures,
+                "task_type": last_task_type,
+            }
         )
     trace.end_to_end_latency_ms = (time.perf_counter() - started) * 1000
     return trace.model_dump(mode="json")
@@ -490,6 +724,12 @@ def run_agent_scenario(
     )
     assertion_failures: list[str] = []
     current_grounding_ids: list[str] = []
+    assertion_status = {
+        "action": {"seen": False, "success": True},
+        "clarification": {"seen": False, "success": True},
+        "memory": {"seen": False, "success": True},
+        "final_state": {"seen": False, "success": True},
+    }
 
     _load_fixture_records(service, scenario.get("initial_memory_fixture", []), world.current_time)
 
@@ -574,15 +814,40 @@ def run_agent_scenario(
             trace.steps.append(retrieval_trace)
             decision = adapter.plan(package, query)
             trace.should_ask_user = decision.should_ask_user
+            action_template = oracle_input.get("action_template")
+            memory_ops = oracle_input.get("memory_ops", [])
+            inferred_action = None
+            if not action_template and not memory_ops:
+                inferred_action = _infer_control_action(query, package, world)
             if decision.raw_output:
                 trace.usage_events.append({"kind": "agent_output", "text": decision.raw_output})
             if decision.should_ask_user:
-                trace.clarification_turns += 1
-                if trace.safety_relevant:
-                    trace.safety_gated = True
-                trace.chosen_action = None
+                if inferred_action:
+                    success, state = _execute_action(world, inferred_action)
+                    if success:
+                        trace.final_device_state = state
+                        trace.chosen_action = inferred_action
+                        trace.should_ask_user = False
+                    else:
+                        assertion_failures.append(f"world.apply failed: {inferred_action}")
+                        _write_failure_reflection(
+                            service,
+                            task_id=trace.task_id,
+                            query=query,
+                            entity_id=inferred_action["entity_id"],
+                            now=world.current_time,
+                            reason="execution_failure",
+                        )
+                        trace.clarification_turns += 1
+                        if trace.safety_relevant:
+                            trace.safety_gated = True
+                        trace.chosen_action = None
+                else:
+                    trace.clarification_turns += 1
+                    if trace.safety_relevant:
+                        trace.safety_gated = True
+                    trace.chosen_action = None
             else:
-                action_template = oracle_input.get("action_template")
                 if decision.action and decision.action.get("service") == "planner.select" and action_template:
                     current_grounding_ids = [
                         item.memory_id
@@ -611,6 +876,39 @@ def run_agent_scenario(
                             reason="execution_failure",
                         )
                     trace.chosen_action = actual_action
+                elif decision.action and decision.action.get("service") == "planner.select" and memory_ops:
+                    current_grounding_ids = []
+                    trace.chosen_action = None
+                elif decision.action and decision.action.get("service") == "planner.select" and inferred_action:
+                    current_grounding_ids = [
+                        item.memory_id
+                        for item in package.matched_memories
+                        if item.in_usable_set
+                    ][:1]
+                    for item in retrieval_trace.retrieved_memories:
+                        if item.memory_id in current_grounding_ids:
+                            item.in_grounding_set = True
+                    success, state = _execute_action(world, inferred_action)
+                    if success:
+                        trace.final_device_state = state
+                    else:
+                        assertion_failures.append(f"world.apply failed: {inferred_action}")
+                        _write_failure_reflection(
+                            service,
+                            task_id=trace.task_id,
+                            query=query,
+                            entity_id=inferred_action["entity_id"],
+                            now=world.current_time,
+                            reason="execution_failure",
+                        )
+                    trace.chosen_action = inferred_action
+                elif decision.action and decision.action.get("service") == "planner.select":
+                    trace.should_ask_user = True
+                    trace.clarification_turns += 1
+                    if trace.safety_relevant:
+                        trace.safety_gated = True
+                    current_grounding_ids = []
+                    trace.chosen_action = None
                 elif decision.action:
                     current_grounding_ids = [
                         item.memory_id
@@ -654,6 +952,16 @@ def run_agent_scenario(
                     or chosen.get("entity_id") != expected_entity
                     or chosen.get("args", {}) != asserted.get("args", {})
                 ):
+                    assertion_status["action"]["seen"] = True
+                    assertion_status["action"]["success"] = False
+                    _append_assertion_result(
+                        trace,
+                        kind="action",
+                        step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        success=False,
+                        expected=asserted,
+                        observed=chosen,
+                    )
                     assertion_failures.append(
                         f"expect_action mismatch for {step.get('step_id')}: got {chosen}, expected {asserted}"
                     )
@@ -668,6 +976,15 @@ def run_agent_scenario(
                             }
                         )
                 else:
+                    assertion_status["action"]["seen"] = True
+                    _append_assertion_result(
+                        trace,
+                        kind="action",
+                        step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        success=True,
+                        expected=asserted,
+                        observed=chosen,
+                    )
                     for memory_id in current_grounding_ids:
                         trace.usage_events.append(
                             {
@@ -679,19 +996,56 @@ def run_agent_scenario(
                             }
                         )
         elif step_type == "expect_clarify":
-            if not (trace.should_ask_user and trace.clarification_turns >= 1):
+            clarify_ok = bool(trace.should_ask_user and trace.clarification_turns >= 1)
+            assertion_status["clarification"]["seen"] = True
+            assertion_status["clarification"]["success"] = assertion_status["clarification"]["success"] and clarify_ok
+            _append_assertion_result(
+                trace,
+                kind="clarification",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=clarify_ok,
+                observed={
+                    "should_ask_user": trace.should_ask_user,
+                    "clarification_turns": trace.clarification_turns,
+                },
+            )
+            if not clarify_ok:
                 assertion_failures.append(
                     f"expect_clarify mismatch for {step.get('step_id')}: should_ask_user={trace.should_ask_user}, clarification_turns={trace.clarification_turns}"
                 )
         elif step_type == "expect_no_action":
-            if trace.chosen_action is not None or trace.should_ask_user:
+            no_action_ok = trace.chosen_action is None
+            assertion_status["action"]["seen"] = True
+            assertion_status["action"]["success"] = assertion_status["action"]["success"] and no_action_ok
+            _append_assertion_result(
+                trace,
+                kind="action",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=no_action_ok,
+                observed={
+                    "chosen_action": trace.chosen_action,
+                    "should_ask_user": trace.should_ask_user,
+                },
+            )
+            if not no_action_ok:
                 assertion_failures.append(
-                    f"expect_no_action mismatch for {step.get('step_id')}: chosen_action={trace.chosen_action}, should_ask_user={trace.should_ask_user}"
+                    f"expect_no_action mismatch for {step.get('step_id')}: chosen_action={trace.chosen_action}"
                 )
         elif step_type == "expect_final_state":
             expected_state = step.get("assert", {})
             trace.ground_truth_state = expected_state
-            if trace.final_device_state != expected_state:
+            final_ok = trace.final_device_state == expected_state
+            assertion_status["final_state"]["seen"] = True
+            assertion_status["final_state"]["success"] = assertion_status["final_state"]["success"] and final_ok
+            _append_assertion_result(
+                trace,
+                kind="final_state",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=final_ok,
+                expected=expected_state,
+                observed=trace.final_device_state,
+            )
+            if not final_ok:
                 assertion_failures.append(
                     f"expect_final_state mismatch for {step.get('step_id')}: got {trace.final_device_state}, expected {expected_state}"
                 )
@@ -702,10 +1056,33 @@ def run_agent_scenario(
                 record for record in records
                 if all(getattr(record, key) == value for key, value in selector.items())
             ]
+            memory_ok = bool(matched)
             if not matched:
                 assertion_failures.append(f"expect_memory no match for selector {selector}")
             for record in matched:
                 trace.memory_status_after[record.memory_id] = record.status
+                for key, value in step.get("assert", {}).items():
+                    if getattr(record, key) != value:
+                        memory_ok = False
+                        assertion_failures.append(
+                            f"expect_memory mismatch {record.memory_id}.{key}: got {getattr(record, key)!r}, expected {value!r}"
+                        )
+            assertion_status["memory"]["seen"] = True
+            assertion_status["memory"]["success"] = assertion_status["memory"]["success"] and memory_ok
+            _append_assertion_result(
+                trace,
+                kind="memory",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=memory_ok,
+                expected={
+                    "selector": selector,
+                    "assert": step.get("assert", {}),
+                },
+                observed=[
+                    record.model_dump(mode="json")
+                    for record in matched
+                ],
+            )
         elif step_type == "expect_absent_memory":
             selector = step.get("selector", {})
             records = service.store.list(include_deleted=True)
@@ -714,6 +1091,17 @@ def run_agent_scenario(
                 if all(getattr(record, key) == value for key, value in selector.items())
                 and record.status != "deleted"
             ]
+            memory_ok = not matched
+            assertion_status["memory"]["seen"] = True
+            assertion_status["memory"]["success"] = assertion_status["memory"]["success"] and memory_ok
+            _append_assertion_result(
+                trace,
+                kind="memory",
+                step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                success=memory_ok,
+                expected={"selector": selector, "absent": True},
+                observed=[record.model_dump(mode="json") for record in matched],
+            )
             if matched:
                 assertion_failures.append(
                     f"expect_absent_memory mismatch for selector {selector}: found {[record.memory_id for record in matched]}"
@@ -739,7 +1127,16 @@ def run_agent_scenario(
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
         trace.maintenance_tokens = sum(item.maintenance_tokens for item in trace.maintenance_events)
-    trace.outcome = "success" if not assertion_failures else "failure"
+    trace.action_success = assertion_status["action"]["success"] if assertion_status["action"]["seen"] else None
+    trace.clarification_success = (
+        assertion_status["clarification"]["success"] if assertion_status["clarification"]["seen"] else None
+    )
+    trace.memory_assertion_success = assertion_status["memory"]["success"] if assertion_status["memory"]["seen"] else None
+    trace.final_state_success = (
+        assertion_status["final_state"]["success"] if assertion_status["final_state"]["seen"] else None
+    )
+    trace.task_success = not assertion_failures
+    trace.outcome = "success" if trace.task_success else "failure"
     if assertion_failures:
         trace.usage_events.append({"kind": "assertion_failures", "failures": assertion_failures})
     trace.end_to_end_latency_ms = (time.perf_counter() - started) * 1000

@@ -10,6 +10,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from experiments.runner import load_config, run_batch_multi_seed
+from experiments.scripts._artifact_paths import configured_run_id, results_root
 
 
 def main():
@@ -34,18 +35,18 @@ def main():
     oracle_result = run_batch_multi_seed(
         oracle,
         seeds=primary,
-        results_root=REPO_ROOT / "experiments" / "results",
+        results_root=results_root(),
         system_id="Ours",
         planner_mode="oracle",
-        run_id="configured_oracle_dev",
+        run_id=configured_run_id("oracle"),
     )
     agent_result = run_batch_multi_seed(
         agent,
         seeds=secondary,
-        results_root=REPO_ROOT / "experiments" / "results",
+        results_root=results_root(),
         system_id="Ours",
         planner_mode="agent",
-        run_id="configured_agent_dev",
+        run_id=configured_run_id("agent"),
     )
     print(json.dumps({"oracle": oracle_result["metrics"], "agent": agent_result["metrics"]}, ensure_ascii=False, indent=2))
 

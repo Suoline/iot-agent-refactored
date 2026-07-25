@@ -9,6 +9,20 @@ from .confidence import effective_confidence
 def refresh_status(record, now: datetime):
     if record.status == "deleted":
         return record
+    if record.valid_from and now < record.valid_from:
+        if record.status == "active":
+            record.status = "candidate"
+            record.layer = "active"
+        return record
+    if (
+        record.valid_from
+        and record.status == "candidate"
+        and now >= record.valid_from
+        and record.memory_type in {"routine", "preference"}
+        and record.source in {"user_explicit", "user_correction"}
+    ):
+        record.status = "active"
+        record.layer = "active"
     if record.valid_until and now >= record.valid_until:
         record.status = "expired"
         record.layer = "archived"

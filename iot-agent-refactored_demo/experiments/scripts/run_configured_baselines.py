@@ -11,6 +11,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from experiments.baselines import BASELINE_IDS
 from experiments.runner import load_config, run_batch_multi_seed
+from experiments.scripts._artifact_paths import configured_run_id, results_root
 
 
 def main():
@@ -29,10 +30,10 @@ def main():
         result = run_batch_multi_seed(
             oracle,
             seeds=seeds,
-            results_root=REPO_ROOT / "experiments" / "results",
+            results_root=results_root(),
             system_id=system_id,
             planner_mode="oracle",
-            run_id="configured_baseline_dev",
+            run_id=configured_run_id("baseline"),
         )
         print(system_id, json.dumps(result["metrics"], ensure_ascii=False))
 

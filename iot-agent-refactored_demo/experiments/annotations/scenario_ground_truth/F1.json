@@ -41,9 +41,7 @@
         "object": "light.living_ceiling",
         "source": "user_explicit",
         "layer": "active",
-        "related_memory_ids": [
-          "f1_living_ceiling_fact"
-        ]
+        "related_memory_ids": []
       }
     },
     {

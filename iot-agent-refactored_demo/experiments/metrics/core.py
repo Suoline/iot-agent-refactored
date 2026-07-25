@@ -89,10 +89,20 @@ def _rrr_for_trace(task_trace: dict) -> float:
     return revived / len(resampled)
 
 
+def _task_success_for_trace(task_trace: dict) -> float:
+    if task_trace.get("task_success") is not None:
+        return 1.0 if task_trace.get("task_success") else 0.0
+    if task_trace.get("outcome") is not None:
+        return 1.0 if task_trace.get("outcome") == "success" else 0.0
+    final_state = task_trace.get("final_device_state", {})
+    ground_truth_state = task_trace.get("ground_truth_state", {})
+    return 1.0 if final_state == ground_truth_state and final_state else 0.0
+
+
 def task_metrics(task_trace: dict) -> dict:
     final_state = task_trace.get("final_device_state", {})
     ground_truth_state = task_trace.get("ground_truth_state", {})
-    tsr = 1.0 if final_state == ground_truth_state else 0.0
+    tsr = _task_success_for_trace(task_trace)
 
     usable_steps = task_trace.get("steps", [])
     stale_hits = 0
@@ -127,6 +137,11 @@ def task_metrics(task_trace: dict) -> dict:
     rrr = _rrr_for_trace(task_trace)
     return {
         "TSR": tsr,
+        "task_success": 1.0 if task_trace.get("task_success") else (0.0 if task_trace.get("task_success") is not None else None),
+        "action_success": 1.0 if task_trace.get("action_success") else (0.0 if task_trace.get("action_success") is not None else None),
+        "clarification_success": 1.0 if task_trace.get("clarification_success") else (0.0 if task_trace.get("clarification_success") is not None else None),
+        "memory_assertion_success": 1.0 if task_trace.get("memory_assertion_success") else (0.0 if task_trace.get("memory_assertion_success") is not None else None),
+        "final_state_success": 1.0 if task_trace.get("final_state_success") else (0.0 if task_trace.get("final_state_success") is not None else None),
         "SRR": srr,
         "WDR": wdr,
         "CB": cb,
