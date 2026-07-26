@@ -71,6 +71,10 @@ def _apply_custom_event(world: HAOracle, service: MemoryService, step: dict, now
 def _inject_registry_candidates(world: HAOracle, package, query: str):
     if package.candidate_devices:
         return _enrich_candidate_devices(world, package)
+    memory_candidates = _memory_grounded_candidates(package)
+    if memory_candidates:
+        package.candidate_devices = memory_candidates
+        return _enrich_candidate_devices(world, package)
     query_tokens = _tokens(query)
     candidates = []
     for entity_id, entity in world.entities.items():
@@ -104,9 +108,9 @@ def _inject_registry_candidates(world: HAOracle, package, query: str):
 
 
 def _service_options_for_entity(entity_id: str, entity: dict) -> list[str]:
-    entity_type = entity.get("type")
     if entity_id.startswith("routine."):
         return ["routine.run"]
+    entity_type = entity.get("type")
     if entity_type in {"light", "switch"}:
         return [f"{entity_type}.turn_on", f"{entity_type}.turn_off"]
     if entity_type == "cover":
@@ -118,12 +122,47 @@ def _service_options_for_entity(entity_id: str, entity: dict) -> list[str]:
     return []
 
 
+def _memory_grounded_candidates(package) -> list[CandidateDevice]:
+    grouped: dict[str, list] = {}
+    display_names: dict[str, str] = {}
+    for item in package.matched_memories:
+        if not item.in_usable_set:
+            continue
+        entity_id = None
+        if item.memory_type == "routine":
+            if "routine." in item.text:
+                for token in item.text.split():
+                    if token.startswith("routine."):
+                        entity_id = token
+                        break
+        if entity_id is None:
+            entity_id = package.retrieval_metadata.get("memory_entity_map", {}).get(item.memory_id)
+        if not entity_id:
+            continue
+        grouped.setdefault(entity_id, []).append(item)
+        display_names.setdefault(entity_id, entity_id)
+    candidates: list[CandidateDevice] = []
+    for entity_id, related in grouped.items():
+        best = max(related, key=lambda match: match.score)
+        candidates.append(
+            CandidateDevice(
+                entity_id=entity_id,
+                name=display_names.get(entity_id, entity_id),
+                score=best.score,
+                confidence=best.effective_confidence,
+                matched_memories=sorted(related, key=lambda match: (-match.score, match.memory_id)),
+            )
+        )
+    candidates.sort(key=lambda item: (-item.score, item.entity_id))
+    return candidates[:5]
+
+
 def _enrich_candidate_devices(world: HAOracle, package):
     enriched: list[CandidateDevice] = []
     for candidate in package.candidate_devices:
         entity = world.entities.get(candidate.entity_id, {})
         payload = candidate.model_dump(mode="json")
-        payload["entity_type"] = entity.get("type", payload.get("entity_type"))
+        payload["entity_type"] = entity.get("type", payload.get("entity_type") or ("routine" if candidate.entity_id.startswith("routine.") else None))
         payload["capabilities"] = entity.get("capabilities", payload.get("capabilities", []))
         payload["available_services"] = _service_options_for_entity(candidate.entity_id, entity)
         payload["current_state"] = world.get_state(candidate.entity_id) if candidate.entity_id in world.states else {}

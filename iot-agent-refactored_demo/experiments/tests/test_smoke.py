@@ -1605,6 +1605,160 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertEqual(annotation["status"], "pending_human_annotation")
         self.assertIsNone(annotation["cohen_kappa"])
 
+    def test_strict_experiment_matrix_script_outputs(self):
+        output = Path(tempfile.gettempdir()) / "strict_experiment_matrix_test.json"
+        if output.exists():
+            output.unlink()
+        subprocess.run(
+            [sys.executable, "experiments/scripts/build_strict_experiment_matrix.py", "--output", str(output)],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        matrix = json.loads(output.read_text(encoding="utf-8"))
+        self.assertEqual(matrix["scenario_count"], 36)
+        self.assertEqual(matrix["summary"]["main_agent_total_units"], 7 * 36 * 30)
+        self.assertEqual(matrix["summary"]["oracle_ablation_total_units"], 8 * 36 * 20)
+        self.assertEqual(matrix["summary"]["overall_total_units"], (7 * 36 * 30) + (8 * 36 * 20))
+
+    def test_strict_serial_oracle_unit_and_partial_audit(self):
+        results_root = Path(tempfile.gettempdir()) / "strict_serial_oracle_smoke"
+        if results_root.exists():
+            import shutil
+
+            shutil.rmtree(results_root)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_oracle_smoke",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--system-id=-Decay",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "oracle",
+                "--results-root",
+                str(results_root),
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        resume = subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_oracle_smoke",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--system-id=-Decay",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "oracle",
+                "--results-root",
+                str(results_root),
+                "--resume",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertIn("skipped_existing", resume.stdout)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/audit_strict_experiment.py",
+                "--run-id",
+                "strict_oracle_smoke",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--results-root",
+                str(results_root),
+                "--allow-partial",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        audit = json.loads(
+            (results_root / "reports" / "strict_oracle_smoke" / "strict_oracle_ablations.strict_audit.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(audit["status"], "partial")
+        self.assertEqual(audit["observed_unit_count"], 1)
+
+    def test_strict_serial_agent_external_requirement_rejects_fallback(self):
+        results_root = Path(tempfile.gettempdir()) / "strict_serial_agent_smoke"
+        if results_root.exists():
+            import shutil
+
+            shutil.rmtree(results_root)
+        result = subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_agent_smoke",
+                "--group-id",
+                "strict_main_agent",
+                "--system-id",
+                "Ours",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "agent",
+                "--results-root",
+                str(results_root),
+                "--require-agent-backend",
+                "external_llm",
+            ],
+            cwd=Path.cwd(),
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 3)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/audit_strict_experiment.py",
+                "--run-id",
+                "strict_agent_smoke",
+                "--group-id",
+                "strict_main_agent",
+                "--results-root",
+                str(results_root),
+                "--allow-partial",
+            ],
+            cwd=Path.cwd(),
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        audit = json.loads(
+            (results_root / "reports" / "strict_agent_smoke" / "strict_main_agent.strict_audit.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(audit["status"], "fail")
+        self.assertTrue(any(item["code"] == "heuristic_fallback_detected" for item in audit["failures"]))
+
 
 if __name__ == "__main__":
     unittest.main()

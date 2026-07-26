@@ -209,6 +209,7 @@ class MemoryService:
             records.append(record)
 
         matches = []
+        memory_entity_map: dict[str, str] = {}
         grouped_candidates: dict[str, list[MatchedMemory]] = {}
         effective_top_k = len(records) if self.config.get("score_mode") == "large_context" else top_k
         for lexical_score, record in self.index.search(query, records, top_k=effective_top_k):
@@ -251,9 +252,10 @@ class MemoryService:
             )
             matches.append(matched)
             entity_id = record.entity_id or (
-                record.object if isinstance(record.object, str) and "." in record.object else None
+                record.object if isinstance(record.object, str) and ("." in record.object or record.object.startswith("routine.")) else None
             )
             if entity_id:
+                memory_entity_map[matched.memory_id] = entity_id
                 grouped_candidates.setdefault(entity_id, []).append(matched)
 
         global_constraints = sorted(
@@ -304,6 +306,7 @@ class MemoryService:
             task_type=task_type,
             retrieval_metadata={
                 "top_k": top_k,
+                "memory_entity_map": memory_entity_map,
                 "usable_stale_memory_ids": [
                     item.memory_id for item in matches if item.runtime_status == "usable-stale"
                 ],

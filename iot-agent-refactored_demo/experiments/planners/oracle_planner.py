@@ -37,6 +37,24 @@ class OraclePlanner:
         usable_memories = [item for item in package.matched_memories if item.in_usable_set]
         if package.task_type == "automation" and not usable_memories:
             return PlannerDecision(action=None, should_ask_user=False, reason="自动化规则当前不可执行")
+        routine_candidates = [
+            item for item in package.candidate_devices
+            if item.entity_id.startswith("routine.")
+        ]
+        if (
+            routine_candidates
+            and package.task_type != "safety"
+            and package.candidate_devices
+            and package.candidate_devices[0].entity_id.startswith("routine.")
+        ):
+            routine_candidates.sort(key=lambda item: (-item.score, item.entity_id))
+            return PlannerDecision(
+                action={
+                    "service": "routine.run",
+                    "entity_id": routine_candidates[0].entity_id,
+                    "args": {},
+                }
+            )
         if package.task_type == "control" and not usable_memories and not package.candidate_devices:
             return PlannerDecision(should_ask_user=True, reason="控制意图置信度不足")
         if package.should_ask_user:
@@ -44,6 +62,7 @@ class OraclePlanner:
         candidates = [
             item for item in package.candidate_devices
             if item.confidence >= package.threshold_used
+            or (package.task_type == "safety" and any(match.memory_worth > 0.8 for match in item.matched_memories))
         ]
         if not candidates:
             memories = [item for item in package.matched_memories if item.in_usable_set]

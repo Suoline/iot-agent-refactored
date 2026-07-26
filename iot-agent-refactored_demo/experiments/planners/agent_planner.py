@@ -213,6 +213,16 @@ def _build_safety_execution_hint(package: SearchResultPackage) -> dict[str, Any]
 def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
     usable = [item for item in package.matched_memories if item.in_usable_set]
     grounding = [item for item in package.matched_memories if item.in_usable_set or item.in_grounding_set]
+    answerable_memories = [
+        {
+            "memory_id": item.memory_id,
+            "memory_type": item.memory_type,
+            "text": item.text,
+            "score": item.score,
+            "effective_confidence": item.effective_confidence,
+        }
+        for item in usable
+    ]
     safety_execution_hint = _build_safety_execution_hint(package)
     prompt_payload = {
         "task": task,
@@ -223,6 +233,7 @@ def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
         "global_constraints": [item.model_dump(mode="json") for item in package.global_constraints],
         "usable_memories": [item.model_dump(mode="json") for item in usable],
         "grounding_memories": [item.model_dump(mode="json") for item in grounding],
+        "answerable_memories": answerable_memories,
         "retrieval_metadata": package.retrieval_metadata,
         "safety_execution_hint": safety_execution_hint,
     }
@@ -230,11 +241,14 @@ def _build_plan_prompt(task: str, package: SearchResultPackage) -> str:
         "你是实验环境中的 smart-home 规划器，只负责输出可审计的 JSON 计划，不能执行动作。\n"
         "必须遵守以下规则：\n"
         "1. 只能使用 candidate_devices 里已有的 entity_id 和 available_services。\n"
-        "2. 如果记忆检索结果本身要求澄清、候选不唯一、或安全风险无法确认，返回 should_ask_user=true 且 actions=[]。\n"
-        "3. task_type=safety 时，涉及 routine.run、多动作联动、或缺少强 grounding 的高风险动作，优先澄清。\n"
-        "4. 但如果 safety_execution_hint.direct_execution_allowed=true，且你能给出唯一、单个、与 available_services 精确匹配的动作，则应直接返回该动作，不要额外澄清。\n"
-        "5. 不要输出额外解释文字，只返回一个 JSON 对象。\n"
-        "6. JSON schema: "
+        "2. task_type=query 时，如果 answerable_memories 足以回答问题，返回一个动作："
+        '{"service":"memory.answer","entity_id":"<memory_id>","args":{}}。\n'
+        "3. task_type=automation 且当前规则不可执行时，返回 should_ask_user=false 且 actions=[]，不要因为规则过期而发起澄清。\n"
+        "4. 如果记忆检索结果本身要求澄清、候选不唯一、或安全风险无法确认，返回 should_ask_user=true 且 actions=[]。\n"
+        "5. task_type=safety 时，涉及 routine.run、多动作联动、或缺少强 grounding 的高风险动作，优先澄清。\n"
+        "6. 但如果 safety_execution_hint.direct_execution_allowed=true，且你能给出唯一、单个、与 available_services 精确匹配的动作，则应直接返回该动作，不要额外澄清。\n"
+        "7. 不要输出额外解释文字，只返回一个 JSON 对象。\n"
+        "8. JSON schema: "
         '{"actions":[{"service":"...", "entity_id":"...", "args":{}}], "should_ask_user": false, "reason": "..."}\n'
         f"上下文如下：\n{json.dumps(prompt_payload, ensure_ascii=False, indent=2)}"
     )
@@ -249,6 +263,38 @@ def _apply_post_guards(
     plan: AgentPlanPayload,
 ) -> AgentPlanPayload:
     actions = list(plan.actions)
+    if package.task_type == "automation" and not actions and not plan.should_ask_user:
+        return AgentPlanPayload(
+            actions=[],
+            should_ask_user=False,
+            reason=plan.reason or "automation_no_action",
+        )
+    if package.task_type == "query":
+        answer_ids = {item.memory_id for item in package.matched_memories if item.in_usable_set}
+        if len(actions) == 1 and actions[0].service == "memory.answer" and actions[0].entity_id in answer_ids:
+            return AgentPlanPayload(
+                actions=actions,
+                should_ask_user=False,
+                reason=plan.reason or "query_answer",
+            )
+        if plan.should_ask_user:
+            return AgentPlanPayload(
+                actions=[],
+                should_ask_user=True,
+                reason=plan.reason or "query_requires_clarification",
+            )
+        if answer_ids:
+            memory_id = sorted(answer_ids)[0]
+            return AgentPlanPayload(
+                actions=[AgentActionModel(service="memory.answer", entity_id=memory_id, args={})],
+                should_ask_user=False,
+                reason=plan.reason or "query_answer",
+            )
+        return AgentPlanPayload(
+            actions=[],
+            should_ask_user=True,
+            reason=plan.reason or "query_requires_clarification",
+        )
     if plan.should_ask_user:
         return AgentPlanPayload(
             actions=[],
@@ -398,6 +444,47 @@ class AgentPlanner:
         latency_ms: float = 0.0,
     ) -> AgentPlannerDecision:
         usable = [item for item in package.matched_memories if item.in_usable_set]
+        if package.task_type == "query":
+            if usable:
+                best = max(usable, key=lambda item: (item.score, item.effective_confidence, item.memory_id))
+                action = {"service": "memory.answer", "entity_id": best.memory_id, "args": {}}
+                return AgentPlannerDecision(
+                    action=action,
+                    actions=[action],
+                    raw_output=raw_output,
+                    reason="heuristic_query_answer",
+                    failure_type=failure_type,
+                    model=model,
+                    provider=provider,
+                    tool_calls=tool_calls or [],
+                    usage=usage or {},
+                    latency_ms=latency_ms,
+                )
+            return AgentPlannerDecision(
+                should_ask_user=True,
+                raw_output=raw_output,
+                reason="no_answerable_memory",
+                failure_type=failure_type,
+                model=model,
+                provider=provider,
+                tool_calls=tool_calls or [],
+                usage=usage or {},
+                latency_ms=latency_ms,
+            )
+        if package.task_type == "automation" and not usable:
+            return AgentPlannerDecision(
+                action=None,
+                actions=[],
+                should_ask_user=False,
+                raw_output=raw_output,
+                reason="automation_no_action",
+                failure_type=failure_type,
+                model=model,
+                provider=provider,
+                tool_calls=tool_calls or [],
+                usage=usage or {},
+                latency_ms=latency_ms,
+            )
         routines = [item for item in usable if item.memory_type == "routine"]
         reflections = [item for item in usable if item.memory_type == "reflection"]
         if reflections:
@@ -418,7 +505,15 @@ class AgentPlanner:
                 for candidate in package.candidate_devices
                 if candidate.entity_id.startswith("routine.")
             ]
-            if routine_devices and package.task_type != "safety":
+            top_candidate = None
+            if package.candidate_devices:
+                top_candidate = max(package.candidate_devices, key=lambda item: (item.score, item.confidence, item.entity_id))
+            if (
+                routine_devices
+                and package.task_type != "safety"
+                and top_candidate is not None
+                and top_candidate.entity_id.startswith("routine.")
+            ):
                 action = {
                     "service": "routine.run",
                     "entity_id": routine_devices[0].entity_id,
@@ -429,6 +524,21 @@ class AgentPlanner:
                     actions=[action],
                     raw_output=raw_output,
                     reason="heuristic_routine",
+                    failure_type=failure_type,
+                    model=model,
+                    provider=provider,
+                    tool_calls=tool_calls or [],
+                    usage=usage or {},
+                    latency_ms=latency_ms,
+                )
+            if package.candidate_devices:
+                best = max(package.candidate_devices, key=lambda item: (item.score, item.confidence, item.entity_id))
+                action = {"service": "planner.select", "entity_id": best.entity_id, "args": {}}
+                return AgentPlannerDecision(
+                    action=action,
+                    actions=[action],
+                    raw_output=raw_output,
+                    reason="heuristic_routine_grounded_select",
                     failure_type=failure_type,
                     model=model,
                     provider=provider,
