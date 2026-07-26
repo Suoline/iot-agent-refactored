@@ -920,7 +920,7 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertIn('"entity_id": "lock.front_door"', prompt)
         self.assertIn("不要额外澄清", prompt)
 
-    def test_external_llm_parse_failure_falls_back_with_failure_type(self):
+    def test_external_llm_parse_failure_stays_external_with_failure_type(self):
         stub = self._StubClient(response={"raw_output": "先开灯，然后我来执行。"})
         planner = AgentPlanner(client_factory=lambda: stub)
         package = self._make_package(
@@ -935,11 +935,12 @@ class AgentPlannerTest(unittest.TestCase):
         )
         with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
             decision = planner.decide(package, "打开书房台灯")
-        self.assertEqual(decision.backend, "heuristic_fallback")
+        self.assertEqual(decision.backend, "external_llm")
         self.assertTrue(decision.failure_type.startswith("external_parse_failed"))
-        self.assertEqual(decision.action["service"], "planner.select")
+        self.assertIsNone(decision.action)
+        self.assertFalse(decision.actions)
 
-    def test_external_llm_call_failure_falls_back_with_failure_type(self):
+    def test_external_llm_call_failure_stays_external_with_failure_type(self):
         stub = self._StubClient(exc=RuntimeError("network down"))
         planner = AgentPlanner(client_factory=lambda: stub)
         package = self._make_package(
@@ -954,8 +955,10 @@ class AgentPlannerTest(unittest.TestCase):
         )
         with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
             decision = planner.decide(package, "打开书房台灯")
-        self.assertEqual(decision.backend, "heuristic_fallback")
+        self.assertEqual(decision.backend, "external_llm")
         self.assertEqual(decision.failure_type, "external_call_failed:RuntimeError")
+        self.assertIsNone(decision.action)
+        self.assertFalse(decision.actions)
 
     def test_external_llm_client_uses_http_transport_when_langchain_missing(self):
         class _FakeResponse:
@@ -1101,6 +1104,30 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertTrue(trace["action_execution_results"])
         self.assertFalse(trace["action_execution_results"][-1]["success"])
         self.assertIn("execution_exception:KeyError", trace["action_execution_results"][-1]["error"])
+
+    def test_run_agent_scenario_parse_failure_is_not_rewritten_as_heuristic_success(self):
+        scenario = load_scenario(Path("experiments/scenarios/category_g/G3.yaml"))
+        fake_decision = AgentPlannerDecision(
+            action=None,
+            actions=[],
+            should_ask_user=False,
+            reason="external_parse_failed:ValueError",
+            backend="external_llm",
+            raw_output='{"actions":[{"service":"light.turn_on","entity_id":"light.living_ceiling","args":{"color_temp":暖色}}]}',
+            structured_output={"backend": "external_llm", "failure_type": "external_parse_failed:ValueError"},
+            failure_type="external_parse_failed:ValueError",
+            requested_seed=1001,
+            request_seed_supported=True,
+            request_seed_applied=True,
+            seed_protocol="provider_seed",
+        )
+        with mock.patch("experiments.runner.single_run.AgentAdapter") as adapter_cls:
+            adapter_cls.return_value.plan.return_value = fake_decision
+            trace = run_agent_scenario(scenario, seed=1001, results_root=Path("experiments/results"))
+        self.assertEqual(trace["agent_backend"], "external_llm")
+        self.assertIn("external_parse_failed:ValueError", trace["agent_failures"])
+        self.assertFalse(trace["task_success"])
+        self.assertEqual(trace["outcome"], "failure")
 
 
 class RunnerSmokeTest(unittest.TestCase):

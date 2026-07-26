@@ -528,8 +528,7 @@ class AgentPlanner:
         try:
             client = self._get_client()
         except Exception as exc:
-            return self._heuristic_fallback(
-                package,
+            return self._external_failure(
                 failure_type=f"external_init_failed:{type(exc).__name__}",
                 raw_output=_redact_error(exc),
                 requested_seed=requested_seed,
@@ -543,10 +542,11 @@ class AgentPlanner:
             else:
                 response = client.invoke(prompt)
         except Exception as exc:
-            return self._heuristic_fallback(
-                package,
+            return self._external_failure(
                 failure_type=f"external_call_failed:{type(exc).__name__}",
                 raw_output=_redact_error(exc),
+                provider=getattr(client, "provider", None),
+                model=getattr(client, "model", None),
                 requested_seed=requested_seed,
                 seed_protocol="replicate_id",
             )
@@ -566,8 +566,7 @@ class AgentPlanner:
             parsed = AgentPlanPayload.model_validate(payload)
             guarded = _apply_post_guards(package, parsed)
         except (ValueError, ValidationError) as exc:
-            return self._heuristic_fallback(
-                package,
+            return self._external_failure(
                 failure_type=f"external_parse_failed:{type(exc).__name__}",
                 raw_output=raw_output or _redact_error(exc),
                 model=model,
@@ -609,6 +608,55 @@ class AgentPlanner:
             tool_calls=tool_calls,
             usage=usage,
             latency_ms=latency_ms,
+            requested_seed=requested_seed,
+            request_seed_supported=request_seed_supported,
+            request_seed_applied=request_seed_applied,
+            seed_protocol=seed_protocol,
+        )
+
+    def _external_failure(
+        self,
+        *,
+        failure_type: str,
+        raw_output: str | None,
+        model: str | None = None,
+        provider: str | None = None,
+        tool_calls: list[dict[str, Any]] | None = None,
+        usage: dict[str, Any] | None = None,
+        latency_ms: float = 0.0,
+        requested_seed: int | None = None,
+        request_seed_supported: bool | None = None,
+        request_seed_applied: bool | None = None,
+        seed_protocol: str | None = None,
+    ) -> AgentPlannerDecision:
+        return AgentPlannerDecision(
+            action=None,
+            actions=[],
+            should_ask_user=False,
+            reason=failure_type,
+            raw_output=raw_output,
+            structured_output={
+                "actions": [],
+                "should_ask_user": False,
+                "reason": failure_type,
+                "raw_model_output": raw_output,
+                "model": model,
+                "provider": provider,
+                "tool_calls": tool_calls or [],
+                "backend": "external_llm",
+                "requested_seed": requested_seed,
+                "request_seed_supported": request_seed_supported,
+                "request_seed_applied": request_seed_applied,
+                "seed_protocol": seed_protocol,
+                "failure_type": failure_type,
+            },
+            backend="external_llm",
+            provider=provider,
+            model=model,
+            tool_calls=tool_calls or [],
+            usage=usage or {},
+            latency_ms=latency_ms,
+            failure_type=failure_type,
             requested_seed=requested_seed,
             request_seed_supported=request_seed_supported,
             request_seed_applied=request_seed_applied,

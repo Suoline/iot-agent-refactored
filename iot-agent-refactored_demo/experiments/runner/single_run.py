@@ -978,6 +978,8 @@ def run_agent_scenario(
                 trace.agent_latencies_ms.append(decision.latency_ms)
             if decision.failure_type:
                 trace.agent_failures.append(decision.failure_type)
+                if decision.backend == "external_llm":
+                    assertion_failures.append(f"agent_decision_failed:{decision.failure_type}")
             planned_actions = list(decision.actions or ([decision.action] if decision.action else []))
             trace.chosen_actions = planned_actions
             if decision.should_ask_user:

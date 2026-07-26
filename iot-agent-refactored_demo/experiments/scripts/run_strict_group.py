@@ -126,8 +126,6 @@ def _load_manifest_usage(results_root: Path, payload: dict) -> dict[str, int]:
 def _is_retryable_transport_failure(payload: dict) -> bool:
     if payload.get("status") != "strict_check_failed":
         return False
-    if payload.get("agent_backend") not in {"heuristic_fallback", None}:
-        return False
     if not any(str(item).startswith("external_call_failed:") for item in payload.get("agent_failures", [])):
         return False
     raw = str(payload.get("agent_raw_output_excerpt", "")).lower()

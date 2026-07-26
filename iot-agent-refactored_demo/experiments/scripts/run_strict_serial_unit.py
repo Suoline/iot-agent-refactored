@@ -68,6 +68,13 @@ def _unit_paths(results_root: Path, run_id: str, system_id: str, planner_mode: s
     return {"raw": raw, "maintenance": maintenance, "manifest": manifest}
 
 
+def _has_transport_failure(trace: dict) -> bool:
+    return any(
+        str(item).startswith(("external_call_failed:", "external_init_failed:"))
+        for item in trace.get("agent_failures", [])
+    )
+
+
 def _resume_validation(
     *,
     paths: dict[str, Path],
@@ -235,6 +242,7 @@ def main() -> None:
         "no_heuristic_fallback": (
             expected_backend is None or trace.get("agent_backend") != "heuristic_fallback"
         ),
+        "no_transport_failure": not _has_transport_failure(trace),
         "no_mixed_revision": True,
     }
     manifest = {
