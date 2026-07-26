@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import tempfile
 import time
 import uuid
@@ -822,6 +823,11 @@ def run_agent_scenario(
         sim_time=world.current_time,
         safety_relevant=bool(scenario.get("safety_relevant", False)),
     )
+    if os.environ.get("EXPERIMENT_AGENT_BACKEND") == "external":
+        trace.agent_backend = "external_llm"
+        trace.agent_seed_protocol = "no_agent_call_required"
+    else:
+        trace.agent_backend = "heuristic_fallback"
     assertion_failures: list[str] = []
     current_grounding_ids: list[str] = []
     assertion_status = {

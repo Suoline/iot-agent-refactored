@@ -1070,6 +1070,16 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertTrue(trace["action_execution_results"])
         self.assertTrue(trace["task_success"])
 
+    def test_run_agent_scenario_without_say_steps_keeps_external_backend_marker(self):
+        scenario = load_scenario(Path("experiments/scenarios/category_f/F1.yaml"))
+        with mock.patch.dict(os.environ, {"EXPERIMENT_AGENT_BACKEND": "external"}, clear=False):
+            trace = run_agent_scenario(scenario, seed=1001, results_root=Path("experiments/results"))
+        self.assertEqual(trace["agent_backend"], "external_llm")
+        self.assertEqual(trace["agent_seed_protocol"], "no_agent_call_required")
+        self.assertEqual(trace["agent_api_call_count"] if "agent_api_call_count" in trace else 0, 0)
+        self.assertFalse(trace["agent_usage_metadata"])
+        self.assertTrue(trace["task_success"])
+
 
 class RunnerSmokeTest(unittest.TestCase):
     def test_batch_run_generates_metrics(self):
