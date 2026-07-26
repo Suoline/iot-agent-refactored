@@ -82,6 +82,7 @@ def _resume_validation(
     maintenance_relative: str,
     manifest_relative: str,
     expected_backend: str | None,
+    expected_git_revision: str,
     planner_mode: str,
     scenario_id: str,
     seed: int,
@@ -127,6 +128,8 @@ def _resume_validation(
         issues.append("manifest_agent_backend_mismatch")
     if expected_backend is not None and trace.get("agent_backend") != expected_backend:
         issues.append("trace_agent_backend_mismatch")
+    if manifest.get("git_revision") != expected_git_revision:
+        issues.append("manifest_git_revision_mismatch")
 
     return {
         "complete": not issues,
@@ -178,6 +181,7 @@ def main() -> None:
                 maintenance_relative=maintenance_relative,
                 manifest_relative=manifest_relative,
                 expected_backend=args.require_agent_backend,
+                expected_git_revision=_git_revision(),
                 planner_mode=args.planner_mode,
                 scenario_id=args.scenario_id,
                 seed=args.seed,
