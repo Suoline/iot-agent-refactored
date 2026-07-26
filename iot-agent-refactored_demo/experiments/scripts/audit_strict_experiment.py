@@ -15,6 +15,29 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _trace_usage_totals(trace: dict) -> dict[str, int]:
+    totals = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+    }
+    for batch in trace.get("agent_usage_metadata", []):
+        prompt_tokens = batch.get("prompt_tokens", batch.get("input_tokens", 0))
+        completion_tokens = batch.get("completion_tokens", batch.get("output_tokens", 0))
+        total_tokens = batch.get("total_tokens", 0)
+        if isinstance(prompt_tokens, (int, float)):
+            totals["prompt_tokens"] += int(prompt_tokens)
+            totals["input_tokens"] += int(prompt_tokens)
+        if isinstance(completion_tokens, (int, float)):
+            totals["completion_tokens"] += int(completion_tokens)
+            totals["output_tokens"] += int(completion_tokens)
+        if isinstance(total_tokens, (int, float)):
+            totals["total_tokens"] += int(total_tokens)
+    return totals
+
+
 def _expected_units(matrix: dict, run_id: str, group_id: str | None) -> list[dict]:
     units = matrix["units"]
     if group_id is not None:
@@ -50,7 +73,13 @@ def main() -> None:
     failing_units = []
     revisions = Counter()
     total_calls = 0
-    total_tokens = 0
+    usage_totals = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+    }
     total_latency_ms = 0.0
 
     for unit in expected:
@@ -62,11 +91,16 @@ def main() -> None:
         observed.append(manifest)
         revisions[manifest.get("git_revision")] += 1
         total_calls += int(manifest.get("agent_api_call_count", 0) or 0)
-        total_tokens += int((manifest.get("agent_usage_totals") or {}).get("total_tokens", 0) or 0)
         total_latency_ms += float(manifest.get("agent_latency_ms_sum", 0.0) or 0.0)
         trace_path = results_root / manifest["trace_file"]
         if not trace_path.exists():
             missing_trace_files.append(manifest["trace_file"])
+            trace = {}
+        else:
+            trace = _load_json(trace_path)
+            trace_usage = _trace_usage_totals(trace)
+            for key in usage_totals:
+                usage_totals[key] += trace_usage[key]
         strict_checks = manifest.get("strict_checks", {})
         if (
             manifest.get("expected_agent_backend") == "external_llm"
@@ -116,7 +150,11 @@ def main() -> None:
         "git_revisions": dict(revisions),
         "usage_summary": {
             "agent_api_call_count": total_calls,
-            "agent_total_tokens": total_tokens,
+            "agent_input_tokens": usage_totals["input_tokens"],
+            "agent_output_tokens": usage_totals["output_tokens"],
+            "agent_prompt_tokens": usage_totals["prompt_tokens"],
+            "agent_completion_tokens": usage_totals["completion_tokens"],
+            "agent_total_tokens": usage_totals["total_tokens"],
             "agent_total_latency_ms": total_latency_ms,
         },
     }

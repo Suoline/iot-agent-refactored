@@ -16,6 +16,29 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _trace_usage_totals(trace: dict) -> dict[str, int]:
+    totals = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+    }
+    for batch in trace.get("agent_usage_metadata", []):
+        prompt_tokens = batch.get("prompt_tokens", batch.get("input_tokens", 0))
+        completion_tokens = batch.get("completion_tokens", batch.get("output_tokens", 0))
+        total_tokens = batch.get("total_tokens", 0)
+        if isinstance(prompt_tokens, (int, float)):
+            totals["prompt_tokens"] += int(prompt_tokens)
+            totals["input_tokens"] += int(prompt_tokens)
+        if isinstance(completion_tokens, (int, float)):
+            totals["completion_tokens"] += int(completion_tokens)
+            totals["output_tokens"] += int(completion_tokens)
+        if isinstance(total_tokens, (int, float)):
+            totals["total_tokens"] += int(total_tokens)
+    return totals
+
+
 def _safe_mean(values: list[float]) -> float:
     return sum(values) / len(values) if values else 0.0
 
@@ -50,13 +73,28 @@ def main() -> None:
             manifests.append(_load_json(manifest_path))
 
     call_counts = [float(item.get("agent_api_call_count", 0) or 0) for item in manifests]
-    input_tokens = [float((item.get("agent_usage_totals") or {}).get("input_tokens", 0) or 0) for item in manifests]
-    output_tokens = [float((item.get("agent_usage_totals") or {}).get("output_tokens", 0) or 0) for item in manifests]
-    total_tokens = [float((item.get("agent_usage_totals") or {}).get("total_tokens", 0) or 0) for item in manifests]
+    prompt_tokens = []
+    completion_tokens = []
+    input_tokens = []
+    output_tokens = []
+    total_tokens = []
+    for item in manifests:
+        trace_path = results_root / item["trace_file"]
+        if trace_path.exists():
+            totals = _trace_usage_totals(_load_json(trace_path))
+        else:
+            totals = item.get("agent_usage_totals") or {}
+        prompt_tokens.append(float(totals.get("prompt_tokens", totals.get("input_tokens", 0)) or 0))
+        completion_tokens.append(float(totals.get("completion_tokens", totals.get("output_tokens", 0)) or 0))
+        input_tokens.append(float(totals.get("input_tokens", totals.get("prompt_tokens", 0)) or 0))
+        output_tokens.append(float(totals.get("output_tokens", totals.get("completion_tokens", 0)) or 0))
+        total_tokens.append(float(totals.get("total_tokens", 0) or 0))
     latencies = [float(item.get("agent_latency_ms_sum", 0.0) or 0.0) for item in manifests]
 
     total_units = main_group["unit_count"]
     mean_calls = _safe_mean(call_counts)
+    mean_prompt = _safe_mean(prompt_tokens)
+    mean_completion = _safe_mean(completion_tokens)
     mean_input = _safe_mean(input_tokens)
     mean_output = _safe_mean(output_tokens)
     mean_total = _safe_mean(total_tokens)
@@ -72,6 +110,8 @@ def main() -> None:
         "pilot_audit_status": audit.get("status"),
         "extrapolation": {
             "mean_agent_api_calls_per_unit": mean_calls,
+            "mean_prompt_tokens_per_unit": mean_prompt,
+            "mean_completion_tokens_per_unit": mean_completion,
             "mean_input_tokens_per_unit": mean_input,
             "mean_output_tokens_per_unit": mean_output,
             "mean_total_tokens_per_unit": mean_total,

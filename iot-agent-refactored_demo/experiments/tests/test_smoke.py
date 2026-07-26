@@ -1787,6 +1787,132 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertEqual(audit["status"], "fail")
         self.assertTrue(any(item["code"] == "heuristic_fallback_detected" for item in audit["failures"]))
 
+    def test_strict_group_runner_smoke(self):
+        results_root = Path(tempfile.gettempdir()) / "strict_group_oracle_smoke"
+        if results_root.exists():
+            import shutil
+
+            shutil.rmtree(results_root)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_group.py",
+                "--run-id",
+                "strict_group_oracle_smoke",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--results-root",
+                str(results_root),
+                "--systems=-Decay",
+                "--scenarios",
+                "A1,A2",
+                "--seeds",
+                "1001",
+                "--resume",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        summary = json.loads(
+            (results_root / "reports" / "strict_group_oracle_smoke" / "strict_oracle_ablations.group_run_summary.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(summary["completed_count"], 2)
+        self.assertEqual(summary["failure_count"], 0)
+
+    def test_strict_audit_and_cost_normalize_prompt_completion_tokens(self):
+        results_root = Path(tempfile.gettempdir()) / "strict_group_agent_normalized"
+        if results_root.exists():
+            import shutil
+
+            shutil.rmtree(results_root)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_group_agent_normalized",
+                "--group-id",
+                "strict_main_agent",
+                "--system-id",
+                "Ours",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "agent",
+                "--results-root",
+                str(results_root),
+                "--resume",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        manifest_path = results_root / "reports" / "strict_group_agent_normalized" / "Ours" / "agent" / "A1" / "1001.manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        trace_path = results_root / manifest["trace_file"]
+        trace = json.loads(trace_path.read_text(encoding="utf-8"))
+        trace["agent_usage_metadata"] = [
+            {"step_id": "stub", "prompt_tokens": 10, "completion_tokens": 2, "total_tokens": 12}
+        ]
+        trace_path.write_text(json.dumps(trace, ensure_ascii=False, indent=2), encoding="utf-8")
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/audit_strict_experiment.py",
+                "--run-id",
+                "strict_group_agent_normalized",
+                "--group-id",
+                "strict_main_agent",
+                "--results-root",
+                str(results_root),
+                "--allow-partial",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/estimate_strict_main_cost.py",
+                "--run-id",
+                "strict_group_agent_normalized",
+                "--group-id",
+                "strict_main_agent",
+                "--results-root",
+                str(results_root),
+                "--audit",
+                str(results_root / "reports" / "strict_group_agent_normalized" / "strict_main_agent.strict_audit.json"),
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        audit = json.loads(
+            (results_root / "reports" / "strict_group_agent_normalized" / "strict_main_agent.strict_audit.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        estimate = json.loads(
+            (results_root / "reports" / "strict_group_agent_normalized" / "strict_main_agent.cost_estimate.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(audit["usage_summary"]["agent_prompt_tokens"], 10)
+        self.assertEqual(audit["usage_summary"]["agent_completion_tokens"], 2)
+        self.assertEqual(audit["usage_summary"]["agent_total_tokens"], 12)
+        self.assertEqual(estimate["extrapolation"]["mean_prompt_tokens_per_unit"], 10.0)
+        self.assertEqual(estimate["extrapolation"]["mean_completion_tokens_per_unit"], 2.0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -34,12 +34,25 @@ def _load_matrix(path: Path) -> dict:
 
 
 def _usage_totals(trace: dict) -> dict[str, int]:
-    totals = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+    totals = {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+    }
     for batch in trace.get("agent_usage_metadata", []):
-        for key in totals:
-            value = batch.get(key)
-            if isinstance(value, (int, float)):
-                totals[key] += int(value)
+        prompt_tokens = batch.get("prompt_tokens", batch.get("input_tokens", 0))
+        completion_tokens = batch.get("completion_tokens", batch.get("output_tokens", 0))
+        total_tokens = batch.get("total_tokens", 0)
+        if isinstance(prompt_tokens, (int, float)):
+            totals["prompt_tokens"] += int(prompt_tokens)
+            totals["input_tokens"] += int(prompt_tokens)
+        if isinstance(completion_tokens, (int, float)):
+            totals["completion_tokens"] += int(completion_tokens)
+            totals["output_tokens"] += int(completion_tokens)
+        if isinstance(total_tokens, (int, float)):
+            totals["total_tokens"] += int(total_tokens)
     return totals
 
 
