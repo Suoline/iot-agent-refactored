@@ -1080,6 +1080,28 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertFalse(trace["agent_usage_metadata"])
         self.assertTrue(trace["task_success"])
 
+    def test_run_agent_scenario_invalid_action_args_becomes_behavior_failure(self):
+        scenario = load_scenario(Path("experiments/scenarios/category_h/H2.yaml"))
+        fake_decision = AgentPlannerDecision(
+            action={"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {}},
+            actions=[{"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {}}],
+            should_ask_user=False,
+            reason="stubbed_invalid_action",
+            backend="external_llm",
+            requested_seed=1001,
+            request_seed_supported=True,
+            request_seed_applied=True,
+            seed_protocol="provider_seed",
+        )
+        with mock.patch("experiments.runner.single_run.AgentAdapter") as adapter_cls:
+            adapter_cls.return_value.plan.return_value = fake_decision
+            trace = run_agent_scenario(scenario, seed=1001, results_root=Path("experiments/results"))
+        self.assertFalse(trace["task_success"])
+        self.assertEqual(trace["outcome"], "failure")
+        self.assertTrue(trace["action_execution_results"])
+        self.assertFalse(trace["action_execution_results"][-1]["success"])
+        self.assertIn("execution_exception:KeyError", trace["action_execution_results"][-1]["error"])
+
 
 class RunnerSmokeTest(unittest.TestCase):
     def test_batch_run_generates_metrics(self):

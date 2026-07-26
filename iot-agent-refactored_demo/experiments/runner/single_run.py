@@ -172,28 +172,35 @@ def _enrich_candidate_devices(world: HAOracle, package):
     return package
 
 
-def _execute_action(world: HAOracle, action: dict) -> tuple[bool, dict]:
+def _execute_action(world: HAOracle, action: dict) -> tuple[bool, dict, dict]:
     service = action["service"]
     entity_id = action["entity_id"]
     args = action.get("args", {})
     if service == "memory.answer":
-        return True, {}
+        return True, {}, {"error": None}
     if service == "routine.run" and entity_id == "routine.movie_mode":
-        results = [
-            world.apply("light.turn_off", {"entity": "light.living_ceiling"}, world.current_time),
-            world.apply("light.turn_on", {"entity": "light.living_ambient"}, world.current_time),
-            world.apply("cover.set_position", {"entity": "cover.living_curtain", "position": 0}, world.current_time),
-        ]
+        try:
+            results = [
+                world.apply("light.turn_off", {"entity": "light.living_ceiling"}, world.current_time),
+                world.apply("light.turn_on", {"entity": "light.living_ambient"}, world.current_time),
+                world.apply("cover.set_position", {"entity": "cover.living_curtain", "position": 0}, world.current_time),
+            ]
+        except Exception as exc:
+            return False, {}, {"error": f"execution_exception:{type(exc).__name__}:{str(exc)[:120]}"}
         success = all(item.get("success") for item in results)
         state = {
             "light.living_ceiling": world.get_state("light.living_ceiling"),
             "light.living_ambient": world.get_state("light.living_ambient"),
             "cover.living_curtain": world.get_state("cover.living_curtain"),
         }
-        return success, state
-    result = world.apply(service, {"entity": entity_id, **args}, world.current_time)
+        error = None if success else "routine_execution_failed"
+        return success, state, {"error": error}
+    try:
+        result = world.apply(service, {"entity": entity_id, **args}, world.current_time)
+    except Exception as exc:
+        return False, {}, {"error": f"execution_exception:{type(exc).__name__}:{str(exc)[:120]}"}
     state = {entity_id: world.get_state(entity_id)} if result.get("success") and entity_id in world.states else {}
-    return bool(result.get("success")), state
+    return bool(result.get("success")), state, {"error": result.get("error")}
 
 
 def _execute_actions(world: HAOracle, actions: list[dict]) -> tuple[bool, dict, list[dict]]:
@@ -201,7 +208,7 @@ def _execute_actions(world: HAOracle, actions: list[dict]) -> tuple[bool, dict, 
     merged_state: dict = {}
     execution_results: list[dict] = []
     for action in actions:
-        success, state = _execute_action(world, action)
+        success, state, metadata = _execute_action(world, action)
         overall_success = overall_success and success
         merged_state.update(state)
         execution_results.append(
@@ -209,6 +216,7 @@ def _execute_actions(world: HAOracle, actions: list[dict]) -> tuple[bool, dict, 
                 "action": action,
                 "success": success,
                 "result_state": state,
+                "error": metadata.get("error"),
             }
         )
     return overall_success, merged_state, execution_results
@@ -460,7 +468,7 @@ def run_oracle_scenario(
                 inferred_action = _infer_control_action(query, package, world)
             if decision.should_ask_user:
                 if inferred_action:
-                    success, state = _execute_action(world, inferred_action)
+                    success, state, metadata = _execute_action(world, inferred_action)
                     if success:
                         trace.final_device_state.update(state)
                         trace.chosen_action = inferred_action
@@ -499,7 +507,7 @@ def run_oracle_scenario(
                         "entity_id": decision.action["entity_id"],
                         "args": action_template.get("args", {}),
                     }
-                    success, state = _execute_action(world, actual_action)
+                    success, state, metadata = _execute_action(world, actual_action)
                     if success:
                         trace.final_device_state.update(state)
                     else:
@@ -525,7 +533,7 @@ def run_oracle_scenario(
                     for item in retrieval_trace.retrieved_memories:
                         if item.memory_id in current_grounding_ids:
                             item.in_grounding_set = True
-                    success, state = _execute_action(world, inferred_action)
+                    success, state, metadata = _execute_action(world, inferred_action)
                     if success:
                         trace.final_device_state.update(state)
                     else:
@@ -555,7 +563,7 @@ def run_oracle_scenario(
                     for item in retrieval_trace.retrieved_memories:
                         if item.memory_id in current_grounding_ids:
                             item.in_grounding_set = True
-                    success, state = _execute_action(world, decision.action)
+                    success, state, metadata = _execute_action(world, decision.action)
                     if success:
                         trace.final_device_state.update(state)
                     else:
@@ -994,13 +1002,14 @@ def run_agent_scenario(
                         "entity_id": decision.action["entity_id"],
                         "args": action_template.get("args", {}),
                     }
-                    success, state = _execute_action(world, actual_action)
+                    success, state, metadata = _execute_action(world, actual_action)
                     trace.action_execution_results.append(
                         {
                             "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                             "action": actual_action,
                             "success": success,
                             "result_state": state,
+                            "error": metadata.get("error"),
                         }
                     )
                     if success:
@@ -1030,13 +1039,14 @@ def run_agent_scenario(
                     for item in retrieval_trace.retrieved_memories:
                         if item.memory_id in current_grounding_ids:
                             item.in_grounding_set = True
-                    success, state = _execute_action(world, inferred_action)
+                    success, state, metadata = _execute_action(world, inferred_action)
                     trace.action_execution_results.append(
                         {
                             "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                             "action": inferred_action,
                             "success": success,
                             "result_state": state,
+                            "error": metadata.get("error"),
                         }
                     )
                     if success:
