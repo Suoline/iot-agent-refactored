@@ -47,6 +47,10 @@ class TaskTrace(BaseModel):
     task_id: str
     scenario_id: str
     seed: int
+    agent_requested_seed: Optional[int] = None
+    agent_request_seed_supported: Optional[bool] = None
+    agent_request_seed_applied: Optional[bool] = None
+    agent_seed_protocol: Optional[str] = None
     world_version: str
     system_policy_version: str = "sp-v1"
     planner_mode: str

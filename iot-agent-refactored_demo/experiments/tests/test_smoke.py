@@ -985,6 +985,48 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertEqual(response["usage"]["total_tokens"], 12)
         self.assertIn('"should_ask_user"', response["raw_output"])
 
+    def test_external_llm_client_http_transport_passes_requested_seed(self):
+        captured = {}
+
+        class _FakeResponse:
+            def __init__(self, payload: dict):
+                self._payload = payload
+
+            def read(self):
+                return json.dumps(self._payload, ensure_ascii=False).encode("utf-8")
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+        def _fake_urlopen(request, timeout=20):
+            captured["body"] = json.loads(request.data.decode("utf-8"))
+            return _FakeResponse(
+                {
+                    "choices": [{"message": {"content": '{"actions":[],"should_ask_user":true,"reason":"clarify"}'}}],
+                    "usage": {"total_tokens": 9},
+                    "model": "stub-model",
+                    "system_fingerprint": "fp-stub",
+                }
+            )
+
+        with mock.patch.object(
+            ExternalLLMClient,
+            "_load_runtime_config",
+            return_value=("openai", "stub-model", "https://example.com/v1", "sk-test"),
+        ):
+            with mock.patch("urllib.request.urlopen", side_effect=_fake_urlopen):
+                client = ExternalLLMClient()
+                response = client.invoke("测试 prompt", requested_seed=1002)
+        self.assertEqual(captured["body"]["seed"], 1002)
+        self.assertEqual(response["requested_seed"], 1002)
+        self.assertTrue(response["request_seed_supported"])
+        self.assertTrue(response["request_seed_applied"])
+        self.assertEqual(response["seed_protocol"], "provider_seed")
+        self.assertEqual(response["response_metadata"]["system_fingerprint"], "fp-stub")
+
     def test_run_agent_scenario_records_structured_decision_and_execution_results(self):
         scenario = load_scenario(Path("experiments/scenarios/category_e/E1.yaml"))
         fake_decision = AgentPlannerDecision(
@@ -1008,6 +1050,10 @@ class AgentPlannerTest(unittest.TestCase):
             model="stub-model",
             usage={"total_tokens": 33},
             latency_ms=8.0,
+            requested_seed=1001,
+            request_seed_supported=True,
+            request_seed_applied=True,
+            seed_protocol="provider_seed",
         )
         with mock.patch("experiments.runner.single_run.AgentAdapter") as adapter_cls:
             adapter_cls.return_value.plan.return_value = fake_decision
@@ -1015,6 +1061,10 @@ class AgentPlannerTest(unittest.TestCase):
         self.assertEqual(trace["agent_backend"], "external_llm")
         self.assertEqual(trace["agent_model"], "stub-model")
         self.assertEqual(trace["agent_provider"], "stub-provider")
+        self.assertEqual(trace["agent_requested_seed"], 1001)
+        self.assertTrue(trace["agent_request_seed_supported"])
+        self.assertTrue(trace["agent_request_seed_applied"])
+        self.assertEqual(trace["agent_seed_protocol"], "provider_seed")
         self.assertTrue(trace["agent_structured_decisions"])
         self.assertEqual(trace["chosen_actions"][0]["service"], "routine.run")
         self.assertTrue(trace["action_execution_results"])

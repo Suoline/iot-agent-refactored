@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import configparser
+import inspect
 import json
 import os
 from pathlib import Path
@@ -54,6 +55,10 @@ class AgentPlannerDecision:
     usage: dict[str, Any] = field(default_factory=dict)
     latency_ms: float = 0.0
     failure_type: str | None = None
+    requested_seed: int | None = None
+    request_seed_supported: bool | None = None
+    request_seed_applied: bool | None = None
+    seed_protocol: str | None = None
 
 
 class ExternalLLMClient:
@@ -103,11 +108,28 @@ class ExternalLLMClient:
         api_key = os.environ.get("EXPERIMENT_AGENT_API_KEY", parser.get(provider, "api_key"))
         return provider, model, base_url, api_key
 
-    def invoke(self, prompt: str) -> dict[str, Any]:
+    def invoke(self, prompt: str, *, requested_seed: int | None = None) -> dict[str, Any]:
         if self._transport == "http":
-            return self._invoke_http(prompt)
+            return self._invoke_http(prompt, requested_seed=requested_seed)
         started = time.perf_counter()
-        message = self._model.invoke(prompt)
+        invoke_kwargs = {}
+        request_seed_supported: bool | None = None
+        request_seed_applied = False
+        seed_protocol = "replicate_id"
+        if requested_seed is not None:
+            invoke_kwargs["seed"] = requested_seed
+            request_seed_supported = True
+            request_seed_applied = True
+            seed_protocol = "provider_seed"
+        try:
+            message = self._model.invoke(prompt, **invoke_kwargs)
+        except TypeError:
+            if requested_seed is None:
+                raise
+            message = self._model.invoke(prompt)
+            request_seed_supported = False
+            request_seed_applied = False
+            seed_protocol = "replicate_id"
         latency_ms = (time.perf_counter() - started) * 1000
         response_metadata = _coerce_mapping(getattr(message, "response_metadata", None))
         usage = _coerce_usage(message, response_metadata)
@@ -118,18 +140,31 @@ class ExternalLLMClient:
             "latency_ms": latency_ms,
             "model": response_metadata.get("model_name", self.model),
             "provider": response_metadata.get("model_provider", self.provider),
+            "requested_seed": requested_seed,
+            "request_seed_supported": request_seed_supported,
+            "request_seed_applied": request_seed_applied,
+            "seed_protocol": seed_protocol,
             "response_metadata": response_metadata,
         }
 
-    def _invoke_http(self, prompt: str) -> dict[str, Any]:
+    def _invoke_http(
+        self,
+        prompt: str,
+        *,
+        requested_seed: int | None = None,
+        max_tokens: int | None = None,
+    ) -> dict[str, Any]:
         started = time.perf_counter()
-        payload = json.dumps(
-            {
-                "model": self.model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0,
-            }
-        ).encode("utf-8")
+        payload_obj: dict[str, Any] = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0,
+        }
+        if requested_seed is not None:
+            payload_obj["seed"] = requested_seed
+        if max_tokens is not None:
+            payload_obj["max_tokens"] = max_tokens
+        payload = json.dumps(payload_obj).encode("utf-8")
         request = urllib.request.Request(
             self._chat_completions_url(),
             data=payload,
@@ -162,7 +197,51 @@ class ExternalLLMClient:
             "latency_ms": latency_ms,
             "model": model,
             "provider": self.provider,
-            "response_metadata": {"model_name": model, "transport": self._transport},
+            "requested_seed": requested_seed,
+            "request_seed_supported": requested_seed is not None,
+            "request_seed_applied": requested_seed is not None,
+            "seed_protocol": "provider_seed" if requested_seed is not None else "replicate_id",
+            "response_metadata": {
+                "model_name": model,
+                "transport": self._transport,
+                "system_fingerprint": response_json.get("system_fingerprint"),
+            },
+        }
+
+    def probe_seed_support(self, *, probe_seed: int = 1001) -> dict[str, Any]:
+        prompt = 'Return exactly {"ok":true}.'
+        try:
+            response = self.invoke(prompt, requested_seed=probe_seed)
+        except Exception as exc:
+            raw = _redact_error(exc).lower()
+            explicit_unsupported_markers = [
+                "unknown parameter",
+                "unsupported parameter",
+                "extra inputs are not permitted",
+                "invalid request",
+                "unrecognized request argument",
+                "seed",
+            ]
+            supported = False if any(marker in raw for marker in explicit_unsupported_markers) else None
+            return {
+                "requested_seed": probe_seed,
+                "request_seed_supported": supported,
+                "request_seed_applied": False,
+                "seed_protocol": "replicate_id",
+                "probe_status": "error",
+                "failure_type": type(exc).__name__,
+                "failure_message": _redact_error(exc),
+            }
+        return {
+            "requested_seed": probe_seed,
+            "request_seed_supported": response.get("request_seed_supported"),
+            "request_seed_applied": response.get("request_seed_applied"),
+            "seed_protocol": response.get("seed_protocol"),
+            "probe_status": "ok",
+            "model": response.get("model"),
+            "provider": response.get("provider"),
+            "response_metadata": response.get("response_metadata", {}),
+            "usage": response.get("usage", {}),
         }
 
     def _chat_completions_url(self) -> str:
@@ -178,6 +257,14 @@ def _coerce_mapping(value: Any) -> dict[str, Any]:
     if isinstance(value, Mapping):
         return dict(value)
     return {}
+
+
+def _client_accepts_requested_seed(client: Any) -> bool:
+    try:
+        signature = inspect.signature(client.invoke)
+    except (TypeError, ValueError):
+        return False
+    return "requested_seed" in signature.parameters
 
 
 def _coerce_usage(message: Any, response_metadata: Mapping[str, Any]) -> dict[str, Any]:
@@ -424,23 +511,45 @@ class AgentPlanner:
             self._client = self._client_factory()
         return self._client
 
-    def decide(self, package: SearchResultPackage, task: str) -> AgentPlannerDecision:
+    def decide(self, package: SearchResultPackage, task: str, *, requested_seed: int | None = None) -> AgentPlannerDecision:
         if os.environ.get("EXPERIMENT_AGENT_BACKEND") == "external":
-            external = self._decide_external(package, task)
+            external = self._decide_external(package, task, requested_seed=requested_seed)
             if external is not None:
                 return external
         return self._heuristic_fallback(package)
 
-    def _decide_external(self, package: SearchResultPackage, task: str) -> AgentPlannerDecision | None:
+    def _decide_external(
+        self,
+        package: SearchResultPackage,
+        task: str,
+        *,
+        requested_seed: int | None = None,
+    ) -> AgentPlannerDecision | None:
         try:
             client = self._get_client()
         except Exception as exc:
-            return self._heuristic_fallback(package, failure_type=f"external_init_failed:{type(exc).__name__}", raw_output=_redact_error(exc))
+            return self._heuristic_fallback(
+                package,
+                failure_type=f"external_init_failed:{type(exc).__name__}",
+                raw_output=_redact_error(exc),
+                requested_seed=requested_seed,
+                seed_protocol="replicate_id",
+            )
 
         try:
-            response = client.invoke(_build_plan_prompt(task, package))
+            prompt = _build_plan_prompt(task, package)
+            if requested_seed is not None and _client_accepts_requested_seed(client):
+                response = client.invoke(prompt, requested_seed=requested_seed)
+            else:
+                response = client.invoke(prompt)
         except Exception as exc:
-            return self._heuristic_fallback(package, failure_type=f"external_call_failed:{type(exc).__name__}", raw_output=_redact_error(exc))
+            return self._heuristic_fallback(
+                package,
+                failure_type=f"external_call_failed:{type(exc).__name__}",
+                raw_output=_redact_error(exc),
+                requested_seed=requested_seed,
+                seed_protocol="replicate_id",
+            )
 
         raw_output = str(response.get("raw_output", ""))
         tool_calls = _coerce_tool_calls(response.get("tool_calls"))
@@ -448,6 +557,9 @@ class AgentPlanner:
         latency_ms = float(response.get("latency_ms", 0.0) or 0.0)
         model = response.get("model")
         provider = response.get("provider")
+        request_seed_supported = response.get("request_seed_supported")
+        request_seed_applied = response.get("request_seed_applied")
+        seed_protocol = response.get("seed_protocol", "replicate_id")
 
         try:
             payload = _extract_json_payload(raw_output)
@@ -463,6 +575,10 @@ class AgentPlanner:
                 tool_calls=tool_calls,
                 usage=usage,
                 latency_ms=latency_ms,
+                requested_seed=requested_seed,
+                request_seed_supported=request_seed_supported,
+                request_seed_applied=request_seed_applied,
+                seed_protocol=seed_protocol,
             )
 
         actions = [item.model_dump(mode="json") for item in guarded.actions]
@@ -475,6 +591,10 @@ class AgentPlanner:
             "provider": provider,
             "tool_calls": tool_calls,
             "backend": "external_llm",
+            "requested_seed": requested_seed,
+            "request_seed_supported": request_seed_supported,
+            "request_seed_applied": request_seed_applied,
+            "seed_protocol": seed_protocol,
         }
         return AgentPlannerDecision(
             action=actions[0] if actions else None,
@@ -489,6 +609,10 @@ class AgentPlanner:
             tool_calls=tool_calls,
             usage=usage,
             latency_ms=latency_ms,
+            requested_seed=requested_seed,
+            request_seed_supported=request_seed_supported,
+            request_seed_applied=request_seed_applied,
+            seed_protocol=seed_protocol,
         )
 
     def _heuristic_fallback(
@@ -502,6 +626,10 @@ class AgentPlanner:
         tool_calls: list[dict[str, Any]] | None = None,
         usage: dict[str, Any] | None = None,
         latency_ms: float = 0.0,
+        requested_seed: int | None = None,
+        request_seed_supported: bool | None = None,
+        request_seed_applied: bool | None = None,
+        seed_protocol: str | None = None,
     ) -> AgentPlannerDecision:
         usable = [item for item in package.matched_memories if item.in_usable_set]
         if package.task_type == "query":
@@ -519,6 +647,10 @@ class AgentPlanner:
                     tool_calls=tool_calls or [],
                     usage=usage or {},
                     latency_ms=latency_ms,
+                    requested_seed=requested_seed,
+                    request_seed_supported=request_seed_supported,
+                    request_seed_applied=request_seed_applied,
+                    seed_protocol=seed_protocol,
                 )
             return AgentPlannerDecision(
                 should_ask_user=True,
@@ -530,6 +662,10 @@ class AgentPlanner:
                 tool_calls=tool_calls or [],
                 usage=usage or {},
                 latency_ms=latency_ms,
+                requested_seed=requested_seed,
+                request_seed_supported=request_seed_supported,
+                request_seed_applied=request_seed_applied,
+                seed_protocol=seed_protocol,
             )
         if package.task_type == "automation" and not usable:
             return AgentPlannerDecision(
@@ -544,6 +680,10 @@ class AgentPlanner:
                 tool_calls=tool_calls or [],
                 usage=usage or {},
                 latency_ms=latency_ms,
+                requested_seed=requested_seed,
+                request_seed_supported=request_seed_supported,
+                request_seed_applied=request_seed_applied,
+                seed_protocol=seed_protocol,
             )
         routines = [item for item in usable if item.memory_type == "routine"]
         reflections = [item for item in usable if item.memory_type == "reflection"]
@@ -558,6 +698,10 @@ class AgentPlanner:
                 tool_calls=tool_calls or [],
                 usage=usage or {},
                 latency_ms=latency_ms,
+                requested_seed=requested_seed,
+                request_seed_supported=request_seed_supported,
+                request_seed_applied=request_seed_applied,
+                seed_protocol=seed_protocol,
             )
         if routines:
             routine_devices = [
@@ -590,6 +734,10 @@ class AgentPlanner:
                     tool_calls=tool_calls or [],
                     usage=usage or {},
                     latency_ms=latency_ms,
+                    requested_seed=requested_seed,
+                    request_seed_supported=request_seed_supported,
+                    request_seed_applied=request_seed_applied,
+                    seed_protocol=seed_protocol,
                 )
             if package.candidate_devices:
                 best = max(package.candidate_devices, key=lambda item: (item.score, item.confidence, item.entity_id))
@@ -605,6 +753,10 @@ class AgentPlanner:
                     tool_calls=tool_calls or [],
                     usage=usage or {},
                     latency_ms=latency_ms,
+                    requested_seed=requested_seed,
+                    request_seed_supported=request_seed_supported,
+                    request_seed_applied=request_seed_applied,
+                    seed_protocol=seed_protocol,
                 )
             return AgentPlannerDecision(
                 should_ask_user=True,
@@ -616,6 +768,10 @@ class AgentPlanner:
                 tool_calls=tool_calls or [],
                 usage=usage or {},
                 latency_ms=latency_ms,
+                requested_seed=requested_seed,
+                request_seed_supported=request_seed_supported,
+                request_seed_applied=request_seed_applied,
+                seed_protocol=seed_protocol,
             )
         if package.should_ask_user or not package.candidate_devices:
             return AgentPlannerDecision(

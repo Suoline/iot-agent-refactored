@@ -813,6 +813,7 @@ def run_agent_scenario(
         task_id=f"{scenario['scenario_id']}_{seed}",
         scenario_id=scenario["scenario_id"],
         seed=seed,
+        agent_requested_seed=seed,
         world_version=scenario["world_version"],
         system_policy_version=scenario.get("system_policy_version", "sp-v1"),
         planner_mode="agent",
@@ -911,13 +912,21 @@ def run_agent_scenario(
                 ],
             )
             trace.steps.append(retrieval_trace)
-            decision = adapter.plan(package, query)
+            decision = adapter.plan(package, query, requested_seed=seed)
             trace.agent_backend = decision.backend
             trace.should_ask_user = decision.should_ask_user
             if decision.model:
                 trace.agent_model = decision.model
             if decision.provider:
                 trace.agent_provider = decision.provider
+            if decision.requested_seed is not None:
+                trace.agent_requested_seed = decision.requested_seed
+            if decision.request_seed_supported is not None:
+                trace.agent_request_seed_supported = decision.request_seed_supported
+            if decision.request_seed_applied is not None:
+                trace.agent_request_seed_applied = decision.request_seed_applied
+            if decision.seed_protocol:
+                trace.agent_seed_protocol = decision.seed_protocol
             action_template = oracle_input.get("action_template")
             memory_ops = oracle_input.get("memory_ops", [])
             inferred_action = None
@@ -944,6 +953,10 @@ def run_agent_scenario(
                 trace.agent_usage_metadata.append(
                     {
                         "step_id": step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                        "requested_seed": decision.requested_seed,
+                        "request_seed_supported": decision.request_seed_supported,
+                        "request_seed_applied": decision.request_seed_applied,
+                        "seed_protocol": decision.seed_protocol,
                         **decision.usage,
                     }
                 )

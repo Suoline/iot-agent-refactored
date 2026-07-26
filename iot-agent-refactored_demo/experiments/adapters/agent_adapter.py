@@ -9,6 +9,5 @@ class AgentAdapter:
     def __init__(self):
         self.planner = AgentPlanner()
 
-    def plan(self, package, task: str):
-        return self.planner.decide(package, task)
-
+    def plan(self, package, task: str, *, requested_seed: int | None = None):
+        return self.planner.decide(package, task, requested_seed=requested_seed)
