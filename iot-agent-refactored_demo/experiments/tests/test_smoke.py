@@ -13,7 +13,7 @@ from unittest import mock
 from experiments.memory.schemas import CandidateDevice, SearchResultPackage, UsageEvent
 from experiments.memory.service import MemoryService
 from experiments.metrics.core import aggregate_task_metrics, task_metrics
-from experiments.planners.agent_planner import AgentPlanner, AgentPlannerDecision, _build_plan_prompt
+from experiments.planners.agent_planner import AgentPlanner, AgentPlannerDecision, ExternalLLMClient, _build_plan_prompt
 from experiments.runner.batch_run import run_batch, run_batch_multi_seed
 from experiments.runner.scenario_loader import load_scenario
 from experiments.runner.single_run import run_agent_scenario
@@ -956,6 +956,34 @@ class AgentPlannerTest(unittest.TestCase):
             decision = planner.decide(package, "打开书房台灯")
         self.assertEqual(decision.backend, "heuristic_fallback")
         self.assertEqual(decision.failure_type, "external_call_failed:RuntimeError")
+
+    def test_external_llm_client_uses_http_transport_when_langchain_missing(self):
+        class _FakeResponse:
+            def __init__(self, payload: dict):
+                self._payload = payload
+
+            def read(self):
+                return json.dumps(self._payload, ensure_ascii=False).encode("utf-8")
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+        with mock.patch.object(
+            ExternalLLMClient,
+            "_load_runtime_config",
+            return_value=("openai", "stub-model", "https://example.com/v1", "sk-test"),
+        ):
+            with mock.patch("urllib.request.urlopen", return_value=_FakeResponse({"choices": [{"message": {"content": '{"actions":[],"should_ask_user":true,"reason":"clarify"}'}}], "usage": {"total_tokens": 12}, "model": "stub-model"})):
+                client = ExternalLLMClient()
+                response = client.invoke("测试 prompt")
+        self.assertEqual(client._transport, "http")
+        self.assertEqual(response["model"], "stub-model")
+        self.assertEqual(response["provider"], "openai")
+        self.assertEqual(response["usage"]["total_tokens"], 12)
+        self.assertIn('"should_ask_user"', response["raw_output"])
 
     def test_run_agent_scenario_records_structured_decision_and_execution_results(self):
         scenario = load_scenario(Path("experiments/scenarios/category_e/E1.yaml"))

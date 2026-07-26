@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 import time
 from typing import Any, Callable, Mapping, Optional
+import urllib.error
+import urllib.request
 
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
@@ -61,20 +63,24 @@ class ExternalLLMClient:
         self.model = model
         self.base_url = base_url
         self.api_key = api_key
+        self._transport = "http"
+        self._model = None
         try:
             from langchain.chat_models import init_chat_model
         except Exception as exc:  # pragma: no cover - runtime specific
-            raise RuntimeError(f"langchain_import_failed:{type(exc).__name__}") from exc
-
-        self._model = init_chat_model(
-            model=model,
-            model_provider="openai",
-            api_key=api_key,
-            base_url=base_url,
-            temperature=0,
-            max_retries=0,
-            timeout=20,
-        )
+            self._init_error = f"langchain_import_failed:{type(exc).__name__}"
+        else:
+            self._transport = "langchain"
+            self._model = init_chat_model(
+                model=model,
+                model_provider="openai",
+                api_key=api_key,
+                base_url=base_url,
+                temperature=0,
+                max_retries=0,
+                timeout=20,
+            )
+            self._init_error = None
 
     @staticmethod
     def _load_runtime_config() -> tuple[str, str, str, str]:
@@ -98,6 +104,8 @@ class ExternalLLMClient:
         return provider, model, base_url, api_key
 
     def invoke(self, prompt: str) -> dict[str, Any]:
+        if self._transport == "http":
+            return self._invoke_http(prompt)
         started = time.perf_counter()
         message = self._model.invoke(prompt)
         latency_ms = (time.perf_counter() - started) * 1000
@@ -112,6 +120,58 @@ class ExternalLLMClient:
             "provider": response_metadata.get("model_provider", self.provider),
             "response_metadata": response_metadata,
         }
+
+    def _invoke_http(self, prompt: str) -> dict[str, Any]:
+        started = time.perf_counter()
+        payload = json.dumps(
+            {
+                "model": self.model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0,
+            }
+        ).encode("utf-8")
+        request = urllib.request.Request(
+            self._chat_completions_url(),
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=20) as response:
+                raw_body = response.read().decode("utf-8")
+        except urllib.error.HTTPError as exc:  # pragma: no cover - network dependent
+            body = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"http_error:{exc.code}:{body[:200]}") from exc
+        except urllib.error.URLError as exc:  # pragma: no cover - network dependent
+            raise RuntimeError(f"url_error:{_redact_error(exc)}") from exc
+        latency_ms = (time.perf_counter() - started) * 1000
+        try:
+            response_json = json.loads(raw_body)
+        except json.JSONDecodeError as exc:  # pragma: no cover - network dependent
+            raise RuntimeError(f"invalid_json:{raw_body[:200]}") from exc
+        choice = ((response_json.get("choices") or [{}])[0]).get("message") or {}
+        usage = _coerce_mapping(response_json.get("usage"))
+        model = response_json.get("model", self.model)
+        return {
+            "raw_output": _render_message_content(choice.get("content", "")),
+            "tool_calls": _coerce_tool_calls(choice.get("tool_calls")),
+            "usage": usage,
+            "latency_ms": latency_ms,
+            "model": model,
+            "provider": self.provider,
+            "response_metadata": {"model_name": model, "transport": self._transport},
+        }
+
+    def _chat_completions_url(self) -> str:
+        base = self.base_url.rstrip("/")
+        if base.endswith("/chat/completions"):
+            return base
+        if base.endswith("/v1"):
+            return f"{base}/chat/completions"
+        return f"{base}/v1/chat/completions"
 
 
 def _coerce_mapping(value: Any) -> dict[str, Any]:
