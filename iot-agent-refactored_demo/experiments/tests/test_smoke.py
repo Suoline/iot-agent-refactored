@@ -1729,6 +1729,67 @@ class RunnerSmokeTest(unittest.TestCase):
         self.assertEqual(audit["status"], "partial")
         self.assertEqual(audit["observed_unit_count"], 1)
 
+    def test_strict_serial_resume_repairs_incomplete_artifacts(self):
+        results_root = Path(tempfile.gettempdir()) / "strict_serial_resume_repair"
+        if results_root.exists():
+            import shutil
+
+            shutil.rmtree(results_root)
+        subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_resume_repair",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--system-id=-Decay",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "oracle",
+                "--results-root",
+                str(results_root),
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        maintenance_path = (
+            results_root / "raw_traces" / "strict_resume_repair" / "-Decay" / "oracle" / "A1" / "1001.maintenance.json"
+        )
+        maintenance_path.write_text("{", encoding="utf-8")
+        resume = subprocess.run(
+            [
+                sys.executable,
+                "experiments/scripts/run_strict_serial_unit.py",
+                "--run-id",
+                "strict_resume_repair",
+                "--group-id",
+                "strict_oracle_ablations",
+                "--system-id=-Decay",
+                "--scenario-id",
+                "A1",
+                "--seed",
+                "1001",
+                "--planner-mode",
+                "oracle",
+                "--results-root",
+                str(results_root),
+                "--resume",
+            ],
+            cwd=Path.cwd(),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertIn("resume_repair_required", resume.stdout)
+        repaired = json.loads(maintenance_path.read_text(encoding="utf-8"))
+        self.assertIsInstance(repaired["maintenance_events"], list)
+
     def test_strict_serial_agent_external_requirement_rejects_fallback(self):
         results_root = Path(tempfile.gettempdir()) / "strict_serial_agent_smoke"
         if results_root.exists():
@@ -1808,6 +1869,8 @@ class RunnerSmokeTest(unittest.TestCase):
                 "A1,A2",
                 "--seeds",
                 "1001",
+                "--max-concurrency",
+                "2",
                 "--resume",
             ],
             cwd=Path.cwd(),
@@ -1822,6 +1885,8 @@ class RunnerSmokeTest(unittest.TestCase):
         )
         self.assertEqual(summary["completed_count"], 2)
         self.assertEqual(summary["failure_count"], 0)
+        self.assertEqual(summary["peak_concurrency"], 2)
+        self.assertEqual(summary["attempt_count"], 2)
 
     def test_strict_audit_and_cost_normalize_prompt_completion_tokens(self):
         results_root = Path(tempfile.gettempdir()) / "strict_group_agent_normalized"

@@ -33,6 +33,10 @@ def _load_matrix(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def _usage_totals(trace: dict) -> dict[str, int]:
     totals = {
         "input_tokens": 0,
@@ -62,6 +66,67 @@ def _unit_paths(results_root: Path, run_id: str, system_id: str, planner_mode: s
     maintenance = results_root / "raw_traces" / run_id / system_id / planner_mode / scenario_id / f"{seed}.maintenance.json"
     manifest = base / f"{seed}.manifest.json"
     return {"raw": raw, "maintenance": maintenance, "manifest": manifest}
+
+
+def _resume_validation(
+    *,
+    paths: dict[str, Path],
+    raw_relative: str,
+    maintenance_relative: str,
+    manifest_relative: str,
+    expected_backend: str | None,
+    planner_mode: str,
+    scenario_id: str,
+    seed: int,
+) -> dict:
+    issues: list[str] = []
+    if not all(path.exists() for path in paths.values()):
+        missing = [name for name, path in paths.items() if not path.exists()]
+        return {"complete": False, "issues": [f"missing:{name}" for name in missing]}
+
+    try:
+        trace = _load_json(paths["raw"])
+    except Exception as exc:
+        return {"complete": False, "issues": [f"invalid_raw:{type(exc).__name__}"]}
+    try:
+        maintenance = _load_json(paths["maintenance"])
+    except Exception as exc:
+        return {"complete": False, "issues": [f"invalid_maintenance:{type(exc).__name__}"]}
+    try:
+        manifest = _load_json(paths["manifest"])
+    except Exception as exc:
+        return {"complete": False, "issues": [f"invalid_manifest:{type(exc).__name__}"]}
+
+    if trace.get("scenario_id") != scenario_id:
+        issues.append("trace_scenario_mismatch")
+    if trace.get("seed") != seed:
+        issues.append("trace_seed_mismatch")
+    if planner_mode == "agent" and not trace.get("agent_backend"):
+        issues.append("trace_missing_agent_backend")
+    if not isinstance(maintenance.get("maintenance_events"), list):
+        issues.append("maintenance_events_invalid")
+    if manifest.get("trace_file") != raw_relative:
+        issues.append("manifest_trace_path_mismatch")
+    if manifest.get("maintenance_file") != maintenance_relative:
+        issues.append("manifest_maintenance_path_mismatch")
+    if str(manifest.get("manifest_file", manifest_relative)) != manifest_relative:
+        issues.append("manifest_manifest_path_mismatch")
+    strict_checks = manifest.get("strict_checks")
+    if not isinstance(strict_checks, dict) or not strict_checks:
+        issues.append("manifest_strict_checks_missing")
+    elif not all(bool(value) for value in strict_checks.values()):
+        issues.append("manifest_strict_checks_failed")
+    if expected_backend is not None and manifest.get("agent_backend") != expected_backend:
+        issues.append("manifest_agent_backend_mismatch")
+    if expected_backend is not None and trace.get("agent_backend") != expected_backend:
+        issues.append("trace_agent_backend_mismatch")
+
+    return {
+        "complete": not issues,
+        "issues": issues,
+        "manifest": manifest,
+        "trace": trace,
+    }
 
 
 def main() -> None:
@@ -95,11 +160,45 @@ def main() -> None:
 
     results_root = Path(args.results_root)
     paths = _unit_paths(results_root, args.run_id, args.system_id, args.planner_mode, args.scenario_id, args.seed)
+    raw_relative = f"raw_traces/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.json"
+    maintenance_relative = f"raw_traces/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.maintenance.json"
+    manifest_relative = f"reports/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.manifest.json"
     if any(path.exists() for path in paths.values()):
         if args.resume:
-            print(json.dumps({"status": "skipped_existing", "paths": {k: str(v) for k, v in paths.items()}}, ensure_ascii=False))
-            return
-        raise SystemExit("output already exists; rerun with --resume or choose a new run-id")
+            resume_state = _resume_validation(
+                paths=paths,
+                raw_relative=raw_relative,
+                maintenance_relative=maintenance_relative,
+                manifest_relative=manifest_relative,
+                expected_backend=args.require_agent_backend,
+                planner_mode=args.planner_mode,
+                scenario_id=args.scenario_id,
+                seed=args.seed,
+            )
+            if resume_state["complete"]:
+                print(
+                    json.dumps(
+                        {
+                            "status": "skipped_existing",
+                            "paths": {k: str(v) for k, v in paths.items()},
+                            "resume_validation": "complete",
+                        },
+                        ensure_ascii=False,
+                    )
+                )
+                return
+            print(
+                json.dumps(
+                    {
+                        "status": "resume_repair_required",
+                        "paths": {k: str(v) for k, v in paths.items()},
+                        "resume_issues": resume_state["issues"],
+                    },
+                    ensure_ascii=False,
+                )
+            )
+        else:
+            raise SystemExit("output already exists; rerun with --resume or choose a new run-id")
 
     previous_backend = os.environ.get("EXPERIMENT_AGENT_BACKEND")
     try:
@@ -122,9 +221,6 @@ def main() -> None:
             os.environ["EXPERIMENT_AGENT_BACKEND"] = previous_backend
 
     writer = TraceWriter(results_root)
-    raw_relative = f"raw_traces/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.json"
-    maintenance_relative = f"raw_traces/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.maintenance.json"
-    manifest_relative = f"reports/{args.run_id}/{args.system_id}/{args.planner_mode}/{args.scenario_id}/{args.seed}.manifest.json"
     writer.write_json(raw_relative, trace)
     writer.write_json(maintenance_relative, {"maintenance_events": trace.get("maintenance_events", [])})
 
@@ -159,6 +255,7 @@ def main() -> None:
         "task_success": trace.get("task_success"),
         "trace_file": raw_relative,
         "maintenance_file": maintenance_relative,
+        "manifest_file": manifest_relative,
         "expected_agent_backend": expected_backend,
         "agent_backend": trace.get("agent_backend"),
         "agent_model": trace.get("agent_model"),
@@ -175,7 +272,15 @@ def main() -> None:
         "status": "strict_check_failed" if failing_checks else "ok",
         "manifest_file": manifest_relative,
         "trace_file": raw_relative,
+        "maintenance_file": maintenance_relative,
         "failing_checks": failing_checks,
+        "agent_backend": trace.get("agent_backend"),
+        "agent_failures": trace.get("agent_failures", []),
+        "task_success": trace.get("task_success"),
+        "outcome": trace.get("outcome"),
+        "agent_usage_totals": manifest["agent_usage_totals"],
+        "agent_api_call_count": manifest["agent_api_call_count"],
+        "agent_raw_output_excerpt": (trace.get("agent_raw_outputs") or [""])[-1][:200],
     }
     print(json.dumps(payload, ensure_ascii=False))
     if failing_checks:

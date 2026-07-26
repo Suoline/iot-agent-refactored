@@ -69,6 +69,7 @@ def main() -> None:
     observed = []
     missing_units = []
     missing_trace_files = []
+    missing_maintenance_files = []
     fallback_units = []
     failing_units = []
     revisions = Counter()
@@ -93,6 +94,7 @@ def main() -> None:
         total_calls += int(manifest.get("agent_api_call_count", 0) or 0)
         total_latency_ms += float(manifest.get("agent_latency_ms_sum", 0.0) or 0.0)
         trace_path = results_root / manifest["trace_file"]
+        maintenance_path = results_root / manifest.get("maintenance_file", "")
         if not trace_path.exists():
             missing_trace_files.append(manifest["trace_file"])
             trace = {}
@@ -101,6 +103,18 @@ def main() -> None:
             trace_usage = _trace_usage_totals(trace)
             for key in usage_totals:
                 usage_totals[key] += trace_usage[key]
+        if not maintenance_path.exists():
+            missing_maintenance_files.append(manifest.get("maintenance_file"))
+        else:
+            maintenance = _load_json(maintenance_path)
+            if not isinstance(maintenance.get("maintenance_events"), list):
+                failing_units.append(
+                    {
+                        "key": unit["key"],
+                        "strict_checks": {"maintenance_events_valid": False},
+                        "manifest_file": str(manifest_path.relative_to(results_root)),
+                    }
+                )
         strict_checks = manifest.get("strict_checks", {})
         if (
             manifest.get("expected_agent_backend") == "external_llm"
@@ -121,6 +135,8 @@ def main() -> None:
     failures = []
     if missing_trace_files:
         failures.append({"code": "missing_trace_files", "items": missing_trace_files})
+    if missing_maintenance_files:
+        failures.append({"code": "missing_maintenance_files", "items": missing_maintenance_files})
     if fallback_units:
         failures.append({"code": "heuristic_fallback_detected", "items": fallback_units})
     if mixed_revision:
