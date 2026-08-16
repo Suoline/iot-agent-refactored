@@ -26,6 +26,7 @@ class SystemConfig:
     dormant_target_limit: int = 300
     archived_target_limit: int = 200
     planner_mode: str = "oracle"
+    evaluation_protocol: str = "legacy_v3"
     notes: list[str] = field(default_factory=list)
 
 
@@ -62,6 +63,7 @@ def build_system_registry() -> dict[str, SystemConfig]:
             use_resampling=False,
             use_content_aging=False,
             score_mode="rag_only",
+            notes=["v4: raw-text RAG-only; does not use structured MemoryRecord"],
         ),
         "B2": SystemConfig(
             system_id="B2",
@@ -97,7 +99,7 @@ def build_system_registry() -> dict[str, SystemConfig]:
             use_content_aging=False,
             score_mode="large_context",
             top_k=10000,
-            notes=["全量历史基线；runner 将全部历史文本计入估算上下文"],
+            notes=["v4: full raw conversation/event history; no structured MemoryRecord or retrieval ranking"],
         ),
         "B5": SystemConfig(
             system_id="B5",
@@ -107,7 +109,8 @@ def build_system_registry() -> dict[str, SystemConfig]:
             use_candidate_gate=False,
             use_resampling=False,
             use_content_aging=False,
-            score_mode="ga_analog",
+            score_mode="ga_inspired_heuristic",
+            notes=["GA-inspired heuristic, not an implementation of Generative Agents or Mem0"],
         ),
         "-Decay": SystemConfig(system_id="-Decay", use_lifecycle=True, use_dynamic_confidence=False),
         "-AsymFeedback": SystemConfig(system_id="-AsymFeedback", alpha_pos=0.04, alpha_neg=0.04),

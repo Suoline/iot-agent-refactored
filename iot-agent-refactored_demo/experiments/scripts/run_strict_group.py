@@ -45,6 +45,7 @@ def _select_units(
 def _run_unit_once(
     *,
     python_executable: str,
+    matrix_path: Path,
     run_id: str,
     results_root: Path,
     unit: dict,
@@ -55,6 +56,8 @@ def _run_unit_once(
     cmd = [
         python_executable,
         "experiments/scripts/run_strict_serial_unit.py",
+        "--matrix",
+        str(matrix_path),
         "--run-id",
         run_id,
         "--group-id",
@@ -128,7 +131,9 @@ def _is_retryable_transport_failure(payload: dict) -> bool:
         return False
     if not any(str(item).startswith("external_call_failed:") for item in payload.get("agent_failures", [])):
         return False
-    raw = str(payload.get("agent_raw_output_excerpt", "")).lower()
+    raw = " ".join(
+        [str(payload.get("agent_raw_output_excerpt", "")), *map(str, payload.get("agent_failures", []))]
+    ).lower()
     retryable_markers = [
         "http_error:429",
         "http_error:500",
@@ -290,6 +295,7 @@ def main() -> None:
                 future = executor.submit(
                     _run_unit_once,
                     python_executable=sys.executable,
+                    matrix_path=Path(args.matrix),
                     run_id=args.run_id,
                     results_root=results_root,
                     unit=next_item["unit"],

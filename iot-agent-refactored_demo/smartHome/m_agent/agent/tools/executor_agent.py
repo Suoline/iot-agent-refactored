@@ -1,5 +1,5 @@
 from smartHome.m_agent.agent.hooks.langchain_middleware import AgentContext, log_before, log_response, log_before_agent, \
-    log_after_agent
+    log_after_agent, retry_upstream_unavailable
 from smartHome.m_agent.agent.tools.persistent_tools import PythonInterpreterTool, NotifyOnConditionTool
 from smartHome.m_agent.common.get_llm import get_llm
 from langchain.agents import create_agent
@@ -27,7 +27,7 @@ def executor_planning(planning:str):
                                 get_device_current_status,
                                 execute_device_action,
                                 start_device_persistent_monitoring],
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(
@@ -67,7 +67,7 @@ def get_device_current_status(device_id:str,what_status:str):
                              # get_device_all_entities_states,
                              tool_get_device_entities,
                              tool_get_states_by_entity_id],
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(
@@ -105,7 +105,7 @@ def execute_device_action(device_id: str, action: str):
                                  tool_execute_action_by_entity_id,
                                 # check_smart_home_action_execution
                                 ],
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(
@@ -145,7 +145,7 @@ def start_device_persistent_monitoring(device_id: str,when_true:str,then_do:str)
                              # get_device_all_entities_capabilities,
                              tool_get_device_entities,
                              tool_get_states_by_entity_id,PythonInterpreterTool,NotifyOnConditionTool],
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(
@@ -175,7 +175,7 @@ if __name__ == "__main__":
                              # get_device_all_entities_capabilities,
                                 tool_get_states_by_entity_id,
                                 PythonInterpreterTool, NotifyOnConditionTool],
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(

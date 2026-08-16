@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 import json
+import argparse
 import sys
 from pathlib import Path
 
@@ -146,8 +147,20 @@ def _load_optional(path: Path, default):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--write-summary",
+        action="store_true",
+        help="Explicitly replace docs/实验结果摘要.md after a human review.",
+    )
+    parser.add_argument("--output", type=Path, default=None)
+    args = parser.parse_args()
     rows = _collect_rows()
-    report_path = REPO_ROOT / "docs" / "实验结果摘要.md"
+    report_path = args.output or (
+        REPO_ROOT / "docs" / "实验结果摘要.md"
+        if args.write_summary
+        else results_root() / "reports" / result_stage() / "generated_experiment_summary.md"
+    )
     report_root = results_root() / "reports" / result_stage()
     significance_path = report_root / "significance_summary.json"
     generated_on = datetime.now().strftime("%A, %B %d, %Y")
@@ -286,6 +299,7 @@ def main():
         ) if appendix_rows else "当前没有附录结果。",
         "",
     ]
+    report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text("\n".join(content), encoding="utf-8")
     print(report_path)
 

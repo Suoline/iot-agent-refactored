@@ -1,0 +1,30 @@
+{
+  "status": "pending_human_annotation",
+  "scenario_count": 13,
+  "completed_count": 0,
+  "pending_count": 13,
+  "pending_scenario_ids": [
+    "B6R_v4_robustness",
+    "B6W_v4_robustness",
+    "B6_v4_behavioral",
+    "C2_v4_behavioral",
+    "D1_v4_behavioral",
+    "E4_v4_behavioral",
+    "H2_v4_behavioral",
+    "L1_v4_longitudinal",
+    "Q1_v4_behavioral",
+    "R1_v4_behavioral",
+    "S1_v4_behavioral",
+    "U1_v4_behavioral",
+    "V1_v4_behavioral"
+  ],
+  "disagreement_scenario_ids": [],
+  "cohen_kappa": null,
+  "adjudication_required_count": 0,
+  "adjudicated_count": 0,
+  "adjudicated_scenario_ids": [],
+  "pending_adjudication_scenario_ids": [],
+  "missing_value_policy": "缺失独立标注不进入 kappa 分母，也不得用自动标签填补。",
+  "unit": "scenario_full_label_exact_match",
+  "warning": "kappa 仅由真实独立标注计算；分歧必须由第三方完成裁决后才允许状态为 complete。"
+}

@@ -1,0 +1,117 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "config": {
+    "protocol": "v4.1-supplemental-ingestion-20260816",
+    "status": "preregistered_before_execution",
+    "scope": "Raw-text ingestion coverage only; does not replace frozen v4 behavioral results.",
+    "frozen_v4_revision": "2391012eed2b4e9670a520ee8c332d9be1145ff2",
+    "systems": [
+      "Ours",
+      "B0",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "replicate_ids": [
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010
+    ],
+    "requirements": {
+      "backend": "external_llm",
+      "same_model_prompt_world_clock_evaluator": true,
+      "forbidden_runtime_inputs": [
+        "memory_ops",
+        "action_template",
+        "evaluator labels"
+      ],
+      "no_heuristic_fallback": true,
+      "real_usage_required": true,
+      "max_transport_retries": 1,
+      "min_complete_replicates_for_supplemental": 10
+    },
+    "trajectories": [
+      {
+        "trajectory_id": "I1_preference_create",
+        "utterances": [
+          "我喜欢把卧室空调设为24度"
+        ],
+        "query": "按我的偏好设置卧室空调",
+        "task_type": "control",
+        "expected_action": {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 24
+          }
+        }
+      },
+      {
+        "trajectory_id": "I2_preference_correction",
+        "utterances": [
+          "我喜欢把卧室空调设为24度",
+          "不对，我喜欢把卧室空调改成26度"
+        ],
+        "query": "按我的偏好设置卧室空调",
+        "task_type": "control",
+        "expected_action": {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 26
+          }
+        }
+      },
+      {
+        "trajectory_id": "I3_cross_entity_preference",
+        "utterances": [
+          "我喜欢把客厅空调设为22度",
+          "我喜欢把卧室空调设为25度"
+        ],
+        "query": "按我的偏好设置卧室空调",
+        "task_type": "control",
+        "expected_action": {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 25
+          }
+        }
+      }
+    ]
+  },
+  "preregistered_replicates": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+  ],
+  "executed_replicates": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+  ]
+}

@@ -11,7 +11,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from experiments.ablations import ABLATION_IDS
 from experiments.baselines import BASELINE_IDS
-from experiments.runner.scenario_loader import load_config, load_scenario
+from experiments.runner.scenario_loader import iter_scenario_paths, load_config, load_scenario
 from experiments.runner.system_registry import build_system_registry
 
 
@@ -21,7 +21,7 @@ STRICT_ABLATION_SYSTEM_IDS = ABLATION_IDS
 
 def _scenario_rows() -> list[dict]:
     rows: list[dict] = []
-    for path in sorted((REPO_ROOT / "experiments" / "scenarios").rglob("*.yaml")):
+    for path in iter_scenario_paths(REPO_ROOT / "experiments" / "scenarios", protocol="legacy"):
         scenario = load_scenario(path)
         rows.append(
             {

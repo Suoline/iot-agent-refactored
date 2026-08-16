@@ -1,0 +1,140 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "system_id": "B0",
+  "trajectory_id": "I2_preference_correction",
+  "replicate_id": 1003,
+  "world_version": "wm-v1",
+  "input_mode": "raw_user_text",
+  "raw_utterances": [
+    "我喜欢把卧室空调设为24度",
+    "不对，我喜欢把卧室空调改成26度"
+  ],
+  "query": "按我的偏好设置卧室空调",
+  "task_type": "control",
+  "forbidden_runtime_inputs_absent": true,
+  "baseline_context_source": null,
+  "retrieval_metadata": {},
+  "matched_memories": [],
+  "candidate_devices": [
+    {
+      "entity_id": "climate.bedroom_ac",
+      "name": "卧室空调",
+      "score": 0.30434782608695654,
+      "confidence": 0.95,
+      "entity_type": "climate",
+      "capabilities": [
+        "on_off",
+        "set_temp",
+        "hvac_mode"
+      ],
+      "available_services": [
+        "climate.set_temperature"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {
+          "target_temp": 24
+        }
+      },
+      "matched_memories": [],
+      "missing_info": []
+    },
+    {
+      "entity_id": "light.bedroom_ceiling",
+      "name": "卧室顶灯",
+      "score": 0.1111111111111111,
+      "confidence": 0.95,
+      "entity_type": "light",
+      "capabilities": [
+        "on_off",
+        "brightness",
+        "color_temp"
+      ],
+      "available_services": [
+        "light.turn_on",
+        "light.turn_off"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {}
+      },
+      "matched_memories": [],
+      "missing_info": []
+    },
+    {
+      "entity_id": "light.bedroom_bedside",
+      "name": "卧室床头灯",
+      "score": 0.10344827586206896,
+      "confidence": 0.95,
+      "entity_type": "light",
+      "capabilities": [
+        "on_off",
+        "brightness"
+      ],
+      "available_services": [
+        "light.turn_on",
+        "light.turn_off"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {}
+      },
+      "matched_memories": [],
+      "missing_info": []
+    }
+  ],
+  "ingestion_events": [],
+  "memory_records_after": [],
+  "agent_backend": "external_llm",
+  "agent_provider": "newapi",
+  "agent_model": "gpt-5.4-mini",
+  "agent_seed_protocol": "provider_seed",
+  "agent_requested_seed": 1003,
+  "agent_raw_output": "{\"actions\":[],\"should_ask_user\":false,\"reason\":\"缺少可直接执行且唯一匹配的卧室空调控制动作；当前唯一可用服务仅有 climate.set_temperature，但任务未提供明确温度偏好，且不能推断更多设置。\"}\n",
+  "raw_planner_decision": {
+    "actions": [],
+    "should_ask_user": false,
+    "reason": "缺少可直接执行且唯一匹配的卧室空调控制动作；当前唯一可用服务仅有 climate.set_temperature，但任务未提供明确温度偏好，且不能推断更多设置。"
+  },
+  "guarded_planner_decision": {
+    "actions": [],
+    "should_ask_user": true,
+    "reason": "缺少可直接执行且唯一匹配的卧室空调控制动作；当前唯一可用服务仅有 climate.set_temperature，但任务未提供明确温度偏好，且不能推断更多设置。"
+  },
+  "agent_failures": [],
+  "transport_attempts": [
+    {
+      "attempt": 1,
+      "agent_backend": "external_llm",
+      "failure_type": null,
+      "usage": {
+        "prompt_tokens": 10482,
+        "completion_tokens": 62,
+        "total_tokens": 10544
+      },
+      "raw_output": "{\"actions\":[],\"should_ask_user\":false,\"reason\":\"缺少可直接执行且唯一匹配的卧室空调控制动作；当前唯一可用服务仅有 climate.set_temperature，但任务未提供明确温度偏好，且不能推断更多设置。\"}\n"
+    }
+  ],
+  "transport_repair": false,
+  "usage": {
+    "prompt_tokens": 10482,
+    "completion_tokens": 62,
+    "total_tokens": 10544
+  },
+  "actions": [],
+  "execution": [],
+  "execution_success": false,
+  "final_state": {},
+  "evaluator": {
+    "action_success": false,
+    "expected_action": {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 26
+      }
+    }
+  },
+  "task_success": false
+}

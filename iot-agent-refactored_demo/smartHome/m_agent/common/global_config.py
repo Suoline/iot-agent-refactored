@@ -11,7 +11,14 @@ class Global_Config():
         self.privacy_protection_enabled = False
 
         # llm相关配置
-        self.provider = self.configparser.get("base", 'selected_llm_provider')
+        # Experiments may select a configured provider for one isolated child
+        # process without rewriting the repository-wide default configuration.
+        self.provider = os.environ.get(
+            "SMART_HOME_M_AGENT_PROVIDER",
+            self.configparser.get("base", 'selected_llm_provider'),
+        )
+        if not self.configparser.has_section(self.provider):
+            raise ValueError(f"unknown_smart_home_llm_provider:{self.provider}")
         self.model = self.configparser.get(self.provider, 'model')
         self.base_url = self.configparser.get(self.provider, 'base_url')
         self.api_key = self.configparser.get(self.provider, 'api_key')

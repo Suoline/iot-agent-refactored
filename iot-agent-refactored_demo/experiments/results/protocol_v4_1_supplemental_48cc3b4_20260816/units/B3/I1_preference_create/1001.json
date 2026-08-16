@@ -1,0 +1,250 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "system_id": "B3",
+  "trajectory_id": "I1_preference_create",
+  "replicate_id": 1001,
+  "world_version": "wm-v1",
+  "input_mode": "raw_user_text",
+  "raw_utterances": [
+    "我喜欢把卧室空调设为24度"
+  ],
+  "query": "按我的偏好设置卧室空调",
+  "task_type": "control",
+  "forbidden_runtime_inputs_absent": true,
+  "baseline_context_source": null,
+  "retrieval_metadata": {
+    "top_k": 10,
+    "memory_entity_map": {
+      "ingested_climate_bedroom_ac_u1": "climate.bedroom_ac"
+    },
+    "usable_stale_memory_ids": [],
+    "clarification_only_memory_ids": []
+  },
+  "matched_memories": [
+    {
+      "memory_id": "ingested_climate_bedroom_ac_u1",
+      "memory_type": "preference",
+      "text": "我喜欢把卧室空调设为24度",
+      "score": 0.4600000000000001,
+      "raw_confidence": 0.9,
+      "effective_confidence": 0.9,
+      "memory_worth": 0.5,
+      "system_status": "active",
+      "true_status": "active",
+      "runtime_status": "active",
+      "layer": "active",
+      "in_usable_set": true,
+      "in_grounding_set": false
+    }
+  ],
+  "candidate_devices": [
+    {
+      "entity_id": "climate.bedroom_ac",
+      "name": "climate.bedroom_ac",
+      "score": 0.4600000000000001,
+      "confidence": 0.9,
+      "entity_type": "climate",
+      "capabilities": [
+        "on_off",
+        "set_temp",
+        "hvac_mode"
+      ],
+      "available_services": [
+        "climate.set_temperature"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {
+          "target_temp": 24
+        }
+      },
+      "matched_memories": [
+        {
+          "memory_id": "ingested_climate_bedroom_ac_u1",
+          "memory_type": "preference",
+          "text": "我喜欢把卧室空调设为24度",
+          "score": 0.4600000000000001,
+          "raw_confidence": 0.9,
+          "effective_confidence": 0.9,
+          "memory_worth": 0.5,
+          "system_status": "active",
+          "true_status": "active",
+          "runtime_status": "active",
+          "layer": "active",
+          "in_usable_set": true,
+          "in_grounding_set": false
+        }
+      ],
+      "missing_info": []
+    }
+  ],
+  "ingestion_events": [
+    {
+      "accepted": true,
+      "memory_id": "ingested_climate_bedroom_ac_u1",
+      "replaced_memory_id": null,
+      "entity_id": "climate.bedroom_ac",
+      "value": "24",
+      "source_text": "我喜欢把卧室空调设为24度"
+    }
+  ],
+  "memory_records_after": [
+    {
+      "memory_id": "ingested_climate_bedroom_ac_u1",
+      "scope": "entity",
+      "device_id": null,
+      "entity_id": "climate.bedroom_ac",
+      "room_id": null,
+      "user_id": null,
+      "memory_type": "preference",
+      "subject": "卧室空调喜欢的温度",
+      "predicate": "preferred_temperature",
+      "object": "24",
+      "condition": null,
+      "action": null,
+      "natural_text": "我喜欢把卧室空调设为24度",
+      "structured_payload": {
+        "ingestion": "raw_user_text",
+        "raw_text": "我喜欢把卧室空调设为24度"
+      },
+      "source": "user_explicit",
+      "evidence_refs": [],
+      "source_turn_id": "u1",
+      "source_trace_id": null,
+      "confidence": 0.9,
+      "source_authority": 0.9,
+      "importance": 0.5,
+      "volatility": "medium",
+      "positive_hits": 0,
+      "negative_hits": 0,
+      "ripple_penalty": 0.0,
+      "created_at": "2026-01-01T00:00:00+08:00",
+      "updated_at": "2026-01-01T00:00:00+08:00",
+      "last_accessed_at": null,
+      "observed_at": "2026-01-01T00:00:00+08:00",
+      "valid_from": null,
+      "valid_until": null,
+      "expires_at": null,
+      "half_life_days": 180,
+      "status": "active",
+      "layer": "active",
+      "supersedes": [],
+      "superseded_by": null,
+      "conflicts_with": [],
+      "merged_from": [],
+      "coverage_proof": null,
+      "related_memory_ids": [],
+      "depends_on_memory_ids": [],
+      "derived_from_memory_ids": [],
+      "sensitive": false,
+      "needs_review": false,
+      "resampled": false,
+      "access_count": 0,
+      "update_count": 0,
+      "last_used_task_id": null
+    }
+  ],
+  "agent_backend": "external_llm",
+  "agent_provider": "newapi",
+  "agent_model": "gpt-5.4-mini",
+  "agent_seed_protocol": "provider_seed",
+  "agent_requested_seed": 1001,
+  "agent_raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":24}}],\"should_ask_user\":false,\"reason\":\"已找到与用户偏好匹配的唯一卧室空调目标，且可用服务精确匹配，直接设置到24度。\"}\n",
+  "raw_planner_decision": {
+    "actions": [
+      {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      }
+    ],
+    "should_ask_user": false,
+    "reason": "已找到与用户偏好匹配的唯一卧室空调目标，且可用服务精确匹配，直接设置到24度。"
+  },
+  "guarded_planner_decision": {
+    "actions": [
+      {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      }
+    ],
+    "should_ask_user": false,
+    "reason": "已找到与用户偏好匹配的唯一卧室空调目标，且可用服务精确匹配，直接设置到24度。"
+  },
+  "agent_failures": [],
+  "transport_attempts": [
+    {
+      "attempt": 1,
+      "agent_backend": "external_llm",
+      "failure_type": null,
+      "usage": {
+        "prompt_tokens": 6325,
+        "completion_tokens": 73,
+        "total_tokens": 6398
+      },
+      "raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":24}}],\"should_ask_user\":false,\"reason\":\"已找到与用户偏好匹配的唯一卧室空调目标，且可用服务精确匹配，直接设置到24度。\"}\n"
+    }
+  ],
+  "transport_repair": false,
+  "usage": {
+    "prompt_tokens": 6325,
+    "completion_tokens": 73,
+    "total_tokens": 6398
+  },
+  "actions": [
+    {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 24
+      }
+    }
+  ],
+  "execution": [
+    {
+      "action": {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      },
+      "success": true,
+      "result_state": {
+        "climate.bedroom_ac": {
+          "state": "off",
+          "attributes": {
+            "target_temp": 24
+          }
+        }
+      },
+      "error": null
+    }
+  ],
+  "execution_success": true,
+  "final_state": {
+    "climate.bedroom_ac": {
+      "state": "off",
+      "attributes": {
+        "target_temp": 24
+      }
+    }
+  },
+  "evaluator": {
+    "action_success": true,
+    "expected_action": {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 24
+      }
+    }
+  },
+  "task_success": true
+}

@@ -1,0 +1,320 @@
+{
+  "annotation_type": "independent_llm_adjudication",
+  "adjudicator_id": "model_c",
+  "method_note": "只读取脱敏场景、世界模型及 A/B 独立标签；未读取 evaluator ground truth、实验结果或模型 trace",
+  "scenario_count": 13,
+  "scenarios": {
+    "H2_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": true,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：低置信度偏好不足以支持控制，应先澄清且不执行外部动作。"
+    },
+    "C2_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": false,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：两次请求均不在规则有效期内，不执行外部动作。"
+    },
+    "B6_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "schema_normalization",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "lock.lock",
+            "entity_id": "lock.front_door",
+            "args": {}
+          }
+        ],
+        "expected_action": {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        },
+        "expected_final_state": {
+          "lock.front_door": {
+            "state": "locked",
+            "attributes": {}
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "A/B 对锁门动作及结果语义一致，仅最终状态分别使用布尔字段与 state 字段，统一为规范结构。"
+    },
+    "Q1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": false,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：这是偏好查询，不产生设备控制动作。"
+    },
+    "U1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": true,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：阅读灯别名同时指向两个设备，需先澄清目标。"
+    },
+    "R1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "climate.set_temperature",
+            "entity_id": "climate.bedroom_ac",
+            "args": {
+              "temperature": 26
+            }
+          }
+        ],
+        "expected_action": {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 26
+          }
+        },
+        "expected_final_state": {
+          "climate.bedroom_ac": {
+            "state": "unknown",
+            "attributes": {
+              "temperature": 26
+            }
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "A/B 核心标签一致：采用未被取代的最新偏好 26 度；世界模型未给出 HVAC 模式，故仅规范记录可确定的温度属性。"
+    },
+    "D1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": true,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：低权威、低置信度且已衰减的亮度偏好需要澄清。"
+    },
+    "S1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": true,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：夜间解锁属于降低防护的敏感动作，应确认后再执行。"
+    },
+    "V1_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": false,
+      "resolution_type": "semantic_adjudication",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "light.turn_off",
+            "entity_id": "light.living_ceiling",
+            "args": {}
+          },
+          {
+            "service": "light.turn_on",
+            "entity_id": "light.living_ambient",
+            "args": {}
+          },
+          {
+            "service": "cover.set_position",
+            "entity_id": "cover.living_curtain",
+            "args": {
+              "position": 0
+            }
+          }
+        ],
+        "expected_action": {
+          "service": "cover.set_position",
+          "entity_id": "cover.living_curtain",
+          "args": {
+            "position": 0
+          }
+        },
+        "expected_final_state": {
+          "light.living_ceiling": {
+            "state": "off",
+            "attributes": {}
+          },
+          "light.living_ambient": {
+            "state": "on",
+            "attributes": {}
+          },
+          "cover.living_curtain": {
+            "state": "closed",
+            "attributes": {
+              "position": 0
+            }
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "三步例程的动作序列明确；按裁决规则，主要或最终动作必须取 expected_actions 的最后一步，不能为 null。"
+    },
+    "E4_v4_behavioral": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "agreement",
+      "final_label": {
+        "expected_actions": [],
+        "expected_action": null,
+        "expected_final_state": null,
+        "final_state_applicable": false,
+        "expected_clarify": false,
+        "expected_no_action": true
+      },
+      "rationale": "A/B 核心标签一致：临时规则在请求前已失效，不执行外部动作。"
+    },
+    "L1_v4_longitudinal": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": false,
+      "resolution_type": "semantic_adjudication",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "light.turn_on",
+            "entity_id": "light.bedroom_bedside",
+            "args": {}
+          },
+          {
+            "service": "light.turn_off",
+            "entity_id": "light.bedroom_bedside",
+            "args": {}
+          }
+        ],
+        "expected_action": {
+          "service": "light.turn_off",
+          "entity_id": "light.bedroom_bedside",
+          "args": {}
+        },
+        "expected_final_state": {
+          "light.bedroom_bedside": {
+            "state": "off",
+            "attributes": {}
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "跨会话共执行开灯、关灯两步；按裁决规则，expected_action 应为动作序列最后的关灯动作，不能为 null。"
+    },
+    "B6R_v4_robustness": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "schema_normalization",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "lock.lock",
+            "entity_id": "lock.front_door",
+            "args": {}
+          }
+        ],
+        "expected_action": {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        },
+        "expected_final_state": {
+          "lock.front_door": {
+            "state": "locked",
+            "attributes": {}
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "A/B 对明确锁门请求的语义判断一致，仅最终状态表示不同，统一为规范结构。"
+    },
+    "B6W_v4_robustness": {
+      "annotator_a_agrees": true,
+      "annotator_b_agrees": true,
+      "resolution_type": "schema_normalization",
+      "final_label": {
+        "expected_actions": [
+          {
+            "service": "lock.lock",
+            "entity_id": "lock.entry_door",
+            "args": {}
+          }
+        ],
+        "expected_action": {
+          "service": "lock.lock",
+          "entity_id": "lock.entry_door",
+          "args": {}
+        },
+        "expected_final_state": {
+          "lock.entry_door": {
+            "state": "locked",
+            "attributes": {}
+          }
+        },
+        "final_state_applicable": true,
+        "expected_clarify": false,
+        "expected_no_action": false
+      },
+      "rationale": "A/B 对第二住宅中的锁门动作及结果语义一致，仅最终状态表示不同，统一为规范结构。"
+    }
+  },
+  "summary": {
+    "agreement_count": 8,
+    "schema_normalization_count": 3,
+    "semantic_adjudication_count": 2
+  }
+}

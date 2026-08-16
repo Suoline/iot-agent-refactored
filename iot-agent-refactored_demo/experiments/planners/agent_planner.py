@@ -179,6 +179,16 @@ class ExternalLLMClient:
                 raw_body = response.read().decode("utf-8")
         except urllib.error.HTTPError as exc:  # pragma: no cover - network dependent
             body = exc.read().decode("utf-8", errors="replace")
+            # Some OpenAI-compatible proxies route seed-bearing requests differently.
+            # Retry once without seed so the trace can honestly record replicate_id.
+            if requested_seed is not None and exc.code == 503:
+                fallback = self._invoke_http(prompt, requested_seed=None, max_tokens=max_tokens)
+                fallback["requested_seed"] = requested_seed
+                fallback["request_seed_supported"] = False
+                fallback["request_seed_applied"] = False
+                fallback["seed_protocol"] = "replicate_id"
+                fallback.setdefault("response_metadata", {})["seed_fallback"] = "http_503"
+                return fallback
             raise RuntimeError(f"http_error:{exc.code}:{body[:200]}") from exc
         except urllib.error.URLError as exc:  # pragma: no cover - network dependent
             raise RuntimeError(f"url_error:{_redact_error(exc)}") from exc
@@ -581,6 +591,20 @@ class AgentPlanner:
             )
 
         actions = [item.model_dump(mode="json") for item in guarded.actions]
+        raw_plan = {
+            "actions": [item.model_dump(mode="json") for item in parsed.actions],
+            "should_ask_user": parsed.should_ask_user,
+            "reason": parsed.reason,
+        }
+        guarded_plan = {
+            "actions": actions,
+            "should_ask_user": guarded.should_ask_user,
+            "reason": guarded.reason,
+        }
+        guard_overrode_raw_plan = (
+            raw_plan["actions"] != guarded_plan["actions"]
+            or raw_plan["should_ask_user"] != guarded_plan["should_ask_user"]
+        )
         structured_output = {
             "actions": actions,
             "should_ask_user": guarded.should_ask_user,
@@ -594,6 +618,9 @@ class AgentPlanner:
             "request_seed_supported": request_seed_supported,
             "request_seed_applied": request_seed_applied,
             "seed_protocol": seed_protocol,
+            "raw_plan": raw_plan,
+            "guarded_plan": guarded_plan,
+            "guard_overrode_raw_plan": guard_overrode_raw_plan,
         }
         return AgentPlannerDecision(
             action=actions[0] if actions else None,

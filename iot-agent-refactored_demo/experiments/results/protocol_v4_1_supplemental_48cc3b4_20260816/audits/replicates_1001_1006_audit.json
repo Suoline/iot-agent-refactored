@@ -1,0 +1,18 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "selected_replicates": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006
+  ],
+  "evidence_grade": "engineering_pilot",
+  "expected_unit_count": 126,
+  "observed_unit_count": 126,
+  "missing_units": [],
+  "unexpected_units": [],
+  "issues": [],
+  "status": "pass"
+}

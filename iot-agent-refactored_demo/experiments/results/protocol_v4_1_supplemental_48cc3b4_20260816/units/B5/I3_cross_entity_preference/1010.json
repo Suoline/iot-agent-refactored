@@ -1,0 +1,314 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "system_id": "B5",
+  "trajectory_id": "I3_cross_entity_preference",
+  "replicate_id": 1010,
+  "world_version": "wm-v1",
+  "input_mode": "raw_user_text",
+  "raw_utterances": [
+    "我喜欢把客厅空调设为22度",
+    "我喜欢把卧室空调设为25度"
+  ],
+  "query": "按我的偏好设置卧室空调",
+  "task_type": "control",
+  "forbidden_runtime_inputs_absent": true,
+  "baseline_context_source": null,
+  "retrieval_metadata": {
+    "top_k": 10,
+    "memory_entity_map": {
+      "ingested_climate_bedroom_ac_u2": "climate.bedroom_ac",
+      "ingested_climate_living_room_ac_u1": "climate.living_room_ac"
+    },
+    "usable_stale_memory_ids": [],
+    "clarification_only_memory_ids": []
+  },
+  "matched_memories": [
+    {
+      "memory_id": "ingested_climate_bedroom_ac_u2",
+      "memory_type": "preference",
+      "text": "我喜欢把卧室空调设为25度",
+      "score": 0.43653914680514383,
+      "raw_confidence": 0.9,
+      "effective_confidence": 0.9,
+      "memory_worth": 0.5,
+      "system_status": "active",
+      "true_status": "active",
+      "runtime_status": "active",
+      "layer": "active",
+      "in_usable_set": true,
+      "in_grounding_set": false
+    },
+    {
+      "memory_id": "ingested_climate_living_room_ac_u1",
+      "memory_type": "preference",
+      "text": "我喜欢把客厅空调设为22度",
+      "score": 0.40717289565664494,
+      "raw_confidence": 0.9,
+      "effective_confidence": 0.9,
+      "memory_worth": 0.5,
+      "system_status": "active",
+      "true_status": "active",
+      "runtime_status": "active",
+      "layer": "active",
+      "in_usable_set": true,
+      "in_grounding_set": false
+    }
+  ],
+  "candidate_devices": [
+    {
+      "entity_id": "climate.bedroom_ac",
+      "name": "climate.bedroom_ac",
+      "score": 0.43653914680514383,
+      "confidence": 0.9,
+      "entity_type": "climate",
+      "capabilities": [
+        "on_off",
+        "set_temp",
+        "hvac_mode"
+      ],
+      "available_services": [
+        "climate.set_temperature"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {
+          "target_temp": 24
+        }
+      },
+      "matched_memories": [
+        {
+          "memory_id": "ingested_climate_bedroom_ac_u2",
+          "memory_type": "preference",
+          "text": "我喜欢把卧室空调设为25度",
+          "score": 0.43653914680514383,
+          "raw_confidence": 0.9,
+          "effective_confidence": 0.9,
+          "memory_worth": 0.5,
+          "system_status": "active",
+          "true_status": "active",
+          "runtime_status": "active",
+          "layer": "active",
+          "in_usable_set": true,
+          "in_grounding_set": false
+        }
+      ],
+      "missing_info": []
+    },
+    {
+      "entity_id": "climate.living_room_ac",
+      "name": "climate.living_room_ac",
+      "score": 0.40717289565664494,
+      "confidence": 0.9,
+      "entity_type": null,
+      "capabilities": [],
+      "available_services": [],
+      "current_state": {},
+      "matched_memories": [
+        {
+          "memory_id": "ingested_climate_living_room_ac_u1",
+          "memory_type": "preference",
+          "text": "我喜欢把客厅空调设为22度",
+          "score": 0.40717289565664494,
+          "raw_confidence": 0.9,
+          "effective_confidence": 0.9,
+          "memory_worth": 0.5,
+          "system_status": "active",
+          "true_status": "active",
+          "runtime_status": "active",
+          "layer": "active",
+          "in_usable_set": true,
+          "in_grounding_set": false
+        }
+      ],
+      "missing_info": []
+    }
+  ],
+  "ingestion_events": [
+    {
+      "accepted": true,
+      "memory_id": "ingested_climate_living_room_ac_u1",
+      "replaced_memory_id": null,
+      "entity_id": "climate.living_room_ac",
+      "value": "22",
+      "source_text": "我喜欢把客厅空调设为22度"
+    },
+    {
+      "accepted": true,
+      "memory_id": "ingested_climate_bedroom_ac_u2",
+      "replaced_memory_id": null,
+      "entity_id": "climate.bedroom_ac",
+      "value": "25",
+      "source_text": "我喜欢把卧室空调设为25度"
+    }
+  ],
+  "memory_records_after": [
+    {
+      "memory_id": "ingested_climate_living_room_ac_u1",
+      "scope": "entity",
+      "device_id": null,
+      "entity_id": "climate.living_room_ac",
+      "room_id": null,
+      "user_id": null,
+      "memory_type": "preference",
+      "subject": "客厅空调喜欢的温度",
+      "predicate": "preferred_temperature",
+      "object": "22",
+      "condition": null,
+      "action": null,
+      "natural_text": "我喜欢把客厅空调设为22度",
+      "structured_payload": {
+        "ingestion": "raw_user_text",
+        "raw_text": "我喜欢把客厅空调设为22度"
+      },
+      "source": "user_explicit",
+      "evidence_refs": [],
+      "source_turn_id": "u1",
+      "source_trace_id": null,
+      "confidence": 0.9,
+      "source_authority": 0.9,
+      "importance": 0.5,
+      "volatility": "medium",
+      "positive_hits": 0,
+      "negative_hits": 0,
+      "ripple_penalty": 0.0,
+      "created_at": "2026-01-01T00:00:00+08:00",
+      "updated_at": "2026-01-01T00:00:00+08:00",
+      "last_accessed_at": null,
+      "observed_at": "2026-01-01T00:00:00+08:00",
+      "valid_from": null,
+      "valid_until": null,
+      "expires_at": null,
+      "half_life_days": 180,
+      "status": "active",
+      "layer": "active",
+      "supersedes": [],
+      "superseded_by": null,
+      "conflicts_with": [],
+      "merged_from": [],
+      "coverage_proof": null,
+      "related_memory_ids": [],
+      "depends_on_memory_ids": [],
+      "derived_from_memory_ids": [],
+      "sensitive": false,
+      "needs_review": false,
+      "resampled": false,
+      "access_count": 0,
+      "update_count": 0,
+      "last_used_task_id": null
+    },
+    {
+      "memory_id": "ingested_climate_bedroom_ac_u2",
+      "scope": "entity",
+      "device_id": null,
+      "entity_id": "climate.bedroom_ac",
+      "room_id": null,
+      "user_id": null,
+      "memory_type": "preference",
+      "subject": "卧室空调喜欢的温度",
+      "predicate": "preferred_temperature",
+      "object": "25",
+      "condition": null,
+      "action": null,
+      "natural_text": "我喜欢把卧室空调设为25度",
+      "structured_payload": {
+        "ingestion": "raw_user_text",
+        "raw_text": "我喜欢把卧室空调设为25度"
+      },
+      "source": "user_explicit",
+      "evidence_refs": [],
+      "source_turn_id": "u2",
+      "source_trace_id": null,
+      "confidence": 0.9,
+      "source_authority": 0.9,
+      "importance": 0.5,
+      "volatility": "medium",
+      "positive_hits": 0,
+      "negative_hits": 0,
+      "ripple_penalty": 0.0,
+      "created_at": "2026-01-02T00:00:00+08:00",
+      "updated_at": "2026-01-02T00:00:00+08:00",
+      "last_accessed_at": null,
+      "observed_at": "2026-01-02T00:00:00+08:00",
+      "valid_from": null,
+      "valid_until": null,
+      "expires_at": null,
+      "half_life_days": 180,
+      "status": "active",
+      "layer": "active",
+      "supersedes": [],
+      "superseded_by": null,
+      "conflicts_with": [],
+      "merged_from": [],
+      "coverage_proof": null,
+      "related_memory_ids": [],
+      "depends_on_memory_ids": [],
+      "derived_from_memory_ids": [],
+      "sensitive": false,
+      "needs_review": false,
+      "resampled": false,
+      "access_count": 0,
+      "update_count": 0,
+      "last_used_task_id": null
+    }
+  ],
+  "agent_backend": "external_llm",
+  "agent_provider": "newapi",
+  "agent_model": "gpt-5.4-mini",
+  "agent_seed_protocol": "provider_seed",
+  "agent_requested_seed": 1010,
+  "agent_raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":25}}],\"should_ask_user\":false,\"reason\":\"匹配到卧室空调偏好，且可用服务唯一明确，按偏好直接设置为25度。\"}\n",
+  "raw_planner_decision": {
+    "actions": [
+      {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 25
+        }
+      }
+    ],
+    "should_ask_user": false,
+    "reason": "匹配到卧室空调偏好，且可用服务唯一明确，按偏好直接设置为25度。"
+  },
+  "guarded_planner_decision": {
+    "actions": [],
+    "should_ask_user": true,
+    "reason": "没有足够置信度或候选差距不足"
+  },
+  "agent_failures": [],
+  "transport_attempts": [
+    {
+      "attempt": 1,
+      "agent_backend": "external_llm",
+      "failure_type": null,
+      "usage": {
+        "prompt_tokens": 11702,
+        "completion_tokens": 68,
+        "total_tokens": 11770
+      },
+      "raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":25}}],\"should_ask_user\":false,\"reason\":\"匹配到卧室空调偏好，且可用服务唯一明确，按偏好直接设置为25度。\"}\n"
+    }
+  ],
+  "transport_repair": false,
+  "usage": {
+    "prompt_tokens": 11702,
+    "completion_tokens": 68,
+    "total_tokens": 11770
+  },
+  "actions": [],
+  "execution": [],
+  "execution_success": false,
+  "final_state": {},
+  "evaluator": {
+    "action_success": false,
+    "expected_action": {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 25
+      }
+    }
+  },
+  "task_success": false
+}

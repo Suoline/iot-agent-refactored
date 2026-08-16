@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
@@ -25,13 +27,18 @@ def main() -> None:
     args = parser.parse_args()
 
     client = ExternalLLMClient()
+    endpoint = urlsplit(client._chat_completions_url())
+    started = time.perf_counter()
     probe = client.probe_seed_support(probe_seed=args.probe_seed)
+    latency_ms = (time.perf_counter() - started) * 1000
     report = {
         "run_id": args.run_id,
         "checked_at": datetime.now(timezone.utc).isoformat(),
         "provider": client.provider,
         "model": client.model,
         "transport": client._transport,
+        "endpoint_identifier": f"{endpoint.scheme}://{endpoint.netloc}{endpoint.path}",
+        "latency_ms": latency_ms,
         **probe,
     }
     writer = TraceWriter(args.results_root)

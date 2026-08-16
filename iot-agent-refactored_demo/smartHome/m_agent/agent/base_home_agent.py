@@ -12,7 +12,7 @@ from typing_extensions import TypedDict, Annotated
 import operator
 
 from smartHome.m_agent.agent.hooks.langchain_middleware import log_before, log_before_agent, log_response, \
-    log_after_agent, AgentContext
+    log_after_agent, AgentContext, retry_upstream_unavailable
 from smartHome.m_agent.agent.tools.executor_agent import get_device_current_status, executor_planning
 from smartHome.m_agent.agent.tools.query_tool_func import query_tool
 from smartHome.m_agent.common.get_llm import get_llm
@@ -190,7 +190,7 @@ def node_router(state:SmartHomeAgentState)-> Command[Literal["deliver_node"]]:
                              tool_planner
                                 ],
                          # response_format=DeviceIdList,
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(
@@ -241,7 +241,7 @@ def tool_filter(task:str):
                                     tool_get_all_devices
                                     ],
                              response_format=DeviceIdList,
-                             middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                             middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                              context_schema=AgentContext
                              )
         result = agent.invoke(
@@ -335,7 +335,7 @@ def tool_planner(task:str,devices:DeviceIdList):
             tools=[
                 query_tool,
                 executor_planning],
-            middleware=[log_before, log_response, log_before_agent, log_after_agent],
+            middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
             context_schema=AgentContext
         )
         result = agent.invoke(
@@ -422,7 +422,7 @@ def temp_test(task:str):
                              # ask_human
                          ],
                          response_format=DeviceIdList,
-                         middleware=[log_before, log_response, log_before_agent, log_after_agent],
+                         middleware=[log_before, retry_upstream_unavailable, log_response, log_before_agent, log_after_agent],
                          context_schema=AgentContext
                          )
     result = agent.invoke(

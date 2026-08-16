@@ -1,0 +1,21 @@
+{
+  "protocol": "v4",
+  "workload": "end_to_end_ingestion",
+  "status": "prepared_not_run",
+  "prohibited_runtime_inputs": [
+    "memory_ops",
+    "action_template",
+    "evaluator labels"
+  ],
+  "cases": [
+    "preference_create",
+    "preference_conflict_update"
+  ],
+  "required_evidence": [
+    "raw user text",
+    "SQLite lineage",
+    "retrieval trace",
+    "external action",
+    "real usage metadata"
+  ]
+}

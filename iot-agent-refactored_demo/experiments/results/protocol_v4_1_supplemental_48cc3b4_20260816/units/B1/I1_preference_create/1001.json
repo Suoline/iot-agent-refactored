@@ -1,0 +1,223 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "system_id": "B1",
+  "trajectory_id": "I1_preference_create",
+  "replicate_id": 1001,
+  "world_version": "wm-v1",
+  "input_mode": "raw_user_text",
+  "raw_utterances": [
+    "我喜欢把卧室空调设为24度"
+  ],
+  "query": "按我的偏好设置卧室空调",
+  "task_type": "control",
+  "forbidden_runtime_inputs_absent": true,
+  "baseline_context_source": "raw_text_rag",
+  "retrieval_metadata": {
+    "baseline_context_source": "raw_text_rag",
+    "raw_document_count": 1,
+    "raw_context_document_ids": [
+      "conversation_1"
+    ]
+  },
+  "matched_memories": [
+    {
+      "memory_id": "conversation_1",
+      "memory_type": "raw_history",
+      "text": "我喜欢把卧室空调设为24度",
+      "score": 0.2647058823529412,
+      "raw_confidence": 1.0,
+      "effective_confidence": 1.0,
+      "memory_worth": 0.0,
+      "system_status": "raw_text",
+      "true_status": "not_applicable",
+      "runtime_status": "raw_text",
+      "layer": "not_applicable",
+      "in_usable_set": true,
+      "in_grounding_set": false
+    }
+  ],
+  "candidate_devices": [
+    {
+      "entity_id": "climate.bedroom_ac",
+      "name": "卧室空调",
+      "score": 0.30434782608695654,
+      "confidence": 0.95,
+      "entity_type": "climate",
+      "capabilities": [
+        "on_off",
+        "set_temp",
+        "hvac_mode"
+      ],
+      "available_services": [
+        "climate.set_temperature"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {
+          "target_temp": 24
+        }
+      },
+      "matched_memories": [],
+      "missing_info": []
+    },
+    {
+      "entity_id": "light.bedroom_ceiling",
+      "name": "卧室顶灯",
+      "score": 0.1111111111111111,
+      "confidence": 0.95,
+      "entity_type": "light",
+      "capabilities": [
+        "on_off",
+        "brightness",
+        "color_temp"
+      ],
+      "available_services": [
+        "light.turn_on",
+        "light.turn_off"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {}
+      },
+      "matched_memories": [],
+      "missing_info": []
+    },
+    {
+      "entity_id": "light.bedroom_bedside",
+      "name": "卧室床头灯",
+      "score": 0.10344827586206896,
+      "confidence": 0.95,
+      "entity_type": "light",
+      "capabilities": [
+        "on_off",
+        "brightness"
+      ],
+      "available_services": [
+        "light.turn_on",
+        "light.turn_off"
+      ],
+      "current_state": {
+        "state": "off",
+        "attributes": {}
+      },
+      "matched_memories": [],
+      "missing_info": []
+    }
+  ],
+  "ingestion_events": [],
+  "memory_records_after": [],
+  "agent_backend": "external_llm",
+  "agent_provider": "newapi",
+  "agent_model": "gpt-5.4-mini",
+  "agent_seed_protocol": "provider_seed",
+  "agent_requested_seed": 1001,
+  "agent_raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":24}}],\"should_ask_user\":false,\"reason\":\"匹配到卧室空调的偏好记忆，且可用服务中存在唯一可执行动作 set_temperature，直接按偏好设置为24度。\"}\n",
+  "raw_planner_decision": {
+    "actions": [
+      {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      }
+    ],
+    "should_ask_user": false,
+    "reason": "匹配到卧室空调的偏好记忆，且可用服务中存在唯一可执行动作 set_temperature，直接按偏好设置为24度。"
+  },
+  "guarded_planner_decision": {
+    "actions": [
+      {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      }
+    ],
+    "should_ask_user": false,
+    "reason": "匹配到卧室空调的偏好记忆，且可用服务中存在唯一可执行动作 set_temperature，直接按偏好设置为24度。"
+  },
+  "agent_failures": [],
+  "transport_attempts": [
+    {
+      "attempt": 1,
+      "agent_backend": "external_llm",
+      "failure_type": "external_call_failed:timeout",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "raw_output": "The read operation timed out"
+    },
+    {
+      "attempt": 2,
+      "agent_backend": "external_llm",
+      "failure_type": null,
+      "usage": {
+        "prompt_tokens": 6268,
+        "completion_tokens": 77,
+        "total_tokens": 6345
+      },
+      "raw_output": "{\"actions\":[{\"service\":\"climate.set_temperature\",\"entity_id\":\"climate.bedroom_ac\",\"args\":{\"temperature\":24}}],\"should_ask_user\":false,\"reason\":\"匹配到卧室空调的偏好记忆，且可用服务中存在唯一可执行动作 set_temperature，直接按偏好设置为24度。\"}\n"
+    }
+  ],
+  "transport_repair": false,
+  "usage": {
+    "prompt_tokens": 6268,
+    "completion_tokens": 77,
+    "total_tokens": 6345
+  },
+  "actions": [
+    {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 24
+      }
+    }
+  ],
+  "execution": [
+    {
+      "action": {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 24
+        }
+      },
+      "success": true,
+      "result_state": {
+        "climate.bedroom_ac": {
+          "state": "off",
+          "attributes": {
+            "target_temp": 24
+          }
+        }
+      },
+      "error": null
+    }
+  ],
+  "execution_success": true,
+  "final_state": {
+    "climate.bedroom_ac": {
+      "state": "off",
+      "attributes": {
+        "target_temp": 24
+      }
+    }
+  },
+  "evaluator": {
+    "action_success": true,
+    "expected_action": {
+      "service": "climate.set_temperature",
+      "entity_id": "climate.bedroom_ac",
+      "args": {
+        "temperature": 24
+      }
+    }
+  },
+  "task_success": true
+}

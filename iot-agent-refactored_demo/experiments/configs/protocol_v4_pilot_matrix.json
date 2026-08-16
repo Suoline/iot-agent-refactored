@@ -1,0 +1,413 @@
+{
+  "matrix_version": "protocol-v4-pilot-20260810",
+  "evaluation_protocol": "v4",
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v4",
+  "scenario_count": 3,
+  "scenario_ids": [
+    "H2_v4_behavioral",
+    "C2_v4_behavioral",
+    "B6_v4_behavioral"
+  ],
+  "system_ids": [
+    "Ours",
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5"
+  ],
+  "seed_protocol": [
+    1001,
+    1002
+  ],
+  "unit_count": 42,
+  "requirements": {
+    "no_gold_memory_ops": true,
+    "no_action_template": true,
+    "real_usage_required_for_llm_units": true,
+    "max_api_calls_before_review": 200
+  },
+  "units": [
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "H2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/H2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "C2_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/C2.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    },
+    {
+      "group_id": "protocol_v4_agent_pilot",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6_v4_behavioral",
+      "seed": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6.yaml"
+    }
+  ]
+}

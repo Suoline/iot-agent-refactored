@@ -43,6 +43,11 @@
   ],
   "disagreement_scenario_ids": [],
   "cohen_kappa": null,
+  "adjudication_required_count": 0,
+  "adjudicated_count": 0,
+  "adjudicated_scenario_ids": [],
+  "pending_adjudication_scenario_ids": [],
+  "missing_value_policy": "缺失独立标注不进入 kappa 分母，也不得用自动标签填补。",
   "unit": "scenario_full_label_exact_match",
-  "warning": "kappa 仅在真实独立标注完成后计算；空占位不会生成数值。"
+  "warning": "kappa 仅由真实独立标注计算；分歧必须由第三方完成裁决后才允许状态为 complete。"
 }

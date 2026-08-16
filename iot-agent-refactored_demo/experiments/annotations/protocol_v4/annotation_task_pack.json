@@ -1,0 +1,130 @@
+{
+  "protocol": "v4",
+  "status": "pending_human_annotation",
+  "instructions": [
+    "两名标注者必须独立完成，不得查看模型输出、系统 trace 或对方答案。",
+    "只根据场景原始输入和用户可观察结局填写标签；不评价内部 MemoryRecord 状态。",
+    "发生分歧时由第三名裁决者填写 adjudication，且保留原因。",
+    "空值不进入 Cohen's kappa 分母，禁止用自动标签、gold evaluator 标签或系统输出补全。"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "H2_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/H2_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "C2_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/C2_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "B6_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/B6_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "Q1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/Q1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "U1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/U1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "R1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/R1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "D1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/D1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "S1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/S1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "V1_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/V1_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "E4_v4_behavioral",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/E4_v4_behavioral.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "L1_v4_longitudinal",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/L1_v4_longitudinal.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "B6R_v4_robustness",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/B6R_v4_robustness.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    },
+    {
+      "scenario_id": "B6W_v4_robustness",
+      "annotation_file": "experiments/annotations/protocol_v4/inter_annotator/B6W_v4_robustness.json",
+      "required_fields": [
+        "annotator_a",
+        "annotator_b",
+        "adjudication"
+      ]
+    }
+  ],
+  "import_command": "python3 experiments/scripts/compute_annotation_agreement.py --annotation-root experiments/annotations/protocol_v4/inter_annotator --output experiments/annotations/protocol_v4/annotation_agreement.json"
+}

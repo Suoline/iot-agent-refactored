@@ -1,0 +1,346 @@
+{
+  "matrix_version": "protocol-v4-formal-20260813",
+  "evaluation_protocol": "v4",
+  "workload": "held_out_paraphrase_noise_second_world",
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v4",
+  "scenario_count": 2,
+  "scenario_ids": [
+    "B6R_v4_robustness",
+    "B6W_v4_robustness"
+  ],
+  "system_ids": [
+    "Ours",
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5"
+  ],
+  "seed_protocol": "replicate_id",
+  "replicate_ids": [
+    1001,
+    1002
+  ],
+  "unit_count": 28,
+  "requirements": {
+    "no_gold_memory_ops": true,
+    "no_action_template": true,
+    "real_usage_required_for_llm_units": true,
+    "transport_failures_excluded_from_metric_denominators": true,
+    "resume_supported": true,
+    "max_api_calls_before_review": 200
+  },
+  "units": [
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "Ours",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B0",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B1",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B2",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B3",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B4",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6R_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "world_path": "experiments/world_model/v1.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1001,
+      "replicate_id": 1001,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    },
+    {
+      "group_id": "protocol_v4_robustness",
+      "planner_mode": "agent",
+      "system_id": "B5",
+      "scenario_id": "B6W_v4_robustness",
+      "seed": 1002,
+      "replicate_id": 1002,
+      "source_planner_mode": "agent",
+      "scenario_path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "world_path": "experiments/world_model/v2.json"
+    }
+  ]
+}

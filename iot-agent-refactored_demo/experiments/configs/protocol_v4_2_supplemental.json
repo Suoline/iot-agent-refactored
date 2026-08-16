@@ -1,0 +1,43 @@
+{
+  "protocol": "v4.2-supplemental-20260816",
+  "status": "preregistered_before_execution",
+  "scope": "Product-runtime feasibility, real-LLM mechanism ablation, and expanded longitudinal supplemental evidence",
+  "systems": ["Ours", "-Decay", "-AsymFeedback", "-Governance", "-CandidateGate", "-ConflictHandling", "-FeatureAbsorption", "-Ripple", "-Split"],
+  "longitudinal_systems": ["Ours", "B0", "B1", "B2", "B3", "B4", "B5"],
+  "replicate_ids": [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010],
+  "requirements": {
+    "backend": "external_llm",
+    "same_model_prompt_world_clock_evaluator": true,
+    "no_heuristic_fallback": true,
+    "real_usage_required": true,
+    "max_transport_retries": 1,
+    "pilot_replicates": 1,
+    "min_complete_replicates_for_supplemental": 10,
+    "human_annotation_complete": false
+  },
+  "product_runtime_trajectories": [
+    {"trajectory_id": "R1_create_preference", "utterances": ["我喜欢把卧室空调设为24度"], "task": "按我的偏好设置卧室空调", "coverage": "create_preference"},
+    {"trajectory_id": "R2_correct_preference", "utterances": ["我喜欢把卧室空调设为24度", "不对，我喜欢把卧室空调改成26度"], "task": "按我的偏好设置卧室空调", "coverage": "natural_language_correction"},
+    {"trajectory_id": "R3_cross_entity_preference", "utterances": ["我喜欢把客厅空调设为22度", "我喜欢把卧室空调设为25度"], "task": "按我喜欢的卧室温度设置空调", "coverage": "cross_entity_selection"}
+  ],
+  "mechanism_trajectories": [
+    {"trajectory_id": "M1_decay", "mechanism": "dynamic_confidence", "system_id": "-Decay", "utterances": ["我以前喜欢把卧室空调设为24度，现在这个偏好已经过期了"]},
+    {"trajectory_id": "M2_asym_feedback", "mechanism": "asym_feedback", "system_id": "-AsymFeedback", "utterances": ["刚才按这个偏好执行是正确的，请保留它", "刚才按这个偏好执行错了，请降低它的可信度"]},
+    {"trajectory_id": "M3_governance", "mechanism": "governance", "system_id": "-Governance", "utterances": ["请记住我对书房灯、客厅灯、卧室灯的多个长期偏好"]},
+    {"trajectory_id": "M4_candidate_gate", "mechanism": "candidate_gate", "system_id": "-CandidateGate", "utterances": ["我可能喜欢把书房灯调到40亮度，但我还没有确认"]},
+    {"trajectory_id": "M5_conflict", "mechanism": "conflict_handling", "system_id": "-ConflictHandling", "utterances": ["卧室空调设为24度", "更正，卧室空调设为26度"]},
+    {"trajectory_id": "M6_absorption", "mechanism": "feature_absorption", "system_id": "-FeatureAbsorption", "utterances": ["把我对书房灯的两个相同偏好合并为一个稳定偏好"]},
+    {"trajectory_id": "M7_ripple", "mechanism": "ripple", "system_id": "-Ripple", "utterances": ["这个偏好刚才导致了错误，请把相关联偏好一起降低可信度"]},
+    {"trajectory_id": "M8_split", "mechanism": "split", "system_id": "-Split", "utterances": ["把这个同时适用于卧室和书房的偏好拆成两个独立偏好"]}
+  ],
+  "longitudinal_trajectories": [
+    {"trajectory_id": "L2_cross_session_correction", "coverage": "cross_session_preference_correction", "history_lengths": [0], "utterances": ["我喜欢把卧室空调设为24度", "不对，我喜欢把卧室空调改成26度"], "query": "按我的偏好设置卧室空调", "expected_action": {"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {"temperature": 26}}},
+    {"trajectory_id": "L3_expired_memory", "coverage": "expired_memory", "history_lengths": [0], "utterances": ["我以前喜欢睡前开客厅灯，但这个临时偏好已经过期"], "query": "执行过期的睡前灯偏好", "expected_action": null},
+    {"trajectory_id": "L4_multi_entity_contamination", "coverage": "multi_entity_contamination", "history_lengths": [0], "utterances": ["客厅空调设为22度，卧室空调设为25度，不能混淆"], "query": "按我的偏好设置卧室空调", "expected_action": {"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {"temperature": 25}}},
+    {"trajectory_id": "L5_history_growth", "coverage": "history_20_40_80", "history_lengths": [20, 40, 80], "utterances": ["我喜欢把卧室空调设为26度"], "query": "按我的偏好设置卧室空调", "expected_action": {"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {"temperature": 26}}},
+    {"trajectory_id": "L6_capacity_conflict", "coverage": "capacity_pressure_or_long_conflict", "history_lengths": [0], "utterances": ["先记住卧室空调24度", "更正为卧室空调26度，最新偏好覆盖旧偏好"], "query": "按我的偏好设置卧室空调", "expected_action": {"service": "climate.set_temperature", "entity_id": "climate.bedroom_ac", "args": {"temperature": 26}}}
+  ],
+  "frozen_v4_revisions": ["2391012eed2b4e9670a520ee8c332d9be1145ff2"],
+  "frozen_v41_root": "experiments/results/protocol_v4_1_supplemental_48cc3b4_20260816",
+  "forbidden_runtime_inputs": ["memory_ops", "action_template", "evaluator labels"]
+}

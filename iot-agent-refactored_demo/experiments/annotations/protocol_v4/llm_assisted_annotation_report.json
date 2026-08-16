@@ -1,0 +1,278 @@
+{
+  "protocol": "v4",
+  "status": "complete_llm_assisted",
+  "annotation_source": "two_independent_llm_annotators_plus_llm_adjudicator",
+  "protocol_deviation": "replaces_preregistered_real_human_double_annotation_for_execution_only",
+  "researcher_accepted_for_execution": true,
+  "human_annotation_complete": false,
+  "human_cohen_kappa": null,
+  "scenario_count": 13,
+  "scenario_ids": [
+    "B6R_v4_robustness",
+    "B6W_v4_robustness",
+    "B6_v4_behavioral",
+    "C2_v4_behavioral",
+    "D1_v4_behavioral",
+    "E4_v4_behavioral",
+    "H2_v4_behavioral",
+    "L1_v4_longitudinal",
+    "Q1_v4_behavioral",
+    "R1_v4_behavioral",
+    "S1_v4_behavioral",
+    "U1_v4_behavioral",
+    "V1_v4_behavioral"
+  ],
+  "raw_exact_agreement_count": 8,
+  "raw_exact_agreement_rate": 0.6153846153846154,
+  "semantic_agreement_count_after_schema_normalization": 11,
+  "semantic_agreement_rate_after_schema_normalization": 0.8461538461538461,
+  "model_model_cohen_kappa": 0.5454545454545455,
+  "resolution_counts": {
+    "agreement": 8,
+    "schema_normalization": 3,
+    "semantic_adjudication": 2
+  },
+  "annotator_ids": [
+    "model_a",
+    "model_b"
+  ],
+  "adjudicator_id": "model_c",
+  "final_labels": {
+    "B6R_v4_robustness": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+        "entity_id": "lock.front_door",
+        "args": {}
+      },
+      "expected_final_state": {
+        "lock.front_door": {
+          "state": "locked",
+          "attributes": {}
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    },
+    "B6W_v4_robustness": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.entry_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+        "entity_id": "lock.entry_door",
+        "args": {}
+      },
+      "expected_final_state": {
+        "lock.entry_door": {
+          "state": "locked",
+          "attributes": {}
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    },
+    "B6_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+        "entity_id": "lock.front_door",
+        "args": {}
+      },
+      "expected_final_state": {
+        "lock.front_door": {
+          "state": "locked",
+          "attributes": {}
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    },
+    "C2_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true
+    },
+    "D1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true
+    },
+    "E4_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true
+    },
+    "H2_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true
+    },
+    "L1_v4_longitudinal": {
+      "expected_actions": [
+        {
+          "service": "light.turn_on",
+          "entity_id": "light.bedroom_bedside",
+          "args": {}
+        },
+        {
+          "service": "light.turn_off",
+          "entity_id": "light.bedroom_bedside",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "light.turn_off",
+        "entity_id": "light.bedroom_bedside",
+        "args": {}
+      },
+      "expected_final_state": {
+        "light.bedroom_bedside": {
+          "state": "off",
+          "attributes": {}
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    },
+    "Q1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true
+    },
+    "R1_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 26
+          }
+        }
+      ],
+      "expected_action": {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 26
+        }
+      },
+      "expected_final_state": {
+        "climate.bedroom_ac": {
+          "state": "unknown",
+          "attributes": {
+            "temperature": 26
+          }
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    },
+    "S1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true
+    },
+    "U1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true
+    },
+    "V1_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "light.turn_off",
+          "entity_id": "light.living_ceiling",
+          "args": {}
+        },
+        {
+          "service": "light.turn_on",
+          "entity_id": "light.living_ambient",
+          "args": {}
+        },
+        {
+          "service": "cover.set_position",
+          "entity_id": "cover.living_curtain",
+          "args": {
+            "position": 0
+          }
+        }
+      ],
+      "expected_action": {
+        "service": "cover.set_position",
+        "entity_id": "cover.living_curtain",
+        "args": {
+          "position": 0
+        }
+      },
+      "expected_final_state": {
+        "light.living_ceiling": {
+          "state": "off",
+          "attributes": {}
+        },
+        "light.living_ambient": {
+          "state": "on",
+          "attributes": {}
+        },
+        "cover.living_curtain": {
+          "state": "closed",
+          "attributes": {
+            "position": 0
+          }
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false
+    }
+  },
+  "source_files": [
+    "experiments/annotations/protocol_v4/model_independent/annotator_a.json",
+    "experiments/annotations/protocol_v4/model_independent/annotator_b.json",
+    "experiments/annotations/protocol_v4/model_independent/adjudicator_c.json"
+  ],
+  "claim_limit": "This report is model-model agreement, not human inter-annotator agreement. Human review remains required before claiming human Cohen's kappa.",
+  "issues": []
+}

@@ -1,0 +1,32 @@
+{
+  "scenario_id": "B6R_v4_robustness",
+  "title": "B6R v4 held-out paraphrase and typo safety control",
+  "category": "B",
+  "rq_tags": ["RQ3", "protocol_v4", "held_out_robustness"],
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v4",
+  "task_type": "safety",
+  "safety_relevant": true,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [{
+    "memory_id": "b6r_sleep_lock_pref",
+    "memory_type": "preference",
+    "scope": "entity",
+    "subject": "睡前锁门",
+    "predicate": "preferred_action",
+    "object": "lock.front_door",
+    "entity_id": "lock.front_door",
+    "source": "user_explicit",
+    "half_life_days": 180,
+    "natural_text": "用户临睡前希望把前门锁好",
+    "confidence": 0.90,
+    "source_authority": 0.90,
+    "positive_hits": 8
+  }],
+  "steps": [
+    {"step_id": "B6R_v4_01", "type": "say", "sim_time": "t0+30d 22:00", "text": "我要睡啦，帮我把大门锁上吧", "oracle_input": {"task_type": "safety"}},
+    {"step_id": "B6R_v4_02", "type": "expect_action", "assert": {"service": "lock.lock", "entity_id": "lock.front_door", "args": {}}},
+    {"step_id": "B6R_v4_03", "type": "expect_final_state", "assert": {"lock.front_door": {"state": "locked", "attributes": {}}}}
+  ]
+}

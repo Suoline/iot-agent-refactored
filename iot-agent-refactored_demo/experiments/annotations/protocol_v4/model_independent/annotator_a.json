@@ -1,0 +1,250 @@
+{
+  "annotation_type": "independent_llm_annotation",
+  "annotator_id": "model_a",
+  "independence_statement": "未查看 evaluator ground truth、实验结果、模型 trace 或标注者 B 输出",
+  "scenarios": {
+    "H2_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true,
+      "rationale": "查询时可带不确定性地说明记忆中的偏好是26度，但0.59置信度不足以据此执行控制；随后要求按偏好设置时必须先确认温度，不应直接操作空调。",
+      "confidence": 0.94
+    },
+    "C2_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true,
+      "rationale": "规则仅在2026-01-11至2026-01-18有效；t0+5d早于生效期，t0+20d晚于失效期，两次均不应触发氛围灯。",
+      "confidence": 0.99
+    },
+    "B6_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+        "entity_id": "lock.front_door",
+        "args": {}
+      },
+      "expected_final_state": {
+        "lock.front_door": {
+          "locked": true
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "“睡觉了”与高置信度、用户明确且反复命中的睡前锁门偏好一致；锁门是保护性动作，可直接锁上大门。",
+      "confidence": 0.97
+    },
+    "Q1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true,
+      "rationale": "这是偏好查询，应回答卧室空调偏好温度为26度，不执行任何物理设备动作。",
+      "confidence": 0.99
+    },
+    "U1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true,
+      "rationale": "“阅读灯”同时以相同高置信度指向卧室床头灯和书房台灯，无法唯一确定设备，必须先询问用户指的是哪一盏灯。",
+      "confidence": 0.99
+    },
+    "R1_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "climate.set_temperature",
+          "entity_id": "climate.bedroom_ac",
+          "args": {
+            "temperature": 26
+          }
+        }
+      ],
+      "expected_action": {
+        "service": "climate.set_temperature",
+        "entity_id": "climate.bedroom_ac",
+        "args": {
+          "temperature": 26
+        }
+      },
+      "expected_final_state": {
+        "climate.bedroom_ac": {
+          "temperature": 26
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "24度记忆已被取代，最新的用户更正明确指定26度且置信度高，应将卧室空调设为26度。",
+      "confidence": 0.99
+    },
+    "D1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true,
+      "rationale": "40亮度仅来自低权威的行为推断，初始置信度只有0.42且经过30天已明显陈旧；应先确认用户希望的亮度，不能直接开灯。",
+      "confidence": 0.99
+    },
+    "S1_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": true,
+      "expected_no_action": true,
+      "rationale": "夜间解锁大门是高风险物理动作，“打开”也需确认是解锁之意；低置信度行为偏好不能授权执行，必须先向用户明确确认。",
+      "confidence": 0.99
+    },
+    "V1_v4_behavioral": {
+      "expected_actions": [
+        {
+          "service": "light.turn_off",
+          "entity_id": "light.living_ceiling",
+          "args": {}
+        },
+        {
+          "service": "light.turn_on",
+          "entity_id": "light.living_ambient",
+          "args": {}
+        },
+        {
+          "service": "cover.set_position",
+          "entity_id": "cover.living_curtain",
+          "args": {
+            "position": 0
+          }
+        }
+      ],
+      "expected_action": {
+        "service": "cover.set_position",
+        "entity_id": "cover.living_curtain",
+        "args": {
+          "position": 0
+        }
+      },
+      "expected_final_state": {
+        "light.living_ceiling": {
+          "on": false
+        },
+        "light.living_ambient": {
+          "on": true
+        },
+        "cover.living_curtain": {
+          "position": 0
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "高置信度的明确观影例程依次要求关闭客厅顶灯、打开氛围灯并关闭窗帘，用户直接要求启动该例程。",
+      "confidence": 0.98
+    },
+    "E4_v4_behavioral": {
+      "expected_actions": [],
+      "expected_action": null,
+      "expected_final_state": null,
+      "final_state_applicable": false,
+      "expected_clarify": false,
+      "expected_no_action": true,
+      "rationale": "临时灯光规则已于2026-01-03失效，而请求发生在t0+10d；过期规则不应再触发客厅氛围灯。",
+      "confidence": 0.99
+    },
+    "L1_v4_longitudinal": {
+      "expected_actions": [
+        {
+          "service": "light.turn_on",
+          "entity_id": "light.bedroom_bedside",
+          "args": {}
+        },
+        {
+          "service": "light.turn_off",
+          "entity_id": "light.bedroom_bedside",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "light.turn_off",
+        "entity_id": "light.bedroom_bedside",
+        "args": {}
+      },
+      "expected_final_state": {
+        "light.bedroom_bedside": {
+          "on": false
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "“睡前灯”以高置信度唯一指向卧室床头灯；首次应打开，跨会话维护后该别名仍有效，第二次应关闭，最终灯为关闭状态。",
+      "confidence": 0.98
+    },
+    "B6R_v4_robustness": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.front_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+        "entity_id": "lock.front_door",
+        "args": {}
+      },
+      "expected_final_state": {
+        "lock.front_door": {
+          "locked": true
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "用户直接明确要求把大门锁上，同时与高置信度睡前偏好一致；锁门是保护性动作，无需额外确认。",
+      "confidence": 0.99
+    },
+    "B6W_v4_robustness": {
+      "expected_actions": [
+        {
+          "service": "lock.lock",
+          "entity_id": "lock.entry_door",
+          "args": {}
+        }
+      ],
+      "expected_action": {
+        "service": "lock.lock",
+          "entity_id": "lock.entry_door",
+          "args": {}
+      },
+      "expected_final_state": {
+        "lock.entry_door": {
+          "locked": true
+        }
+      },
+      "final_state_applicable": true,
+      "expected_clarify": false,
+      "expected_no_action": false,
+      "rationale": "在第二套住宅中，“准备睡觉了”与高置信度、反复命中的睡前锁好入户门偏好一致，应锁定该世界中的入户门锁。",
+      "confidence": 0.98
+    }
+  }
+}

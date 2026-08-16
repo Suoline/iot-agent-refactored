@@ -58,6 +58,9 @@ class DemoTaskContext:
     stage: str = "unknown"
     used_memory_ids: set[str] = field(default_factory=set)
     stage_by_memory: dict[str, str] = field(default_factory=dict)
+    llm_responses: list[dict[str, Any]] = field(default_factory=list)
+    tool_calls: list[dict[str, Any]] = field(default_factory=list)
+    transport_attempts: list[dict[str, Any]] = field(default_factory=list)
 
 
 class DemoMemoryRuntime:
@@ -71,6 +74,7 @@ class DemoMemoryRuntime:
         self.fetcher = DemoHAFetcher()
         self._seeded = False
         self.current_task: DemoTaskContext | None = None
+        self.completed_task_audits: list[dict[str, Any]] = []
 
     def ensure_ready(self) -> None:
         self._safe_sync_ha()
@@ -100,7 +104,52 @@ class DemoMemoryRuntime:
             },
         )
         self.service.memory_maintenance()
+        self.completed_task_audits.append(
+            {
+                "task_id": task.task_id,
+                "task": task.task,
+                "outcome": outcome,
+                "llm_responses": task.llm_responses,
+                "tool_calls": task.tool_calls,
+                "transport_attempts": task.transport_attempts,
+            }
+        )
         self.current_task = None
+
+    def record_llm_response(self, message: Any) -> None:
+        """Capture product-Agent response metadata for experiment audit artifacts."""
+        if self.current_task is None:
+            return
+        usage = getattr(message, "usage_metadata", None) or {}
+        metadata = getattr(message, "response_metadata", None) or {}
+        tool_calls = list(getattr(message, "tool_calls", None) or [])
+        normalized_usage = {
+            "prompt_tokens": int(usage.get("input_tokens", metadata.get("token_usage", {}).get("prompt_tokens", 0)) or 0),
+            "completion_tokens": int(usage.get("output_tokens", metadata.get("token_usage", {}).get("completion_tokens", 0)) or 0),
+            "total_tokens": int(usage.get("total_tokens", metadata.get("token_usage", {}).get("total_tokens", 0)) or 0),
+        }
+        self.current_task.llm_responses.append(
+            {
+                "stage": self.current_task.stage,
+                "model": metadata.get("model_name"),
+                "provider": metadata.get("model_provider"),
+                "usage": normalized_usage,
+                "tool_calls": tool_calls,
+            }
+        )
+        self.current_task.tool_calls.extend(tool_calls)
+
+    def drain_completed_task_audits(self) -> list[dict[str, Any]]:
+        audits = self.completed_task_audits
+        self.completed_task_audits = []
+        return audits
+
+    def record_transport_attempt(self, attempt: int, outcome: str, error: str | None = None) -> None:
+        if self.current_task is None:
+            return
+        self.current_task.transport_attempts.append(
+            {"attempt": attempt, "outcome": outcome, "error": error}
+        )
 
     def set_stage(self, stage: str) -> None:
         if self.current_task is not None:

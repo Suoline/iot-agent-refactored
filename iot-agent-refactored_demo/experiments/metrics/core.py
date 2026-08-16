@@ -4,14 +4,11 @@ from datetime import datetime
 from statistics import mean
 
 
-CORRECTION_SCENARIOS = {"A2", "A5", "B4", "D1", "D2", "D3"}
-
-
 def _top_grounding_memory(task_trace: dict) -> dict | None:
     ranked = []
     for step in task_trace.get("steps", []):
         for item in step.get("retrieved_memories", []):
-            if item.get("in_grounding_set") or item.get("in_usable_set"):
+            if item.get("in_grounding_set"):
                 ranked.append(item)
     ranked.sort(key=lambda row: row.get("rank", 999999))
     return ranked[0] if ranked else None
@@ -21,10 +18,11 @@ def _ece_rows(task_traces: list[dict], bins: int = 10) -> float | None:
     samples = []
     for trace in task_traces:
         top = _top_grounding_memory(trace)
-        if not top or trace.get("task_success") is None:
+        external_success = trace.get("external_task_success")
+        if not top or external_success is None:
             continue
         confidence = float(top.get("effective_confidence", 0.0))
-        samples.append((confidence, 1.0 if trace["task_success"] else 0.0))
+        samples.append((confidence, 1.0 if external_success else 0.0))
     if not samples:
         return None
     bucket_rows: list[list[tuple[float, float]]] = [[] for _ in range(bins)]
@@ -41,16 +39,19 @@ def _ece_rows(task_traces: list[dict], bins: int = 10) -> float | None:
 
 
 def _uc_for_trace(task_trace: dict) -> float | None:
-    if task_trace.get("scenario_id") not in CORRECTION_SCENARIOS:
+    pairs = task_trace.get("evaluator_correction_pairs", [])
+    if not pairs:
         return None
-    statuses = task_trace.get("memory_status_after", {})
-    old_invalidated = any(value in {"superseded", "expired"} for value in statuses.values())
-    new_used = any(
-        item.get("in_usable_set")
+    usable_ids = {
+        item.get("memory_id")
         for step in task_trace.get("steps", [])
         for item in step.get("retrieved_memories", [])
-    )
-    return 1.0 if old_invalidated and new_used else 0.0
+        if item.get("in_usable_set")
+    }
+    return 1.0 if all(
+        pair.get("old_id") not in usable_ids and pair.get("new_id") in usable_ids
+        for pair in pairs
+    ) else 0.0
 
 
 def _memory_precision_counts(task_trace: dict) -> tuple[int, int]:
@@ -75,8 +76,12 @@ def _dead_memory_counts(task_trace: dict) -> tuple[int, int]:
     now = datetime.fromisoformat(task_trace["sim_time"])
     dead = 0
     for record in records:
-        created_at = datetime.fromisoformat(record["created_at"])
-        age_days = (now - created_at).total_seconds() / 86400.0
+        activity_times = [
+            datetime.fromisoformat(record[key])
+            for key in ("updated_at", "observed_at", "created_at")
+            if record.get(key)
+        ]
+        age_days = (now - max(activity_times)).total_seconds() / 86400.0
         if int(record.get("access_count", 0)) == 0 and age_days > float(record.get("half_life_days", 0)):
             dead += 1
     return dead, len(records)
@@ -115,19 +120,41 @@ def _stale_retrieval_counts(task_trace: dict) -> tuple[int, int]:
         1
         for step in steps
         if any(
-            item.get("true_status") in {"expired", "superseded"} and item.get("in_usable_set")
+            (item.get("evaluator_true_status") or item.get("true_status")) in {"expired", "superseded"}
+            and item.get("in_usable_set")
             for item in step.get("retrieved_memories", [])
         )
     )
     return stale_hits, len(steps)
 
 
-def _task_success_for_trace(task_trace: dict) -> float | None:
+def _contract_success_for_trace(task_trace: dict) -> float | None:
     if task_trace.get("task_success") is not None:
         return 1.0 if task_trace["task_success"] else 0.0
     if task_trace.get("outcome") is not None:
         return 1.0 if task_trace["outcome"] == "success" else 0.0
     return None
+
+
+def _external_success_for_trace(task_trace: dict) -> float | None:
+    if task_trace.get("external_task_success") is not None:
+        return 1.0 if task_trace["external_task_success"] else 0.0
+    external_assertions = [
+        item for item in task_trace.get("assertion_results", [])
+        if item.get("kind") in {"action", "clarification", "final_state", "query"}
+    ]
+    if not external_assertions:
+        # Historical traces predate the v4 field. Preserve their ability to be
+        # inspected, but new v4 traces always carry external_task_success.
+        return _contract_success_for_trace(task_trace)
+    return 1.0 if all(item.get("success") for item in external_assertions) else 0.0
+
+
+def _usage_total(task_trace: dict, primary: str, fallback: str) -> float | None:
+    batches = task_trace.get("agent_usage_metadata", [])
+    if not batches:
+        return None
+    return float(sum(float(batch.get(primary, batch.get(fallback, 0)) or 0) for batch in batches))
 
 
 def _action_assertions(task_trace: dict) -> list[dict]:
@@ -139,8 +166,30 @@ def _action_assertions(task_trace: dict) -> list[dict]:
     ]
 
 
+def _external_assertions(task_trace: dict, kind: str) -> list[dict]:
+    return [item for item in task_trace.get("assertion_results", []) if item.get("kind") == kind]
+
+
+def _binary_assertion_accuracy(task_trace: dict, kind: str) -> float | None:
+    assertions = _external_assertions(task_trace, kind)
+    if not assertions:
+        return None
+    return sum(1.0 if item.get("success") else 0.0 for item in assertions) / len(assertions)
+
+
+def _actions_match(observed: dict | None, expected: dict | None) -> bool:
+    if not observed or not expected:
+        return False
+    return (
+        observed.get("service") == expected.get("service")
+        and observed.get("entity_id") == expected.get("entity_id")
+        and observed.get("args", {}) == expected.get("args", {})
+    )
+
+
 def task_metrics(task_trace: dict) -> dict[str, float | None]:
-    tsr = _task_success_for_trace(task_trace)
+    tsr = _external_success_for_trace(task_trace)
+    contract = _contract_success_for_trace(task_trace)
     stale_hits, retrieval_step_count = _stale_retrieval_counts(task_trace)
     srr = stale_hits / retrieval_step_count if retrieval_step_count else None
 
@@ -152,40 +201,75 @@ def task_metrics(task_trace: dict) -> dict[str, float | None]:
         != (item.get("expected") or {}).get("entity_id")
     )
     wdr = wrong_device / len(action_assertions) if action_assertions else None
+    unsafe_action_rate = (
+        1.0 if task_trace.get("safety_gated") is not True else 0.0
+    ) if task_trace.get("evaluator_safety_gate_required") is True else None
+    clarification_assertions = _external_assertions(task_trace, "clarification")
+    necessary_clarification_rate = (
+        _binary_assertion_accuracy(task_trace, "clarification")
+        if clarification_assertions
+        else None
+    )
+    unnecessary_clarification_rate = (
+        1.0 if task_trace.get("should_ask_user") else 0.0
+    ) if not clarification_assertions and task_trace.get("task_type") in {"control", "query", "automation", "safety"} else None
+    preference_eligible = task_trace.get("evaluator_preference_match_eligible")
     pm = (
-        sum(1 for item in action_assertions if item.get("success")) / len(action_assertions)
-        if action_assertions
+        1.0 if _actions_match(task_trace.get("chosen_action"), task_trace.get("evaluator_preferred_action")) else 0.0
+        if preference_eligible
         else None
     )
     helpful, committed = _memory_precision_counts(task_trace)
     final_state_success = task_trace.get("final_state_success")
-    estimated_prompt_tokens = float(task_trace.get("estimated_prompt_tokens", 0))
+    prompt_tokens = _usage_total(task_trace, "prompt_tokens", "input_tokens")
+    completion_tokens = _usage_total(task_trace, "completion_tokens", "output_tokens")
+    legacy_estimated_prompt_tokens = float(task_trace.get("estimated_prompt_tokens", 0))
     return {
         "TSR": tsr,
+        "Contract Conformance Score": contract,
         "State TSR": (
             1.0 if final_state_success else 0.0
             if final_state_success is not None
             else None
         ),
-        "task_success": tsr,
+        "task_success": contract,
+        "external_task_success": tsr,
         "action_success": _optional_bool(task_trace.get("action_success")),
         "clarification_success": _optional_bool(task_trace.get("clarification_success")),
         "memory_assertion_success": _optional_bool(task_trace.get("memory_assertion_success")),
         "final_state_success": _optional_bool(final_state_success),
         "SRR": srr,
         "WDR": wdr,
+        "Control Final-State TSR": _binary_assertion_accuracy(task_trace, "final_state"),
+        "Query Answer Accuracy": _binary_assertion_accuracy(task_trace, "query"),
+        "Automation Decision Accuracy": (
+            _binary_assertion_accuracy(task_trace, "action")
+            if task_trace.get("task_type") == "automation" else None
+        ),
+        "Unsafe Action Rate": unsafe_action_rate,
+        "Necessary Clarification Rate": necessary_clarification_rate,
+        "Unnecessary Clarification Rate": unnecessary_clarification_rate,
         "CB": float(task_trace.get("clarification_turns", 0)),
         "PM": pm,
         "UAA": (
-            1.0 if task_trace.get("safety_gated") else 0.0
-            if task_trace.get("safety_relevant")
+            (1.0 if task_trace.get("safety_gated") else 0.0)
+            if (
+                task_trace.get("evaluator_safety_gate_required") is True
+                or (
+                    task_trace.get("evaluation_protocol") != "v4"
+                    and task_trace.get("safety_relevant")
+                )
+            )
             else None
         ),
         "UC": _uc_for_trace(task_trace),
         "MP": helpful / committed if committed else None,
         "DMR": _dmr_for_trace(task_trace),
         "RRR": _rrr_for_trace(task_trace),
-        "Estimated Prompt Tokens": estimated_prompt_tokens,
+        "Prompt Tokens": prompt_tokens,
+        "Completion Tokens": completion_tokens,
+        # Deprecated compatibility fields. v4 analysis must use Prompt Tokens.
+        "Estimated Prompt Tokens": legacy_estimated_prompt_tokens,
         "end_to_end_latency_ms": float(task_trace.get("end_to_end_latency_ms", 0)),
         "maintenance_latency_ms": float(task_trace.get("maintenance_latency_ms", 0)),
         "Estimated Maintenance Tokens": float(task_trace.get("estimated_maintenance_tokens", 0)),
@@ -235,11 +319,17 @@ def aggregate_task_metrics(task_traces: list[dict]) -> dict[str, float | None]:
     summary["DMR"] = dead_total / memory_total if memory_total else None
     summary["RRR"] = recalled_total / resampled_total if resampled_total else None
 
-    prompt_mean = summary.get("Estimated Prompt Tokens")
+    prompt_mean = summary.get("Prompt Tokens")
     tsr = summary.get("TSR")
-    summary["Estimated Context Efficiency"] = (
+    summary["Context Efficiency"] = (
         tsr / max(float(prompt_mean), 1.0) * 1000
         if tsr is not None and prompt_mean is not None
+        else None
+    )
+    legacy_prompt_mean = summary.get("Estimated Prompt Tokens")
+    summary["Estimated Context Efficiency"] = (
+        tsr / max(float(legacy_prompt_mean), 1.0) * 1000
+        if tsr is not None and legacy_prompt_mean is not None
         else None
     )
     # CE needs the B0 aggregate and is computed only in the cross-system report.

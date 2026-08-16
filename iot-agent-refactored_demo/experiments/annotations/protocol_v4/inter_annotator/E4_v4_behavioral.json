@@ -1,0 +1,15 @@
+{
+  "scenario_id": "E4_v4_behavioral",
+  "status": "pending_human_annotation",
+  "instructions": "两位独立标注者分别填写完整 expect_* 标签；不得从系统输出反推标签。",
+  "annotator_a": null,
+  "annotator_b": null,
+  "agreement": null,
+  "adjudication": {
+    "status": "not_required_yet",
+    "adjudicator_id": null,
+    "final_label": null,
+    "rationale": null
+  },
+  "missing_value_policy": "annotator_a/annotator_b 为 null 时不进入 kappa 分母；不得以系统输出或自动标签补全。"
+}

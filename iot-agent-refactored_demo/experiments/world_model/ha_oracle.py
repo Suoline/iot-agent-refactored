@@ -111,6 +111,18 @@ class HAOracle:
         self.events_applied.append(event_id)
 
     def apply(self, service: str, args: dict[str, Any], at: datetime | None = None) -> dict[str, Any]:
+        service_schema = self.definition.get("services", {}).get(service)
+        if service_schema is None:
+            return {"success": False, "error": "unsupported_service", "service": service}
+        required = set(service_schema.get("required", []))
+        optional = set(service_schema.get("optional", []))
+        normalized_keys = {"entity" if key == "entity_id" else key for key in args}
+        missing = sorted(required - normalized_keys)
+        if missing:
+            return {"success": False, "error": "missing_required_args", "missing": missing, "service": service}
+        unexpected = sorted(normalized_keys - required - optional)
+        if unexpected:
+            return {"success": False, "error": "unexpected_args", "unexpected": unexpected, "service": service}
         entity_id = args.get("entity") or args.get("entity_id")
         if entity_id not in self.entities:
             return {"success": False, "error": "entity_not_found", "entity_id": entity_id}
@@ -125,8 +137,34 @@ class HAOracle:
 
         entity = self.entities[entity_id]
         domain, action = service.split(".", 1)
-        if entity["type"] != domain:
+        if entity["type"] != service_schema.get("type") or entity["type"] != domain:
             return {"success": False, "error": "wrong_domain", "entity_id": entity_id}
+        required_capability = {
+            "turn_on": "on_off",
+            "turn_off": "on_off",
+            "set_position": "set_position",
+            "lock": "lock",
+            "unlock": "unlock",
+            "set_temperature": "set_temp",
+        }.get(action)
+        if required_capability not in entity.get("capabilities", []):
+            return {
+                "success": False,
+                "error": "unsupported_capability",
+                "entity_id": entity_id,
+                "required_capability": required_capability,
+            }
+        for argument, capability in {"brightness": "brightness", "color_temp": "color_temp"}.items():
+            if argument in args and capability not in entity.get("capabilities", []):
+                return {
+                    "success": False,
+                    "error": "unsupported_capability",
+                    "entity_id": entity_id,
+                    "required_capability": capability,
+                }
+        range_error = self._validate_action_ranges(args)
+        if range_error:
+            return {"success": False, "error": "argument_out_of_range", "service": service, **range_error}
         if action == "turn_on":
             self.states[entity_id]["state"] = "on"
             self.states[entity_id]["attributes"].update(
@@ -144,3 +182,19 @@ class HAOracle:
         else:
             return {"success": False, "error": "unsupported_service", "service": service}
         return {"success": True, "entity_id": entity_id, "state": self.get_state(entity_id)}
+
+    @staticmethod
+    def _validate_action_ranges(args: dict[str, Any]) -> dict[str, Any] | None:
+        limits = {
+            "brightness": (0, 255),
+            "color_temp": (153, 500),
+            "position": (0, 100),
+            "temperature": (16, 30),
+        }
+        for key, (minimum, maximum) in limits.items():
+            if key not in args:
+                continue
+            value = args[key]
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not minimum <= value <= maximum:
+                return {"argument": key, "value": value, "minimum": minimum, "maximum": maximum}
+        return None

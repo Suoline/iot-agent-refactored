@@ -16,6 +16,7 @@ class RetrievedMemoryTrace(BaseModel):
     raw_confidence: float
     system_status: str
     true_status: str
+    evaluator_true_status: Optional[str] = None
     runtime_status: str
     in_usable_set: bool
     in_grounding_set: bool = False
@@ -27,6 +28,7 @@ class RetrievalStepTrace(BaseModel):
     query: str
     retrieved_memories: list[RetrievedMemoryTrace] = Field(default_factory=list)
     retrieval_latency_ms: float = 0.0
+    retrieval_metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class MaintenanceTrace(BaseModel):
@@ -54,9 +56,19 @@ class TaskTrace(BaseModel):
     world_version: str
     system_policy_version: str = "sp-v1"
     planner_mode: str
+    evaluation_protocol: str = "legacy_v3"
     agent_backend: Optional[str] = None
     agent_raw_outputs: list[str] = Field(default_factory=list)
+    raw_planner_decisions: list[Dict[str, Any]] = Field(default_factory=list)
+    guarded_planner_decisions: list[Dict[str, Any]] = Field(default_factory=list)
+    guard_overrides: list[Dict[str, Any]] = Field(default_factory=list)
+    mechanism_activation: list[Dict[str, Any]] = Field(default_factory=list)
     system_id: str
+    system_configuration: Dict[str, Any] = Field(default_factory=dict)
+    evaluator_preferred_action: Optional[Dict[str, Any]] = None
+    evaluator_preference_match_eligible: Optional[bool] = None
+    evaluator_safety_gate_required: Optional[bool] = None
+    evaluator_correction_pairs: list[Dict[str, Any]] = Field(default_factory=list)
     task_type: str = "control"
     sim_time: datetime
     steps: list[RetrievalStepTrace] = Field(default_factory=list)
@@ -75,6 +87,7 @@ class TaskTrace(BaseModel):
     memory_assertion_success: Optional[bool] = None
     final_state_success: Optional[bool] = None
     task_success: Optional[bool] = None
+    external_task_success: Optional[bool] = None
     usage_events: list[Dict[str, Any]] = Field(default_factory=list)
     agent_structured_decisions: list[Dict[str, Any]] = Field(default_factory=list)
     agent_tool_calls: list[Dict[str, Any]] = Field(default_factory=list)

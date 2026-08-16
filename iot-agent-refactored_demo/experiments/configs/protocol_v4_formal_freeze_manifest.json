@@ -1,0 +1,249 @@
+{
+  "protocol": "v4",
+  "freeze_status": "pre_commit_candidate",
+  "code_revision_at_generation": "04b341ee666c2a21251b5a6782a9956bbc9b521e",
+  "model_identity_policy": "Read provider/model from the project configuration at run start; record identities in every trace/manifest; never serialize API credentials.",
+  "behavioral_population": [
+    "H2_v4_behavioral",
+    "C2_v4_behavioral",
+    "B6_v4_behavioral",
+    "Q1_v4_behavioral",
+    "U1_v4_behavioral",
+    "R1_v4_behavioral",
+    "D1_v4_behavioral",
+    "S1_v4_behavioral",
+    "V1_v4_behavioral",
+    "E4_v4_behavioral"
+  ],
+  "worlds": {
+    "wm-v1": "experiments/world_model/v1.json",
+    "wm-v2-alt-home": "experiments/world_model/v2.json"
+  },
+  "scope_limit": "Only these v4 no-hidden-bridge behavioral scenarios are eligible for the formal main table. Legacy 36 scenarios are excluded.",
+  "baseline_contracts": {
+    "B0": "stateless; no memory context",
+    "B1": "raw-text RAG, top_k=5; no structured MemoryRecord",
+    "B2": "structured static memory baseline",
+    "B3": "source-prior structured baseline",
+    "B4": "all raw conversation/event history; no structured MemoryRecord or retrieval ranking",
+    "B5": "GA-inspired heuristic only; not a published Generative Agents or Mem0 implementation"
+  },
+  "primary_metrics": {
+    "TSR": "all eligible external action, clarification, final-state, and query assertions pass",
+    "Control Final-State TSR": "physical-control scenarios with expect_final_state only",
+    "Query Answer Accuracy": "query assertions only",
+    "Automation Decision Accuracy": "automation action/no-action assertions only",
+    "Wrong-Device Rate": "wrong entity among eligible physical action assertions",
+    "Unsafe Action Rate": "unsafe physical execution among evaluator safety-required cases",
+    "Clarification Rate": "necessary and unnecessary clarification reported separately",
+    "Prompt Tokens": "sum agent_usage_metadata.prompt_tokens from valid external traces",
+    "Completion Tokens": "sum agent_usage_metadata.completion_tokens from valid external traces",
+    "Latency": "end_to_end_latency_ms from valid external traces"
+  },
+  "secondary_metrics": {
+    "SRR": "evaluator-owned lifecycle truth only",
+    "UC": "evaluator-bound old/new correction pairs",
+    "Context Efficiency": "TSR divided by real mean prompt tokens; never estimated prompt proxy",
+    "Contract Conformance Score": "mechanism diagnostic only; excluded from primary TSR"
+  },
+  "statistics": {
+    "unit": "scenario x replicate_id paired observation",
+    "primary": "paired risk difference with two-way clustered bootstrap 95% CI",
+    "binary_sensitivity": "paired McNemar or clustered GEE where applicable",
+    "continuous": "paired bootstrap CI",
+    "multiple_comparison_family": "Ours vs B0-B5 across preregistered primary metrics only; Holm correction",
+    "replicate_note": "replicate_id is not a provider-controlled seed when the provider rejects request-level seed"
+  },
+  "missing_data": {
+    "transport_failure": "record and audit separately; exclude from performance denominator; rerun only under declared retry policy",
+    "no_agent_call_required": "exclude from LLM usage denominator and report separately",
+    "annotation_missing": "exclude from kappa denominator; never impute"
+  },
+  "files": [
+    {
+      "path": "experiments/configs/protocol_v4_formal_agent_matrix.json",
+      "sha256": "682e114e01ca1e554e2b3f087df288e386b7e6947ce1cc752002f3cbb38fafa5"
+    },
+    {
+      "path": "experiments/configs/protocol_v4_formal_longitudinal_matrix.json",
+      "sha256": "66d6782a9cf1669c95d8e40d7f4e9a401e4023157802cd570ac8f0de5e3978b9"
+    },
+    {
+      "path": "experiments/configs/protocol_v4_formal_robustness_matrix.json",
+      "sha256": "4f1683a9c01b2aacbfa4c39a466c50b93c7ba5a772c39c415c5e9d9ca58103d8"
+    },
+    {
+      "path": "experiments/configs/protocol_v4_formal_ingestion_workload.json",
+      "sha256": "a189cf0d0f942463d172bf02c0d6d6dca56ad936c824fd4ffe2ce17ee42eb6af"
+    },
+    {
+      "path": "experiments/configs/protocol_v4_split.json",
+      "sha256": "4b92bcffe6da8c3f7f826cccac83784d22662728cd97a1ed4d44140640589e70"
+    },
+    {
+      "path": "experiments/runner/system_registry.py",
+      "sha256": "9efb8016e98345acaf48d3b2fd3bea3d6008e30f45a54141a964bce489476082"
+    },
+    {
+      "path": "experiments/runner/single_run.py",
+      "sha256": "22fbf48d4528d11f8d679f5ac694c01933135a2c1e76ee34468202f3c991616d"
+    },
+    {
+      "path": "experiments/planners/agent_planner.py",
+      "sha256": "2116d9d9e6d1026b9349d8cbfbce992c8af4043ad8ea4f6cc755a7e2c4dbaef0"
+    },
+    {
+      "path": "experiments/metrics/core.py",
+      "sha256": "5e952e10f4d11463cab89011938e4b59e33c9be1aa20a6af0c4c199c41169276"
+    },
+    {
+      "path": "experiments/evaluator/ground_truth.py",
+      "sha256": "d9026cbfbfaa11f982e1751cfa874e0b63bcab796ecfec0cd4f340614de70506"
+    },
+    {
+      "path": "experiments/evaluator/lifecycle.py",
+      "sha256": "a06b50c7f8dbb6ce349eaf1b5cffe5b7a329ed2520276eb35a52aaead61305d4"
+    },
+    {
+      "path": "experiments/evaluator/protocol.py",
+      "sha256": "415578035ceb27411a5e6b4830536fecde26036bf7fe86eae224983e9b22f658"
+    },
+    {
+      "path": "experiments/scripts/analyze_protocol_v4_formal.py",
+      "sha256": "d43523d2a4b5609cd344221c18b56d76cdf3ae120205f12a143d6e524fc1cb90"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_freeze.py",
+      "sha256": "8c588954e369f8d4ca274c0e192c8e40210e20f3717c904f29f2329282a8a6e6"
+    },
+    {
+      "path": "experiments/scripts/seal_protocol_v4_freeze.py",
+      "sha256": "ab12adbb2fe55c2819a11c6e2a70aef9f2b4c5d1e70908549c4e83a369096244"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_ingestion.py",
+      "sha256": "8db73a6d73c5fbac12886b7559c88a4d5accf0ebed5570d45af94be5f5876c92"
+    },
+    {
+      "path": "experiments/scripts/audit_llm_assisted_annotation.py",
+      "sha256": "698f390a66747aabe7922706f8f0cd7982c7fd3bcd48c176e9cf844ac06293da"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_longitudinal.py",
+      "sha256": "5d0e0020d75e24423238945695282741166eb7d6e78428ac663e31c9f9bcf3a6"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_preflight.py",
+      "sha256": "20989a3a39ea47714ce94176c2d60cc1ab60179cd38049acc3bb7410d15ec8fa"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_readiness.py",
+      "sha256": "c90bbbf79a8cbf59aa3154d50975ce2e582e0f81643661b3e6e79a27e35c292e"
+    },
+    {
+      "path": "experiments/scripts/audit_protocol_v4_traces.py",
+      "sha256": "a49683980f17d73ead816a135828701e782f46e904ac53fb6420132a44a24533"
+    },
+    {
+      "path": "experiments/scripts/compute_annotation_agreement.py",
+      "sha256": "58daa9736e35e90179453c18468ed7c05f087139ee6ec8c9034beedcc51180f2"
+    },
+    {
+      "path": "experiments/annotations/protocol_v4/model_independent/annotator_a.json",
+      "sha256": "f68f38125018f9d15ffadc37ecf5cf55bf9a56098f2744bee88d733545d464a6"
+    },
+    {
+      "path": "experiments/annotations/protocol_v4/model_independent/annotator_b.json",
+      "sha256": "7951976f41d5933208470da580ebf6c74e31d5d2cd6b1fcf72c6688de8407910"
+    },
+    {
+      "path": "experiments/annotations/protocol_v4/model_independent/adjudicator_c.json",
+      "sha256": "27b866950f38f887f43e5a9f32c5101e302e163f695a7dfca29a9c0fb64eb8d1"
+    },
+    {
+      "path": "experiments/annotations/protocol_v4/llm_assisted_annotation_report.json",
+      "sha256": "29f4aa3339902147102be88a52e2e69488418a2191293ca685a679ed76a047b5"
+    },
+    {
+      "path": "experiments/scripts/run_strict_serial_unit.py",
+      "sha256": "f9080c56e4c2120e9bd7983380a880e9cf14aafcc9e31575e0dd0b059117e896"
+    },
+    {
+      "path": "experiments/scripts/run_strict_group.py",
+      "sha256": "59471cada7cff0469008403b4ecde6d4b00b8b810188e29b84e216290a78b01d"
+    },
+    {
+      "path": "experiments/scripts/probe_external_llm_seed_support.py",
+      "sha256": "3586577deab5a51ee6ab3f24b9aaa1e9def0359639966cb8acf76414d171c33c"
+    },
+    {
+      "path": "experiments/memory/text_ingestion.py",
+      "sha256": "abf2adcea17fcc489be6c76b12006d8ed5adaeab8639971c0fdcacdaadf9d5d5"
+    },
+    {
+      "path": "experiments/world_model/ha_oracle.py",
+      "sha256": "dcd0c483a7bbf9ba3e4bba49bd787633d33d97b4b191ac5dd8c9ea81a3fbfc37"
+    },
+    {
+      "path": "experiments/world_model/v1.json",
+      "sha256": "3d86d700a962ac9844bca477c52e13072b1f2c87971f95c1b8dd5be6a6d73f4f"
+    },
+    {
+      "path": "experiments/world_model/v2.json",
+      "sha256": "f6766b68751be9916acaae4691bbc8067bb59bdf57a3934e6d2d8155997504d1"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/H2.yaml",
+      "sha256": "ae76195d2dfc6d64a78ee0b30dfb11f9c2f51d4838518174af97b8ce65045c1a"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/C2.yaml",
+      "sha256": "56a039c923d9e0dd6c5684a97dce2fcb69276ddc9e6c93a358b83219d79f1bb1"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/B6.yaml",
+      "sha256": "cfa9b04dbe6744d3e384fde9028340489aee77c8db18abb4fe4d6fe251c72095"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/Q1.yaml",
+      "sha256": "1dae6823631d4427f9ad56044e418ebc25b7df3d09ba6ab322e6c36eba2002ea"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/U1.yaml",
+      "sha256": "3cfefc694e43968f9826140d306ec1c8ae12aa1dbf3fcd491efdbd14548f6d67"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/R1.yaml",
+      "sha256": "7dddbbd8a53f935aa5a61bbb99d240dc1d56151d10870b88c4dfd1af47c128bc"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/D1.yaml",
+      "sha256": "82672a68f600d15e2e668082cee4ddf53a5369f7fd08364af6f716f38d70baea"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/S1.yaml",
+      "sha256": "2b969e6d44f45e06cd6705b23a84c77d4f2c16f186b8213ba3cc8b937ab31822"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/V1.yaml",
+      "sha256": "453fe89e982b6c7667684f3594b8df72eba2a2b630f9e20a56045d82f6c7ceeb"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/E4.yaml",
+      "sha256": "f4ca354f18a1f4d4e7c37df128ed99fbb0fd02c0eac0d6b59d372f8f90028b89"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/L1.yaml",
+      "sha256": "dbcaed752cb9c78a3f6be36f551d5bd7e3f7a1751b89a8d8aaa19a320f616316"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/B6R.yaml",
+      "sha256": "cfc3aed9c26d0c218d3374717cb318eb83c34e02031444c29121aa8cd08ff76d"
+    },
+    {
+      "path": "experiments/scenarios/protocol_v4/B6W.yaml",
+      "sha256": "5ae61fea63d782839d64c352984a28d6526751c23e43a25d50e3222d8ad448bc"
+    }
+  ],
+  "rebuild_command": "PYTHONDONTWRITEBYTECODE=1 python3 experiments/scripts/build_protocol_v4_formal_assets.py"
+}

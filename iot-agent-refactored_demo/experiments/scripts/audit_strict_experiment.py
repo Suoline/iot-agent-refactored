@@ -129,6 +129,16 @@ def main() -> None:
                     "manifest_file": str(manifest_path.relative_to(results_root)),
                 }
             )
+        if manifest.get("evaluation_protocol") == "v4" and manifest.get("baseline_context_source") is None:
+            # B0/Ours may legitimately have no raw-text source; B1/B4 must not.
+            if unit["system_id"] in {"B1", "B4"}:
+                failing_units.append(
+                    {
+                        "key": unit["key"],
+                        "strict_checks": {"baseline_context_source_recorded": False},
+                        "manifest_file": str(manifest_path.relative_to(results_root)),
+                    }
+                )
 
     incomplete_grid = bool(missing_units)
     mixed_revision = len([item for item in revisions if item not in {None, "unknown"}]) > 1

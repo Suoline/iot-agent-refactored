@@ -1,0 +1,562 @@
+{
+  "protocol": "v4.1-supplemental-ingestion-20260816",
+  "git_revision": "48cc3b49ffd0c759791710ce06fab1435178a17b",
+  "selected_replicates": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010
+  ],
+  "evidence_grade": "supplemental_preliminary",
+  "systems": {
+    "Ours": {
+      "unit_count": 30,
+      "success_count": 20,
+      "task_success_rate": 0.6666666666666666,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 262356,
+        "completion_tokens": 2043,
+        "total_tokens": 264399
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1010,
+          "failures": []
+        }
+      ]
+    },
+    "B0": {
+      "unit_count": 30,
+      "success_count": 0,
+      "task_success_rate": 0.0,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 262236,
+        "completion_tokens": 2158,
+        "total_tokens": 264394
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1010,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1010,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1010,
+          "failures": []
+        }
+      ]
+    },
+    "B1": {
+      "unit_count": 30,
+      "success_count": 27,
+      "task_success_rate": 0.9,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 243535,
+        "completion_tokens": 2100,
+        "total_tokens": 245635
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        }
+      ]
+    },
+    "B2": {
+      "unit_count": 30,
+      "success_count": 19,
+      "task_success_rate": 0.6333333333333333,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 236015,
+        "completion_tokens": 2033,
+        "total_tokens": 238048
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I2_preference_correction",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1010,
+          "failures": []
+        }
+      ]
+    },
+    "B3": {
+      "unit_count": 30,
+      "success_count": 20,
+      "task_success_rate": 0.6666666666666666,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 232637,
+        "completion_tokens": 2065,
+        "total_tokens": 234702
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1010,
+          "failures": []
+        }
+      ]
+    },
+    "B4": {
+      "unit_count": 30,
+      "success_count": 25,
+      "task_success_rate": 0.8333333333333334,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 279591,
+        "completion_tokens": 2068,
+        "total_tokens": 281659
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I1_preference_create",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        }
+      ]
+    },
+    "B5": {
+      "unit_count": 30,
+      "success_count": 20,
+      "task_success_rate": 0.6666666666666666,
+      "api_calls": 30,
+      "usage": {
+        "prompt_tokens": 236915,
+        "completion_tokens": 2000,
+        "total_tokens": 238915
+      },
+      "failed_units": [
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1001,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1002,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1003,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1004,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1005,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1006,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1007,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1008,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1009,
+          "failures": []
+        },
+        {
+          "trajectory_id": "I3_cross_entity_preference",
+          "replicate_id": 1010,
+          "failures": []
+        }
+      ]
+    }
+  },
+  "paired_comparisons": [
+    {
+      "baseline": "B0",
+      "paired_units": 30,
+      "ours_minus_baseline": 0.6666666666666666,
+      "bootstrap_95_ci": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "baseline": "B1",
+      "paired_units": 30,
+      "ours_minus_baseline": -0.23333333333333334,
+      "bootstrap_95_ci": [
+        -0.6666666666666666,
+        0.0
+      ]
+    },
+    {
+      "baseline": "B2",
+      "paired_units": 30,
+      "ours_minus_baseline": 0.03333333333333333,
+      "bootstrap_95_ci": [
+        0.0,
+        0.13333333333333333
+      ]
+    },
+    {
+      "baseline": "B3",
+      "paired_units": 30,
+      "ours_minus_baseline": 0.0,
+      "bootstrap_95_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "baseline": "B4",
+      "paired_units": 30,
+      "ours_minus_baseline": -0.16666666666666666,
+      "bootstrap_95_ci": [
+        -0.6,
+        0.13333333333333333
+      ]
+    },
+    {
+      "baseline": "B5",
+      "paired_units": 30,
+      "ours_minus_baseline": 0.0,
+      "bootstrap_95_ci": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "scope_limit": "Rule-based raw-text ingestion supports explicit temperature preference creation/correction only; this is not full smartHome/m_agent runtime validation."
+}

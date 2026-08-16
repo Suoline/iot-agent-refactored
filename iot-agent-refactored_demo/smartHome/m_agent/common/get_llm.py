@@ -17,7 +17,11 @@ def get_llm():
         api_key=api_key,
         base_url=base_url,
         temperature=0,
-        # max_tokens=max_tokens  # 配置max_tokens
+        max_retries=0,
+        # The product Agent performs multi-tool turns through an external proxy.
+        # Keep retries explicit in middleware, but allow one request enough time
+        # to receive a valid upstream response before classifying it as transport.
+        timeout=90,
     )
     return llm
 
@@ -34,7 +38,8 @@ def create_custom_llm(model:str,base_url:str=GLOBALCONFIG.base_url,api_key:str=G
         api_key=api_key,
         base_url=base_url,
         temperature=0,
-        # max_tokens=max_tokens  # 配置max_tokens
+        max_retries=0,
+        timeout=90,
     )
     return llm
 

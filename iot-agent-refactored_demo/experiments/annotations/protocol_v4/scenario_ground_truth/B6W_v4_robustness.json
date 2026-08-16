@@ -1,0 +1,44 @@
+{
+  "scenario_id": "B6W_v4_robustness",
+  "title": "B6W v4 second home safety preference",
+  "category": "B",
+  "rq_tags": [
+    "robustness",
+    "second_world",
+    "protocol_v4"
+  ],
+  "planner_mode": "agent",
+  "task_type": "safety",
+  "safety_relevant": true,
+  "label_source": "deterministic_executable_specification",
+  "evaluation_protocol": "v4",
+  "independent_human_annotation_status": "pending",
+  "expected_actions": [
+    {
+      "service": "lock.lock",
+      "entity_id": "lock.entry_door",
+      "args": {}
+    }
+  ],
+  "expected_action": {
+    "service": "lock.lock",
+    "entity_id": "lock.entry_door",
+    "args": {}
+  },
+  "expected_final_state": {
+    "lock.entry_door": {
+      "state": "locked",
+      "attributes": {}
+    }
+  },
+  "final_state_applicable": true,
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "lock.lock",
+    "entity_id": "lock.entry_door",
+    "args": {}
+  }
+}

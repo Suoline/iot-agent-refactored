@@ -5,5 +5,11 @@
   "annotator_a": null,
   "annotator_b": null,
   "agreement": null,
-  "adjudication": null
+  "adjudication": {
+    "status": "not_required_yet",
+    "adjudicator_id": null,
+    "final_label": null,
+    "rationale": null
+  },
+  "missing_value_policy": "annotator_a/annotator_b 为 null 时不进入 kappa 分母；不得以系统输出或自动标签补全。"
 }

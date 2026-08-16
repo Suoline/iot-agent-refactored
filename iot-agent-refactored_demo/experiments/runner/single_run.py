@@ -12,6 +12,10 @@ from experiments.memory.schemas import CandidateDevice
 from experiments.memory.vector_index import _tokens
 from experiments.memory.service import MemoryService
 from experiments.adapters.agent_adapter import AgentAdapter
+from experiments.baselines.raw_text import build_raw_text_package
+from experiments.evaluator.lifecycle import evaluator_status_for_record
+from experiments.evaluator.ground_truth import evaluator_metadata_for_scenario
+from experiments.evaluator.protocol import validate_v4_agent_scenario, v4_external_assertion_kinds
 from experiments.planners.oracle_planner import OraclePlanner
 from experiments.runner.system_registry import SystemConfig
 from experiments.trace.schemas import RetrievalStepTrace, RetrievedMemoryTrace, TaskTrace
@@ -19,8 +23,67 @@ from experiments.trace.schemas import MaintenanceTrace
 from experiments.world_model.ha_oracle import HAOracle
 
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
 def _approx_tokens(text: str) -> int:
     return max(1, len(text.encode("utf-8")) // 4)
+
+
+def _protocol_is_v4(system_config: SystemConfig) -> bool:
+    return system_config.evaluation_protocol == "v4"
+
+
+def _uses_raw_text_baseline(system_config: SystemConfig) -> bool:
+    return _protocol_is_v4(system_config) and system_config.system_id in {"B1", "B4"}
+
+
+def _evaluator_statuses(service: MemoryService, now: datetime) -> dict[str, str]:
+    return {
+        record.memory_id: evaluator_status_for_record(record.model_dump(mode="json"), now)
+        for record in service.list_records(include_deleted=True)
+    }
+
+
+def _record_agent_decision(trace: TaskTrace, step_id: str, decision) -> None:
+    structured = decision.structured_output or {}
+    raw_plan = structured.get("raw_plan")
+    guarded_plan = structured.get("guarded_plan")
+    if raw_plan is not None:
+        trace.raw_planner_decisions.append({"step_id": step_id, **raw_plan})
+    if guarded_plan is not None:
+        trace.guarded_planner_decisions.append({"step_id": step_id, **guarded_plan})
+    if structured.get("guard_overrode_raw_plan"):
+        trace.guard_overrides.append(
+            {
+                "step_id": step_id,
+                "raw_plan": raw_plan,
+                "guarded_plan": guarded_plan,
+                "reason": structured.get("reason"),
+            }
+        )
+
+
+def _finalize_external_success(trace: TaskTrace) -> None:
+    external_assertions = [
+        item for item in trace.assertion_results
+        if item.get("kind") in v4_external_assertion_kinds()
+    ]
+    trace.external_task_success = (
+        all(item.get("success") for item in external_assertions)
+        if external_assertions
+        else None
+    )
+
+
+def _apply_evaluator_metadata(trace: TaskTrace) -> None:
+    metadata = evaluator_metadata_for_scenario(trace.scenario_id)
+    if not metadata:
+        return
+    trace.evaluator_preferred_action = metadata.get("preferred_action")
+    trace.evaluator_preference_match_eligible = metadata.get("preference_match_eligible")
+    trace.evaluator_safety_gate_required = metadata.get("safety_gate_required")
+    trace.evaluator_correction_pairs = list(metadata.get("correction_pairs", []))
 
 
 def _parse_sim_time(t0: datetime, raw: str | None) -> datetime:
@@ -262,7 +325,20 @@ def _infer_control_action(query: str, package, world: HAOracle) -> dict | None:
         import re
 
         match = re.search(r"(\d{2})", query)
-        target = int(match.group(1)) if match else int(entity.get("attributes", {}).get("target_temp", 24))
+        targets = {
+            int(value)
+            for item in package.matched_memories
+            if item.in_usable_set
+            for value in re.findall(r"(\d{2})\s*度", item.text)
+        }
+        if match:
+            target = int(match.group(1))
+        elif len(targets) == 1:
+            target = targets.pop()
+        elif targets:
+            return None
+        else:
+            target = int(entity.get("attributes", {}).get("target_temp", 24))
         return {"service": "climate.set_temperature", "entity_id": candidate.entity_id, "args": {"temperature": target}}
     return None
 
@@ -270,8 +346,13 @@ def _infer_control_action(query: str, package, world: HAOracle) -> dict | None:
 def _load_fixture_records(service: MemoryService, fixtures: list[dict], now: datetime):
     for fixture in fixtures:
         status = fixture.get("status", "active")
-        op = "add_active" if status == "active" else "add_candidate"
+        op = "add_active" if status != "candidate" else "add_candidate"
         service.apply_memory_op({**fixture, "op": op}, now)
+        if status not in {"active", "candidate"}:
+            service.apply_memory_op(
+                {"op": "patch", "memory_id": fixture["memory_id"], "updates": {"status": status, "layer": "archived"}},
+                now,
+            )
 
 
 def _write_failure_reflection(
@@ -335,7 +416,7 @@ def run_oracle_scenario(
     system_config: SystemConfig | None = None,
 ) -> dict:
     started = time.perf_counter()
-    world = HAOracle()
+    world = HAOracle(REPO_ROOT / scenario.get("world_path", "experiments/world_model/v1.json"))
     world.reset()
     if scenario.get("initial_state_overrides"):
         for entity_id, override in scenario["initial_state_overrides"].items():
@@ -350,14 +431,16 @@ def run_oracle_scenario(
         task_id=f"{scenario['scenario_id']}_{seed}",
         scenario_id=scenario["scenario_id"],
         seed=seed,
-        world_version=scenario["world_version"],
+        world_version=world.world_version,
         system_policy_version=scenario.get("system_policy_version", "sp-v1"),
         planner_mode=scenario["planner_mode"],
         system_id=system_config.system_id,
+        system_configuration=dict(system_config.__dict__),
         task_type=scenario.get("task_type", "control"),
         sim_time=world.current_time,
         safety_relevant=bool(scenario.get("safety_relevant", False)),
     )
+    _apply_evaluator_metadata(trace)
     assertion_failures: list[str] = []
     last_decision = None
     last_query = ""
@@ -439,6 +522,7 @@ def run_oracle_scenario(
                 step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                 stage="planning",
                 query=query,
+                retrieval_metadata=package.retrieval_metadata,
                 retrieved_memories=[
                     RetrievedMemoryTrace(
                         memory_id=item.memory_id,
@@ -583,6 +667,7 @@ def run_oracle_scenario(
         elif step_type == "expect_action":
             asserted = step.get("assert", {})
             if asserted:
+                assertion_kind = "query" if asserted.get("service") == "memory.answer" else "action"
                 trace.preferred_action = asserted
                 trace.ground_truth_entity = asserted["entity_id"]
                 expected_entity = asserted["entity_id"]
@@ -601,7 +686,7 @@ def run_oracle_scenario(
                     assertion_status["action"]["success"] = False
                     _append_assertion_result(
                         trace,
-                        kind="action",
+                        kind=assertion_kind,
                         step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                         success=False,
                         expected=asserted,
@@ -624,7 +709,7 @@ def run_oracle_scenario(
                     assertion_status["action"]["seen"] = True
                     _append_assertion_result(
                         trace,
-                        kind="action",
+                        kind=assertion_kind,
                         step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                         success=True,
                         expected=asserted,
@@ -771,6 +856,7 @@ def run_oracle_scenario(
     for record in final_records:
         trace.memory_status_after[record.memory_id] = record.status
     trace.memory_records_after = [record.model_dump(mode="json") for record in final_records]
+    trace.mechanism_activation = list(service.activation_log)
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
         trace.estimated_maintenance_tokens = sum(
@@ -807,7 +893,7 @@ def run_agent_scenario(
     system_config: SystemConfig | None = None,
 ) -> dict:
     started = time.perf_counter()
-    world = HAOracle()
+    world = HAOracle(REPO_ROOT / scenario.get("world_path", "experiments/world_model/v1.json"))
     world.reset()
     if scenario.get("initial_state_overrides"):
         for entity_id, override in scenario["initial_state_overrides"].items():
@@ -815,6 +901,14 @@ def run_agent_scenario(
 
     temp_db = Path(tempfile.gettempdir()) / f"{scenario['scenario_id']}_{seed}_agent_{uuid.uuid4().hex}.sqlite3"
     system_config = system_config or SystemConfig(system_id="Ours", planner_mode="agent")
+    protocol_violations = (
+        validate_v4_agent_scenario(scenario) if _protocol_is_v4(system_config) else []
+    )
+    if protocol_violations:
+        raise ValueError(
+            "v4 agent scenario contains evaluator-to-system bridge: "
+            + ", ".join(protocol_violations)
+        )
     service = MemoryService(temp_db, config=system_config.__dict__)
     adapter = AgentAdapter()
 
@@ -823,14 +917,17 @@ def run_agent_scenario(
         scenario_id=scenario["scenario_id"],
         seed=seed,
         agent_requested_seed=seed,
-        world_version=scenario["world_version"],
+        world_version=world.world_version,
         system_policy_version=scenario.get("system_policy_version", "sp-v1"),
         planner_mode="agent",
+        evaluation_protocol=system_config.evaluation_protocol,
         system_id=system_config.system_id,
+        system_configuration=dict(system_config.__dict__),
         task_type=scenario.get("task_type", "control"),
         sim_time=world.current_time,
         safety_relevant=bool(scenario.get("safety_relevant", False)),
     )
+    _apply_evaluator_metadata(trace)
     if os.environ.get("EXPERIMENT_AGENT_BACKEND") == "external":
         trace.agent_backend = "external_llm"
         trace.agent_seed_protocol = "no_agent_call_required"
@@ -845,7 +942,9 @@ def run_agent_scenario(
         "final_state": {"seen": False, "success": True},
     }
 
-    _load_fixture_records(service, scenario.get("initial_memory_fixture", []), world.current_time)
+    if not (_protocol_is_v4(system_config) and _uses_raw_text_baseline(system_config)):
+        _load_fixture_records(service, scenario.get("initial_memory_fixture", []), world.current_time)
+    raw_history: list[str] = []
 
     for index, step in enumerate(scenario.get("steps", []), start=1):
         step_type = step["type"]
@@ -891,22 +990,32 @@ def run_agent_scenario(
 
         if step_type == "say":
             oracle_input = step.get("oracle_input", {})
-            for op in oracle_input.get("memory_ops", []):
-                service.apply_memory_op(op, world.current_time)
+            if not _protocol_is_v4(system_config):
+                for op in oracle_input.get("memory_ops", []):
+                    service.apply_memory_op(op, world.current_time)
             query = step.get("text", "")
-            package = service.search(
-                query,
-                task_type=oracle_input.get("task_type", scenario.get("task_type", "control")),
-                now=world.current_time,
-            )
+            task_type = oracle_input.get("task_type", scenario.get("task_type", "control"))
+            if _protocol_is_v4(system_config) and _uses_raw_text_baseline(system_config):
+                package = build_raw_text_package(
+                    query=query,
+                    task_type=task_type,
+                    fixture=scenario.get("initial_memory_fixture", []),
+                    conversation_history=raw_history,
+                    world=world,
+                    full_history=system_config.system_id == "B4",
+                )
+            else:
+                package = service.search(query, task_type=task_type, now=world.current_time)
             package = _inject_registry_candidates(world, package, query)
             trace.estimated_prompt_tokens += _approx_tokens(query) + sum(
                 _approx_tokens(item.text) for item in package.matched_memories
             )
+            raw_history.append(query)
             retrieval_trace = RetrievalStepTrace(
                 step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                 stage="planning",
                 query=query,
+                retrieval_metadata=package.retrieval_metadata,
                 retrieved_memories=[
                     RetrievedMemoryTrace(
                         memory_id=item.memory_id,
@@ -918,6 +1027,7 @@ def run_agent_scenario(
                         raw_confidence=item.raw_confidence,
                         system_status=item.system_status,
                         true_status=item.true_status,
+                        evaluator_true_status=_evaluator_statuses(service, world.current_time).get(item.memory_id),
                         runtime_status=item.runtime_status,
                         in_usable_set=item.in_usable_set,
                         in_grounding_set=False,
@@ -927,6 +1037,11 @@ def run_agent_scenario(
             )
             trace.steps.append(retrieval_trace)
             decision = adapter.plan(package, query, requested_seed=seed)
+            _record_agent_decision(
+                trace,
+                step.get("step_id", f"{scenario['scenario_id']}_{index}"),
+                decision,
+            )
             trace.agent_backend = decision.backend
             trace.should_ask_user = decision.should_ask_user
             if decision.model:
@@ -1114,6 +1229,7 @@ def run_agent_scenario(
         elif step_type == "expect_action":
             asserted = step.get("assert", {})
             if asserted:
+                assertion_kind = "query" if asserted.get("service") == "memory.answer" else "action"
                 trace.preferred_action = asserted
                 trace.ground_truth_entity = asserted["entity_id"]
                 expected_entity = asserted["entity_id"]
@@ -1132,7 +1248,7 @@ def run_agent_scenario(
                     assertion_status["action"]["success"] = False
                     _append_assertion_result(
                         trace,
-                        kind="action",
+                        kind=assertion_kind,
                         step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                         success=False,
                         expected=asserted,
@@ -1155,7 +1271,7 @@ def run_agent_scenario(
                     assertion_status["action"]["seen"] = True
                     _append_assertion_result(
                         trace,
-                        kind="action",
+                        kind=assertion_kind,
                         step_id=step.get("step_id", f"{scenario['scenario_id']}_{index}"),
                         success=True,
                         expected=asserted,
@@ -1302,6 +1418,7 @@ def run_agent_scenario(
     for record in final_records:
         trace.memory_status_after[record.memory_id] = record.status
     trace.memory_records_after = [record.model_dump(mode="json") for record in final_records]
+    trace.mechanism_activation = list(service.activation_log)
     if trace.maintenance_events:
         trace.maintenance_latency_ms = sum(item.maintenance_latency_ms for item in trace.maintenance_events)
         trace.estimated_maintenance_tokens = sum(
@@ -1316,6 +1433,7 @@ def run_agent_scenario(
         assertion_status["final_state"]["success"] if assertion_status["final_state"]["seen"] else None
     )
     trace.task_success = not assertion_failures
+    _finalize_external_success(trace)
     trace.outcome = "success" if trace.task_success else "failure"
     if assertion_failures:
         trace.usage_events.append({"kind": "assertion_failures", "failures": assertion_failures})

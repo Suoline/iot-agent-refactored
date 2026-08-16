@@ -387,6 +387,10 @@ class SqliteMemoryStore:
         prepared = " ".join(part for part in query.strip().split() if part)
         if not prepared:
             return []
+        # Treat user/LLM text as a literal FTS phrase. Without quoting, text
+        # such as "Error code: 400" is parsed as a column-qualified query and
+        # can raise "no such column" for the token after the colon.
+        prepared = '"' + prepared.replace('"', '""') + '"'
         with self.connect() as conn:
             rows = conn.execute(
                 """
@@ -455,4 +459,3 @@ class SqliteMemoryStore:
                 "INSERT INTO ha_sync_runs(started_at, finished_at, summary) VALUES (?, ?, ?)",
                 (_dt_to_str(started_at), _dt_to_str(finished_at), _json_dumps(summary)),
             )
-

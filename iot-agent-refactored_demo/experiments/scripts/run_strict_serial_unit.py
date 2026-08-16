@@ -220,6 +220,8 @@ def main() -> None:
         scenario["planner_mode"] = args.planner_mode
         registry = build_system_registry()
         system_config = registry[args.system_id]
+        if matrix.get("evaluation_protocol"):
+            system_config.evaluation_protocol = matrix["evaluation_protocol"]
         trace = (
             run_agent_scenario(scenario, seed=args.seed, system_config=system_config)
             if args.planner_mode == "agent"
@@ -248,12 +250,19 @@ def main() -> None:
         ),
         "no_transport_failure": not _has_transport_failure(trace),
         "no_mixed_revision": True,
+        "evaluation_protocol_recorded": bool(trace.get("evaluation_protocol")),
+        "v4_external_result_recorded": (
+            trace.get("evaluation_protocol") != "v4"
+            or trace.get("external_task_success") is not None
+            or not trace.get("assertion_results")
+        ),
     }
     manifest = {
         "run_id": args.run_id,
         "group_id": args.group_id,
         "system_id": args.system_id,
         "planner_mode": args.planner_mode,
+        "evaluation_protocol": trace.get("evaluation_protocol", "legacy_v3"),
         "scenario_id": args.scenario_id,
         "seed": args.seed,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -261,10 +270,11 @@ def main() -> None:
         "world_version": trace.get("world_version"),
         "system_policy_version": trace.get("system_policy_version"),
         "source_scenario_path": unit["scenario_path"],
-        "source_planner_mode": unit["source_planner_mode"],
+        "source_planner_mode": unit.get("source_planner_mode", args.planner_mode),
         "task_id": trace.get("task_id"),
         "outcome": trace.get("outcome"),
         "task_success": trace.get("task_success"),
+        "external_task_success": trace.get("external_task_success"),
         "trace_file": raw_relative,
         "maintenance_file": maintenance_relative,
         "manifest_file": manifest_relative,
@@ -280,6 +290,15 @@ def main() -> None:
         "agent_usage_totals": _usage_totals(trace),
         "agent_latency_ms_sum": sum(trace.get("agent_latencies_ms", [])),
         "agent_failures": trace.get("agent_failures", []),
+        "baseline_context_source": next(
+            (
+                step.get("retrieval_metadata", {}).get("baseline_context_source")
+                for step in trace.get("steps", [])
+                if step.get("retrieval_metadata", {}).get("baseline_context_source")
+            ),
+            None,
+        ),
+        "guard_override_count": len(trace.get("guard_overrides", [])),
         "strict_checks": strict_checks,
     }
     writer.write_json(manifest_relative, manifest)

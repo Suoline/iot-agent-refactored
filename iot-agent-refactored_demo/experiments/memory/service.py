@@ -18,6 +18,7 @@ from .schemas import (
     UsageEvent,
 )
 from .vector_index import VectorIndex
+from experiments.evaluator.lifecycle import evaluator_status_for_record
 
 
 class MemoryService:
@@ -25,6 +26,17 @@ class MemoryService:
         self.store = CanonicalStore(db_path)
         self.index = VectorIndex()
         self.config = config or {}
+        self.activation_log: list[dict[str, Any]] = []
+
+    def _activation(self, mechanism: str, *, event: str, enabled: bool | None = None, **context: Any):
+        self.activation_log.append(
+            {
+                "mechanism": mechanism,
+                "event": event,
+                "enabled": self.config.get(f"use_{mechanism}", True) if enabled is None else enabled,
+                **context,
+            }
+        )
 
     def upsert(self, record: MemoryRecord, *, event_type: str = "upsert"):
         self.store.upsert(record, event_type=event_type)
@@ -35,6 +47,8 @@ class MemoryService:
     def apply_memory_op(self, op: dict[str, Any], now: datetime):
         kind = op["op"]
         if kind in {"add_active", "add_candidate"}:
+            if kind == "add_candidate":
+                self._activation("candidate_gate", event="candidate_write", status="candidate")
             existing = op.get("memory_id") and self.get(op["memory_id"])
             if existing and kind == "add_candidate":
                 existing.positive_hits += 1
@@ -87,6 +101,7 @@ class MemoryService:
             self.mark_outcome(event)
             return self.get(op["memory_id"])
         if kind in {"revise", "invalidate"}:
+            self._activation("conflict_handling", event=kind, memory_id=op.get("old_memory_id"))
             old = self.get(op["old_memory_id"])
             if old:
                 if self.config.get("use_conflict_handling", True):
@@ -100,6 +115,7 @@ class MemoryService:
                 return new
             return old
         if kind == "merge":
+            self._activation("feature_absorption", event="merge", source_ids=list(op.get("source_ids", [])))
             source_ids = op["source_ids"]
             records = [self.get(item) for item in source_ids]
             records = [item for item in records if item is not None]
@@ -127,6 +143,7 @@ class MemoryService:
                 self.upsert(record, event_type="merge_source")
             return merged
         if kind == "split":
+            self._activation("split", event="split", source_id=op.get("old_memory_id"))
             if not self.config.get("use_split", True):
                 return []
             original = self.get(op["old_memory_id"])
@@ -172,6 +189,9 @@ class MemoryService:
         top_k: int = 10,
     ) -> SearchResultPackage:
         now = now or datetime.now(timezone.utc)
+        self._activation("lifecycle", event="search_lifecycle", enabled=self.config.get("use_lifecycle", True))
+        self._activation("dynamic_confidence", event="search_confidence", enabled=self.config.get("use_dynamic_confidence", True))
+        self._activation("candidate_gate", event="search_candidate_gate", enabled=self.config.get("use_candidate_gate", True))
         threshold = TASK_THRESHOLDS.get(task_type, 0.70)
         if (
             not self.config.get("use_memory", True)
@@ -245,7 +265,11 @@ class MemoryService:
                 effective_confidence=eff,
                 memory_worth=worth,
                 system_status=record.status,
-                true_status=record.status,
+                # This is an evaluator label derived from independent facts;
+                # system_status remains the runtime prediction.
+                true_status=evaluator_status_for_record(
+                    record.model_dump(mode="json"), now
+                ),
                 runtime_status=runtime_status,
                 layer=record.layer,
                 in_usable_set=usable and passes_threshold,
@@ -418,6 +442,7 @@ class MemoryService:
         return (recent[-1] - recent[0]).total_seconds() <= window_days * 86400
 
     def _propagate_ripple(self, root_id: str, now: datetime):
+        self._activation("ripple", event="feedback_ripple", root_id=root_id)
         if not self.config.get("use_ripple", True):
             return []
         by_id, graph = self._memory_graph()
@@ -475,7 +500,7 @@ class MemoryService:
         subject_match = 1.0 if record.subject and record.subject in query else 0.0
         if score_mode == "rag_only":
             return min(1.0, lexical_score + 0.2 * subject_match)
-        if score_mode == "ga_analog":
+        if score_mode in {"ga_analog", "ga_inspired_heuristic"}:
             return min(1.0, (lexical_score + recency + importance + subject_match) / 4)
         if score_mode == "large_context":
             return min(1.0, lexical_score + 0.2 * subject_match)
@@ -494,6 +519,13 @@ class MemoryService:
         ))
 
     def mark_outcome(self, event: UsageEvent):
+        self._activation(
+            "asym_feedback",
+            event="mark_outcome",
+            enabled=float(self.config.get("alpha_pos", 0.04)) != float(self.config.get("alpha_neg", 0.20)),
+            contribution=event.contribution,
+            outcome=event.outcome,
+        )
         record = self.get(event.memory_id)
         if not record:
             return
@@ -517,6 +549,8 @@ class MemoryService:
             self._propagate_ripple(record.memory_id, event.timestamp)
 
     def maintenance(self, now: datetime):
+        self._activation("governance", event="maintenance_governance", enabled=self.config.get("use_governance", True))
+        self._activation("lifecycle", event="maintenance_lifecycle", enabled=self.config.get("use_lifecycle", True))
         changed = []
         expired: list[str] = []
         stale: list[str] = []

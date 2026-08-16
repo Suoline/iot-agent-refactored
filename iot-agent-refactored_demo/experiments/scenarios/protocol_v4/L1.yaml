@@ -1,0 +1,34 @@
+{
+  "scenario_id": "L1_v4_longitudinal",
+  "title": "L1 v4 cross-session preference trajectory",
+  "category": "L",
+  "rq_tags": ["longitudinal", "protocol_v4"],
+  "planner_mode": "agent",
+  "world_version": "wm-v1",
+  "system_policy_version": "sp-v4",
+  "task_type": "control",
+  "safety_relevant": false,
+  "initial_state_overrides": {},
+  "initial_memory_fixture": [{
+    "memory_id": "l1_bedside_alias",
+    "memory_type": "alias",
+    "scope": "entity",
+    "subject": "睡前灯",
+    "predicate": "refers_to",
+    "object": "light.bedroom_bedside",
+    "entity_id": "light.bedroom_bedside",
+    "source": "user_explicit",
+    "half_life_days": 365,
+    "natural_text": "睡前灯指卧室床头灯",
+    "confidence": 0.9,
+    "source_authority": 0.9
+  }],
+  "steps": [
+    {"step_id": "L1_v4_s1", "type": "say", "sim_time": "t0 22:00", "text": "打开睡前灯", "oracle_input": {"task_type": "control"}},
+    {"step_id": "L1_v4_s1_assert", "type": "expect_action", "assert": {"service": "light.turn_on", "entity_id": "light.bedroom_bedside", "args": {}}},
+    {"step_id": "L1_v4_session_boundary", "type": "event", "sim_time": "t0+14d 22:00", "kind": "maintenance", "payload": {}},
+    {"step_id": "L1_v4_s2", "type": "say", "sim_time": "t0+14d 22:01", "text": "关闭睡前灯", "oracle_input": {"task_type": "control"}},
+    {"step_id": "L1_v4_s2_assert", "type": "expect_action", "assert": {"service": "light.turn_off", "entity_id": "light.bedroom_bedside", "args": {}}},
+    {"step_id": "L1_v4_final", "type": "expect_final_state", "assert": {"light.bedroom_bedside": {"state": "off", "attributes": {}}}}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "protocol": "v4",
+  "validation_scenario_ids": ["H2_v4_behavioral", "C2_v4_behavioral", "Q1_v4_behavioral", "U1_v4_behavioral"],
+  "held_out_scenario_ids": ["B6_v4_behavioral", "B6R_v4_robustness", "B6W_v4_robustness", "D1_v4_behavioral", "E4_v4_behavioral"],
+  "longitudinal_scenario_ids": ["L1_v4_longitudinal"],
+  "rule": "No prompt, threshold, baseline or mechanism adjustment may use held_out_scenario_ids after this file is frozen."
+}

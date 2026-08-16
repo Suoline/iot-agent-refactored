@@ -1,0 +1,53 @@
+{
+  "scenario_id": "V1_v4_behavioral",
+  "title": "V1 v4 movie routine final state",
+  "category": "V",
+  "rq_tags": [
+    "routine",
+    "protocol_v4"
+  ],
+  "planner_mode": "agent",
+  "task_type": "control",
+  "safety_relevant": false,
+  "label_source": "deterministic_executable_specification",
+  "evaluation_protocol": "v4",
+  "independent_human_annotation_status": "pending",
+  "expected_actions": [
+    {
+      "service": "routine.run",
+      "entity_id": "routine.movie_mode",
+      "args": {}
+    }
+  ],
+  "expected_action": {
+    "service": "routine.run",
+    "entity_id": "routine.movie_mode",
+    "args": {}
+  },
+  "expected_final_state": {
+    "light.living_ceiling": {
+      "state": "off",
+      "attributes": {}
+    },
+    "light.living_ambient": {
+      "state": "on",
+      "attributes": {}
+    },
+    "cover.living_curtain": {
+      "state": "closed",
+      "attributes": {
+        "position": 0
+      }
+    }
+  },
+  "final_state_applicable": true,
+  "expected_clarify": false,
+  "expected_no_action": false,
+  "expected_memory": [],
+  "expected_absent_memory": [],
+  "preferred_action": {
+    "service": "routine.run",
+    "entity_id": "routine.movie_mode",
+    "args": {}
+  }
+}

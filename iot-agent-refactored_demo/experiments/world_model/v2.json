@@ -1,0 +1,23 @@
+{
+  "world_version": "wm-v2-alt-home",
+  "t0": "2026-02-01T00:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "rooms": [{"room_id": "room_master", "name": "主卧"}, {"room_id": "room_kitchen", "name": "厨房"}, {"room_id": "room_entry", "name": "入户"}],
+  "entities": [
+    {"entity_id": "light.master_lamp", "type": "light", "room": "master", "display_name": "主卧大灯", "capabilities": ["on_off", "brightness"]},
+    {"entity_id": "light.kitchen_strip", "type": "light", "room": "kitchen", "display_name": "厨房灯带", "capabilities": ["on_off", "brightness"]},
+    {"entity_id": "lock.entry_door", "type": "lock", "room": "entry", "display_name": "入户门锁", "capabilities": ["lock", "unlock"]},
+    {"entity_id": "climate.master_ac", "type": "climate", "room": "master", "display_name": "主卧空调", "capabilities": ["on_off", "set_temp"]},
+    {"entity_id": "switch.kitchen_hood", "type": "switch", "room": "kitchen", "display_name": "油烟机", "capabilities": ["on_off"]}
+  ],
+  "services": {
+    "light.turn_on": {"type": "light", "required": ["entity"], "optional": ["brightness"]},
+    "light.turn_off": {"type": "light", "required": ["entity"], "optional": []},
+    "lock.lock": {"type": "lock", "required": ["entity"], "optional": []},
+    "lock.unlock": {"type": "lock", "required": ["entity"], "optional": []},
+    "climate.set_temperature": {"type": "climate", "required": ["entity", "temperature"], "optional": []},
+    "switch.turn_on": {"type": "switch", "required": ["entity"], "optional": []},
+    "switch.turn_off": {"type": "switch", "required": ["entity"], "optional": []}
+  },
+  "events": []
+}

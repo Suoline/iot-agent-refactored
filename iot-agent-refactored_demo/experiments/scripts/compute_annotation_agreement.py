@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from collections import Counter
 import json
+import argparse
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ANNOTATION_ROOT = REPO_ROOT / "experiments" / "annotations" / "inter_annotator"
-OUTPUT_PATH = REPO_ROOT / "experiments" / "annotations" / "annotation_agreement.json"
 
 
 def _canonical_label(value) -> str:
@@ -30,13 +29,25 @@ def _cohen_kappa(labels_a: list[str], labels_b: list[str]) -> float | None:
     return (observed - expected) / (1.0 - expected)
 
 
-def main() -> None:
+def _adjudication_complete(payload: dict) -> bool:
+    adjudication = payload.get("adjudication") or {}
+    return (
+        adjudication.get("status") in {"complete", "adjudicated", "resolved"}
+        and bool(adjudication.get("adjudicator_id"))
+        and adjudication.get("final_label") is not None
+        and bool(adjudication.get("rationale"))
+    )
+
+
+def compute(annotation_root: Path, output_path: Path) -> dict:
     complete = []
     pending = []
     labels_a = []
     labels_b = []
     disagreements = []
-    for path in sorted(ANNOTATION_ROOT.glob("*.json")):
+    adjudicated = []
+    pending_adjudication = []
+    for path in sorted(annotation_root.glob("*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         scenario_id = payload["scenario_id"]
         if payload.get("annotator_a") is None or payload.get("annotator_b") is None:
@@ -49,19 +60,44 @@ def main() -> None:
         labels_b.append(label_b)
         if label_a != label_b:
             disagreements.append(scenario_id)
+            if _adjudication_complete(payload):
+                adjudicated.append(scenario_id)
+            else:
+                pending_adjudication.append(scenario_id)
+    if pending:
+        status = "pending_human_annotation"
+    elif pending_adjudication:
+        status = "pending_adjudication"
+    else:
+        status = "complete"
     report = {
-        "status": "complete" if not pending else "pending_human_annotation",
+        "status": status,
         "scenario_count": len(complete) + len(pending),
         "completed_count": len(complete),
         "pending_count": len(pending),
         "pending_scenario_ids": pending,
         "disagreement_scenario_ids": disagreements,
         "cohen_kappa": _cohen_kappa(labels_a, labels_b),
+        "adjudication_required_count": len(pending_adjudication),
+        "adjudicated_count": len(adjudicated),
+        "adjudicated_scenario_ids": adjudicated,
+        "pending_adjudication_scenario_ids": pending_adjudication,
+        "missing_value_policy": "缺失独立标注不进入 kappa 分母，也不得用自动标签填补。",
         "unit": "scenario_full_label_exact_match",
-        "warning": "kappa 仅在真实独立标注完成后计算；空占位不会生成数值。",
+        "warning": "kappa 仅由真实独立标注计算；分歧必须由第三方完成裁决后才允许状态为 complete。",
     }
-    OUTPUT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(OUTPUT_PATH)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return report
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--annotation-root", type=Path, default=REPO_ROOT / "experiments" / "annotations" / "inter_annotator")
+    parser.add_argument("--output", type=Path, default=REPO_ROOT / "experiments" / "annotations" / "annotation_agreement.json")
+    args = parser.parse_args()
+    compute(args.annotation_root, args.output)
+    print(args.output)
 
 
 if __name__ == "__main__":
