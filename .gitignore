@@ -8,3 +8,20 @@ results/
 method_call_status.json
 .idea/
 .DS_Store
+
+# 私人记录文档（仅本地保留，不入库）
+/Todo.md
+/会议.md
+/会议结果.md
+/实验进展-*.md
+/docs/WORKLOG.md
+/iot-agent-refactored_demo/docs/WORKLOG.md
+/iot-agent-refactored_demo/docs/给自己看、自己理解的记忆笔记.md
+/iot-agent-refactored_demo/docs/v4.2补充实验状态报告-*.md
+/iot-agent-refactored_demo/docs/v4最终实验与v4_1补充实验汇报-*.md
+/iot-agent-refactored_demo/docs/v4预运行门禁报告-*.md
+/iot-agent-refactored_demo/docs/实验实现进展.md
+/iot-agent-refactored_demo/docs/实验结果分析.md
+/iot-agent-refactored_demo/docs/实验结果摘要.md
+/iot-agent-refactored_demo/docs/论文最终实验结果封版计划.md
+/iot-agent-refactored_demo/smartHome/todo.md
