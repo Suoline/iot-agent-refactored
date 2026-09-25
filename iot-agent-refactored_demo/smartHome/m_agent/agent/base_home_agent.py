@@ -24,6 +24,9 @@ from typing import List  # 推荐导入List，规范类型注解
 from smartHome.m_agent.memory import get_demo_memory_runtime
 from smartHome.m_agent.memory.fake_api_tool.fake_api_func import tool_get_all_entities_states, \
     tool_get_states_by_entity_id, tool_get_all_devices
+from smartHome.m_agent.agent.utils.structured_output_fallback import (
+    decode_value, extract_device_ids_from_messages,
+)
 
 
 class DeviceInfo(BaseModel):
@@ -255,10 +258,24 @@ def tool_filter(task:str):
 
     deviceInfoList = result.get("structured_response")
     if deviceInfoList is None:
-        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
-        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
-        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
-        deviceInfoList = DeviceIdList(devices=[])
+        # 免费档模型经常不调用结构化输出工具而直接在文本里列出选中的设备；
+        # 先尝试从消息文本回退提取设备 ID，提取不到才退化为空候选集。
+        fallback_ids = extract_device_ids_from_messages(result.get("messages"))
+        if fallback_ids:
+            GLOBALCONFIG.print_nested_log(
+                f"过滤节点未返回结构化输出，从文本回退提取到 {len(fallback_ids)} 个设备")
+            deviceInfoList = DeviceIdList(devices=[
+                DeviceInfo(device_id=did, device_name="", device_reason="文本回退提取")
+                for did in fallback_ids
+            ])
+        else:
+            GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
+            deviceInfoList = DeviceIdList(devices=[])
+    else:
+        # 结构化输出不经过 after_model 解码链路；若模型把 @token@ 占位符
+        # 写进了 device_id，这里统一恢复为真实 ID 再交给 planner。
+        for info in deviceInfoList.devices:
+            info.device_id = decode_value(info.device_id)
     # # 无缩进（紧凑格式，适合传输/存储）
     # json_str_compact = deviceInfoList.model_dump_json()
     # # 带缩进（美化格式，适合调试/查看）
@@ -439,10 +456,24 @@ def temp_test(task:str):
 
     deviceInfoList = result.get("structured_response")
     if deviceInfoList is None:
-        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
-        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
-        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
-        deviceInfoList = DeviceIdList(devices=[])
+        # 免费档模型经常不调用结构化输出工具而直接在文本里列出选中的设备；
+        # 先尝试从消息文本回退提取设备 ID，提取不到才退化为空候选集。
+        fallback_ids = extract_device_ids_from_messages(result.get("messages"))
+        if fallback_ids:
+            GLOBALCONFIG.print_nested_log(
+                f"过滤节点未返回结构化输出，从文本回退提取到 {len(fallback_ids)} 个设备")
+            deviceInfoList = DeviceIdList(devices=[
+                DeviceInfo(device_id=did, device_name="", device_reason="文本回退提取")
+                for did in fallback_ids
+            ])
+        else:
+            GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
+            deviceInfoList = DeviceIdList(devices=[])
+    else:
+        # 结构化输出不经过 after_model 解码链路；若模型把 @token@ 占位符
+        # 写进了 device_id，这里统一恢复为真实 ID 再交给 planner。
+        for info in deviceInfoList.devices:
+            info.device_id = decode_value(info.device_id)
     return deviceInfoList
 if __name__ == "__main__":
     # run_ourAgent("开灯")
