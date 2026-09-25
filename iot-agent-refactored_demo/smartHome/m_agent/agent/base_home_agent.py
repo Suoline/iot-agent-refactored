@@ -253,7 +253,12 @@ def tool_filter(task:str):
     finally:
         runtime.clear_stage()
 
-    deviceInfoList = result["structured_response"]
+    deviceInfoList = result.get("structured_response")
+    if deviceInfoList is None:
+        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
+        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
+        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
+        deviceInfoList = DeviceIdList(devices=[])
     # # 无缩进（紧凑格式，适合传输/存储）
     # json_str_compact = deviceInfoList.model_dump_json()
     # # 带缩进（美化格式，适合调试/查看）
@@ -432,7 +437,12 @@ def temp_test(task:str):
         context=AgentContext(agent_name="home_过滤节点")
     )
 
-    deviceInfoList = result["structured_response"]
+    deviceInfoList = result.get("structured_response")
+    if deviceInfoList is None:
+        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
+        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
+        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空设备列表")
+        deviceInfoList = DeviceIdList(devices=[])
     return deviceInfoList
 if __name__ == "__main__":
     # run_ourAgent("开灯")

@@ -243,7 +243,12 @@ def tool_filter(task:str):
         context = AgentContext(agent_name="home_过滤节点")
     )
 
-    entity_info_list = result["structured_response"]
+    entity_info_list = result.get("structured_response")
+    if entity_info_list is None:
+        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
+        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
+        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空实体列表")
+        entity_info_list = EntityIdList(entities=[])
     # # 无缩进（紧凑格式，适合传输/存储）
     # json_str_compact = deviceInfoList.model_dump_json()
     # # 带缩进（美化格式，适合调试/查看）
@@ -438,7 +443,12 @@ def temp_test(task:str):
         context=AgentContext(agent_name="home_过滤节点")
     )
 
-    entity_info_list = result["structured_response"]
+    entity_info_list = result.get("structured_response")
+    if entity_info_list is None:
+        # 免费档模型偶尔不调用结构化输出工具而直接文本总结；退化为空候选集，
+        # 让 planner/回执继续收尾，避免 KeyError 中断整个任务。
+        GLOBALCONFIG.print_nested_log("过滤节点未返回结构化输出，回退为空实体列表")
+        entity_info_list = EntityIdList(entities=[])
     return entity_info_list
 if __name__ == "__main__":
     # run_ourAgent("开灯")

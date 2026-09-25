@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from smartHome.m_agent.agent.utils.privacy_codex import transform_messages, encode_messages, decode_text
 from smartHome.m_agent.common.global_config import GLOBALCONFIG
 from langchain.agents.middleware import before_model, after_model, AgentState, before_agent, after_agent, wrap_model_call
+from langchain_core.messages import HumanMessage
 from langgraph.runtime import Runtime
 from typing import Any
 import time
@@ -70,9 +71,17 @@ def log_before(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
     message = state['messages'][-1]
     s = repr(message)
     GLOBALCONFIG.print_nested_log(s)
-    if(GLOBALCONFIG.privacy_protection_enabled):
-        messages = state["messages"]
 
+    messages = state["messages"]
+    # 智谱 GLM 等严格校验 messages 的 provider 不接受“仅 system 消息”的请求；
+    # 本仓库各子 agent 均以 system-only 输入启动，这里统一补一条最小 user
+    # 消息，保证消息序列对所有 provider 合法（对宽容 provider 无行为影响）。
+    needs_user_padding = bool(messages) and not any(isinstance(m, HumanMessage) for m in messages)
+    if needs_user_padding:
+        messages = list(messages) + [HumanMessage(content="请根据上述系统指令开始执行任务。")]
+        GLOBALCONFIG.print_nested_log("已补充 user 消息以满足 provider 的 messages 校验")
+
+    if(GLOBALCONFIG.privacy_protection_enabled):
         encoded_messages = encode_messages(messages)
 
         print("进入模型前（编码后）======================")
@@ -81,6 +90,8 @@ def log_before(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         print("======================")
         # 关键：返回更新后的 state
         return {"messages": encoded_messages}
+    if needs_user_padding:
+        return {"messages": messages}
     return None
 
 @after_model
