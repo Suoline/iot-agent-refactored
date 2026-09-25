@@ -106,6 +106,14 @@ def log_response(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
     except Exception:
         # Telemetry must not alter the behavior of a product Agent request.
         pass
+    # 进程级 token 统计：不依赖任务上下文，任何入口的每次模型响应都计数，
+    # 进程退出时自动打印摘要（同样不得影响 Agent 行为）。
+    try:
+        from smartHome.m_agent.common.token_tracker import get_token_tracker
+
+        get_token_tracker().record(message, getattr(runtime.context, "agent_name", "unknown"))
+    except Exception:
+        pass
     s=repr(message)
     GLOBALCONFIG.print_nested_log(s)
 

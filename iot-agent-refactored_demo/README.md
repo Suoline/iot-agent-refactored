@@ -37,6 +37,25 @@ python smartHome/m_agent/test/test_home_agent_v2/test_runner.py
 
 ---
 
+## Token 用量统计
+
+产品运行时自动统计所有子 agent（路由／筛选／规划／执行／校验）的 LLM token 用量：
+
+- **自动打印**：进程退出时打印中文摘要（总调用次数、prompt/completion/total tokens、按模型与按节点分组）；未调用 LLM 的流程不打印
+- **手动使用**：
+  ```python
+  from smartHome.m_agent.common.token_tracker import get_token_tracker
+
+  get_token_tracker().summary()        # 结构化 dict
+  get_token_tracker().print_summary()  # 立即打印
+  get_token_tracker().dump_json("logs/token_usage.json")  # 落盘
+  ```
+- 实现位置：`smartHome/m_agent/common/token_tracker.py`（单例统计器）+ `agent/hooks/langchain_middleware.py` 的 `log_response` 钩子喂数
+- 兼容 `usage_metadata`（LangChain 新版）与 `response_metadata.token_usage`（OpenAI 兼容端点历史字段）两种 usage 位置；缺失时记 0
+- 单元测试：`smartHome/m_agent/test/test_code/test_token_tracker.py`
+
+---
+
 ## 隐私处理机制
 
 ### 概述
