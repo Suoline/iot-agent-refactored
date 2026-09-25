@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from copy import deepcopy
 from threading import RLock
@@ -60,18 +61,35 @@ _FALLBACK_KEYWORD_PATTERN = re.compile(
 )
 
 
+def _resolve_privacy_provider() -> str:
+    """决定隐私编码 LLM 使用哪个 provider 节。
+
+    优先级：环境变量 PRIVACY_LLM_PROVIDER > llm_config.ini 的 [privacy] 节
+    （provider 键，指向任意已配置节名）> 兜底 "deepseek"。
+    默认配置指向本地 ollama，使兜底识别环节的敏感明文不再出网；
+    provider 节不存在时立即抛错，避免静默回退到云端造成隐私边界回退。
+    """
+    provider = os.environ.get(
+        "PRIVACY_LLM_PROVIDER",
+        GLOBALCONFIG.configparser.get("privacy", "provider", fallback="deepseek"),
+    )
+    if not GLOBALCONFIG.configparser.has_section(provider):
+        raise ValueError(
+            f"unknown_privacy_llm_provider:{provider}；"
+            f"请在 llm_config.ini 中配置 [{provider}] 节或修正 [privacy] 的 provider 值"
+        )
+    return provider
+
+
 def _get_privacy_handler() -> LLMPrivacyHandler:
     global _PRIVACY_HANDLER
     if _PRIVACY_HANDLER is None:
         with _HANDLER_LOCK:
             if _PRIVACY_HANDLER is None:
-                # todo 需要改成本地小模型，也就是ollama
-                #  目前隐私编码也走项目当前配置的模型、base_url 和 api_key，避免引入额外配置分叉。
-                provider = "deepseek"
+                # 隐私编码 LLM 独立于主 Agent 模型配置：默认走本地 ollama，
+                # 保证兜底识别环节的敏感明文完全不出本机（原 todo 已实现）。
+                provider = _resolve_privacy_provider()
                 llm = create_custom_llm(
-                    # model=GLOBALCONFIG.model,
-                    # base_url=GLOBALCONFIG.base_url,
-                    # api_key=GLOBALCONFIG.api_key,
                     model=GLOBALCONFIG.configparser.get(provider, 'model'),
                     base_url=GLOBALCONFIG.configparser.get(provider, 'base_url'),
                     api_key=GLOBALCONFIG.configparser.get(provider, 'api_key'),

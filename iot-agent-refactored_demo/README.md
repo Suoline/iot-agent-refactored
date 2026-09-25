@@ -164,7 +164,12 @@ GLOBALCONFIG.privacy_protection_enabled = True
 
 ### 隐私 LLM 配置
 
-隐私编码使用的 LLM 固定读取 `[deepseek]` 配置节，**不受 `selected_llm_provider` 影响**。如需更换，修改 `_get_privacy_handler()` 中读取的配置节名。
+隐私编码使用的 LLM 独立配置，**不受 `[base]` 的 `selected_llm_provider` 影响**：
+
+- 配置位置：`llm_config.ini` 的 `[privacy]` 节，`provider` 键指向任意已配置的节名（默认 `ollama` 本地推理，保证兜底识别环节的敏感明文不出本机）
+- 临时覆盖：环境变量 `PRIVACY_LLM_PROVIDER=zhipu`（优先级高于 ini）
+- 缺省兜底：`[privacy]` 节不存在时回退 `[deepseek]` 节；provider 指向不存在的节会立即报错，不会静默回退云端
+- 使用本地 ollama 的前置步骤：安装 [ollama](https://ollama.com/download/windows) → `ollama pull qwen2.5:7b` → 确认 `http://localhost:11434` 可访问
 
 ---
 

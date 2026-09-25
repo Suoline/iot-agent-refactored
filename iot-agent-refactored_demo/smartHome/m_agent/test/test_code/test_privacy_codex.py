@@ -1,3 +1,4 @@
+import configparser
 import importlib
 import sys
 import types
@@ -206,3 +207,66 @@ class PrivacyCodexTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PrivacyProviderResolutionTestCase(unittest.TestCase):
+    """隐私 LLM 的 provider 解析：环境变量 > [privacy] 节 > deepseek 兜底。"""
+
+    def _config(self, extra: str = "") -> configparser.ConfigParser:
+        parser = configparser.ConfigParser()
+        parser.read_string(
+            "[privacy]\nprovider = ollama\n"
+            "[ollama]\nmodel = qwen2.5:7b\nbase_url = http://localhost:11434/v1\napi_key = ollama\n"
+            "[deepseek]\nmodel = glm-4-flash\nbase_url = https://open.bigmodel.cn/api/paas/v4\napi_key = k\n"
+            + extra
+        )
+        return parser
+
+    def test_reads_provider_from_privacy_section(self) -> None:
+        with patch.dict("os.environ", {}, clear=False):
+            import os
+            os.environ.pop("PRIVACY_LLM_PROVIDER", None)
+            with patch.object(privacy_codex.GLOBALCONFIG, "configparser", self._config()):
+                self.assertEqual(privacy_codex._resolve_privacy_provider(), "ollama")
+
+    def test_env_var_overrides_ini(self) -> None:
+        with patch.dict("os.environ", {"PRIVACY_LLM_PROVIDER": "deepseek"}, clear=False):
+            with patch.object(privacy_codex.GLOBALCONFIG, "configparser", self._config()):
+                self.assertEqual(privacy_codex._resolve_privacy_provider(), "deepseek")
+
+    def test_falls_back_to_deepseek_without_privacy_section(self) -> None:
+        parser = configparser.ConfigParser()
+        parser.read_string(
+            "[deepseek]\nmodel = glm-4-flash\nbase_url = https://open.bigmodel.cn/api/paas/v4\napi_key = k\n"
+        )
+        with patch.dict("os.environ", {}, clear=False):
+            import os
+            os.environ.pop("PRIVACY_LLM_PROVIDER", None)
+            with patch.object(privacy_codex.GLOBALCONFIG, "configparser", parser):
+                self.assertEqual(privacy_codex._resolve_privacy_provider(), "deepseek")
+
+    def test_unknown_provider_raises_clear_error(self) -> None:
+        with patch.dict("os.environ", {"PRIVACY_LLM_PROVIDER": "nonexistent"}, clear=False):
+            with patch.object(privacy_codex.GLOBALCONFIG, "configparser", self._config()):
+                with self.assertRaises(ValueError) as ctx:
+                    privacy_codex._resolve_privacy_provider()
+                self.assertIn("nonexistent", str(ctx.exception))
+
+    def test_handler_builds_from_resolved_provider(self) -> None:
+        privacy_codex._PRIVACY_HANDLER = None
+        captured = {}
+
+        def _fake_create_custom_llm(model=None, base_url=None, api_key=None):
+            captured.update(model=model, base_url=base_url, api_key=api_key)
+            return object()
+
+        with patch.dict("os.environ", {}, clear=False):
+            import os
+            os.environ.pop("PRIVACY_LLM_PROVIDER", None)
+            with patch.object(privacy_codex.GLOBALCONFIG, "configparser", self._config()), \
+                 patch.object(privacy_codex, "create_custom_llm", _fake_create_custom_llm):
+                handler = privacy_codex._get_privacy_handler()
+        self.assertIn("qwen2.5:7b", captured["model"])
+        self.assertIn("11434", captured["base_url"])
+        self.assertIsNotNone(handler)
+        privacy_codex._PRIVACY_HANDLER = None
