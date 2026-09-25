@@ -44,10 +44,18 @@ def decode_value(value: str) -> str:
 
 
 def extract_entity_ids_from_messages(messages) -> list[str]:
-    """从 agent 消息文本中回退提取实体 ID（按出现顺序去重）。"""
+    """从 agent 的 AIMessage 文本中回退提取实体 ID（按出现顺序去重）。
+
+    只看模型生成的回答文本：ToolMessage 里是全量实体清单，不能作为
+    "模型选中"的依据。
+    """
+    from langchain_core.messages import AIMessage
+
     found: list[str] = []
     seen: set[str] = set()
     for message in messages or []:
+        if not isinstance(message, AIMessage):
+            continue
         text = getattr(message, "content", "")
         if not isinstance(text, str):
             continue
@@ -63,10 +71,14 @@ def extract_entity_ids_from_messages(messages) -> list[str]:
 
 
 def extract_device_ids_from_messages(messages) -> list[str]:
-    """从 agent 消息文本中回退提取设备 ID（32 位 hex，按出现顺序去重）。"""
+    """从 agent 的 AIMessage 文本中回退提取设备 ID（32 位 hex，去重）。"""
+    from langchain_core.messages import AIMessage
+
     found: list[str] = []
     seen: set[str] = set()
     for message in messages or []:
+        if not isinstance(message, AIMessage):
+            continue
         text = getattr(message, "content", "")
         if not isinstance(text, str):
             continue

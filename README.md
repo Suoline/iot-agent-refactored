@@ -2,10 +2,6 @@
 
 ## 关于homeassitant
 
-基本上是用codex重构的，里面可能有很多是无用的测试代码（大致原因是测试命令本身可运行，但当前环境对系统临时目录无权限，一直没处理）
-
-里面有README.md和其他的文档。应该用ai编程工具就能了解大致是怎样的，写出来的代码我也不太看得明白，有点高级。
-
 主要是实现了：
 
 - 模拟homeassitant api，[REST API | Home Assistant Developer Docs](https://developers.home-assistant.io/docs/api/rest/) 。（但是homeassitant 的api是以实体为单位操作的，并没有提供设备-实体的映射）

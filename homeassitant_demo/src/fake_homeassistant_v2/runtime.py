@@ -28,6 +28,11 @@ from .models import (
 )
 
 BUILTIN_SERVICE_HANDLERS: dict[str, str] = {
+    "cover.close_cover": "builtin:cover.close_cover",
+    "cover.open_cover": "builtin:cover.open_cover",
+    "cover.stop_cover": "builtin:cover.stop_cover",
+    "cover.toggle": "builtin:cover.toggle",
+    "cover.set_cover_position": "builtin:cover.set_cover_position",
     "switch.turn_on": "builtin:switch.turn_on",
     "switch.turn_off": "builtin:switch.turn_off",
     "switch.toggle": "builtin:switch.toggle",
@@ -1199,6 +1204,33 @@ def register_builtin_handlers(registry: HandlerRegistry) -> None:
             changed.append(entity_id)
         return HandlerResult(changed_entity_ids=changed)
 
+    def cover_close(ctx: ServiceExecutionContext) -> HandlerResult:
+        return _track_update(ctx, _single_entity(ctx).entity_id, "closed",
+                             {"current_position": 0})
+
+    def cover_open(ctx: ServiceExecutionContext) -> HandlerResult:
+        return _track_update(ctx, _single_entity(ctx).entity_id, "open",
+                             {"current_position": 100})
+
+    def cover_stop(ctx: ServiceExecutionContext) -> HandlerResult:
+        entity_id = _single_entity(ctx).entity_id
+        current = ctx.runtime.state_store.get(entity_id)
+        return _track_update(ctx, entity_id, current.state,
+                             {"current_position": current.attributes.get("current_position", 0)})
+
+    def cover_toggle(ctx: ServiceExecutionContext) -> HandlerResult:
+        entity_id = _single_entity(ctx).entity_id
+        current = ctx.runtime.state_store.get(entity_id)
+        if current.state == "open":
+            return cover_close(ctx)
+        return cover_open(ctx)
+
+    def cover_set_position(ctx: ServiceExecutionContext) -> HandlerResult:
+        position = max(0, min(100, int(ctx.payload.get("position", 100))))
+        state = "closed" if position == 0 else "open"
+        return _track_update(ctx, _single_entity(ctx).entity_id, state,
+                             {"current_position": position})
+
     def save_persistent_states(ctx: ServiceExecutionContext) -> HandlerResult:
         ctx.runtime.persist_all()
         return HandlerResult(response={"saved": True, "states": len(ctx.runtime.state_store.states)})
@@ -1207,6 +1239,11 @@ def register_builtin_handlers(registry: HandlerRegistry) -> None:
         raise FakeHomeAssistantError(f"Service handler not implemented for {ctx.service.key}")
 
     for name, func in {
+        "builtin:cover.close_cover": cover_close,
+        "builtin:cover.open_cover": cover_open,
+        "builtin:cover.stop_cover": cover_stop,
+        "builtin:cover.toggle": cover_toggle,
+        "builtin:cover.set_cover_position": cover_set_position,
         "builtin:switch.turn_on": switch_turn_on,
         "builtin:switch.turn_off": switch_turn_off,
         "builtin:switch.toggle": switch_toggle,

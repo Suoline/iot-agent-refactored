@@ -101,12 +101,25 @@ def tool_get_states_by_entity_id(entity_id: str) -> dict[str, Any] | str | None:
 
     Args:
         entity_id: 实体 ID，例如 light.philips_cn_1061200910_lite_s_2。
+            也兼容只传 object_id（无 domain 前缀）的引用：查不到时按后缀
+            在全部实体中做唯一匹配（模型在多轮文本传递中偶尔丢失 domain）。
 
     Returns:
         成功时返回单个实体的状态 JSON 对象；远端错误或非 JSON 响应时返回文本说明。
     """
     encoded_entity_id = quote(entity_id, safe="._-")
-    return _request_json("GET", f"/api/states/{encoded_entity_id}")
+    result = _request_json("GET", f"/api/states/{encoded_entity_id}")
+    if isinstance(result, dict) and "error" not in result:
+        return result
+    # 后缀唯一匹配容错：h0_humidifier -> switch.h0_humidifier
+    if "." not in entity_id:
+        all_states = tool_get_all_entities_states.invoke({})
+        if isinstance(all_states, list):
+            matches = [s for s in all_states
+                       if isinstance(s, dict) and str(s.get("entity_id", "")).endswith("." + entity_id)]
+            if len(matches) == 1:
+                return matches[0]
+    return result
 
 
 @tool

@@ -60,6 +60,22 @@ _FALLBACK_KEYWORD_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+# 实验用扩展敏感词典：由外部（如隐私实验 runner）按任务注册的精确敏感值
+# （人名、房间名、关键数值等）。注册后与本地正则同层参与检测，保证同一
+# 检测器在不同替换策略（C1/C2/C3）下对同一批敏感值保持一致判定。
+_EXTRA_SENSITIVE: dict[str, str] = {}
+
+
+def register_extra_sensitive(mapping: dict[str, str]) -> None:
+    """注册额外敏感值（value -> 语义名）；进程生命周期内有效。"""
+    with _HANDLER_LOCK:
+        _EXTRA_SENSITIVE.update(mapping)
+
+
+def reset_extra_sensitive() -> None:
+    with _HANDLER_LOCK:
+        _EXTRA_SENSITIVE.clear()
+
 
 def _resolve_privacy_provider() -> str:
     """决定隐私编码 LLM 使用哪个 provider 节。
@@ -163,6 +179,9 @@ def _build_local_mapping(text: str) -> dict[str, str]:
             original = match.group(0)
             if original and not LLMPrivacyHandler._TOKEN_PATTERN.fullmatch(original):
                 mapping[original] = _normalize_token_name(semantic_name)
+    for value, semantic_name in _EXTRA_SENSITIVE.items():
+        if value and value in text:
+            mapping.setdefault(value, _normalize_token_name(semantic_name))
     return mapping
 
 

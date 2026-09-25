@@ -298,13 +298,44 @@ def entity_id_list_to_ids(entity_id_list_obj: EntityIdList) -> List[str]:
     """
     entity_ids = [entity_info.entity_id for entity_info in entity_id_list_obj.entities]
     return entity_ids
+def _normalize_entity_id_list(entities) -> EntityIdList:
+    """把模型传入的 entities 参数变体归一为 EntityIdList。
+
+    兼容：EntityIdList / {"entities": [...]} / [{"entities": [...]}] /
+    [EntityInfo dict...]。模型偶发把整体对象再包一层列表导致校验失败。
+    """
+    if isinstance(entities, EntityIdList):
+        return entities
+    def _to_info(item) -> EntityInfo | None:
+        if isinstance(item, EntityInfo):
+            return item
+        if isinstance(item, dict):
+            return EntityInfo(
+                entity_id=str(item.get("entity_id", "")),
+                entity_name=str(item.get("entity_name", "") or ""),
+                entity_reason=str(item.get("entity_reason", "") or ""),
+            )
+        return None
+    if isinstance(entities, dict) and "entities" in entities:
+        entities = entities["entities"]
+    if isinstance(entities, dict) and "entity_id" in entities:
+        entities = [entities]
+    if isinstance(entities, list) and entities and isinstance(entities[0], dict) and "entities" in entities[0]:
+        entities = entities[0]["entities"]
+    if isinstance(entities, list):
+        infos = [x for x in (_to_info(item) for item in entities) if x]
+        return EntityIdList(entities=infos)
+    return EntityIdList(entities=[])
+
+
 @tool
-def tool_planner(task:str,entities:EntityIdList):
+def tool_planner(task:str,entities):
     """
     规划和执行
     :param state:
     :return:
     """
+    entities = _normalize_entity_id_list(entities)
     # todo 补充可以根据实体ID获取实体能力、实体状态类型
     # entity_info=DEVICEBASECONST.get_entity_states_capabilities(entity_id_list_to_ids(entities))
     entity_info=""
