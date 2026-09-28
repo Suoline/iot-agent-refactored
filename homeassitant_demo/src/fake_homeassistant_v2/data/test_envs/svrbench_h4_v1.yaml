@@ -1,0 +1,505 @@
+{
+  "env_id": "svrbench_h4_v1",
+  "default_fault_mode": "normal",
+  "supported_fault_modes": [
+    "normal"
+  ],
+  "devices": [
+    {
+      "device_id": "device_h4_living_main_light",
+      "name": "客厅主灯",
+      "name_by_user": "客厅主灯",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "light.h4_living_main_light"
+      ]
+    },
+    {
+      "device_id": "device_h4_living_side_light",
+      "name": "客厅落地灯",
+      "name_by_user": "客厅落地灯",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "light.h4_living_side_light"
+      ]
+    },
+    {
+      "device_id": "device_h4_bedroom_main_light",
+      "name": "卧室主灯",
+      "name_by_user": "卧室主灯",
+      "area_id": "room.bedroom",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "light.h4_bedroom_main_light"
+      ]
+    },
+    {
+      "device_id": "device_h4_bedside_lamp",
+      "name": "卧室床头灯",
+      "name_by_user": "卧室床头灯",
+      "area_id": "room.bedroom",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "light.h4_bedroom_bedside_lamp"
+      ]
+    },
+    {
+      "device_id": "device_h4_study_light",
+      "name": "书房台灯",
+      "name_by_user": "书房台灯",
+      "area_id": "room.study",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "light.h4_study_light"
+      ]
+    },
+    {
+      "device_id": "device_h4_living_ac",
+      "name": "客厅空调",
+      "name_by_user": "客厅空调",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "climate.h4_living_ac"
+      ]
+    },
+    {
+      "device_id": "device_h4_bedroom_ac",
+      "name": "卧室空调",
+      "name_by_user": "卧室空调",
+      "area_id": "room.bedroom",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "climate.h4_bedroom_ac"
+      ]
+    },
+    {
+      "device_id": "device_h4_living_temp",
+      "name": "客厅温度传感器",
+      "name_by_user": "客厅温度传感器",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "sensor.h4_living_temp"
+      ]
+    },
+    {
+      "device_id": "device_h4_bedroom_temp",
+      "name": "卧室温度传感器",
+      "name_by_user": "卧室温度传感器",
+      "area_id": "room.bedroom",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "sensor.h4_bedroom_temp"
+      ]
+    },
+    {
+      "device_id": "device_h4_humidity",
+      "name": "湿度传感器",
+      "name_by_user": "湿度传感器",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "sensor.h4_humidity"
+      ]
+    },
+    {
+      "device_id": "device_h4_speaker",
+      "name": "智能音箱",
+      "name_by_user": "智能音箱",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "media_player.h4_speaker"
+      ]
+    },
+    {
+      "device_id": "device_h4_living_curtain",
+      "name": "客厅窗帘",
+      "name_by_user": "客厅窗帘",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "cover.h4_living_curtain"
+      ]
+    },
+    {
+      "device_id": "device_h4_bedroom_curtain",
+      "name": "卧室窗帘",
+      "name_by_user": "卧室窗帘",
+      "area_id": "room.bedroom",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "cover.h4_bedroom_curtain"
+      ]
+    },
+    {
+      "device_id": "device_h4_humidifier",
+      "name": "加湿器",
+      "name_by_user": "加湿器",
+      "area_id": "room.living",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "switch.h4_humidifier"
+      ]
+    },
+    {
+      "device_id": "device_h4_front_door",
+      "name": "前门门窗传感器",
+      "name_by_user": "前门门窗传感器",
+      "area_id": "room.hall",
+      "manufacturer": "SVRBench",
+      "model": "V1",
+      "entities": [
+        "binary_sensor.h4_front_door"
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "light.h4_living_main_light",
+      "domain": "light",
+      "object_id": "h4_living_main_light",
+      "device_id": "device_h4_living_main_light",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "客厅主灯",
+      "state": "off",
+      "attributes": {
+        "friendly_name": "客厅主灯"
+      }
+    },
+    {
+      "entity_id": "light.h4_living_side_light",
+      "domain": "light",
+      "object_id": "h4_living_side_light",
+      "device_id": "device_h4_living_side_light",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "客厅落地灯",
+      "state": "on",
+      "attributes": {
+        "friendly_name": "客厅落地灯",
+        "brightness": 150
+      }
+    },
+    {
+      "entity_id": "light.h4_bedroom_main_light",
+      "domain": "light",
+      "object_id": "h4_bedroom_main_light",
+      "device_id": "device_h4_bedroom_main_light",
+      "area_id": "room.bedroom",
+      "platform": "mock",
+      "name": "卧室主灯",
+      "state": "on",
+      "attributes": {
+        "friendly_name": "卧室主灯",
+        "brightness": 200
+      }
+    },
+    {
+      "entity_id": "light.h4_bedroom_bedside_lamp",
+      "domain": "light",
+      "object_id": "h4_bedroom_bedside_lamp",
+      "device_id": "device_h4_bedside_lamp",
+      "area_id": "room.bedroom",
+      "platform": "mock",
+      "name": "卧室床头灯",
+      "state": "off",
+      "attributes": {
+        "friendly_name": "卧室床头灯"
+      }
+    },
+    {
+      "entity_id": "light.h4_study_light",
+      "domain": "light",
+      "object_id": "h4_study_light",
+      "device_id": "device_h4_study_light",
+      "area_id": "room.study",
+      "platform": "mock",
+      "name": "书房台灯",
+      "state": "off",
+      "attributes": {
+        "friendly_name": "书房台灯"
+      }
+    },
+    {
+      "entity_id": "climate.h4_living_ac",
+      "domain": "climate",
+      "object_id": "h4_living_ac",
+      "device_id": "device_h4_living_ac",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "客厅空调",
+      "state": "cool",
+      "attributes": {
+        "friendly_name": "客厅空调",
+        "hvac_mode": "cool",
+        "hvac_modes": [
+          "off",
+          "cool",
+          "heat"
+        ],
+        "temperature": 26.0,
+        "current_temperature": 30.0,
+        "unit_of_measurement": "°C"
+      }
+    },
+    {
+      "entity_id": "climate.h4_bedroom_ac",
+      "domain": "climate",
+      "object_id": "h4_bedroom_ac",
+      "device_id": "device_h4_bedroom_ac",
+      "area_id": "room.bedroom",
+      "platform": "mock",
+      "name": "卧室空调",
+      "state": "cool",
+      "attributes": {
+        "friendly_name": "卧室空调",
+        "hvac_mode": "cool",
+        "hvac_modes": [
+          "off",
+          "cool",
+          "heat"
+        ],
+        "temperature": 26.0,
+        "current_temperature": 27.5,
+        "unit_of_measurement": "°C"
+      }
+    },
+    {
+      "entity_id": "sensor.h4_living_temp",
+      "domain": "sensor",
+      "object_id": "h4_living_temp",
+      "device_id": "device_h4_living_temp",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "客厅温度传感器",
+      "state": "30.0",
+      "attributes": {
+        "friendly_name": "客厅温度传感器",
+        "device_class": "temperature",
+        "unit_of_measurement": "°C"
+      }
+    },
+    {
+      "entity_id": "sensor.h4_bedroom_temp",
+      "domain": "sensor",
+      "object_id": "h4_bedroom_temp",
+      "device_id": "device_h4_bedroom_temp",
+      "area_id": "room.bedroom",
+      "platform": "mock",
+      "name": "卧室温度传感器",
+      "state": "27.5",
+      "attributes": {
+        "friendly_name": "卧室温度传感器",
+        "device_class": "temperature",
+        "unit_of_measurement": "°C"
+      }
+    },
+    {
+      "entity_id": "sensor.h4_humidity",
+      "domain": "sensor",
+      "object_id": "h4_humidity",
+      "device_id": "device_h4_humidity",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "湿度传感器",
+      "state": "55",
+      "attributes": {
+        "friendly_name": "湿度传感器",
+        "device_class": "humidity",
+        "unit_of_measurement": "%"
+      }
+    },
+    {
+      "entity_id": "media_player.h4_speaker",
+      "domain": "media_player",
+      "object_id": "h4_speaker",
+      "device_id": "device_h4_speaker",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "智能音箱",
+      "state": "playing",
+      "attributes": {
+        "friendly_name": "智能音箱",
+        "volume_level": 0.4,
+        "is_volume_muted": false,
+        "supported_features": [
+          "play",
+          "pause",
+          "volume"
+        ]
+      }
+    },
+    {
+      "entity_id": "cover.h4_living_curtain",
+      "domain": "cover",
+      "object_id": "h4_living_curtain",
+      "device_id": "device_h4_living_curtain",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "客厅窗帘",
+      "state": "open",
+      "attributes": {
+        "friendly_name": "客厅窗帘",
+        "current_position": 100
+      }
+    },
+    {
+      "entity_id": "cover.h4_bedroom_curtain",
+      "domain": "cover",
+      "object_id": "h4_bedroom_curtain",
+      "device_id": "device_h4_bedroom_curtain",
+      "area_id": "room.bedroom",
+      "platform": "mock",
+      "name": "卧室窗帘",
+      "state": "open",
+      "attributes": {
+        "friendly_name": "卧室窗帘",
+        "current_position": 100
+      }
+    },
+    {
+      "entity_id": "switch.h4_humidifier",
+      "domain": "switch",
+      "object_id": "h4_humidifier",
+      "device_id": "device_h4_humidifier",
+      "area_id": "room.living",
+      "platform": "mock",
+      "name": "加湿器",
+      "state": "on",
+      "attributes": {
+        "friendly_name": "加湿器"
+      }
+    },
+    {
+      "entity_id": "binary_sensor.h4_front_door",
+      "domain": "binary_sensor",
+      "object_id": "h4_front_door",
+      "device_id": "device_h4_front_door",
+      "area_id": "room.hall",
+      "platform": "mock",
+      "name": "前门门窗传感器",
+      "state": "on",
+      "attributes": {
+        "friendly_name": "前门门窗传感器",
+        "device_class": "door"
+      }
+    }
+  ],
+  "initial_states": [
+    {
+      "entity_id": "light.h4_living_main_light",
+      "state": "off"
+    },
+    {
+      "entity_id": "light.h4_living_side_light",
+      "state": "on",
+      "attributes": {
+        "brightness": 150
+      }
+    },
+    {
+      "entity_id": "light.h4_bedroom_main_light",
+      "state": "on",
+      "attributes": {
+        "brightness": 200
+      }
+    },
+    {
+      "entity_id": "light.h4_bedroom_bedside_lamp",
+      "state": "off"
+    },
+    {
+      "entity_id": "light.h4_study_light",
+      "state": "off"
+    },
+    {
+      "entity_id": "climate.h4_living_ac",
+      "state": "cool",
+      "attributes": {
+        "hvac_mode": "cool",
+        "temperature": 26.0,
+        "current_temperature": 30.0
+      }
+    },
+    {
+      "entity_id": "climate.h4_bedroom_ac",
+      "state": "cool",
+      "attributes": {
+        "hvac_mode": "cool",
+        "temperature": 26.0,
+        "current_temperature": 27.5
+      }
+    },
+    {
+      "entity_id": "sensor.h4_living_temp",
+      "state": "30.0"
+    },
+    {
+      "entity_id": "sensor.h4_bedroom_temp",
+      "state": "27.5"
+    },
+    {
+      "entity_id": "sensor.h4_humidity",
+      "state": "55"
+    },
+    {
+      "entity_id": "media_player.h4_speaker",
+      "state": "playing",
+      "attributes": {
+        "volume_level": 0.4
+      }
+    },
+    {
+      "entity_id": "cover.h4_living_curtain",
+      "state": "open",
+      "attributes": {
+        "current_position": 100
+      }
+    },
+    {
+      "entity_id": "cover.h4_bedroom_curtain",
+      "state": "open",
+      "attributes": {
+        "current_position": 100
+      }
+    },
+    {
+      "entity_id": "switch.h4_humidifier",
+      "state": "on"
+    },
+    {
+      "entity_id": "binary_sensor.h4_front_door",
+      "state": "on"
+    }
+  ],
+  "link_rules": [
+    {
+      "source_domain": "climate",
+      "source_service": "set_temperature",
+      "target_domain": "sensor",
+      "match": "same_area_id",
+      "target_device_class": "temperature",
+      "propagate": "payload:temperature"
+    }
+  ],
+  "fault_profiles": {}
+}

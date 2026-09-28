@@ -3,7 +3,7 @@
 本文档用于回答“有哪些测试环境、各自设备与空间信息、故障类型与规则”。  
 如果你需要 API 调用方式，请看：[测试环境调用指南](TEST_ENVIRONMENTS.md)。
 
-> 统计口径日期：`2026-05-21`  
+> 统计口径日期：`2026-09-28`（新增 SVRBench h0~h5 六家庭环境）  
 > 说明：`base_env` 为动态环境，统计会随 `copied_data` 基线变化而变化。
 
 ## 1. 环境总表
@@ -18,6 +18,12 @@
 | `te_one_shot_network_error_pair_b_v1` | YAML | `one_shot_network_error` | `one_shot_network_error` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
 | `te_fake_success_pair_a_v1` | YAML | `fake_success` | `fake_success` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
 | `te_fake_success_pair_b_v1` | YAML | `fake_success` | `fake_success` | `room.living_room`, `room.bedroom` | 4 | 4 | six-pair 之一，固定单故障模式 |
+| `svrbench_h0_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench dev 家庭（h0：起居室/主卧/阁楼书房），privacy_v3 实验数据集 |
+| `svrbench_h1_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench test 家庭（h1：客厅/卧室/书房） |
+| `svrbench_h2_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench test 家庭（h2） |
+| `svrbench_h3_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench test 家庭（h3） |
+| `svrbench_h4_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench test 家庭（h4） |
+| `svrbench_h5_v1` | YAML | `normal` | `normal` | `room.living`, `room.bedroom`, `room.study`, `room.hall` | 15 | 15 | SVRBench test 家庭（h5） |
 | `base_env` | 动态（运行时注册） | `normal` | `normal` | `3108946409de_jia_ke_ting`（当前快照） | 14 | 71 | 由 `fake_homeassitant_try/copied_data` 生成，仅在 `legacy_root` 可解析时可用 |
 
 ## 2. 设备与空间信息
@@ -97,7 +103,25 @@
   - 飞利浦：2
   - Aqara：1
 
-## 3. 故障类型与注入规则
+### 2.5 SVRBench 六家庭环境（`svrbench_h0_v1` ~ `svrbench_h5_v1`，共用拓扑）
+
+> privacy_v3 实验数据集（`iot-agent-refactored_demo/experiments/privacy_v3/`）专用，
+> 由 `svrbench.py` 生成并冻结（dataset `v1.1-frozen`）；h0 为 dev 家庭，h1~h5 为 test 家庭。
+
+- 拓扑（六家庭一致，仅实体前缀 `h0`~`h5` 与中文名不同）：15 设备 / 15 实体
+  - 灯光 ×6：起居室/客厅主灯+落地灯、卧室主灯+床头灯、书房台灯（`light.*`）
+  - 空调 ×2：起居室/客厅 + 卧室（`climate.*`，含 `temperature` / `current_temperature`）
+  - 传感器 ×3：起居室/客厅温度、卧室温度、湿度（`sensor.*`）
+  - 智能音箱 ×1（`media_player.*`，`volume_level` 0~1）
+  - 窗帘 ×2：起居室/客厅 + 卧室（`cover.*`，`current_position`）
+  - 加湿器 ×1（`switch.*`）、前门门窗传感器 ×1（`binary_sensor.*`，`on`=开）
+- 空间分布：`room.living`（7 实体）、`room.bedroom`（5 实体）、`room.study`（1 实体）、`room.hall`（1 实体）
+- dev/test 名称不重叠：h0 用「起居室/主卧/阁楼书房」（实体后缀 `livingroom`/`atticstudy`），
+  h1~h5 用「客厅/卧室/书房」；家庭成员人名各不相同（数据集冻结于 `svrbench_dataset.json`）
+- 联动规则：`climate / set_temperature` → 同 `area_id` 温度传感器按 `payload:temperature` 传播
+- 故障：仅 `normal`（`fault_profiles={}`，不注入故障）
+
+
 
 ### 3.1 故障类型定义
 
@@ -121,6 +145,7 @@
 | `te_one_shot_network_error_pair_b_v1` | `one_shot_network_error` | `climate / set_temperature / climate.test_living_room_ac_main / 1`；`climate / set_temperature / climate.test_bedroom_ac_main / 1` |
 | `te_fake_success_pair_a_v1` | `fake_success` | `climate / set_temperature / climate.test_living_room_ac_main / -`；`climate / set_temperature / climate.test_bedroom_ac_main / -` |
 | `te_fake_success_pair_b_v1` | `fake_success` | `climate / set_temperature / climate.test_living_room_ac_main / -`；`climate / set_temperature / climate.test_bedroom_ac_main / -` |
+| `svrbench_h0_v1` ~ `svrbench_h5_v1` | `normal` | 无规则（`fault_profiles={}`，privacy_v3 实验不注入故障） |
 | `base_env` | `normal` | 无规则（动态环境，`fault_profiles={}`） |
 
 ## 4. A/B 环境差异
